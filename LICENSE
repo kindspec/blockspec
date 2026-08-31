@@ -1,0 +1,23 @@
+blockspec is licensed per directory, on the same split as rowspec. This is
+deliberate, not an oversight.
+
+  SPEC.md, docs/            CC-BY-4.0
+  conformance/cases/        CC0-1.0
+  conformance/*.py          MIT
+  reference/, tests/        Apache-2.0 OR MIT
+
+Full texts are in LICENSES/.
+
+WHY THE SPLIT
+
+The point of this project is independent implementations. That makes the
+reusability of the SPEC and the FIXTURES more important than the licence on any
+reference code.
+
+CommonMark embeds its conformance examples inside a CC-BY-SA spec document, so
+vendoring the test cases arguably vendors share-alike prose. These fixtures are
+meant to be vendored: copy them into an implementation in any language, under
+any licence, without obligation.
+
+NOTHING IS LICENSED YET BECAUSE NOTHING EXISTS YET. This file is here so the
+split is decided before the first file lands, rather than retrofitted after.
