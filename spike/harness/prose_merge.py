@@ -397,30 +397,68 @@ def g(repo, *a):
 
 
 def find_merge_cases(repo, prefix, limit=0):
-    """Real 2-parent merges where the same .md changed on BOTH sides."""
-    cases, n2 = [], 0
+    """Real 2-parent merges where the same .md changed on BOTH sides.
+
+    Returns (cases, stats).
+
+    EVERY `continue` below increments a counter. PRE-REGISTRATION §7 requires
+    reporting *what was covered, not what was attempted*, and naming the excluded
+    population -- so a candidate dropped with no counter behind it is a coverage
+    claim nobody can check. Two of the three drop shapes are forced (there is no
+    anchorable base version); the third is a choice, and it is labelled as one.
+    """
+    cases = []
+    st = Counter()
     for line in g(repo, "rev-list", "--merges", "HEAD", "--parents").split("\n"):
         parts = line.split()
-        if len(parts) != 3:            # merge commit + exactly two parents
+        if not parts:
             continue
-        n2 += 1
+        if len(parts) != 3:            # merge commit + exactly two parents
+            st["drop:octopus"] += 1    # >2 parents: no single (base, A, C) triple
+            continue
+        st["merges:two_parent"] += 1
         m, p1, p2 = parts
         bases = [b for b in g(repo, "merge-base", "--all", p1, p2).split("\n") if b]
-        if len(bases) != 1:            # criss-cross: no single base, skip + report
-            cases.append({"_skip": "multi_base"})
+        if len(bases) != 1:            # criss-cross / unrelated: no single base
+            st["drop:multi_base"] += 1
             continue
         base = bases[0]
         ca = {x for x in g(repo, "diff", "--name-only", base, p1).split("\n")
               if x.startswith(prefix) and x.endswith(".md")}
         cb = {x for x in g(repo, "diff", "--name-only", base, p2).split("\n")
               if x.startswith(prefix) and x.endswith(".md")}
+        st["paths:one_side"] += len(ca ^ cb)
         for path in sorted(ca & cb):
+            st["paths:both_sides"] += 1
             tb = g(repo, "show", f"{base}:{path}")
             ta = g(repo, "show", f"{p1}:{path}")
             tc = g(repo, "show", f"{p2}:{path}")
-            if not (tb and ta and tc):
+            if not tb:
+                # add/add: the path does not exist at the merge base, so there is
+                # no base block to build a standoff record over. Structurally
+                # rowspec's own defect shape (two branches inserting), and not
+                # evaluable by this method.
+                st["drop:add_add"] += 1
                 continue
-            if ta == tc or ta == tb or tc == tb:
+            if not ta or not tc:
+                # delete/modify: one leg removed the file, the other edited it.
+                # Dropped BEFORE stock_merge, so these are not among the tier-E
+                # conflicts either.
+                st["drop:delete_modify"] += 1
+                continue
+            if ta == tc:
+                # Convergent identical edits. Both legs acted, a base exists, and
+                # git merges these cleanly -- they ARE evaluable. Excluding them
+                # is a CHOICE, not a necessity, and it removes cases that would
+                # have contributed correct resolutions, so it mildly inflates the
+                # mis-resolution rate. Counted so the choice is arguable.
+                st["drop:convergent"] += 1
+                continue
+            if ta == tb or tc == tb:
+                # Should be unreachable: ca and cb are blob-level diffs, so each
+                # leg differs from base by construction. Counted separately so
+                # that if it ever fires it is visible rather than folded in.
+                st["drop:unchanged_side"] += 1
                 continue
             cases.append({"id": f"{m[:10]}:{path}", "path": path,
                           "base": tb, "a": ta, "c": tc,
@@ -429,11 +467,9 @@ def find_merge_cases(repo, prefix, limit=0):
                           "recorded": g(repo, "show", f"{m}:{path}"),
                           "meta": {"merge": m, "base": base,
                                    "legA": p1, "legC": p2}})
-            if limit and len([c for c in cases if "_skip" not in c]) >= limit:
-                cases.append({"_skip": "counted", "n2": n2})
-                return cases
-    cases.append({"_skip": "counted", "n2": n2})
-    return cases
+            if limit and len(cases) >= limit:
+                return cases, st
+    return cases, st
 
 
 # --------------------------------------------------------------------------
@@ -497,9 +533,38 @@ def run_plants(verbose=True):
 
 # --------------------------------------------------------------------------
 
-def report(name, t, extra=""):
+def report(name, t, extra="", st=None):
     ev = t["EV"]
     print(f"\n### {name}{extra}")
+    if st is not None:
+        acc = t["cases"]
+        cand = st["paths:both_sides"]
+        # The sum of the NAMED drop counters -- not `cand - acc`, which would
+        # make the balance check below a tautology and therefore a check that
+        # cannot fail. (It was written that way first, and a mutation test
+        # caught it: removing a counter increment left the check green.)
+        dropped = (st["drop:add_add"] + st["drop:delete_modify"]
+                   + st["drop:convergent"] + st["drop:unchanged_side"])
+        print(f"  selection: {st['merges:two_parent']} two-parent merges "
+              f"({st['drop:octopus']} octopus merges never examined, "
+              f"{st['drop:multi_base']} skipped for >1 merge-base)")
+        print(f"  .md paths changed on BOTH sides: {cand}  ->  ACCEPTED {acc}, "
+              f"DROPPED {dropped}"
+              + (f" ({100 * dropped / cand:.0f}%)" if cand else ""))
+        print(f"     cannot evaluate (no anchorable base version):"
+              f"  add/add {st['drop:add_add']}"
+              f"   delete/modify {st['drop:delete_modify']}")
+        print(f"     chose not to evaluate:"
+              f"  convergent identical edits {st['drop:convergent']}"
+              f"   <- evaluable; excluding them mildly inflates the rate below")
+        if st["drop:unchanged_side"]:
+            print(f"     UNEXPECTED: {st['drop:unchanged_side']} with a leg equal "
+                  f"to base -- should be unreachable, investigate")
+        print(f"  .md paths changed on exactly ONE side: {st['paths:one_side']}"
+              f"   (not this arm's population; see LOG.md §7)")
+        if cand != acc + dropped:
+            print("  *** selection counters do not balance -- a drop path is "
+                  "uncounted ***")
     print(f"  merges: clean={t['merge:clean']} conflicted={t['merge:conflict']} "
           f"marker-bearing={t['merge:markers']} (tier E, counted not scored)")
     rec = t["recon:matches"] + t["recon:differs"]
@@ -572,10 +637,7 @@ def main():
         name, rest = spec.split("=", 1)
         repo, prefix = rest.rsplit(":", 1)
         sha = g(repo, "rev-parse", "HEAD").strip()
-        cases = find_merge_cases(repo, prefix, a.limit)
-        n2 = next((c["n2"] for c in cases if c.get("_skip") == "counted"), 0)
-        skipped = sum(1 for c in cases if c.get("_skip") == "multi_base")
-        cases = [c for c in cases if "_skip" not in c]
+        cases, st = find_merge_cases(repo, prefix, a.limit)
         t = Counter()
         distinct = set()
         for c in cases:
@@ -587,10 +649,7 @@ def main():
                 r["corpus"] = name
                 r["corpus_sha"] = sha
             allrecs += recs
-        report(name, t,
-               f"  pin={sha[:12]}  two-parent merges examined={n2}"
-               f"  ->  file-merges={len(cases)}"
-               f"  (skipped {skipped} criss-cross merges with >1 base)")
+        report(name, t, f"  pin={sha[:12]}", st)
         print(f"  distinct authored base blocks across those merges: {len(distinct)}"
               f"   (§7: a corpus that ships the same document twice contributes once)")
 

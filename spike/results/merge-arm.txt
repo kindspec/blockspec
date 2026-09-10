@@ -1,5 +1,10 @@
 
-### rust-book  pin=917544888a55  two-parent merges examined=1317  ->  file-merges=179  (skipped 3 criss-cross merges with >1 base)
+### rust-book  pin=917544888a55
+  selection: 1317 two-parent merges (2 octopus merges never examined, 3 skipped for >1 merge-base)
+  .md paths changed on BOTH sides: 190  ->  ACCEPTED 179, DROPPED 11 (6%)
+     cannot evaluate (no anchorable base version):  add/add 0   delete/modify 8
+     chose not to evaluate:  convergent identical edits 3   <- evaluable; excluding them mildly inflates the rate below
+  .md paths changed on exactly ONE side: 16496   (not this arm's population; see LOG.md §7)
   merges: clean=147 conflicted=32 marker-bearing=32 (tier E, counted not scored)
   reconstruction vs the merge commit git actually recorded: 147/147 byte-identical  (differences are legitimate -- a recorded merge may carry a human resolution)
   oracle TLLC (two-leg line correspondence): SURVIVED=11686 DELETED=20 UNKNOWN=524  -> confident 11706/12230 (96%)
@@ -13,7 +18,12 @@
         descent, not falsity. Every case is emitted with tier UNASSIGNED.
   distinct authored base blocks across those merges: 6651   (§7: a corpus that ships the same document twice contributes once)
 
-### obsidian-help  pin=a3985b585904  two-parent merges examined=352  ->  file-merges=15  (skipped 2 criss-cross merges with >1 base)
+### obsidian-help  pin=a3985b585904
+  selection: 352 two-parent merges (0 octopus merges never examined, 2 skipped for >1 merge-base)
+  .md paths changed on BOTH sides: 33  ->  ACCEPTED 15, DROPPED 18 (55%)
+     cannot evaluate (no anchorable base version):  add/add 7   delete/modify 2
+     chose not to evaluate:  convergent identical edits 9   <- evaluable; excluding them mildly inflates the rate below
+  .md paths changed on exactly ONE side: 2773   (not this arm's population; see LOG.md §7)
   merges: clean=9 conflicted=6 marker-bearing=6 (tier E, counted not scored)
   reconstruction vs the merge commit git actually recorded: 9/9 byte-identical  (differences are legitimate -- a recorded merge may carry a human resolution)
   oracle TLLC (two-leg line correspondence): SURVIVED=182 DELETED=0 UNKNOWN=7  -> confident 182/189 (96%)
@@ -27,7 +37,12 @@
         descent, not falsity. Every case is emitted with tier UNASSIGNED.
   distinct authored base blocks across those merges: 304   (§7: a corpus that ships the same document twice contributes once)
 
-### cmspec  pin=3da939428d80  two-parent merges examined=152  ->  file-merges=1  (skipped 0 criss-cross merges with >1 base)
+### cmspec  pin=3da939428d80
+  selection: 152 two-parent merges (0 octopus merges never examined, 0 skipped for >1 merge-base)
+  .md paths changed on BOTH sides: 1  ->  ACCEPTED 1, DROPPED 0 (0%)
+     cannot evaluate (no anchorable base version):  add/add 0   delete/modify 0
+     chose not to evaluate:  convergent identical edits 0   <- evaluable; excluding them mildly inflates the rate below
+  .md paths changed on exactly ONE side: 68   (not this arm's population; see LOG.md §7)
   merges: clean=1 conflicted=0 marker-bearing=0 (tier E, counted not scored)
   reconstruction vs the merge commit git actually recorded: 1/1 byte-identical  (differences are legitimate -- a recorded merge may carry a human resolution)
   oracle TLLC (two-leg line correspondence): SURVIVED=57 DELETED=0 UNKNOWN=5  -> confident 57/62 (92%)

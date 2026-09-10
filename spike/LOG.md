@@ -310,16 +310,64 @@ Fixing it means a second oracle statement, not an edit to this one.
 
 ## 7. Coverage actually obtained, stated as §7 requires
 
-- Two-branch three-way merges are **rare** in these corpora: 195 (file, merge)
-  cases from 1,821 two-parent merge commits, and only 16 outside rust-book.
-  cmspec contributes one. Any frequency from the merge arm rests almost entirely
-  on rust-book.
-- 5 criss-cross merges (more than one merge-base) were **skipped**, not resolved.
+**Corrected 2026-09-10.** This section previously gave the excluded population as
+*"everything not a `.md` file changed on both sides of a two-parent merge"*. That
+sentence was false: **29 candidates that WERE `.md` files changed on both sides
+were dropped**, by three `continue` statements with no counter, no report line
+and no mention. A coverage claim nobody can check is not a coverage claim, and
+this is the one sentence `PRE-REGISTRATION.md` §7 specifically demands. Every
+drop path is now counted in `find_merge_cases` and printed by `report()`, so the
+figures below come from committed code rather than from prose.
+
+### Selection, in full
+
+| | rust-book | obsidian-help | cmspec | total |
+|---|---|---|---|---|
+| two-parent merges | 1317 | 352 | 152 | **1821** |
+| octopus merges, never examined | 2 | 0 | 0 | 2 |
+| skipped, >1 merge-base | 3 | 2 | 0 | 5 |
+| **`.md` changed on BOTH sides** | 190 | 33 | 1 | **224** |
+| → accepted | 179 | 15 | 1 | **195** |
+| → dropped: add/add | 0 | 7 | 0 | 7 |
+| → dropped: delete/modify | 8 | 2 | 0 | 10 |
+| → dropped: convergent identical edits | 3 | 9 | 0 | 12 |
+| `.md` changed on exactly ONE side | 16496 | 2773 | 68 | **19337** |
+
+**29 of 224 both-sides candidates — 13% — are dropped**, and for `obsidian-help`
+it is 18 of 33, **55%**. Any obsidian-help figure in this arm rests on 15 cases
+out of 33 available.
+
+### Which drops are forced and which are a choice
+
+- **add/add (7) — forced.** The path does not exist at the merge base, so there
+  is no base block to build a standoff record over and nothing for the oracle to
+  carry forward. Worth seeing rather than hiding, because it is structurally
+  *rowspec's own defect shape* — two branches inserting — and it swallows 21% of
+  obsidian-help's both-sides candidates.
+- **delete/modify (10) — forced.** One leg removed the file, the other edited it.
+  Also invisible in the tier-E count: these are dropped *before* `stock_merge`, so
+  they are not among the 38 conflicts.
+- **convergent identical edits (12) — a CHOICE, not a necessity.** A base exists,
+  both legs acted, and git merges them cleanly. They are evaluable, and they would
+  have contributed *correct* resolutions, so excluding them **mildly inflates the
+  mis-resolution rate** — 12 against 157. Kept excluded so the reported numbers do
+  not move under a late change, but named here so the choice is arguable rather
+  than invisible. Including them is a reasonable thing for the next arm to do.
+
+### The ratio §9 makes the point of
+
+**195 both-sides cases against 19,337 `.md` paths changed on exactly one side.**
+Concurrent edits to the same prose file are roughly **1%** of the editing these
+projects do. Combined with §9 — the defect shape needs no merge at all — this is
+the number showing why the merge topology was never where the answer lived, and
+why §2.2's question about the *corpora* is the one that survives.
+
+### The rest of the excluded population
+
 - 38 of 195 reconstructions conflicted and are tier E — counted, not scored.
-- Excluded population: everything not a `.md` file changed on both sides of a
-  two-parent merge; every merge with >1 base; the whole of §5's duplicate-heavy
-  arm.
-- The oracle's confident subset is 96% / 96% / 92%, much higher than the rebase
+- Everything not a `.md` file; every non-merge commit; the whole of §5's
+  duplicate-heavy arm, which has not been chosen.
+- The oracle's confident subset is 96% / 96% / 92%, much higher than the control
   arm's 92% / 74% / 38%, because two legs corroborate. That is a property of the
   oracle, not evidence about merging.
 
