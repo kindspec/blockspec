@@ -1,0 +1,5 @@
+SPDX-License-Identifier: CC0-1.0
+
+These fixtures are CC0 with no prose attached, on the same reasoning as
+conformance/cases/: they are meant to be vendored into an implementation in any
+language under any licence, without obligation. See ../../../LICENSE.
