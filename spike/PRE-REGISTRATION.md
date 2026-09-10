@@ -34,16 +34,35 @@ computed-anchor resolution over real version-control history** — hundreds of r
 subsequent edit applied by stock `git merge-file`, against an independent
 line-correspondence oracle.
 
+D8 reports two acceptance strategies, `naive` and `hard`. Both are given here
+because quoting only one would misrepresent the source:
+
 ```
-rust-book gap=5    849 anchors    SILENT-WRONG 0.47% (n=4)   by type: code=3 html=1
-rust-book gap=25   200 anchors    SILENT-WRONG 2.00% (n=4)   by type: code=4
-obsidian-help g=5  384 anchors    SILENT-WRONG 0.52% (n=2)   by type: list=2
-cmspec  gap=5, gap=25             SILENT-WRONG 0.00% both arms
+rust-book gap=5    849 oracle-confident anchors (74% of sample)   prose=460
+   naive  SILENT-WRONG 0.47% (n=4)   by type: code=3 html=1
+   hard   SILENT-WRONG 0.12% (n=1)   by type: code=1
+
+rust-book gap=25   200 oracle-confident anchors (38% of sample)   prose=124
+   naive  SILENT-WRONG 2.00% (n=4)   by type: code=4
+   hard   SILENT-WRONG 1.00% (n=2)   by type: code=2
+
+obsidian-help g=5  384 oracle-confident anchors                   prose=212
+   naive  SILENT-WRONG 0.52% (n=2)   by type: list=2
+   hard   SILENT-WRONG 0.26% (n=1)   by type: list=1
 ```
 
-> **Across 885 prose-block anchors in three corpora, there was not one silent
-> mis-anchor.** Every failure was a code fence, a raw-HTML block, or a
-> table-of-contents list item.
+**The load-bearing fact is the by-type breakdown, and it is what this spike
+relies on: every silent-wrong D8 recorded is typed `code`, `html` or `list`.
+Not one is typed `prose`, in either strategy, in any arm.**
+
+That much is reproducible from the table above. **The denominator is not**, and
+this document will not use one that is not: D8's prose sentence gives "885
+prose-block anchors in three corpora", a figure that appears exactly once in the
+research repository, in prose, with no committed harness output behind it — and
+the per-arm prose counts printed above total 796, not 885. Filed as
+kindspec/research#2. The claim this spike proceeds on is therefore **"zero
+typed-prose silent-wrongs across the three arms D8 printed"**, which the by-type
+breakdown supports on its own, and not a rate over an unbacked denominator.
 
 D8's own explanation is the one that matters: those blocks fail *because they are
 structured data wearing prose clothing*, and structured data is what nominal
@@ -53,8 +72,10 @@ already mandatory.
 
 **So the honest prior is that prose does not have rowspec's defect**, and this
 spike is testing a residual, not fishing in open water. A positive finding has to
-be strong enough to overturn a measurement that already exists. Registering that
-expectation now is the point of registering anything.
+be strong enough to overturn a measurement that already exists — while noting
+that the measurement's own coverage falls to 38% of the sample at gap=25, and
+that D8 §11 says so itself. Registering that expectation now, at the strength the
+evidence actually supports, is the point of registering anything.
 
 ## 2. What D8 did NOT measure, which is where the spike goes
 
@@ -85,7 +106,10 @@ is reported as a near miss.
 
 1. **Stock `git merge` succeeds.** No conflict, no marker anywhere in the tree.
    No merge driver, no `.gitattributes`, no clean/smudge filter, no hook — the
-   `SPEC.md` §11 rule, because none of those travel.
+   `rowspec/SPEC.md` §11 rule, because none of those travel. That section also
+   carries the corollary this experiment depends on: `git merge-tree` reports
+   only the paths where git *failed*, so a tool that inspects conflicts alone
+   cannot see a clean-but-wrong merge at all.
 2. **The merged file is well-formed** under whatever grammar the experiment
    assumes, and a conforming reader accepts it without error.
 3. **The merged document asserts something false**, where *false* is decided by
@@ -132,12 +156,42 @@ absolves the right one, and no one can see it happened.
 
 | tier | shape | qualifies |
 |---|---|---|
-| **A** | A derived value in the merged document is wrong — a count, an index, a transcluded figure | yes, this is rowspec's defect exactly |
+| **A** | A **derived or transcluded** value or passage in the merged document is wrong — a count, an index, a transcluded figure, or transcluded prose that silently resolves to different content than it did in both parents | yes, this is rowspec's defect exactly |
 | **B** | A reference resolves silently to the wrong target, and the reference carries an assertion about that target | yes |
 | **C** | A reference resolves silently to the wrong target, carrying no assertion — a bare "see also" | **no** — report it, do not build on it |
 | **D** | Content is reordered, duplicated or dropped in a way both authors would reject, but nothing asserts anything false | **no** — this is an ordinary bad merge and CSV has it too |
 | **E** | The merge conflicts, or the reader refuses the file | **no** — this is the format working |
 
+**Tier A explicitly covers transcluded content, not only transcluded values.**
+§2.3 names transclusion as one of the three unmeasured mechanisms, and it is
+plausibly the likeliest to hold a defect, because *a transclusion does not
+describe its target — it becomes it*. A transcluded paragraph that silently
+re-resolves is neither a computed value nor a reference asserting something about
+a target, so on a narrower reading of A it would fall between A and B with
+nowhere to go. It goes in A. Recorded here because §8 means it could not be
+placed later.
+
+### 4.1 Who assigns the tier, and when — normative
+
+§3.1 refuses human judgement as an oracle for *falsity*. Tiering is a different
+question and is unavoidably a judgement call, so it gets a procedure instead of a
+prohibition.
+
+- **The tier is assigned from the written definitions above, before the frequency
+  of that shape is computed**, by someone who has not seen the frequency.
+- The tier and its one-line justification are **recorded at the moment of
+  assignment**, in the spike's own log, not reconstructed for the write-up.
+- **A tier is never revised upward after a count is known.** It may be revised
+  *downward* at any time — a result can always turn out weaker than first
+  assigned, never stronger.
+- Where the assigner cannot place a case from the definitions alone, it is
+  recorded as **UNPLACEABLE** with the reasoning, and reported as such. An
+  unplaceable case is not a finding, and inventing a tier for it is exactly the
+  move this section exists to prevent.
+
+Without this, nothing stops a shape being promoted to tier B once it turns out to
+be common — which is §0's failure mode reproduced one level down, inside the
+document written to prevent it.
 Tier D is called out because it is the tempting one. rowspec's README already
 concedes the analogous case: *"Two branches each adding a column conflict badly…
 That is inherent to one-row-per-line and it is exactly what happens to a CSV.
@@ -152,8 +206,17 @@ Fixed before running so the sample cannot be selected after seeing results. Each
 is public and already in `research/CORPORA.md` or is added there by the spike.
 
 **Already measured by D8 — the control arm.** Re-run against these first, because
-if the spike's harness does not reproduce D8's 0.00% for prose, the harness is
+if the spike's harness does not reproduce D8's typed-prose result, the harness is
 wrong and nothing else it reports means anything.
+
+**One caveat that must be settled before the control arm counts for anything.**
+`anchor_eval3.py` skips any arm with fewer than 50 oracle-confident anchors and
+prints `too few`. D8's `cmspec` line is hand-written prose carrying no anchor
+count, unlike the other arms, so it may be summarising a skipped arm rather than
+a measured 0.00%. **Re-run `anchor_eval2.py` and `anchor_eval3.py` and commit
+their raw output first** (kindspec/research#2). Until that exists, the control
+arm is `rust-book` and `obsidian-help`, whose per-arm counts D8 does print, and
+`cmspec` is not a gate.
 
 | corpus | source |
 |---|---|
