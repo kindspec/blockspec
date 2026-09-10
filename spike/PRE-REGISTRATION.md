@@ -86,9 +86,13 @@ characters against a threshold of 24 — so the refusal is a real mechanism firi
 not a lucky anchor.
 
 **Two things this section will not do.** It will not use the denominator: D8's
-"885 prose-block anchors in three corpora" reconciles as 460+124+212+53+36, but
-it sums five arms across three corpora and re-samples one corpus at two gaps, so
-it counts anchor *evaluations*, not distinct blocks. And it will not gate on the
+"885 prose-block anchors in three corpora" reconciles exactly at D8's own pin —
+460+124+**212**+53+36 — so §1 as registered was wrong to say it did not, and
+wrong about why. But it sums five arms across three corpora and re-samples one
+corpus at two gaps, so it counts anchor *evaluations*, not distinct blocks; and
+that `212` is a pin-era figure the table above now prints as `240`, giving 913 on
+a current clone. A denominator that changes with the clone is not one to build a
+claim on. And it will not gate on the
 naive policy, which is no longer stable across clones.
 
 **The gate this spike must pass is therefore: zero `prose`-typed silent-wrongs
@@ -342,6 +346,7 @@ where they are inconvenient.
 
 | date | section | change | reason |
 |---|---|---|---|
+| 2026-09-10 | §1, §8.2 | Withdrew the claim that the old `obsidian-help` bucket line "cannot be reconciled per-bucket"; it reconciles at D8's pin as `2+78+90+212+2 = 384`, the line having been truncated to its three largest buckets. Qualified the 885 reconciliation as pin-dependent. | Reproduced by the spike harness at D8's pin (kindspec/blockspec#8). A correction that itself carried a false claim, caught on review. |
 | 2026-09-09 | §5 | `cmspec` promoted from held-out to full control arm; `rust-book` named the strongest control and `obsidian-help` demoted to a mechanism control. | The re-run shows `cmspec` was measured in both arms, not skipped; the skipped arm is `obsidian-help` gap=25. `obsidian-help` has moved since D8 ran. This is the corpus-list amendment §8 expressly permits, made before measurement begins. |
 | 2026-09-09 | §1 | The claim narrowed from "not one is typed `prose`, in either strategy, in any arm" to "not one is typed `prose` under the **hardened** policy, in any of the five measuring arms" — naive now has one. Table replaced with committed harness output. | kindspec/research#3 re-ran the harness and committed its output for the first time; `obsidian-help` has moved and one naive silent-wrong is now typed `prose`. Forced by evidence outside this spike, before this spike measured anything. See kindspec/blockspec#7. |
 
@@ -386,8 +391,20 @@ the moment a bar would drift — a document that had just watched its own prior
 soften, quietly relaxing what counts as a finding. They are not amendable, and
 nothing about §3, §4 or §6 has moved.
 
-The old `obsidian-help` figures cannot be reconciled per-bucket at all
-(`78+90+212 = 380` against a printed `384`, where the harness guarantees they
-sum), so the original table was a bad transcription independently of any corpus
-drift. It is quoted above as registered, uncorrected, because that is what §1
-actually said.
+A note on the old `obsidian-help` line, because this document previously
+misdiagnosed it and the misdiagnosis reached kindspec/research as well. The
+registered table showed `heading=78 list=90 prose=212` against a printed `384`,
+which does not sum, and both this section and D8 §3.2 concluded the figures
+"cannot be reconciled per-bucket at all". **They reconcile.** Re-running the
+harness at D8's pin prints the full bucket list:
+
+    obsidian-help en/*.md gap=5  oracle-confident anchors=384
+       block types: code=2 heading=78 list=90 prose=212 table=2
+
+`2+78+90+212+2 = 384`. The old line was **truncated to its three largest
+buckets**, not corrupted — which also disposes of the guess that a `code=4`
+bucket had gone missing. Filed against kindspec/research, whose merged text still
+carries the stronger claim.
+
+§8.1 quotes §1 as registered, uncorrected, because that is what it actually
+said.
