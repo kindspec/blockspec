@@ -1,0 +1,26 @@
+stock git merge: clean
+
+base blocks  : ['# Doc', 'Alpha one.', 'NOTE: see above.', 'Beta two.', 'NOTE: see above.', 'Gamma three.', 'NOTE: see above.']
+merged blocks: ['# Doc', 'Alpha one.', 'NOTE: see above.', 'NOTE: see above.', 'Beta two.', 'NOTE: see above.', 'Gamma three revised.', 'NOTE: see above.']
+
+  base block 2  ->  oracle SURVIVED, target = merged block 3
+  base block 4  ->  oracle SURVIVED, target = merged block 5
+  base block 6  ->  oracle SURVIVED, target = merged block 7
+
+THE POINT. Leg A inserted a byte-identical copy of base block 2 directly
+after it. Which of the two adjacent, identical merged blocks is the
+'descendant' is undecidable from the bytes -- yet TLLC answers SURVIVED,
+target 3, with no margin, no corroboration and no signal that it
+guessed. A single-line block's frac is 0.0 or 1.0, so ORACLE.md §2's
+`>= 0.5` threshold cannot discriminate, and the plurality vote in
+`tllc()` runs over exactly one element. The honest answer is UNKNOWN.
+
+WHY IT MATTERS AND WHY IT IS NOT FIXED HERE. Nothing this spike
+currently reports depends on it: LOG.md §6.1's candidates are excluded
+by PRE-REGISTRATION §3(5) on their own. But the duplicate-heavy corpora
+PRE-REGISTRATION §5 calls for are exactly this shape -- short, highly
+repeated blocks -- so that arm needs a stronger oracle before its prose
+numbers mean anything. ORACLE.md is frozen; this needs a second oracle
+statement, not an edit to the first.
+
+DEMONSTRATION: reproduces

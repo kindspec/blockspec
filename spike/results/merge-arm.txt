@@ -1,0 +1,59 @@
+
+### rust-book  pin=917544888a55
+  selection: 1317 two-parent merges (2 octopus merges never examined, 3 skipped for >1 merge-base)
+  .md paths changed on BOTH sides: 190  ->  ACCEPTED 179, DROPPED 11 (6%)
+     cannot evaluate (no anchorable base version):  add/add 0   delete/modify 8
+     chose not to evaluate:  convergent identical edits 3   <- evaluable; excluding them mildly inflates the rate below
+  .md paths changed on exactly ONE side: 16496   (not this arm's population; see LOG.md §7)
+  merges: clean=147 conflicted=32 marker-bearing=32 (tier E, counted not scored)
+  reconstruction vs the merge commit git actually recorded: 147/147 byte-identical  (differences are legitimate -- a recorded merge may carry a human resolution)
+  oracle TLLC (two-leg line correspondence): SURVIVED=11686 DELETED=20 UNKNOWN=524  -> confident 11706/12230 (96%)
+  block types: code=2289 heading=1015 html=1437 list=206 prose=6749 table=10
+  well-formedness (§3(2), §3(5)): cases with all parents well-formed 146, with a parent already malformed 1; clean merges that BROKE well-formedness: 0
+  naive  correct  98.7%   LOUD-refusal   0.7%   MIS-RESOLVED  0.55%  (n=64)  by type: code=41 heading=4 html=8 list=1 prose=10
+  hard   correct  98.1%   LOUD-refusal   1.7%   MIS-RESOLVED  0.18%  (n=21)  by type: code=13 heading=1 prose=7
+  naive  of those, with ALL PARENTS WELL-FORMED (§3(5)): n=32  by type: code=23 html=8 list=1
+  hard   of those, with ALL PARENTS WELL-FORMED (§3(5)): n=9  by type: code=9
+  NOTE: MIS-RESOLVED is not a finding. ORACLE.md §5 -- the oracle establishes
+        descent, not falsity. Every case is emitted with tier UNASSIGNED.
+  distinct authored base blocks across those merges: 6651   (§7: a corpus that ships the same document twice contributes once)
+
+### obsidian-help  pin=a3985b585904
+  selection: 352 two-parent merges (0 octopus merges never examined, 2 skipped for >1 merge-base)
+  .md paths changed on BOTH sides: 33  ->  ACCEPTED 15, DROPPED 18 (55%)
+     cannot evaluate (no anchorable base version):  add/add 7   delete/modify 2
+     chose not to evaluate:  convergent identical edits 9   <- evaluable; excluding them mildly inflates the rate below
+  .md paths changed on exactly ONE side: 2773   (not this arm's population; see LOG.md §7)
+  merges: clean=9 conflicted=6 marker-bearing=6 (tier E, counted not scored)
+  reconstruction vs the merge commit git actually recorded: 9/9 byte-identical  (differences are legitimate -- a recorded merge may carry a human resolution)
+  oracle TLLC (two-leg line correspondence): SURVIVED=182 DELETED=0 UNKNOWN=7  -> confident 182/189 (96%)
+  block types: code=5 heading=29 list=15 prose=133
+  well-formedness (§3(2), §3(5)): cases with all parents well-formed 9, with a parent already malformed 0; clean merges that BROKE well-formedness: 0
+  naive  correct 100.0%   LOUD-refusal   0.0%   MIS-RESOLVED  0.00%  (n=0)
+  hard   correct 100.0%   LOUD-refusal   0.0%   MIS-RESOLVED  0.00%  (n=0)
+  naive  of those, with ALL PARENTS WELL-FORMED (§3(5)): n=0   (none to disqualify: no mis-resolutions here)
+  hard   of those, with ALL PARENTS WELL-FORMED (§3(5)): n=0   (none to disqualify: no mis-resolutions here)
+  NOTE: MIS-RESOLVED is not a finding. ORACLE.md §5 -- the oracle establishes
+        descent, not falsity. Every case is emitted with tier UNASSIGNED.
+  distinct authored base blocks across those merges: 304   (§7: a corpus that ships the same document twice contributes once)
+
+### cmspec  pin=3da939428d80
+  selection: 152 two-parent merges (0 octopus merges never examined, 0 skipped for >1 merge-base)
+  .md paths changed on BOTH sides: 1  ->  ACCEPTED 1, DROPPED 0 (0%)
+     cannot evaluate (no anchorable base version):  add/add 0   delete/modify 0
+     chose not to evaluate:  convergent identical edits 0   <- evaluable; excluding them mildly inflates the rate below
+  .md paths changed on exactly ONE side: 68   (not this arm's population; see LOG.md §7)
+  merges: clean=1 conflicted=0 marker-bearing=0 (tier E, counted not scored)
+  reconstruction vs the merge commit git actually recorded: 1/1 byte-identical  (differences are legitimate -- a recorded merge may carry a human resolution)
+  oracle TLLC (two-leg line correspondence): SURVIVED=57 DELETED=0 UNKNOWN=5  -> confident 57/62 (92%)
+  block types: list=12 prose=45
+  well-formedness (§3(2), §3(5)): cases with all parents well-formed 1, with a parent already malformed 0; clean merges that BROKE well-formedness: 0
+  naive  correct 100.0%   LOUD-refusal   0.0%   MIS-RESOLVED  0.00%  (n=0)
+  hard   correct 100.0%   LOUD-refusal   0.0%   MIS-RESOLVED  0.00%  (n=0)
+  naive  of those, with ALL PARENTS WELL-FORMED (§3(5)): n=0   (none to disqualify: no mis-resolutions here)
+  hard   of those, with ALL PARENTS WELL-FORMED (§3(5)): n=0   (none to disqualify: no mis-resolutions here)
+  NOTE: MIS-RESOLVED is not a finding. ORACLE.md §5 -- the oracle establishes
+        descent, not falsity. Every case is emitted with tier UNASSIGNED.
+  distinct authored base blocks across those merges: 73   (§7: a corpus that ships the same document twice contributes once)
+
+wrote 85 candidate records (tier UNASSIGNED) -> spike/results/merge-arm-candidates.jsonl

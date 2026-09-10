@@ -1,0 +1,99 @@
+# control arm -- D8's own scripts, unmodified
+# D8_DIR  /home/cam/repos_kindspec/research/experiments/D8-identity  (kindspec/research @ f088cd76fd138c8244fa1315332468e8771e7040)
+# pin     rust-book      917544888a55e4da7109bdba8c88c893c0da70f4  (6286 commits)
+# pin     obsidian-help  a3985b585904ddb9f109bd80849b378085308c15  (2623 commits)
+# pin     cmspec         3da939428d80f146f270cd1765e4ba462e96bb1b  (1848 commits)
+
+############ anchor_eval2.py -- D8 §3.1 (stored id vs computed anchor) ############
+
+### rust-book src/*.md gap=1  pairs=44  anchors=1087  oracle-confident=999 (92%)
+  oracle: SURVIVED=994 DELETED=5 UNKNOWN=88
+  COMPUTED anchoring (quote+ctx+fuzzy, nothing stored in the file):
+     correct             997   99.8%
+     missed (LOUD)         0    0.0%   <- refused; safe
+     WRONG (SILENT)        2    0.2%   (of which anchored to a deleted block's replacement: 0)
+  STORED ^id under stock-git 3-way merge (concurrent id-write + edit):
+     correct             976   97.7%
+     conflict (LOUD)      23    2.3%
+     WRONG (SILENT)        0    0.0%
+     ex[FUZZY_RISKY] '- [An I/O Project](ch12-00-an-io-project.md)'
+            -> '- [Concurrency](ch16-00-concurrency.md)'
+     ex[FUZZY_RISKY] '```rust,should_panic\n{{#rustdoc_include ../listings/ch12-an-io-project'
+            -> '```rust\n{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-0'
+
+### rust-book src/*.md gap=5  pairs=47  anchors=1141  oracle-confident=849 (74%)
+  oracle: SURVIVED=785 DELETED=64 UNKNOWN=292
+  COMPUTED anchoring (quote+ctx+fuzzy, nothing stored in the file):
+     correct             841   99.1%
+     missed (LOUD)         4    0.5%   <- refused; safe
+     WRONG (SILENT)        4    0.5%   (of which anchored to a deleted block's replacement: 0)
+  STORED ^id under stock-git 3-way merge (concurrent id-write + edit):
+     correct             753   88.7%
+     conflict (LOUD)      96   11.3%
+     WRONG (SILENT)        0    0.0%
+     ex[FUZZY_RISKY] '```rust,ignore\nf64::powi(2.0, 3)\n```'
+            -> '```rust,ignore\ndimensions.0 * dimensions.1\n```'
+     ex[FUZZY] '```rust\nlet s1 = String::from("hello");\nlet s2 = s1;\n```'
+            -> '```rust\nlet s = String::from("hello");\n```'
+     ex[FUZZY_RISKY] '<!-- Old heading. Do not remove or links may break. -->\n<a id="ways-va'
+            -> '<!-- Old headings. Do not remove or links may break. -->'
+     ex[FUZZY_RISKY] '```rust,ignore,does_not_compile\n{{#rustdoc_include ../listings/ch12-an'
+            -> '```rust,ignore,does_not_compile\n{{#rustdoc_include ../listings/ch12-an'
+
+### rust-book src/*.md gap=25  pairs=19  anchors=533  oracle-confident=200 (38%)
+  oracle: SURVIVED=145 DELETED=55 UNKNOWN=333
+  COMPUTED anchoring (quote+ctx+fuzzy, nothing stored in the file):
+     correct             195   97.5%
+     missed (LOUD)         1    0.5%   <- refused; safe
+     WRONG (SILENT)        4    2.0%   (of which anchored to a deleted block's replacement: 0)
+  STORED ^id under stock-git 3-way merge (concurrent id-write + edit):
+     correct             160   80.0%
+     conflict (LOUD)      40   20.0%
+     WRONG (SILENT)        0    0.0%
+     ex[FUZZY_RISKY] '```rust,ignore\nf64::powi(2.0, 3)\n```'
+            -> '```rust,ignore\ndimensions.0 * dimensions.1\n```'
+     ex[FUZZY] '```rust\nlet s1 = String::from("hello");\nlet s2 = s1;\n```'
+            -> '```rust\nlet s = String::from("hello");\n```'
+     ex[FUZZY] '```toml\n[dependencies]\n\nrand = "0.3.14"\n```'
+            -> '```toml\n[dependencies]\nrand = "0.9.0"\n```'
+     ex[FUZZY] '```rust,ignore\n.expect("Failed to read line");\n```'
+            -> '```rust,ignore\nio::stdin().read_line(&mut guess).expect("Failed to rea'
+
+############ anchor_eval3.py -- D8 §3.2 (block-type breakdown) ############
+
+### rust-book src/*.md gap=5  pairs=47  oracle-confident anchors=849
+   block types: code=189 heading=80 html=65 list=55 prose=460
+   naive  correct  99.1%   LOUD-refusal   0.5%   SILENT-WRONG  0.47%  (n=4)  by type: code=3 html=1
+   hard   correct  97.9%   LOUD-refusal   2.0%   SILENT-WRONG  0.12%  (n=1)  by type: code=1
+
+### rust-book src/*.md gap=25  pairs=19  oracle-confident anchors=200
+   block types: code=30 heading=17 html=14 list=15 prose=124
+   naive  correct  97.5%   LOUD-refusal   0.5%   SILENT-WRONG  2.00%  (n=4)  by type: code=4
+   hard   correct  94.0%   LOUD-refusal   5.0%   SILENT-WRONG  1.00%  (n=2)  by type: code=2
+
+### obsidian-help en/*.md gap=5  pairs=31  oracle-confident anchors=384
+   block types: code=2 heading=78 list=90 prose=212 table=2
+   naive  correct  98.7%   LOUD-refusal   0.8%   SILENT-WRONG  0.52%  (n=2)  by type: list=2
+   hard   correct  97.1%   LOUD-refusal   2.6%   SILENT-WRONG  0.26%  (n=1)  by type: list=1
+### obsidian-help en/*.md gap=25: too few (22)
+
+### cmspec *.md gap=5  pairs=6  oracle-confident anchors=73
+   block types: list=20 prose=53
+   naive  correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+   hard   correct  94.5%   LOUD-refusal   5.5%   SILENT-WRONG  0.00%  (n=0)
+
+### cmspec *.md gap=25  pairs=3  oracle-confident anchors=56
+   block types: code=1 list=18 prose=36 table=1
+   naive  correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+   hard   correct  98.2%   LOUD-refusal   1.8%   SILENT-WRONG  0.00%  (n=0)
+
+############ GATE ############
+=== control-arm gate ===
+  rust-book gap=5                    pairs=47 anchors=849   hard n=1 (0.12%) types={'code': 1}  ok
+  rust-book gap=25                   pairs=19 anchors=200   hard n=2 (1.0%) types={'code': 2}  ok
+  obsidian-help gap=5                pairs=31 anchors=384   hard n=1 (0.26%) types={'list': 1}  ok
+  obsidian-help gap=25               not measuring (too few) -- reported, not gated
+  cmspec gap=5                       pairs=6 anchors=73    hard n=0 (0.0%) types=-  ok
+  cmspec gap=25                      pairs=3 anchors=56    hard n=0 (0.0%) types=-  ok
+  measuring arms: 5
+CONTROL GATE: PASS -- zero prose-typed silent-wrongs under the hardened policy in every measuring arm

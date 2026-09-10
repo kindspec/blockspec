@@ -1,0 +1,69 @@
+# Corpus drift: the same script, the same corpus, two clone states.
+#
+# Why this file exists. The control arm is pinned (harness/corpora.json) to the
+# commit at which `git rev-list --count HEAD` equals the count D8-identity.md
+# states in its own header. All three corpora matched exactly, and at that pin
+# the control arm reproduces D8 line for line.
+#
+# kindspec/research#2's re-run of the same scripts used clones at HEAD and got a
+# different obsidian-help result. Both runs are correct.
+# The difference is seven commits. Reproduced here so the divergence is on the
+# record rather than argued about.
+#
+#   obsidian-help  D8's pin  a3985b585904ddb9f109bd80849b378085308c15  (2623 commits)
+#   obsidian-help  HEAD      327a782e90481268361b5ccccdb0c224b2b13fe6  (2630 commits, 2026-09-08)
+#
+# AT D8's PIN (this spike's control arm):
+#   ### obsidian-help en/*.md gap=5  pairs=31  oracle-confident anchors=384
+#      block types: code=2 heading=78 list=90 prose=212 table=2
+#      naive  SILENT-WRONG  0.52%  (n=2)  by type: list=2
+#      hard   SILENT-WRONG  0.26%  (n=1)  by type: list=1
+#   ### obsidian-help en/*.md gap=25: too few (22)
+#
+# AT HEAD (reproduced below, and matching kindspec/research#2's numbers):
+### obsidian-help@HEAD en/*.md gap=5  pairs=23  oracle-confident anchors=343
+   block types: code=10 heading=58 list=35 prose=240
+   naive  SILENT-WRONG  0.58%  (n=2)  by type: list=1 prose=1
+   hard   SILENT-WRONG  0.00%  (n=0)
+### obsidian-help@HEAD en/*.md gap=25: too few (0)  [pairs=0]
+
+# WHAT MOVED, AND WHAT IT MEANS FOR THE GATE.
+#
+# gap=5 goes 384 -> 343 oracle-confident anchors, and one naive mis-anchor is
+# now typed `prose`. It is YAML frontmatter --
+#   en/Obsidian Sync/Version history.md
+#   '---\naliases:\n  - Sync history\n---'  ->  '## Sync history'
+# -- which anchor_eval3.btype() has no rule for, so it falls through to `prose`.
+# Substantively that is structured data, which is exactly the category D8 §3.2
+# says the failures concentrate in; the harness simply has no `frontmatter`
+# label to print. gap=25 goes from `too few (22)` to `too few (0)`.
+#
+# The hardened policy does not merely anchor that block correctly -- it REFUSES
+# it, which is why the hard arm stays at n=0:
+#   >>> from anchor_eval3 import entropy_ok, btype
+#   >>> q = '---\naliases:\n  - Sync history\n---'
+#   >>> btype(q), len(set(q)), len(set(re.findall(r'\w+', q))), entropy_ok(q)
+#   ('prose', 17, 3, False)          # H3 thresholds are 24 chars / 8 words
+#   -> reanchor2(..., hard=True) returns REFUSED_LOWENTROPY, classed LOUD.
+#
+# So PRE-REGISTRATION §1's claim holds in full at D8's pin, under BOTH
+# strategies, and its `naive` half does not survive corpus drift. Its `hard`
+# half does, at both pins, in every arm. check_control_gate.py therefore
+# asserts the hard half and reports the naive half. See that file's docstring.
+
+# A RECONCILIATION THIS FILE'S OWN DATA SETTLES.
+#
+# At the pin the obsidian-help gap=5 block-type line reads
+#
+#   block types: code=2 heading=78 list=90 prose=212 table=2
+#
+# which sums to 384 -- exactly that arm's oracle-confident anchor count. D8 §3.2
+# prints only `heading=78 list=90 prose=212` for the same arm, summing to 380,
+# and that four-anchor shortfall has been read as the line being irreconcilable
+# per-bucket, and elsewhere as a missing `code=4`.
+#
+# It is neither. The line was TRUNCATED TO ITS THREE LARGEST BUCKETS, and the
+# missing four are `code=2` AND `table=2`. D8's other two by-type lines are
+# complete (rust-book gap=5 sums to 849, gap=25 to 200), so only this one was
+# abridged. The data is intact; the presentation dropped the two smallest
+# buckets.

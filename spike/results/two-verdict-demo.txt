@@ -1,0 +1,33 @@
+--- plant clean-01: known-clean control, and a MINIMAL PAIR with wrong-01 — identical base, identical leg C (which adds the verbatim near-duplicate appendix). The single difference is that here leg A edits the ROLLBACK paragraph instead of the anchored one. The anchored block therefore survives into the merge unchanged, the mechanism sees two exact matches, disambiguates on prefix/suffix context, and picks the right one. The harness must stay silent.
+      merge: rc=0 clean=True markers=False   [git -c core.attributesFile=/dev/null -c core.hooksPath=<empty> merge --no-edit legC]
+      oracle TLLC (two-leg line correspondence): SURVIVED=1
+      want {'naive': 'correct', 'hard': 'correct'}
+      got  {'naive': 'correct', 'hard': 'correct'}   -> PASS
+--- plant single-leg-01: REFUTES the both-legs claim this spike originally made. ONE author, ONE commit: the anchored paragraph is reworded AND its original wording is quoted verbatim in a new appendix. Leg C is byte-identical to the base, so there is no second author and no reconciliation -- git merge yields leg A exactly. The standoff record still resolves at EXACT onto the appendix copy while the true descendant is the reworded paragraph. Both policies silent-wrong.
+      merge: rc=0 clean=True markers=False   [git -c core.attributesFile=/dev/null -c core.hooksPath=<empty> merge --no-edit legC]
+      oracle TLLC (two-leg line correspondence): SURVIVED=1
+      want {'naive': 'WRONG', 'hard': 'WRONG'}
+      got  {'naive': 'WRONG', 'hard': 'WRONG'}   -> PASS
+      [naive] status=EXACT type=prose tier=UNASSIGNED
+        anchor quote      : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+        oracle says       : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on either worker pool,\nand that the nightly reconciliation has reported green.'
+        mechanism resolved: 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+      [hard] status=EXACT type=prose tier=UNASSIGNED
+        anchor quote      : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+        oracle says       : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on either worker pool,\nand that the nightly reconciliation has reported green.'
+        mechanism resolved: 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+--- plant wrong-01: resurrection by concurrent insert (ORACLE.md §6) — leg A rewords one line of the anchored paragraph; leg C leaves it standing and independently quotes its ORIGINAL wording verbatim in a new appendix. git merges both hunks cleanly. The standoff record's exact quote now matches leg C's appendix block EXACTLY, so resolution succeeds at the mechanism's highest-confidence status and the hard policy never engages — while the true descendant is leg A's reworded paragraph.
+      merge: rc=0 clean=True markers=False   [git -c core.attributesFile=/dev/null -c core.hooksPath=<empty> merge --no-edit legC]
+      oracle TLLC (two-leg line correspondence): SURVIVED=1
+      want {'naive': 'WRONG', 'hard': 'WRONG'}
+      got  {'naive': 'WRONG', 'hard': 'WRONG'}   -> PASS
+      [naive] status=EXACT type=prose tier=UNASSIGNED
+        anchor quote      : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+        oracle says       : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on either worker pool,\nand that the nightly reconciliation has reported green.'
+        mechanism resolved: 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+      [hard] status=EXACT type=prose tier=UNASSIGNED
+        anchor quote      : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+        oracle says       : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on either worker pool,\nand that the nightly reconciliation has reported green.'
+        mechanism resolved: 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+
+PLANTED-CASE GATE: PASS (both verdicts required: at least one WRONG case and one clean case)

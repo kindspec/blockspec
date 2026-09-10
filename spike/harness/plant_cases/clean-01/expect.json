@@ -1,0 +1,9 @@
+{
+  "what": "known-clean control, and a MINIMAL PAIR with wrong-01 — identical base, identical leg C (which adds the verbatim near-duplicate appendix). The single difference is that here leg A edits the ROLLBACK paragraph instead of the anchored one. The anchored block therefore survives into the merge unchanged, the mechanism sees two exact matches, disambiguates on prefix/suffix context, and picks the right one. The harness must stay silent.",
+  "path": "doc.md",
+  "anchor_block": 1,
+  "expect_clean_merge": true,
+  "expect_naive": "correct",
+  "expect_hard": "correct",
+  "why_this_matters": "A near-duplicate ALONE is not a silent-wrong merge: context disambiguation handles it. The precondition is that the base bytes survive SOMEWHERE in the resolved text while the anchored block's true descendant has moved. CORRECTION 2026-09-10: this file previously said the defect needs BOTH legs and that a single-leg rebase cannot reach it. That is false — see plant_cases/single-leg-01 and LOG.md §9, where one author in one commit reproduces it."
+}

@@ -1,0 +1,30 @@
+# spike/harness/selection_guard_red.sh -- regenerate with that command.
+# prose_merge.py as tested: sha256/16 = 7e8125d5d53562a7
+
+############ GREEN: the guard as committed ############
+  ok    balanced -> silent
+  ok    drop:add_add zeroed -> fires
+  ok    drop:delete_modify zeroed -> fires
+  ok    drop:convergent zeroed -> fires
+  ok    unchanged_side counted in the balance
+  ok    unchanged_side raises the investigate line
+  ok    unchanged_side omitted from accepted -> fires
+  ok    merge-level drops stay out of the balance
+SELECTION-GUARD SELFTEST: PASS
+
+############ RED: restore the guard's ORIGINAL tautological form ############
+# LOG.md §5.3. The first version computed `dropped` from `cand - acc` and
+# then asserted `cand == acc + dropped`, which is always true.
+# mutation applied [7e8125d5d53562a7 -> a7c39ebe7f69f3ac]
+  ok    balanced -> silent
+  FAIL  drop:add_add zeroed -> fires
+  FAIL  drop:delete_modify zeroed -> fires
+  FAIL  drop:convergent zeroed -> fires
+  ok    unchanged_side counted in the balance
+  ok    unchanged_side raises the investigate line
+  FAIL  unchanged_side omitted from accepted -> fires
+  ok    merge-level drops stay out of the balance
+SELECTION-GUARD SELFTEST: FAIL
+
+SELECTION-GUARD DEMONSTRATION: PASS -- green as committed (exit 0),
+red with the tautology restored (exit 1). Both states observed.

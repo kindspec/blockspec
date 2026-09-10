@@ -1,0 +1,9 @@
+=== control-arm gate ===
+  rust-book gap=5                    pairs=47 anchors=849   hard n=1 (0.12%) types={'code': 1}  ok
+  rust-book gap=25                   pairs=19 anchors=200   hard n=2 (1.0%) types={'code': 2}  ok
+  obsidian-help gap=5                pairs=31 anchors=384   hard n=1 (0.26%) types={'list': 1}  ok
+  obsidian-help gap=25               not measuring (too few) -- reported, not gated
+  cmspec gap=5                       pairs=6 anchors=73    hard n=0 (0.0%) types=-  ok
+  cmspec gap=25                      pairs=3 anchors=56    hard n=0 (0.0%) types=-  ok
+  measuring arms: 5
+CONTROL GATE: PASS -- zero prose-typed silent-wrongs under the hardened policy in every measuring arm
