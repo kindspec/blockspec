@@ -317,7 +317,7 @@ successive failures to check that one property:
 
 | | failure | what was wrong |
 |---|---|---|
-| §7 | no detector at all | three bare `continue`s dropped 29 candidates silently |
+| §7 | no detector at all | two uncounted `continue`s, covering three drop shapes, dropped 29 candidates silently |
 | §5.3 | the detector could not fire | `dropped = cand - acc` made the predicate a tautology |
 | §5.4 | the detector's input was corruptible | `cand` was accumulated inside the loop it measures |
 
@@ -351,7 +351,8 @@ turns the detector red while leaving its input corruptible.
    happened here, and it is the headline.
 
 **n=1, and it stays in this file.** Three instances, one file, one afternoon, one
-review loop — and §5's own entries 1 and 2 are not instances, so it is 3 of 5
+review loop — and only two of §5's five entries are instances (3 and 4); the
+third is §7, which is not one of them
 even within this log. Generalising it into the org contract on that basis would
 be `PRE-REGISTRATION.md` §0's failure mode applied to process instead of results:
 a rule written after seeing the outcome. Contract §4's *"measure before deciding"*
@@ -461,7 +462,8 @@ Fixing it means a second oracle statement, not an edit to this one.
 **Corrected 2026-09-10.** This section previously gave the excluded population as
 *"everything not a `.md` file changed on both sides of a two-parent merge"*. That
 sentence was false: **29 candidates that WERE `.md` files changed on both sides
-were dropped**, by three `continue` statements with no counter, no report line
+were dropped**, by two `continue` statements covering three drop shapes, with
+no counter, no report line
 and no mention. A coverage claim nobody can check is not a coverage claim, and
 this is the one sentence `PRE-REGISTRATION.md` §7 specifically demands. Every
 drop path is now counted in `find_merge_cases` and printed by `report()`, so the
