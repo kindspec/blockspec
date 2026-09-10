@@ -99,14 +99,14 @@ At D8's pin §1's claim holds under **both** strategies. Under drift only the
 half and *reports* the naive half, because a gate that goes red for a reason
 unrelated to what it gates is not a gate.
 
-A first coordinator instruction gave the gate as "the hardened policy at 0.00%
-silent-wrong across all five arms". That form is false at both pins and
-contradicts D8 §3.2's own table, which prints hardened silent-wrong at 0.12%
-(n=1, code) and 1.00% (n=2, code) for rust-book and 0.26% (n=1, list) for
-obsidian-help — i.e. it fails on the strongest control. The zero applies to the
-**prose-typed count**, not to the total. The gate as built asserts the true form,
-and a subsequent coordinator correction independently arrived at the same
-wording. No change to the harness was needed.
+**The gate is easy to state one word short, and the short form is false.**
+"The hardened policy at 0.00% silent-wrong across all five arms" contradicts
+D8 §3.2's own table, which prints hardened silent-wrong at 0.12% (n=1, code) and
+1.00% (n=2, code) for rust-book and 0.26% (n=1, list) for obsidian-help — so that
+form goes red on the strongest control, and looks like a broken harness. The zero
+applies to the **prose-typed count**, not to the total. The word that carries the
+whole finding is `prose-typed`, and `check_control_gate.py` asserts it in that
+form for exactly this reason.
 
 **Why the hardened policy is clean here, verified rather than assumed.** It does
 not merely happen to anchor the frontmatter block correctly — it *refuses* it.

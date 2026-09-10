@@ -5,8 +5,8 @@
 # states in its own header. All three corpora matched exactly, and at that pin
 # the control arm reproduces D8 line for line.
 #
-# A parallel agent re-running the same scripts for kindspec/research#2 used
-# clones at HEAD and got a different obsidian-help result. Both runs are correct.
+# kindspec/research#2's re-run of the same scripts used clones at HEAD and got a
+# different obsidian-help result. Both runs are correct.
 # The difference is seven commits. Reproduced here so the divergence is on the
 # record rather than argued about.
 #
@@ -20,7 +20,7 @@
 #      hard   SILENT-WRONG  0.26%  (n=1)  by type: list=1
 #   ### obsidian-help en/*.md gap=25: too few (22)
 #
-# AT HEAD (reproduced below, and matching the parallel agent's numbers):
+# AT HEAD (reproduced below, and matching kindspec/research#2's numbers):
 ### obsidian-help@HEAD en/*.md gap=5  pairs=23  oracle-confident anchors=343
    block types: code=10 heading=58 list=35 prose=240
    naive  SILENT-WRONG  0.58%  (n=2)  by type: list=1 prose=1

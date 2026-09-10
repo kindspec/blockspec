@@ -86,9 +86,9 @@ def gate(text, out=sys.stdout):
             print(f"  {a['name']:<34} not measuring (too few) -- reported, not gated",
                   file=out)
             continue
-        # The trap the parallel agent hit: a shell-expanded glob yields a
-        # plausible-looking zero. A measuring arm with no version-pairs behind
-        # it is not evidence of anything.
+        # A corpus glob expanded by the shell instead of reaching the callee
+        # yields a plausible-looking zero rather than an error. A measuring arm
+        # with no version-pairs behind it is not evidence of anything.
         if a["pairs"] == 0:
             fails.append(f"{a['name']}: pairs=0 -- arm measured nothing")
         hard = a["pol"].get("hard")
