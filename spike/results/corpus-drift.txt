@@ -50,3 +50,20 @@
 # strategies, and its `naive` half does not survive corpus drift. Its `hard`
 # half does, at both pins, in every arm. check_control_gate.py therefore
 # asserts the hard half and reports the naive half. See that file's docstring.
+
+# A RECONCILIATION THIS FILE'S OWN DATA SETTLES.
+#
+# At the pin the obsidian-help gap=5 block-type line reads
+#
+#   block types: code=2 heading=78 list=90 prose=212 table=2
+#
+# which sums to 384 -- exactly that arm's oracle-confident anchor count. D8 §3.2
+# prints only `heading=78 list=90 prose=212` for the same arm, summing to 380,
+# and that four-anchor shortfall has been read as the line being irreconcilable
+# per-bucket, and elsewhere as a missing `code=4`.
+#
+# It is neither. The line was TRUNCATED TO ITS THREE LARGEST BUCKETS, and the
+# missing four are `code=2` AND `table=2`. D8's other two by-type lines are
+# complete (rust-book gap=5 sums to 849, gap=25 to 200), so only this one was
+# abridged. The data is intact; the presentation dropped the two smallest
+# buckets.

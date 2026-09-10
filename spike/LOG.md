@@ -1,8 +1,13 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Spike log — blockspec#2
 
-Append-only. Entries are written at the moment of the work, not reconstructed
-for a write-up (`PRE-REGISTRATION.md` §4.1).
+Append-only from here on. **§§1–8 were written up at the end of the run, not
+incrementally** — the file lands whole in one commit and the git history says so.
+`PRE-REGISTRATION.md` §4.1's requirement is about *tier assignment*, and it is
+satisfied because no tier was assigned at all; but the "recorded at the moment of
+assignment" standard is not one this file's own history can claim, and saying
+otherwise would be the kind of unearned claim this project keeps catching. §9
+onward is appended as the work happens.
 
 **No verdict is recorded here.** §6's FOUND / NOT FOUND / NEAR MISS is not
 decided. **No tier is assigned to anything**, and nothing in this file may be
@@ -25,7 +30,7 @@ Explicitly **not** done, and each for a reason in the pre-registration:
 
 ---
 
-## 1. Corpus pins — and the discovery that D8's run is recent
+## 1. Corpus pins
 
 `harness/corpora.json`. `D8-identity.md`'s header states a commit count per
 corpus. For each, the commit on the first-parent chain at which
@@ -37,10 +42,15 @@ corpus. For each, the commit on the first-parent chain at which
 | obsidian-help | `a3985b585904ddb9f109bd80849b378085308c15` | 2623 | 2,623 |
 | cmspec | `3da939428d80f146f270cd1765e4ba462e96bb1b` | 1848 | 1,848 |
 
-All three matched exactly. The pins date to **2026-07 / 2026-08 / 2026-04**, so
-D8's run is weeks old, not a year — the experiment files' mtimes (2025-08-28)
-are misleading and should not be used to date it. Anyone re-running D8 should
-pin, not clone at HEAD.
+All three matched exactly, which is why the control arm reproduces D8 line for
+line. Anyone re-running D8 should pin rather than clone at HEAD: the corpora have
+moved, and §2.2 shows the movement changes a result.
+
+~~The experiment files' mtimes are 2025-08-28 and therefore misleading.~~
+**Retracted 2026-09-10.** They are `2026-08-21` and `2026-08-28`; nothing in that
+tree carries a 2025 mtime. The error came from reading an `ls -la` listing, which
+omits the year for recent files, and inferring one. The mtimes agree with the
+pins and were never misleading. The pins stand on their own.
 
 ## 2. Control arm — PASS
 
@@ -76,7 +86,24 @@ D8 §3.2 prints five measuring arms; the two `cmspec` arms carry `prose=53` and
 ```
 
 So D8's "885 prose-block anchors in three corpora" is exactly the sum of its own
-printed per-arm prose counts. §1's premise for distrusting it does not hold.
+printed per-arm prose counts.
+
+**Two limits on that reconciliation, both of which matter.**
+
+*It holds at D8's pin only.* On a current clone `obsidian-help` prints
+`prose=240` rather than 212, and the sum is **913**. Measured, not inferred: 240
+from this spike's own drift run, 53 and 36 from a cmspec pin identical to HEAD,
+and 460 and 124 re-measured at `rust-book` HEAD (`1500248d`), which is byte-stable
+across that commit.
+
+*It answers only one of the two objections to the figure.* It shows the number is
+not unsourced. It does **not** answer the other one: 885 sums five *arms* across
+three corpora, and the same block sampled at gap=5 and gap=25 is counted twice, so
+it is a count of **evaluations, not of distinct authored blocks** — which is
+exactly the trap `PRE-REGISTRATION.md` §7 and the org contract §4 both name. That
+objection is untouched and still stands. The earlier wording here, "§1's premise
+for distrusting it does not hold", was too broad; only the *unsourced* premise
+falls.
 
 **(b) `cmspec` was measured, not skipped.** §5 suspected its arm might be a
 `too few` skip. It is not: 73 and 56 oracle-confident anchors, both above
@@ -138,21 +165,27 @@ arm measures merge behaviour, not uniqueness.
 
 ### 3.1 What building them established
 
-The two fixtures started out differing in more than one variable. Making them a
-minimal pair produced the mechanism, which is sharper than the hypothesis
-`ORACLE.md` §6 was written with:
-
 > **A near-duplicate alone is not a silent-wrong merge.** With the anchored block
 > intact, the mechanism sees two exact matches and disambiguates on prefix/suffix
-> context — correctly. The defect needs **both legs to act**: one editing the
-> anchored block *out of the exact-match set*, one resurrecting its old bytes.
-> That is precisely why a single-leg rebase cannot reach it, and it is a stronger
-> statement of §2.1's gap than "nobody ran the concurrent case".
+> context — correctly. The precondition is that the base bytes survive
+> **somewhere** in the resolved text *while the anchored block's true descendant
+> has moved*.
 
-Recorded at the moment it was found: the first draft of `clean-01` was mutated to
-add a duplicate and the gate **stayed green**. The harness was right and the
-mutation was wrong. See `results/armed-check.txt` mutation 5 for the corrected
-form.
+Found by mutating the first draft of `clean-01` to add a duplicate and watching
+the gate **stay green**. The harness was right and the mutation was wrong; see
+`results/armed-check.txt` mutation 5 for the corrected form.
+
+> ~~The defect needs **both legs to act** … that is precisely why a single-leg
+> rebase cannot reach it.~~ **Retracted 2026-09-10 — see §9.** One author in one
+> commit reproduces it. The both-legs framing was wrong, and it was the wrong
+> necessary condition, not merely an overstatement.
+
+`clean-01` and `wrong-01` **are** now a minimal pair: byte-identical base,
+byte-identical leg C, and leg A makes one edit in each, differing only in which
+paragraph it lands on. They were not when first written — `clean-01`'s leg C also
+rewrote the escalation paragraph, so two variables differed while the text here
+claimed one. Corrected 2026-09-10 by making leg C identical and re-running; both
+verdicts are unchanged.
 
 ## 4. The gates are armed — each broken and watched to go red
 
@@ -245,7 +278,9 @@ D8's rebase arm. The harness now reports this split itself
 investigation to be repeated.
 
 Also recorded, because it would have been a real result had it been non-zero:
-**clean merges that broke well-formedness: 0** across all 157.
+**clean merges that broke well-formedness: 0**. The denominator is **156**, not
+157: the counter fires only where all parents were well-formed, and one of the
+157 clean merges had a malformed parent and so was never eligible to be counted.
 
 ### 6.2 A named limitation of TLLC, found by running it
 
@@ -257,6 +292,14 @@ light of a result:
 > accepts a leg's proposal on the strength of one mapped line, with no margin
 > test and no corroboration. `difflib`'s alignment can legitimately pair base
 > occurrence *i* with leg occurrence *j*. The oracle has no way to notice.
+
+**Reproduced, not asserted:** `harness/oracle_limitation.py` builds a three-line
+case in which leg A inserts a byte-identical copy of a single-line block directly
+after it. Which of the two adjacent identical merged blocks is "the descendant"
+is undecidable from the bytes, and TLLC answers `SURVIVED`, target *n+1*, with no
+margin, no corroboration and no signal that it guessed. The naturally occurring
+instance is the `Filename: src/main.rs` blocks in
+`bffe7c1ec7:src/ch02-00-guessing-game-tutorial.md`.
 
 This is separate from the parser desynchronisation above and would survive
 fixing it. The candidates in §6.1 are excluded by §3(5) on their own, so nothing
@@ -282,12 +325,131 @@ Fixing it means a second oracle statement, not an edit to this one.
 
 ## 8. Open, and it is the deciding question for the next step
 
-The planted case proves the shape in `ORACLE.md` §6 is **reachable** — clean
-stock-git merge, well-formed output, prose block, `EXACT` status, hardened policy
-never engaging. The corpus arm has **not** found it occurring naturally in
-technical documentation in English, which is what D8 already predicted and what
-§1 registered as the honest prior.
+The planted cases prove the shape is **reachable** — clean stock-git merge,
+well-formed output, prose block, `EXACT` status, the hardened policy never
+engaging. **§9 then established it is reachable without any merge at all**, which
+moves where the next arm should go.
 
-That is exactly the boundary `PRE-REGISTRATION.md` §2.2 draws, and it is where
-the next arm goes. It does not have a verdict attached, and it must not get one
-from this file.
+The corpus arm has not found it occurring naturally in technical documentation in
+English. Neither did D8, across five arms that — per §9 — were capable of
+exhibiting it. Both are the same population, and
+`PRE-REGISTRATION.md` §2.2 already names that population as the most likely place
+the recommendation breaks: *"meeting notes, legal boilerplate, or templated
+documents, which are exactly the duplicate-heavy shapes a work substrate will
+meet."*
+
+So the deciding question is **the corpora, not the merge topology** — and the
+resurrect-the-old-bytes shape has an obvious home in exactly those corpora, where
+"previous wording kept for audit" is a genre convention rather than an accident.
+Choosing them requires a §5 amendment logged in §8 of the pre-registration with a
+date, a reason and an argument per choice, which has not been written.
+
+None of this has a verdict attached, and it must not get one from this file.
+
+---
+
+## 2026-09-10 — §9. Retraction: the defect is single-leg reachable
+
+**The claim that this spike's whole rationale leaned on is false, and it was
+refuted by running it.**
+
+Asserted in `LOG.md` §3.1, both `expect.json` files, `armed_check.sh`,
+`ORACLE.md` §6 and the PR body: *the defect needs both legs to act, and a
+single-leg rebase cannot reach it.*
+
+### The reproduction
+
+One author, one commit, no merge of any kind. Reword the anchored paragraph
+**and** quote its original wording in a new appendix — the shape any "superseded
+wording", changelog or audit-trail edit has:
+
+```python
+from anchor_eval import blocks, anchor_of          # D8's own code
+from anchor_eval2 import line_oracle
+from anchor_eval3 import reanchor2
+
+base  = open('plant_cases/wrong-01/base.md').read()
+after = base.replace("queued on the primary worker pool,",
+                     "queued on either worker pool,") + APPENDIX_QUOTING_THE_ORIGINAL
+
+bi, bj = blocks(base), blocks(after)
+anc    = anchor_of(base, bi[1])
+truth, tgt = line_oracle(base, after, bi, bj)[1]      # SURVIVED, target 1
+for hard in (False, True):
+    print(reanchor2(after, anc, bj, hard))            # ('EXACT', 7) -- not 1
+```
+
+```
+policy=naive status=EXACT verdict=SILENT-WRONG
+policy=hard  status=EXACT verdict=SILENT-WRONG
+```
+
+Committed as `plant_cases/single-leg-01/`, which runs through the same
+`evaluate_case()` as everything else. Its leg C is byte-identical to the base, so
+there is no second author and `git merge` yields leg A exactly; the harness
+needed `--allow-empty` before it could express the case at all, which is itself
+telling — **it had been built unable to represent its own counterexample.**
+
+### Two errors under it
+
+1. **"Left standing" was the wrong necessary condition.** The condition is that
+   the base bytes survive *somewhere* in the resolved text while the anchored
+   block's true descendant has moved. Nothing requires those to be done by
+   different people, or in different commits.
+2. **D8's by-type arm is not a rebase.** `ORACLE.md` §6 says the shape "cannot
+   occur in D8's arm" because `git merge-file` has one leg. But
+   `anchor_eval3.run()` **never calls `merge3`** — it imports it at line 15 and
+   never uses it (`anchor_eval3.py:56-84`). It anchors at `ti` and resolves
+   against `tj`, up to 25 commits later. The arm carrying D8's by-type breakdown
+   is a **version skip**. `anchor_eval2.py` does call `merge3`, but only to feed
+   the *stored-`^id`* arm; its computed arm is a skip too. So the computed
+   anchoring result that `PRE-REGISTRATION.md` §1 rests on measured neither a
+   rebase nor a merge.
+
+### Why this inverts the reading, and what it does not settle
+
+`PRE-REGISTRATION.md` §2.1 identifies "D8 measured rebase, not a two-branch
+three-way merge" as the most likely place a defect hides. If the shape is
+reachable without any merge, then **D8's five arms were already able to exhibit
+it and recorded zero prose-typed silent-wrongs.** That makes D8 *stronger*
+evidence against prose having this defect, not weaker, and it makes the
+two-branch case one more route to a precondition rather than a privileged one.
+
+Stated precisely, because the temptation is to overclaim in the other direction
+now: D8's method does not *exclude* the shape, so D8's zero is evidence about it.
+Whether D8's sampled transitions actually contained resurrect-the-old-bytes edits
+is a separate question this spike has not measured. The bound D8 provides is on
+the shape's frequency in technical documentation in English, which is the same
+population `PRE-REGISTRATION.md` §2.2 already flags as the wrong one.
+
+**`ORACLE.md` is not edited.** It says nothing in it may be adjusted in light of
+a result, and that includes being adjusted because it turned out to be wrong.
+§6 of that file stands as written and is wrong on both counts; this is the
+correction of record. Fixing it means a superseding oracle statement.
+
+### §2.1's premise, restated
+
+The gap §2.1 names is real but narrower than it claims. Nobody had run the
+concurrent case — true. But the *defect shape* it worried about was never
+exclusive to the concurrent case, so running the concurrent case was never going
+to be the thing that decided it. The question that survives is
+`PRE-REGISTRATION.md` §2.2's: **the corpora, not the merge topology.**
+
+## §10. A reconciliation that corrects a claim upstream
+
+At the pin, `results/corpus-drift.txt` prints for `obsidian-help` gap=5:
+
+```
+block types: code=2 heading=78 list=90 prose=212 table=2      -> sums to 384
+```
+
+384 is exactly that arm's oracle-confident anchor count. D8 §3.2's own line for
+that arm prints only `heading=78 list=90 prose=212`, which sums to 380, and the
+four-anchor shortfall has been read as evidence the line cannot be reconciled
+per-bucket and as a missing `code=4`.
+
+Neither. The line was **truncated to its three largest buckets**, and the missing
+four are `code=2` **and** `table=2`. The other two by-type lines D8 prints
+(rust-book gap=5 summing to 849, gap=25 to 200) are complete, so only the
+obsidian line was abridged. The data is intact; the presentation dropped the two
+smallest buckets.

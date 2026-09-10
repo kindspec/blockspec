@@ -1,6 +1,6 @@
 {
   "_note": "Corpora are not redistributed; kindspec/research CORPORA.md names each source. Clone with --filter=blob:none OUTSIDE this repository (or into a gitignored path) and `git checkout` the pin below. A 2026 clone at HEAD is not the clone D8 ran against.",
-  "_how_the_pin_was_chosen": "D8-identity.md's header states a commit count per corpus (6,286 / 2,623 / 1,848). The pin is the commit on the default branch's first-parent chain at which `git rev-list --count HEAD` equals that number. All three matched exactly, which is why the control arm reproduces D8 line for line. Note that this places D8's run in 2026, not 2025 as the experiment files' mtimes suggest.",
+  "_how_the_pin_was_chosen": "D8-identity.md's header states a commit count per corpus (6,286 / 2,623 / 1,848). The pin is the commit on the default branch's first-parent chain at which `git rev-list --count HEAD` equals that number. All three matched exactly, which is why the control arm reproduces D8 line for line. Pin rather than clone at HEAD: the corpora have moved and the movement changes a result -- see spike/results/corpus-drift.txt.",
   "corpora": {
     "rust-book": {
       "source": "https://github.com/rust-lang/book",
@@ -27,7 +27,7 @@
       "d8_stated_commits": 1848,
       "glob": "*.md",
       "prefix": "",
-      "arm": "HELD OUT -- kindspec/research#2. Run for the record only; not a gate."
+      "arm": "control -- a full arm. kindspec/research#2 settled that cmspec was MEASURED, not skipped: 73 and 56 oracle-confident anchors, both over anchor_eval3.py's threshold of 50. check_control_gate.py gates both cmspec arms, and its `measuring arms >= 4` guard fails without them. The arm that IS skipped as `too few` is obsidian-help gap=25."
     }
   },
   "mechanism_under_test": {
