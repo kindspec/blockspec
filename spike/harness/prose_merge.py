@@ -428,8 +428,17 @@ def find_merge_cases(repo, prefix, limit=0):
         cb = {x for x in g(repo, "diff", "--name-only", base, p2).split("\n")
               if x.startswith(prefix) and x.endswith(".md")}
         st["paths:one_side"] += len(ca ^ cb)
+        # INVARIANT: the both-sides candidate count is set ONCE, FROM THE SET
+        # SIZE, before the loop -- never accumulated inside it. Accumulating it
+        # puts the denominator itself inside the region the loop can `continue`
+        # out of, so an uncounted `continue` placed above the increment shrinks
+        # the population invisibly and the balance below still holds. That was
+        # a real defect here (LOG.md §5.4): 33 candidates silently became 19.
+        # The synthetic-Counter selftest cannot pin this, because it supplies
+        # `paths:both_sides` rather than deriving it -- so the invariant is
+        # stated here, where the next person edits.
+        st["paths:both_sides"] += len(ca & cb)
         for path in sorted(ca & cb):
-            st["paths:both_sides"] += 1
             tb = g(repo, "show", f"{base}:{path}")
             ta = g(repo, "show", f"{p1}:{path}")
             tc = g(repo, "show", f"{p2}:{path}")
@@ -468,6 +477,11 @@ def find_merge_cases(repo, prefix, limit=0):
                           "meta": {"merge": m, "base": base,
                                    "legA": p1, "legC": p2}})
             if limit and len(cases) >= limit:
+                # The census is now partial: `paths:both_sides` counts paths in
+                # merges we never finished enumerating, so the balance is
+                # meaningless rather than merely unmet. Flagged so report() says
+                # so instead of firing a spurious warning.
+                st["truncated_by_limit"] = limit
                 return cases, st
     return cases, st
 
@@ -562,7 +576,12 @@ def report(name, t, extra="", st=None):
                   f"to base -- should be unreachable, investigate")
         print(f"  .md paths changed on exactly ONE side: {st['paths:one_side']}"
               f"   (not this arm's population; see LOG.md §7)")
-        if cand != acc + dropped:
+        if st["truncated_by_limit"]:
+            print(f"  NOTE: enumeration stopped early by --limit "
+                  f"{st['truncated_by_limit']}; the census above is PARTIAL and "
+                  f"the balance check is not meaningful. No committed result "
+                  f"uses --limit.")
+        elif cand != acc + dropped:
             print("  *** selection counters do not balance -- a drop path is "
                   "uncounted ***")
     print(f"  merges: clean={t['merge:clean']} conflicted={t['merge:conflict']} "

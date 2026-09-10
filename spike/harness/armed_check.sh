@@ -12,6 +12,13 @@
 # never as a pass -- because a mutation that failed to apply is otherwise
 # indistinguishable from one the check survived.
 set -uo pipefail
+# Not currently load-bearing -- mutations 1-3 run $TMP/prose_merge.py as
+# __main__, which CPython never byte-caches, and 4-6 edit .md fixtures. It is
+# set because that safety is incidental: the moment any mutated module is
+# IMPORTED rather than run (oracle_limitation.py already imports prose_merge,
+# and a __pycache__ entry for it exists), a same-size edit like mutation 2's
+# `0.5` -> `1.1` can be served from a stale .pyc. That is kindspec/rowspec#44.
+export PYTHONDONTWRITEBYTECODE=1
 cd "$(dirname "$0")"
 D8="${D8_DIR:-$(cd ../../../../research/experiments/D8-identity 2>/dev/null && pwd)}"
 [ -d "$D8" ] || { echo "set D8_DIR to kindspec/research/experiments/D8-identity"; exit 2; }
