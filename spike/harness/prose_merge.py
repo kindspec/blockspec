@@ -613,22 +613,96 @@ def report(name, t, extra="", st=None):
           "tier UNASSIGNED.")
 
 
+def selftest_selection():
+    """Watch the selection balance guard go red. Org contract §2.2.
+
+    The guard in `report()` exists because 29 candidates were once dropped with
+    no counter behind them. Its FIRST form was itself a check that cannot fail
+    (see LOG.md §5), so a committed way to observe its red state is not optional
+    here -- it is the whole point. No corpus needed; runs in milliseconds.
+    """
+    import contextlib
+    import io
+
+    def run(st, accepted):
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            report("selftest-selection", Counter({"cases": accepted}), "", st)
+        return buf.getvalue()
+
+    FIRES = "do not balance"
+    UNEXPECTED = "UNEXPECTED"
+    # 224 both-sides candidates = 195 accepted + 7 + 10 + 12 dropped
+    base = Counter({"merges:two_parent": 1821, "drop:octopus": 2,
+                    "drop:multi_base": 5, "paths:both_sides": 224,
+                    "drop:add_add": 7, "drop:delete_modify": 10,
+                    "drop:convergent": 12, "drop:unchanged_side": 0,
+                    "paths:one_side": 19337})
+    checks = []
+
+    checks.append(("balanced -> silent", FIRES not in run(base, 195)))
+
+    # Punch out each named drop counter in turn; each must unbalance the total.
+    for k in ("drop:add_add", "drop:delete_modify", "drop:convergent"):
+        st = Counter(base)
+        st[k] = 0
+        checks.append((f"{k} zeroed -> fires", FIRES in run(st, 195)))
+
+    # drop:unchanged_side is 0 in every real corpus, so zeroing it proves
+    # nothing. Force the path reachable instead: it must count toward the
+    # balance AND raise the 'should be unreachable' line.
+    st = Counter(base)
+    st["drop:unchanged_side"] = 5
+    out = run(st, 190)                     # 224 = 190 + 7 + 10 + 12 + 5
+    checks.append(("unchanged_side counted in the balance",
+                   FIRES not in out))
+    checks.append(("unchanged_side raises the investigate line",
+                   UNEXPECTED in out))
+    checks.append(("unchanged_side omitted from accepted -> fires",
+                   FIRES in run(st, 195)))
+
+    # A merge-level drop must NOT enter the both-sides balance: those are
+    # enumerated before any path exists, so folding them in would break the
+    # guard rather than arm it.
+    st = Counter(base)
+    st["drop:octopus"] += 50
+    st["drop:multi_base"] += 50
+    checks.append(("merge-level drops stay out of the balance",
+                   FIRES not in run(st, 195)))
+
+    ok = True
+    for label, good in checks:
+        print(f"  {'ok  ' if good else 'FAIL'}  {label}")
+        ok &= good
+    print(f"SELECTION-GUARD SELFTEST: {'PASS' if ok else 'FAIL'}")
+    return 0 if ok else 1
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--d8-dir", default=DEFAULT_D8)
     ap.add_argument("--plant", action="store_true",
                     help="run the planted cases (§7 two-verdict demonstration)")
+    ap.add_argument("--selftest-selection", action="store_true",
+                    help="show the selection balance guard going red (org §2.2)")
     ap.add_argument("--corpus", action="append", default=[], metavar="NAME=REPO:PREFIX")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--max-blocks", type=int, default=0)
     ap.add_argument("--records", metavar="FILE", help="write candidate cases as JSONL")
     a = ap.parse_args()
 
+    rc = 0
+    if a.selftest_selection:
+        # Deliberately before load_d8: this selftest drives report() with a
+        # synthetic Counter and needs neither a corpus nor the D8 checkout, so
+        # it must stay runnable where neither is present.
+        rc |= selftest_selection()
+        if not (a.plant or a.corpus):
+            return rc
+
     global D8, D83
     D8, D83 = load_d8(a.d8_dir)
-
-    rc = 0
     if a.plant:
         rc |= 0 if run_plants() else 1
 

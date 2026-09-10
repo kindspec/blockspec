@@ -1,0 +1,26 @@
+  ok    balanced -> silent
+  ok    drop:add_add zeroed -> fires
+  ok    drop:delete_modify zeroed -> fires
+  ok    drop:convergent zeroed -> fires
+  ok    unchanged_side counted in the balance
+  ok    unchanged_side raises the investigate line
+  ok    unchanged_side omitted from accepted -> fires
+  ok    merge-level drops stay out of the balance
+SELECTION-GUARD SELFTEST: PASS
+
+# And the red state, which is the point. Restoring the guard's ORIGINAL
+# tautological form -- `dropped = cand - acc`, so `cand != acc + dropped` can
+# never be true -- turns four of the eight checks red:
+#
+#   restored the original tautology [4ef91df017cddafb -> 4191742fcc7bf52a]
+#     ok    balanced -> silent
+#     FAIL  drop:add_add zeroed -> fires
+#     FAIL  drop:delete_modify zeroed -> fires
+#     FAIL  drop:convergent zeroed -> fires
+#     ok    unchanged_side counted in the balance
+#     ok    unchanged_side raises the investigate line
+#     FAIL  unchanged_side omitted from accepted -> fires
+#     ok    merge-level drops stay out of the balance
+#   SELECTION-GUARD SELFTEST: FAIL   (exit 1)
+#
+# See LOG.md §5.3.

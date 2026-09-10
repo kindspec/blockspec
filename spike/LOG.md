@@ -209,7 +209,8 @@ line did not match and was being silently dropped.
 
 ## 5. Harness defects found by running it, and fixed
 
-Both were found by output that looked wrong, not by review.
+The first two were found by output that looked wrong, not by review. The third
+was found by trying to prove a check was armed.
 
 1. **`=======` is not a conflict marker.** A line of equals signs is a setext
    heading underline, legal markdown, present in cmspec. Detecting on it
@@ -222,6 +223,38 @@ Both were found by output that looked wrong, not by review.
    clean reconstruction, compare the merged bytes to what git actually recorded
    at the merge commit. **157/157 byte-identical** across all three corpora. The
    harness reproduces the merges git really performed.
+3. **The balance guard added in §7's own fix was a check that cannot fail.**
+   This is the clearest instance of the org contract §2.2 defect this spike has
+   produced, and it is recorded here rather than only in a commit message
+   because a squash merge destroys commit messages.
+
+   The guard was meant to catch a drop path with no counter behind it. As first
+   written it computed
+
+   ```python
+   dropped = cand - acc                     # <- derived, not counted
+   ...
+   if cand != acc + dropped:                # <- therefore always False
+       print("*** selection counters do not balance ***")
+   ```
+
+   `cand != acc + (cand - acc)` is a tautology, so the guard could never fire.
+   It was written **in the commit whose entire purpose was to fix an uncounted
+   drop path**, and it reported a clean balance while doing it.
+
+   Caught by mutation, not by reading: removing the `drop:convergent` increment
+   should have unbalanced the total, and instead the run went quietly green and
+   printed `DROPPED 9 (27%)` where the truth was 18 (55%). `dropped` now sums the
+   four named drop counters, and the same mutation turns it red.
+
+   **Watchable from committed code:** `prose_merge.py --selftest-selection`
+   drives eight cases through `report()` — balanced stays silent, each named
+   counter zeroed fires, `drop:unchanged_side` is forced reachable so it is shown
+   to count toward the balance *and* to raise its investigate line, and
+   merge-level drops are shown to stay out. Restoring the original `cand - acc`
+   turns four of the eight red. `results/selection-guard-selftest.txt` is that
+   output. Every other check here had such an artifact; this one did not until
+   now, which is the same gap one level down.
 
 ## 6. Merge arm — coverage, not a verdict
 
@@ -230,11 +263,16 @@ Both were found by output that looked wrong, not by review.
 Cases are real 2-parent merge commits with a single merge-base where the same
 `.md` changed on **both** sides.
 
-| corpus | file-merges | criss-cross skipped | clean | conflicted (tier E) | oracle-confident | distinct base blocks |
-|---|---|---|---|---|---|---|
-| rust-book | 179 | 3 | 147 | 32 | 11706 / 12230 (96%) | 6651 |
-| obsidian-help | 15 | 2 | 9 | 6 | 182 / 189 (96%) | 304 |
-| cmspec | 1 | 0 | 1 | 0 | 57 / 62 (92%) | 73 |
+| corpus | both-sides candidates | accepted | dropped | criss-cross skipped | clean | conflicted (tier E) | oracle-confident | distinct base blocks |
+|---|---|---|---|---|---|---|---|---|
+| rust-book | 190 | 179 | 11 (6%) | 3 | 147 | 32 | 11706 / 12230 (96%) | 6651 |
+| obsidian-help | 33 | **15** | **18 (55%)** | 2 | 9 | 6 | 182 / 189 (96%) | 304 |
+| cmspec | 1 | 1 | 0 | 0 | 1 | 0 | 57 / 62 (92%) | 73 |
+
+**Read the obsidian-help row before quoting its zero below.** More than half its
+both-sides candidates were dropped — 7 add/add, 2 delete/modify, 9 convergent —
+so its `n=0` rests on 15 cases out of 33 available, not on 33. §7 has the full
+selection.
 
 Mis-resolutions, **all `tier: UNASSIGNED`**:
 
@@ -242,6 +280,7 @@ Mis-resolutions, **all `tier: UNASSIGNED`**:
 rust-book   naive  n=64  code=41 heading=4 html=8 list=1 prose=10
             hard   n=21  code=13 heading=1               prose=7
 obsidian-help / cmspec: n=0 in both policies
+            (obsidian-help: 15 of 33 candidates; cmspec: 1 of 1)
 ```
 
 ### 6.1 Every prose-typed candidate traces to one file, and §3(5) disqualifies it

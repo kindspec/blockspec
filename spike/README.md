@@ -36,6 +36,7 @@ harness/run_control.sh                          # the gate: reproduce D8
 python3 harness/prose_merge.py --plant          # §7: two verdicts, demonstrated
 harness/armed_check.sh                          # each gate broken, watched to go red
 python3 harness/check_control_gate.py --selftest
+python3 harness/prose_merge.py --selftest-selection   # LOG.md §5.3, watch it go red
 python3 harness/oracle_limitation.py            # LOG.md §6.2, demonstrated
 ```
 
@@ -75,6 +76,13 @@ ran against — and that difference turned out to matter (see `LOG.md`).
 There are three planted cases, not two. `single-leg-01` is the one that
 **refuted this spike's own central claim** — see `LOG.md` §9 — and it is kept as
 a fixture so the refutation is executable rather than narrated.
+
+A fourth check guards the *selection* denominator — that no candidate is dropped
+without a counter behind it. Its red state is watchable with
+`prose_merge.py --selftest-selection`, which exists because the guard's first
+form was itself a check that cannot fail (`LOG.md` §5.3). `armed_check.sh` runs
+only `--plant` and never enters `find_merge_cases`, so it does not cover this
+one.
 
 ## Read these before believing anything here
 
