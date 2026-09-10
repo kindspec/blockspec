@@ -1,0 +1,45 @@
+=== 0. baseline: unmutated harness, both planted cases ===
+--- plant clean-01: known-clean control, and a MINIMAL PAIR with wrong-01 — identical base, identical leg C (which adds the verbatim near-duplicate appendix). The single difference is that here leg A edits the ROLLBACK paragraph instead of the anchored one. The anchored block therefore survives into the merge unchanged, the mechanism sees two exact matches, disambiguates on prefix/suffix context, and picks the right one. The harness must stay silent.
+      merge: rc=0 clean=True markers=False   [git -c core.attributesFile=/dev/null -c core.hooksPath=<empty> merge --no-edit legC]
+      oracle TLLC (two-leg line correspondence): SURVIVED=1
+      want {'naive': 'correct', 'hard': 'correct'}
+      got  {'naive': 'correct', 'hard': 'correct'}   -> PASS
+--- plant wrong-01: resurrection by concurrent insert (ORACLE.md §6) — leg A rewords one line of the anchored paragraph; leg C leaves it standing and independently quotes its ORIGINAL wording verbatim in a new appendix. git merges both hunks cleanly. The standoff record's exact quote now matches leg C's appendix block EXACTLY, so resolution succeeds at the mechanism's highest-confidence status and the hard policy never engages — while the true descendant is leg A's reworded paragraph.
+      merge: rc=0 clean=True markers=False   [git -c core.attributesFile=/dev/null -c core.hooksPath=<empty> merge --no-edit legC]
+      oracle TLLC (two-leg line correspondence): SURVIVED=1
+      want {'naive': 'WRONG', 'hard': 'WRONG'}
+      got  {'naive': 'WRONG', 'hard': 'WRONG'}   -> PASS
+      [naive] status=EXACT type=prose tier=UNASSIGNED
+        anchor quote      : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+        oracle says       : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on either worker pool,\nand that the nightly reconciliation has reported green.'
+        mechanism resolved: 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+      [hard] status=EXACT type=prose tier=UNASSIGNED
+        anchor quote      : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+        oracle says       : 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on either worker pool,\nand that the nightly reconciliation has reported green.'
+        mechanism resolved: 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.'
+
+PLANTED-CASE GATE: PASS (both verdicts required: at least one WRONG case and one clean case)
+
+=== mutations: each must turn the gate RED ===
+MUTATION verdict-always-correct: gate went RED as required   [77043b953a507270 -> 6d6e9eeef3ed2e5b]
+            got  {'naive': 'correct', 'hard': 'correct'}   -> PASS
+            got  {'naive': 'correct', 'hard': 'correct'}   -> FAIL
+      PLANTED-CASE GATE: FAIL (both verdicts required: at least one WRONG case and one clean case)
+MUTATION oracle-never-confident: gate went RED as required   [77043b953a507270 -> 576a4be193bbc172]
+            got  {'naive': 'NOT-EVALUATED', 'hard': 'NOT-EVALUATED'}   -> FAIL
+            got  {'naive': 'NOT-EVALUATED', 'hard': 'NOT-EVALUATED'}   -> FAIL
+      PLANTED-CASE GATE: FAIL (both verdicts required: at least one WRONG case and one clean case)
+MUTATION oracle-self-grading: gate went RED as required   [77043b953a507270 -> 35e3c8f66ecf7bd8]
+            got  {'naive': 'correct', 'hard': 'correct'}   -> PASS
+            got  {'naive': 'correct', 'hard': 'correct'}   -> FAIL
+      PLANTED-CASE GATE: FAIL (both verdicts required: at least one WRONG case and one clean case)
+MUTATION wrong-01-drop-leg-C-duplicate: gate went RED as required   [44babaa960bf2542 -> b823258237ef5123]
+            got  {'naive': 'correct', 'hard': 'correct'}   -> PASS
+            got  {'naive': 'correct', 'hard': 'correct'}   -> FAIL
+      PLANTED-CASE GATE: FAIL (both verdicts required: at least one WRONG case and one clean case)
+MUTATION clean-01-move-leg-A-edit-onto-the-anchor: gate went RED as required   [54f554e906e965ee -> 6297d30300045abb]
+            got  {'naive': 'WRONG', 'hard': 'WRONG'}   -> FAIL
+            got  {'naive': 'WRONG', 'hard': 'WRONG'}   -> PASS
+      PLANTED-CASE GATE: FAIL (both verdicts required: at least one WRONG case and one clean case)
+
+ARMED-CHECK: PASS -- every mutation turned the gate red
