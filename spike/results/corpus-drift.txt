@@ -38,6 +38,14 @@
 # says the failures concentrate in; the harness simply has no `frontmatter`
 # label to print. gap=25 goes from `too few (22)` to `too few (0)`.
 #
+# The hardened policy does not merely anchor that block correctly -- it REFUSES
+# it, which is why the hard arm stays at n=0:
+#   >>> from anchor_eval3 import entropy_ok, btype
+#   >>> q = '---\naliases:\n  - Sync history\n---'
+#   >>> btype(q), len(set(q)), len(set(re.findall(r'\w+', q))), entropy_ok(q)
+#   ('prose', 17, 3, False)          # H3 thresholds are 24 chars / 8 words
+#   -> reanchor2(..., hard=True) returns REFUSED_LOWENTROPY, classed LOUD.
+#
 # So PRE-REGISTRATION §1's claim holds in full at D8's pin, under BOTH
 # strategies, and its `naive` half does not survive corpus drift. Its `hard`
 # half does, at both pins, in every arm. check_control_gate.py therefore

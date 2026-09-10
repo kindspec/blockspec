@@ -21,15 +21,15 @@
 PLANTED-CASE GATE: PASS (both verdicts required: at least one WRONG case and one clean case)
 
 === mutations: each must turn the gate RED ===
-MUTATION verdict-always-correct: gate went RED as required   [77043b953a507270 -> 6d6e9eeef3ed2e5b]
+MUTATION verdict-always-correct: gate went RED as required   [0d9ff8d44aea2293 -> b7800d1529803feb]
             got  {'naive': 'correct', 'hard': 'correct'}   -> PASS
             got  {'naive': 'correct', 'hard': 'correct'}   -> FAIL
       PLANTED-CASE GATE: FAIL (both verdicts required: at least one WRONG case and one clean case)
-MUTATION oracle-never-confident: gate went RED as required   [77043b953a507270 -> 576a4be193bbc172]
+MUTATION oracle-never-confident: gate went RED as required   [0d9ff8d44aea2293 -> 9f6815a67f0a5b9e]
             got  {'naive': 'NOT-EVALUATED', 'hard': 'NOT-EVALUATED'}   -> FAIL
             got  {'naive': 'NOT-EVALUATED', 'hard': 'NOT-EVALUATED'}   -> FAIL
       PLANTED-CASE GATE: FAIL (both verdicts required: at least one WRONG case and one clean case)
-MUTATION oracle-self-grading: gate went RED as required   [77043b953a507270 -> 35e3c8f66ecf7bd8]
+MUTATION oracle-self-grading: gate went RED as required   [0d9ff8d44aea2293 -> c16794e07732fcbb]
             got  {'naive': 'correct', 'hard': 'correct'}   -> PASS
             got  {'naive': 'correct', 'hard': 'correct'}   -> FAIL
       PLANTED-CASE GATE: FAIL (both verdicts required: at least one WRONG case and one clean case)

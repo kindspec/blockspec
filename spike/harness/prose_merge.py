@@ -98,7 +98,12 @@ _CFG = ["-c", "core.attributesFile=" + os.devnull,
         "-c", "merge.conflictStyle=merge"]
 
 MERGE_CMDLINE = "git -c core.attributesFile=/dev/null -c core.hooksPath=<empty> merge --no-edit legC"
-CONFLICT_MARKERS = ("<<<<<<<", "=======", ">>>>>>>")
+# `=======` alone is NOT a usable conflict-marker test: a line of equals signs is
+# a setext heading underline, which is legal markdown and occurs in cmspec. Only
+# the angle-bracket markers are unambiguous. Detecting on `=======` classified a
+# clean merge as marker-bearing and silently dropped it from the sample -- an
+# error in the conservative direction, which is still an error.
+CONFLICT_MARKERS = ("<<<<<<<", ">>>>>>>")
 
 
 def stock_merge(base, side_a, side_c, path="doc.md", keep=None):
@@ -152,6 +157,9 @@ def stock_merge(base, side_a, side_c, path="doc.md", keep=None):
             merged = f.read()
 
     # "No conflict, no marker anywhere in the tree" -- both halves checked.
+    # git's own unmerged-index entries are the authoritative signal; the textual
+    # scan is §3(1)'s "no marker anywhere in the tree" clause.
+    unmerged = bool(G("ls-files", "-u").stdout.strip())
     markers = False
     for root, dirs, names in os.walk(d):
         if ".git" in dirs:
@@ -166,7 +174,8 @@ def stock_merge(base, side_a, side_c, path="doc.md", keep=None):
                 continue
             if any(l.startswith(CONFLICT_MARKERS) for l in t.splitlines()):
                 markers = True
-    out = {"clean": m.returncode == 0 and not markers, "merged": merged,
+    out = {"clean": m.returncode == 0 and not markers and not unmerged,
+           "merged": merged, "unmerged": unmerged,
            "rc": m.returncode, "markers": markers,
            "stderr": m.stderr.strip()[:400], "workdir": d if keep else None}
     if not keep:
@@ -177,6 +186,17 @@ def stock_merge(base, side_a, side_c, path="doc.md", keep=None):
 # --------------------------------------------------------------------------
 # TLLC -- the oracle. spike/ORACLE.md is normative; this implements it.
 # --------------------------------------------------------------------------
+
+def fences_balanced(text):
+    """§3(2): 'the merged file is well-formed under whatever grammar the
+    experiment assumes'. The grammar here is D8's boundary-only block parser,
+    whose only stateful construct is the fenced block, so well-formed means an
+    even number of fence lines. An unbalanced fence desynchronises the parser
+    for the rest of the file and glues code to the prose after it -- which
+    produces block boundaries that no oracle can be expected to track."""
+    return sum(1 for l in text.splitlines()
+               if l.strip().startswith(("```", "~~~"))) % 2 == 0
+
 
 ORACLE_NAME = "TLLC (two-leg line correspondence)"
 ORACLE_CONFIDENCE = 0.5      # frac of a block's non-blank lines that must map
@@ -278,6 +298,25 @@ def evaluate_case(case, only_block=None, max_blocks=0, seed=7, keep=None):
     t["merge:clean"] += 1
 
     merged = res["merged"]
+    # Harness validation, not a measurement: where git recorded a merge commit
+    # for this path and our reconstruction merged cleanly, the two should agree.
+    # They can legitimately differ -- the recorded commit may carry a human's
+    # conflict resolution or an extra edit -- so this is reported, not asserted.
+    if case.get("recorded"):
+        t["recon:" + ("matches" if merged == case["recorded"] else "differs")] += 1
+
+    # §3(5) "Both parent states were correct" and §3(2) "the merged file is
+    # well-formed". A case whose PARENT was already malformed cannot be a
+    # finding -- the defect was carried in by an author, not created by the
+    # merge. Recorded per case and per candidate; counted, never silently
+    # filtered.
+    parents_ok = (fences_balanced(case["base"]) and fences_balanced(case["a"])
+                  and fences_balanced(case["c"]))
+    merged_ok = fences_balanced(merged)
+    t["wf:parents_ok" if parents_ok else "wf:parent_malformed"] += 1
+    if parents_ok and not merged_ok:
+        # A clean merge that BROKE well-formedness. Would be a real result.
+        t["wf:merge_broke_wellformedness"] += 1
     bb, bm = D8.blocks(case["base"]), D8.blocks(merged)
     if len(bb) < 2 or len(bm) < 2:
         t["skip:tiny"] += 1
@@ -312,10 +351,18 @@ def evaluate_case(case, only_block=None, max_blocks=0, seed=7, keep=None):
             t[f"{lab}:{cls}"] += 1
             if cls == "WRONG":
                 t[f"{lab}:WRONG:{ty}"] += 1
+                if parents_ok:
+                    t[f"{lab}:WRONGwf:{ty}"] += 1
+                    t[f"{lab}:WRONGwf"] += 1
                 if truth == "DELETED":
                     t[f"{lab}:WRONG_on_deleted"] += 1
                 recs.append({
                     "tier": "UNASSIGNED",
+                    "parents_wellformed": parents_ok,
+                    "merged_wellformed": merged_ok,
+                    "disqualified_by": (None if parents_ok else
+                                        "PRE-REGISTRATION §3(5): a parent was "
+                                        "already malformed (unbalanced fence)"),
                     "policy": lab, "status": st, "block_type": ty,
                     "oracle_truth": truth,
                     "case": case.get("id"), "path": case.get("path"),
@@ -347,11 +394,12 @@ def g(repo, *a):
 
 def find_merge_cases(repo, prefix, limit=0):
     """Real 2-parent merges where the same .md changed on BOTH sides."""
-    cases = []
+    cases, n2 = [], 0
     for line in g(repo, "rev-list", "--merges", "HEAD", "--parents").split("\n"):
         parts = line.split()
         if len(parts) != 3:            # merge commit + exactly two parents
             continue
+        n2 += 1
         m, p1, p2 = parts
         bases = [b for b in g(repo, "merge-base", "--all", p1, p2).split("\n") if b]
         if len(bases) != 1:            # criss-cross: no single base, skip + report
@@ -372,10 +420,15 @@ def find_merge_cases(repo, prefix, limit=0):
                 continue
             cases.append({"id": f"{m[:10]}:{path}", "path": path,
                           "base": tb, "a": ta, "c": tc,
+                          # what git ACTUALLY recorded for this path at the
+                          # merge commit, used to validate the reconstruction
+                          "recorded": g(repo, "show", f"{m}:{path}"),
                           "meta": {"merge": m, "base": base,
                                    "legA": p1, "legC": p2}})
             if limit and len([c for c in cases if "_skip" not in c]) >= limit:
+                cases.append({"_skip": "counted", "n2": n2})
                 return cases
+    cases.append({"_skip": "counted", "n2": n2})
     return cases
 
 
@@ -445,6 +498,12 @@ def report(name, t, extra=""):
     print(f"\n### {name}{extra}")
     print(f"  merges: clean={t['merge:clean']} conflicted={t['merge:conflict']} "
           f"marker-bearing={t['merge:markers']} (tier E, counted not scored)")
+    rec = t["recon:matches"] + t["recon:differs"]
+    if rec:
+        print(f"  reconstruction vs the merge commit git actually recorded: "
+              f"{t['recon:matches']}/{rec} byte-identical  "
+              f"(differences are legitimate -- a recorded merge may carry a "
+              f"human resolution)")
     print(f"  oracle {ORACLE_NAME}: SURVIVED={t['ORACLE:SURVIVED']} "
           f"DELETED={t['ORACLE:DELETED']} UNKNOWN={t['ORACLE:UNKNOWN']}"
           f"  -> confident {ev}/{ev + t['ORACLE:UNKNOWN']} "
@@ -454,6 +513,10 @@ def report(name, t, extra=""):
         return
     print("  block types: " + " ".join(f"{k[3:]}={v}" for k, v in sorted(t.items())
                                        if k.startswith("TY:")))
+    print(f"  well-formedness (§3(2), §3(5)): cases with all parents well-formed "
+          f"{t['wf:parents_ok']}, with a parent already malformed "
+          f"{t['wf:parent_malformed']}; clean merges that BROKE well-formedness: "
+          f"{t['wf:merge_broke_wellformedness']}")
     for lab, _ in POLICIES:
         w = t[f"{lab}:WRONG"]
         print(f"  {lab:<6} correct {100 * t[lab + ':correct'] / ev:5.1f}%   "
@@ -466,6 +529,16 @@ def report(name, t, extra=""):
               + (f"  [of which on oracle-DELETED, see ORACLE.md §4: "
                  f"{t[lab + ':WRONG_on_deleted']}]"
                  if t[lab + ":WRONG_on_deleted"] else ""))
+    for lab, _ in POLICIES:
+        w = t[f"{lab}:WRONGwf"]
+        print(f"  {lab:<6} of those, with ALL PARENTS WELL-FORMED (§3(5)): n={w}"
+              + ("  by type: " + " ".join(f"{k.split(':')[2]}={v}" for k, v in
+                                          sorted(t.items())
+                                          if k.startswith(lab + ":WRONGwf:"))
+                 if w else ("   <- all "
+                            f"{t[lab + ':WRONG']} disqualified by §3(5)"
+                            if t[f"{lab}:WRONG"] else
+                            "   (none to disqualify: no mis-resolutions here)")))
     print("  NOTE: MIS-RESOLVED is not a finding. ORACLE.md §5 -- the oracle "
           "establishes\n        descent, not falsity. Every case is emitted with "
           "tier UNASSIGNED.")
@@ -496,7 +569,8 @@ def main():
         repo, prefix = rest.rsplit(":", 1)
         sha = g(repo, "rev-parse", "HEAD").strip()
         cases = find_merge_cases(repo, prefix, a.limit)
-        skipped = sum(1 for c in cases if "_skip" in c)
+        n2 = next((c["n2"] for c in cases if c.get("_skip") == "counted"), 0)
+        skipped = sum(1 for c in cases if c.get("_skip") == "multi_base")
         cases = [c for c in cases if "_skip" not in c]
         t = Counter()
         distinct = set()
@@ -510,7 +584,8 @@ def main():
                 r["corpus_sha"] = sha
             allrecs += recs
         report(name, t,
-               f"  pin={sha[:12]}  file-merges={len(cases)}"
+               f"  pin={sha[:12]}  two-parent merges examined={n2}"
+               f"  ->  file-merges={len(cases)}"
                f"  (skipped {skipped} criss-cross merges with >1 base)")
         print(f"  distinct authored base blocks across those merges: {len(distinct)}"
               f"   (§7: a corpus that ships the same document twice contributes once)")
