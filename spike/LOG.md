@@ -210,8 +210,10 @@ line did not match and was being silently dropped.
 ## 5. Harness defects found by running it, and fixed
 
 The first two were found by output that looked wrong, not by review. The last
-three were found by trying to prove a check was armed — and 3, 4 and 5 are the
-same defect at three depths, which is the point of listing them separately.
+three were found by trying to prove a check was armed. **§7, §5.3 and §5.4 are
+three successive failures to check one property**; §5.5 is not a fourth — it is a
+defect in the *evidence for* a check, and it sits alongside rather than
+underneath. §5.6 states what that sequence supports and what it does not.
 
 1. **`=======` is not a conflict marker.** A line of equals signs is a setext
    heading underline, legal markdown, present in cmspec. Detecting on it
@@ -286,12 +288,9 @@ same defect at three depths, which is the point of listing them separately.
    given `cand == acc + dropped` is itself the confirmation that `cand` is 33
    again.
 
-   **This is the third distinct layer of one defect, and the sequence is the
-   lesson.** The drops were uncounted (§7). The guard written for that was a
-   tautology (§5.3). The guard, once real, covered the partition but not its
-   denominator (here). Each fix was correct, each was verified, and each left the
-   next layer standing. A check is not one thing to arm but a stack, and arming
-   the top of it says nothing about what is underneath.
+   **Third in a sequence:** the drops were uncounted (§7), the guard written for
+   that was a tautology (§5.3), and the guard — once real — measured a
+   denominator the loop could escape (here). See §5.6.
 
    Fixing this also broke `--limit`, which returns mid-enumeration: `cand` then
    counts paths in merges never examined, so the balance would fire spuriously.
@@ -306,6 +305,65 @@ same defect at three depths, which is the point of listing them separately.
    `harness/selection_guard_red.sh`, which hashes the file it actually runs, so
    it cannot go stale by hand. That script and `armed_check.sh` both set
    `PYTHONDONTWRITEBYTECODE=1` — see §5.3 on kindspec/rowspec#44.
+
+### 5.6 What the sequence supports, and what it does not
+
+An earlier draft of this synthesis was attacked and mostly did not survive. What
+is left is smaller, and is the part with evidence behind it.
+
+**The property, stated once.** *No both-sides candidate leaves the selection
+without a counter behind it.* One property. §7, §5.3 and §5.4 are three
+successive failures to check that one property:
+
+| | failure | what was wrong |
+|---|---|---|
+| §7 | no detector at all | three bare `continue`s dropped 29 candidates silently |
+| §5.3 | the detector could not fire | `dropped = cand - acc` made the predicate a tautology |
+| §5.4 | the detector's input was corruptible | `cand` was accumulated inside the loop it measures |
+
+**The decomposition is the transferable part**, and it is principled rather than
+narrative: a check has a **property**, a **detector**, and the **detector's
+inputs**, and each is separately falsifiable. The org contract §2.2 — *"break the
+thing it checks, watch it go red"* — addresses only the detector, and only
+against the one mutation the author happened to choose. §5.4 is invisible to
+§2.2's procedure as written, because every mutation one would naturally pick
+turns the detector red while leaving its input corruptible.
+
+**Three qualifications, each of which cost an earlier and larger claim.**
+
+1. **These are not one defect at three depths.** §7 and §5.4 genuinely share a
+   mechanism — an uncounted `continue` escaping accounting, first from the drop
+   tally and then from the population tally. §5.3 does not: a tautological
+   predicate is a different defect that merely happened *inside the fix for* §7.
+   Two share a mechanism; the third shares only a location.
+2. **"Arming the top says nothing about what is underneath" is false**, and this
+   spike is the evidence against it. Arming said a great deal: attempting to arm
+   each fix is precisely what exposed the next layer, in three consecutive review
+   passes. The accurate form is weaker and more useful — **arming validates one
+   layer and tends to surface the next, so one pass is a beginning rather than a
+   completion.**
+3. **The sequence terminated, and how it terminated is the better lesson.**
+   §5.4's fix adds no fourth check. It moves `cand` out of the loop, so the
+   denominator is no longer subject to the control flow it measures: **the
+   failure class is removed rather than detected.** "It is a stack" invites
+   indefinite regress and offers no way out. The regress ends when you stop
+   adding checks and make the failure structurally impossible — which is what
+   happened here, and it is the headline.
+
+**n=1, and it stays in this file.** Three instances, one file, one afternoon, one
+review loop — and §5's own entries 1 and 2 are not instances, so it is 3 of 5
+even within this log. Generalising it into the org contract on that basis would
+be `PRE-REGISTRATION.md` §0's failure mode applied to process instead of results:
+a rule written after seeing the outcome. Contract §4's *"measure before deciding"*
+cuts the same way.
+
+**What would earn a promotion:** a second instance found somewhere the contract
+would actually bind — a check whose property, or whose detector's inputs, fail
+while its detector passes its own mutation. rowspec's **mutation gate** and the
+**conformance runner** are the two places to look: both have the shape, and both
+have a recorded history of reporting a pass over a population nothing opened.
+Until then this is an observation with three instances in one afternoon, recorded
+where the next person will find it and not written into a rule.
 
 ## 6. Merge arm — coverage, not a verdict
 
