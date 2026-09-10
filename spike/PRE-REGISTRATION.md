@@ -37,32 +37,68 @@ line-correspondence oracle.
 D8 reports two acceptance strategies, `naive` and `hard`. Both are given here
 because quoting only one would misrepresent the source:
 
+> **Amended 2026-09-09 — see the amendment log in §8.** As registered, this
+> section rested on figures D8 had transcribed by hand, with no committed
+> harness output behind them. kindspec/research#3 has since re-run the harness
+> and committed its output, and one figure changed. What follows is the amended
+> text; the original wording is quoted in §8 so it can be compared.
+
+`anchor_eval3.py`, re-run 2026-09-09 against pinned clones and committed as
+`research/experiments/D8-identity/results-anchor3.txt`:
+
 ```
-rust-book gap=5    849 oracle-confident anchors (74% of sample)   prose=460
+rust-book gap=5      849 oracle-confident anchors (74% of sample)   prose=460
    naive  SILENT-WRONG 0.47% (n=4)   by type: code=3 html=1
    hard   SILENT-WRONG 0.12% (n=1)   by type: code=1
 
-rust-book gap=25   200 oracle-confident anchors (38% of sample)   prose=124
+rust-book gap=25     200 oracle-confident anchors (38% of sample)   prose=124
    naive  SILENT-WRONG 2.00% (n=4)   by type: code=4
    hard   SILENT-WRONG 1.00% (n=2)   by type: code=2
 
-obsidian-help g=5  384 oracle-confident anchors                   prose=212
-   naive  SILENT-WRONG 0.52% (n=2)   by type: list=2
-   hard   SILENT-WRONG 0.26% (n=1)   by type: list=1
+obsidian-help gap=5  343 oracle-confident anchors                   prose=240
+   naive  SILENT-WRONG 0.58% (n=2)   by type: list=1 prose=1
+   hard   SILENT-WRONG 0.00% (n=0)
+
+obsidian-help gap=25 too few (0) — not a measurement
+
+cmspec gap=5          73 oracle-confident anchors                   prose=53
+   naive  SILENT-WRONG 0.00% (n=0)
+   hard   SILENT-WRONG 0.00% (n=0)
+
+cmspec gap=25         56 oracle-confident anchors                   prose=36
+   naive  SILENT-WRONG 0.00% (n=0)
+   hard   SILENT-WRONG 0.00% (n=0)
 ```
 
-**The load-bearing fact is the by-type breakdown, and it is what this spike
-relies on: every silent-wrong D8 recorded is typed `code`, `html` or `list`.
-Not one is typed `prose`, in either strategy, in any arm.**
+**The load-bearing fact is still the by-type breakdown, and it is now narrower
+than as registered: under the hardened acceptance policy, not one silent-wrong
+is typed `prose`, in any of the five measuring arms. Under the naive policy that
+holds in four arms; `obsidian-help` gap=5 has one.**
 
-That much is reproducible from the table above. **The denominator is not**, and
-this document will not use one that is not: D8's prose sentence gives "885
-prose-block anchors in three corpora", a figure that appears exactly once in the
-research repository, in prose, with no committed harness output behind it — and
-the per-arm prose counts printed above total 796, not 885. Filed as
-kindspec/research#2. The claim this spike proceeds on is therefore **"zero
-typed-prose silent-wrongs across the three arms D8 printed"**, which the by-type
-breakdown supports on its own, and not a rate over an unbacked denominator.
+**That one matters and is not waved away.** It is
+`en/Obsidian Sync/Version history.md` — a YAML frontmatter block resolving onto
+`## Sync history`. `btype()` has no rule for frontmatter so it falls through to
+`prose`, and substantively it is structured data, which is the category the
+whole explanation below turns on. But *the harness prints `prose`*, and a
+pre-registration does not get to reclassify its own inconvenient data point. The
+hardened policy refuses it outright — `REFUSED_LOWENTROPY`, 17 distinct
+characters against a threshold of 24 — so the refusal is a real mechanism firing,
+not a lucky anchor.
+
+**Two things this section will not do.** It will not use the denominator: D8's
+"885 prose-block anchors in three corpora" reconciles exactly at D8's own pin —
+460+124+**212**+53+36 — so §1 as registered was wrong to say it did not, and
+wrong about why. But it sums five arms across three corpora and re-samples one
+corpus at two gaps, so it counts anchor *evaluations*, not distinct blocks; and
+that `212` is a pin-era figure the table above now prints as `240`, giving 913 on
+a current clone. A denominator that changes with the clone is not one to build a
+claim on. And it will not gate on the
+naive policy, which is no longer stable across clones.
+
+**The gate this spike must pass is therefore: zero `prose`-typed silent-wrongs
+under the hardened policy, in each of the five measuring arms.** Not "0.00%
+silent-wrong" — hardened is 0.12% and 1.00% in the two `rust-book` arms, both
+typed `code`. The qualifier is the claim.
 
 D8's own explanation is the one that matters: those blocks fail *because they are
 structured data wearing prose clothing*, and structured data is what nominal
@@ -71,7 +107,9 @@ addressing is unavailable, and fails precisely where nominal addressing is
 already mandatory.
 
 **So the honest prior is that prose does not have rowspec's defect**, and this
-spike is testing a residual, not fishing in open water. A positive finding has to
+spike is testing a residual, not fishing in open water — though the amendment
+above moves that prior slightly toward the spike's favour, not away from it, and
+that is stated rather than buried. A positive finding has to
 be strong enough to overturn a measurement that already exists — while noting
 that the measurement's own coverage falls to 38% of the sample at gap=25, and
 that D8 §11 says so itself. Registering that expectation now, at the strength the
@@ -209,14 +247,19 @@ is public and already in `research/CORPORA.md` or is added there by the spike.
 if the spike's harness does not reproduce D8's typed-prose result, the harness is
 wrong and nothing else it reports means anything.
 
-**One caveat that must be settled before the control arm counts for anything.**
-`anchor_eval3.py` skips any arm with fewer than 50 oracle-confident anchors and
-prints `too few`. D8's `cmspec` line is hand-written prose carrying no anchor
-count, unlike the other arms, so it may be summarising a skipped arm rather than
-a measured 0.00%. **Re-run `anchor_eval2.py` and `anchor_eval3.py` and commit
-their raw output first** (kindspec/research#2). Until that exists, the control
-arm is `rust-book` and `obsidian-help`, whose per-arm counts D8 does print, and
-`cmspec` is not a gate.
+**Settled 2026-09-09 — `cmspec` is a full control arm.** As registered, this
+section held `cmspec` out on the suspicion that its D8 line might be summarising
+an arm skipped as `too few`. The re-run in kindspec/research#3 shows it was
+measured in both arms — 73 and 56 oracle-confident anchors, 0.00% silent-wrong
+under both policies. The arm actually skipped as `too few (0)` is
+`obsidian-help` gap=25, which is why D8 never listed it, and which is a sampling
+artefact rather than corpus shallowness: 13 of 176 files carry the required
+depth, but the `seed=7` sample draws none deeper than 19.
+
+**`rust-book` is the strongest control** — every arm reproduced to the digit,
+including oracle-confident subsets 999 / 849 / 200 and sample sizes
+1087 / 1141 / 533. `obsidian-help` has moved and its gap=5 arm no longer matches
+what D8 printed, so it is a control on the *mechanism*, not on the figures.
 
 | corpus | source |
 |---|---|
@@ -294,6 +337,74 @@ be recorded here with a date and a reason. Amendments to §3, §4 or §6 are not
 permitted at all; if one of those is wrong, this pre-registration is superseded
 by a new one that says so.
 
+**§1 and §2 record prior evidence rather than criteria.** They decide nothing, so
+a factual error in them is corrected rather than preserved — but the correction
+is logged in full here, with the original wording, because a reader cannot
+otherwise distinguish a good-faith correction from a convenient one. §7's method
+constraints are likewise amendable only where they are wrong about a fact, never
+where they are inconvenient.
+
 | date | section | change | reason |
 |---|---|---|---|
-| — | — | none yet | — |
+| 2026-09-10 | §1, §8.2 | Withdrew the claim that the old `obsidian-help` bucket line "cannot be reconciled per-bucket"; it reconciles at D8's pin as `2+78+90+212+2 = 384`, the line having been truncated to its three largest buckets. Qualified the 885 reconciliation as pin-dependent. | Reproduced by the spike harness at D8's pin (kindspec/blockspec#8). A correction that itself carried a false claim, caught on review. |
+| 2026-09-09 | §5 | `cmspec` promoted from held-out to full control arm; `rust-book` named the strongest control and `obsidian-help` demoted to a mechanism control. | The re-run shows `cmspec` was measured in both arms, not skipped; the skipped arm is `obsidian-help` gap=25. `obsidian-help` has moved since D8 ran. This is the corpus-list amendment §8 expressly permits, made before measurement begins. |
+| 2026-09-09 | §1 | The claim narrowed from "not one is typed `prose`, in either strategy, in any arm" to "not one is typed `prose` under the **hardened** policy, in any of the five measuring arms" — naive now has one. Table replaced with committed harness output. | kindspec/research#3 re-ran the harness and committed its output for the first time; `obsidian-help` has moved and one naive silent-wrong is now typed `prose`. Forced by evidence outside this spike, before this spike measured anything. See kindspec/blockspec#7. |
+
+### 8.1 The original §1 wording, for comparison
+
+Registered before any measurement, superseded 2026-09-09:
+
+> ```
+> rust-book gap=5    849 oracle-confident anchors (74% of sample)   prose=460
+>    naive  SILENT-WRONG 0.47% (n=4)   by type: code=3 html=1
+>    hard   SILENT-WRONG 0.12% (n=1)   by type: code=1
+>
+> rust-book gap=25   200 oracle-confident anchors (38% of sample)   prose=124
+>    naive  SILENT-WRONG 2.00% (n=4)   by type: code=4
+>    hard   SILENT-WRONG 1.00% (n=2)   by type: code=2
+>
+> obsidian-help g=5  384 oracle-confident anchors                   prose=212
+>    naive  SILENT-WRONG 0.52% (n=2)   by type: list=2
+>    hard   SILENT-WRONG 0.26% (n=1)   by type: list=1
+> ```
+>
+> **The load-bearing fact is the by-type breakdown, and it is what this spike
+> relies on: every silent-wrong D8 recorded is typed `code`, `html` or `list`.
+> Not one is typed `prose`, in either strategy, in any arm.**
+>
+> That much is reproducible from the table above. **The denominator is not** […]
+> The claim this spike proceeds on is therefore **"zero typed-prose
+> silent-wrongs across the three arms D8 printed"**, which the by-type breakdown
+> supports on its own, and not a rate over an unbacked denominator.
+
+### 8.2 What did not change, and why that is the point
+
+**§3, §4 and §6 are untouched.** The five conditions for FOUND, the severity
+ranking with transclusion in tier A and the §4.1 tiering procedure, and what each
+outcome publishes as — all stand exactly as registered.
+
+That split is doing real work here. The amendment **moves the prior slightly
+toward the spike's favour**: the evidence against prose having this defect is now
+marginally weaker than as registered, because one naive silent-wrong is typed
+`prose` where none was before. If the criteria were amendable, this is precisely
+the moment a bar would drift — a document that had just watched its own prior
+soften, quietly relaxing what counts as a finding. They are not amendable, and
+nothing about §3, §4 or §6 has moved.
+
+A note on the old `obsidian-help` line, because this document previously
+misdiagnosed it and the misdiagnosis reached kindspec/research as well. The
+registered table showed `heading=78 list=90 prose=212` against a printed `384`,
+which does not sum, and both this section and D8 §3.2 concluded the figures
+"cannot be reconciled per-bucket at all". **They reconcile.** Re-running the
+harness at D8's pin prints the full bucket list:
+
+    obsidian-help en/*.md gap=5  oracle-confident anchors=384
+       block types: code=2 heading=78 list=90 prose=212 table=2
+
+`2+78+90+212+2 = 384`. The old line was **truncated to its three largest
+buckets**, not corrupted — which also disposes of the guess that a `code=4`
+bucket had gone missing. Filed against kindspec/research, whose merged text still
+carries the stronger claim.
+
+§8.1 quotes §1 as registered, uncorrected, because that is what it actually
+said.
