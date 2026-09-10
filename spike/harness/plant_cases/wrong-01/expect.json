@@ -5,5 +5,5 @@
   "expect_clean_merge": true,
   "expect_naive": "WRONG",
   "expect_hard": "WRONG",
-  "not_reachable_by_rebase": "one leg cannot both edit a block and leave it standing"
+  "correction_2026_09_10": "This case is a two-branch instance of the shape, not a demonstration that two branches are required. plant_cases/single-leg-01 produces the same EXACT/prose silent-wrong from one author in one commit. See LOG.md §9."
 }

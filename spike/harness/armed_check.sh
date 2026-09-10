@@ -79,6 +79,12 @@ mutate "wrong-01-drop-leg-C-duplicate" plant_cases/wrong-01/c.md \
 mutate "clean-01-move-leg-A-edit-onto-the-anchor" plant_cases/clean-01/a.md \
   's/queued on the primary worker pool,/queued on either worker pool,/'
 
+# 6. single-leg-01 is the case that refuted this spike's own both-legs claim
+#    (LOG.md §9). Drop leg A's verbatim re-quote and the silent-wrong must
+#    disappear, which is what proves the refutation tracks the input.
+mutate "single-leg-01-drop-the-requote" plant_cases/single-leg-01/a.md \
+  's/^Before any release, confirm that the staging cluster has fully drained,$/REMOVED/ if $. == 19'
+
 echo
 if [ "$fails" -eq 0 ]; then
   echo "ARMED-CHECK: PASS -- every mutation turned the gate red"

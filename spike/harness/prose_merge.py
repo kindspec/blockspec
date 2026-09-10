@@ -137,11 +137,15 @@ def stock_merge(base, side_a, side_c, path="doc.md", keep=None):
     G("checkout", "-q", "-b", "legA")
     W(side_a)
     G("add", "-A")
-    G("commit", "-q", "-m", "a")
+    # --allow-empty so a leg may be byte-identical to the base. That is the
+    # SINGLE-AUTHOR case -- one branch edits, the other does nothing -- and
+    # without it the harness cannot express the case that refutes its own
+    # original both-legs claim. See plant_cases/single-leg-01.
+    G("commit", "-q", "--allow-empty", "-m", "a")
     G("checkout", "-q", "-b", "legC", "main")
     W(side_c)
     G("add", "-A")
-    G("commit", "-q", "-m", "c")
+    G("commit", "-q", "--allow-empty", "-m", "c")
     G("checkout", "-q", "legA")
 
     # PRE-REGISTRATION §3(1): assert the merge really is driverless.

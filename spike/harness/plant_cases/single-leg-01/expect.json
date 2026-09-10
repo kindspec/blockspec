@@ -1,0 +1,9 @@
+{
+  "what": "REFUTES the both-legs claim this spike originally made. ONE author, ONE commit: the anchored paragraph is reworded AND its original wording is quoted verbatim in a new appendix. Leg C is byte-identical to the base, so there is no second author and no reconciliation -- git merge yields leg A exactly. The standoff record still resolves at EXACT onto the appendix copy while the true descendant is the reworded paragraph. Both policies silent-wrong.",
+  "path": "doc.md",
+  "anchor_block": 1,
+  "expect_clean_merge": true,
+  "expect_naive": "WRONG",
+  "expect_hard": "WRONG",
+  "corrects": "ORACLE.md §6 claims this shape 'cannot occur in D8's arm' because 'a block cannot simultaneously be edited and left standing'. 'Left standing' is the wrong necessary condition. The condition is that the base bytes survive SOMEWHERE in the resolved text while the anchored block's true descendant has moved, and one author can do both halves in one commit. ORACLE.md is frozen and is NOT edited; the correction is logged in LOG.md §9."
+}

@@ -1,7 +1,7 @@
 # Release runbook
 
 Before any release, confirm that the staging cluster has fully drained,
-that no long-running import jobs remain queued on the primary worker pool,
+that no long-running import jobs remain queued on either worker pool,
 and that the nightly reconciliation has reported green.
 
 Rollback is documented separately and requires two approvals from the
