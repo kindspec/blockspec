@@ -1073,3 +1073,11 @@ something other than the pin. `check_corpus` now exits 2 on any tracked change
 (`git status --porcelain --untracked-files=no`), and `red-states.txt` shows it
 firing on a clone with one edited file. The six corpora were clean, and the
 `anywhere` outputs regenerate byte-identically with the check in place.
+
+## 2026-10-07 — §13. A superseding pre-registration is drafted
+
+No measurement in this entry. The owner decided to write a superseding
+pre-registration before blockspec#2 runs, which settles the question §11
+recorded as open. The draft is `PRE-REGISTRATION-2.md`. It is not binding
+until the owner approves it and it merges. `PRE-REGISTRATION.md` and
+`ORACLE.md` are unchanged. No arm has run under the draft.
