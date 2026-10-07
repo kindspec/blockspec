@@ -651,3 +651,56 @@ four are `code=2` **and** `table=2`. The other two by-type lines D8 prints
 (rust-book gap=5 summing to 849, gap=25 to 200) are complete, so only the
 obsidian line was abridged. The data is intact; the presentation dropped the two
 smallest buckets.
+
+## 2026-10-07 — §11. Three statements above that are no longer current
+
+No measurement in this entry. The sections it corrects are left as written,
+because this file is append-only; read them with this entry.
+
+### The duplicate-heavy corpora are named and pinned
+
+The 2026-09-09 scope table ("choose §5's duplicate-heavy corpora … Not
+written"), §7 ("the whole of §5's duplicate-heavy arm, which has not been
+chosen") and §8 ("which has not been written") were true when written and are
+not now. `PRE-REGISTRATION.md` §5.1 names and pins three corpora, by the §5
+amendment logged in its §8 on 2026-10-06 and corrected on 2026-10-07. That
+landed in kindspec/blockspec#11 and #12, which changed `PRE-REGISTRATION.md`
+only and wrote no entry here; this is that entry.
+
+**What has not changed:** the arm has not been run, and §6.2 still holds —
+it names those corpora as the short, repeated-block shape TLLC cannot
+adjudicate, so the arm needs a superseding oracle statement before its prose numbers can be
+believed. Whether to write a superseding pre-registration before running
+blockspec#2, or to run it under the current one as it stands, is an open owner
+decision. This file records it as open and decides neither way.
+
+### kindspec/research#5 is closed
+
+§2.2 says D8 §3.3's prose-uniqueness table is "under re-verification". It is
+not: research#5 closed 2026-09-11, and kindspec/research#7 made the table
+reproducible — `e4_uniqueness.py` now takes `minlen`, and its output is
+committed as `experiments/D8-identity/results-e4.txt`. §2.2's conclusion
+stands: nothing in this spike cites or depends on that figure.
+
+### §6.1's "85 candidates" counts records, not cases
+
+"44 of the 85 candidates" in §6.1 is a count of **records** in
+`results/merge-arm-candidates.jsonl` — one per mis-resolved base block per
+policy — not of merge cases. Elsewhere in this file "candidate" means a
+both-sides `.md` path (§7's 224), so the word is carrying two units. Counted
+from the committed file:
+
+```
+python3 -I -c "import json,collections
+r=[json.loads(l) for l in open('spike/results/merge-arm-candidates.jsonl')]
+print(len(r), collections.Counter(x['policy'] for x in r))
+print(len({x['case'] for x in r}), 'distinct cases')
+print(len({(x['case'],x['block_index']) for x in r}), 'distinct blocks')"
+
+85 Counter({'naive': 64, 'hard': 21})
+16 distinct cases
+64 distinct blocks
+```
+
+So: 85 records, over 64 distinct base blocks, from **16 distinct cases**, all
+`rust-book`. The single case §6.1 names contributes 44 of the 85 records.
