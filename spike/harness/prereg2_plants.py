@@ -40,7 +40,8 @@ E = "Emergency windows may open at any time with one hour's notice."
 PLANTS = {
     "P-A": (d("## Ingest service", L1 + "\n" + L2, "## Export service", EXP),
             d("## Ingest service", L1.replace("three", "five") + "\n" + L2,
-              "## Export service", EXP, L1 + "\n" + L2), 1, 1, 4),
+              "## Export service", EXP, "## Audit trail",
+              "Superseded Ingest wording, kept for audit:", L1 + "\n" + L2), 1, 1, 6),
     "P-B": (d("## Project Alpha", "Alpha moves sandbox telemetry into the shared pipeline.", ST,
               "## Project Beta", "Beta adds a conformance badge to the landscape.", ST),
             d("## Project Alpha", "Alpha was rescoped to cover only audit logs.", ST,

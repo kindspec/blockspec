@@ -37,7 +37,7 @@ all of them. To change one, edit the draft before it merges.
 16. **NEAR MISS is redefined (§6.7).** The first registration had two definitions: §3 says "four out of five is a near miss", and §6 says "NEAR MISS (tier C or D only)". Here a near miss is one of three named categories of decided mis-resolution. *Alternative:* carry over either first-registration definition.
 17. **The first run's 85 records are not tiered (§7.3).** This reverses `STATE.md` §2 item 3 (kindspec/.github `cb976f4906a1`), "tier the candidates, blind". *Alternative:* tier them blind as a separate export that carries no verdict.
 18. **Tiers are computed from answers, and one tier definition is adapted (§7.1, §7.2).** §7.2's rule defines the tier. The tier table is illustrative only. Tier A's "in both parents" becomes "before the edit", because E and S have one parent. *Alternative:* the first registration's wording with no adaptation, which leaves A undefined for E and S.
-19. **The tierer model is pinned to `claude-opus-5-5`, tiering starts within 14 days of the scoring-arm commit, and there is one tiering run (§7.3).** If the pinned model is not served on the start day, the tierer is the most recent `claude-opus-*` model the Models API lists that day, logged. *Alternative:* the harness's default fresh agent, with its identity logged.
+19. **The tierer model is pinned to `claude-opus-5-5`, tiering runs within 14 days of the scoring-arm commit, and there is one tiering run (§7.3).** The start day is the first UTC calendar day after the scoring-arm commit's committer date. If the pinned model is not served on the start day, the tierer is the most recent `claude-opus-*` model the Models API lists that day, logged. *Alternative:* the harness's default fresh agent, with its identity logged.
 20. **The packet's reference is the quote text or the name only (§7.3).** *Alternative:* export the full selector (prefix, suffix, offset, status), whose context can let a reader see the mis-resolution.
 
 **The two cases SPLIT would dispose of.** Both are D8 `line_oracle` cases from
@@ -469,14 +469,18 @@ exported none are unaffected.
   blockspec checkout. That is the filesystem barrier of org contract §2.1. The
   network barrier depends on the agent following its prompt, and is honoured,
   not enforced.
-- **Start.** Tiering starts within 14 days of the scoring-arm commit. If the
-  pinned model is not served on the start day, the tierer is the most recent
-  `claude-opus-*` model that the Models API lists that day, and it is logged.
-  A later start is logged with its reason and changes nothing else.
+- **Start.** The start day is the first UTC calendar day after the
+  scoring-arm commit's committer date. If the pinned model is not served on
+  the start day, the tierer is the most recent `claude-opus-*` model that the
+  Models API lists on that day. The choice is logged, and it holds however
+  late tiering actually runs. Tiering runs within 14 days of the scoring-arm
+  commit. A later run is logged with its reason and changes nothing else.
 - **Runs.** The first run's `tiers.jsonl` binds and is committed as written.
   At most one rerun is allowed, and only if the first run wrote zero lines.
-  Any other untiered packet, plants included, is UNPLACEABLE, and an untiered
-  plant does not void the tiering. Every run's transcript is committed.
+  Any real packet still untiered after that makes every cell that exported it
+  NO VERDICT, so a truncated run cannot turn a FOUND into a NOT FOUND. An
+  untiered plant cannot be checked, so it voids the tiering just as a
+  misplaced plant does. Every run's transcript is committed.
 - **Disqualification.** Whoever ran an arm may not tier.
 
 **What `LOG.md` records:** the export manifest (sha256 of each file), the
@@ -565,8 +569,9 @@ found after the validation commit is a gap.
   - **Arm 0 bar.** A planted corpus over 10% stops its arm.
   - **Export validator.** It rejects a packet that carries a count.
   - **Void rule.** It fires on a plant that crosses the B/C line, and on a plant
-    whose question 3 or question 4 answer mismatches. It does not fire on A↔B
-    confusion.
+    whose question 3 or question 4 answer mismatches. It also fires on an
+    untiered plant. It does not fire on A↔B confusion. A truncated
+    `tiers.jsonl` makes the cells of the untiered real packets NO VERDICT.
   - **Aggregator.** Empty input gives no verdict and exits non-zero.
 - **V4.** A mutation sweep over the new gates, in the style of
   `armed_check.sh`. Each mutation is hash-verified, and a mutation that does
@@ -659,12 +664,19 @@ Before:
 
     Exports are written to the archive bucket nightly.
 
-After: Ingest's first line reads `five` in place of `three`, and the
-unchanged two-line block is appended after the Export paragraph, under Export.
+After: Ingest's first line reads `five` in place of `three`. A new section
+follows the Export paragraph:
+
+    ## Audit trail
+
+    Superseded Ingest wording, kept for audit:
+
+    Failed jobs are retried three times
+    before an alert is raised.
 
 - Anchored block: 1.
 - TLLC: `SURVIVED`, target 1 (Ingest's edited block).
-- Hardened resolver: `EXACT`, target 4 (the copy under Export).
+- Hardened resolver: `EXACT`, target 6 (the copy under Audit trail).
 - REPEAT: decided.
 
 **P-B.** Expected answers: q1 yes, q2 no, q3 no, q4 no. Expected tier: **B**.
