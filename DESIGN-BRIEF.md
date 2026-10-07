@@ -43,12 +43,19 @@ is never committed.
 rowspec, and it is measured, not aesthetic:
 
     corpus           minlen  prose blocks  dup in file
-    rust-book            40          2938    0 (0.00%)
-    obsidian-help        40          2515   16 (0.64%)
+    rust-book            40          2938    0 (0.0%)
+    obsidian-help        40          2526   16 (0.6%)
+
+From `research/design-findings/D8-identity.md` §3.3 (kindspec/research
+`0d64e6a`), whose figures are the committed harness output
+`experiments/D8-identity/results-e4.txt`, measured at the corpus commits D8 §3
+pins. That table is reproducible from kindspec/research#7 (`16e4765`) onward.
 
 A prose block of ≥40 characters is unique within its file in 100.0% of
-rust-book's blocks and 99.4% of obsidian-help's. **Code and raw HTML are not** —
-raw-HTML blocks in rust-book duplicate at 23.6% within a single file.
+rust-book's 2,938 prose blocks and 99.4% of obsidian-help's 2,526. **Code and
+raw HTML are not** — raw-HTML blocks in rust-book duplicate within a single file
+at 22.6% at ≥40, the threshold of the table above (23.6% is the same
+measurement at the script's default ≥20).
 
 The residual ambiguity is *detectable at resolve time*: the resolver reads the
 whole file and sees two matches, so it becomes a loud error rather than a silent
@@ -104,8 +111,9 @@ none.
 
 ## 4. Where the prior work lives
 
-The research, experiments and findings that produced the above are in the
-`working-git-backed-gws` design workspace: `D5-document-models.md` (syntax and
-model), `D8-identity.md` (the uniqueness measurements), `DESIGN.md` (the overall
-verdict), and rowspec's own `docs/rationale.md` (what was measured, and what was
-measured and found wanting).
+The research, experiments and findings that produced the above are in
+[kindspec/research](https://github.com/kindspec/research):
+`design-findings/D5-document-models.md` (syntax and model),
+`design-findings/D8-identity.md` (the uniqueness measurements), `DESIGN.md` (the
+overall verdict); and in rowspec's own `docs/rationale.md` (what was measured,
+and what was measured and found wanting). Cite them by path and commit.
