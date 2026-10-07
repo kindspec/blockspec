@@ -286,6 +286,128 @@ permitted; an amendment changing §3 or §4 is not.
 **Exclusion, stated now:** a corpus whose history is predominantly single-author
 or bot-generated is out, because the concurrent case is the thing being tested.
 
+### 5.1 Corpora named 2026-10-06, before the arm runs
+
+This subsection is itself a measurement — of candidate corpora, not of the
+merge behaviour §3 is about. §5's "before any measurement runs" means the arm's
+own measurement, which has not run.
+
+**The metric is accepted cases, not both-sides pairs.** An earlier draft of this
+subsection ranked candidates on how often the same `.md` file is changed on both
+sides of a two-parent merge, and said that is what `find_merge_cases` selects.
+It is not. The function then drops convergent identical edits, add/add, and
+delete/modify, and those drops are most of the population in a corpus that
+syncs. Running the harness's own classification at the registered pins:
+
+    corpus                both-sides  convergent  add/add+del  ACCEPTED
+    github/site-policy          1321        1193           50        78
+    cncf/toc                     100          20            9        71
+    kubernetes/website            17           2            1        14   (400 merges)
+    rust-book (control)          190           3            8       179
+
+`site-policy` loses 90% of its headline figure to convergent identical edits.
+Ranked on what the harness will actually evaluate, its 43.6% both-sides ratio
+buys 78 cases against `cncf/toc`'s 71 — not 13× more, within 10%. Both are below
+the control's 179.
+
+**Merge author is a weak proxy, and it misleads in both directions.** Of the
+accepted cases, by the author of the merge commit:
+
+    corpus                ACCEPTED   human-authored merge   bot-authored merge
+    github/site-policy          78                     29                   49
+    cncf/toc                    71                     71                    0
+    kubernetes/website          14                      1                   13
+
+Taken at face value that makes `kubernetes/website` the worst candidate. It is
+the opposite, and the merge subjects say why:
+
+    kubernetes-prow[bot] | Merge pull request #57833 from xirehat/57743
+    site-policy-bot      | Merge branch 'main' into automated-sync-25245277497
+
+Kubernetes merges every human pull request through Prow, so a bot-authored merge
+there carries human content — only the button is automated. `site-policy` is a
+one-way mirror of another repository, and `site-policy-bot` is merging its own
+generated export branch back into `main`. The same label covers a bot that
+merges people's work and a bot that merges its own, and only the second is
+disqualifying. Whoever extends this arm should classify on what produced the
+*content*, not on who recorded the merge.
+
+**Chosen, and pinned:**
+
+| corpus | source | pin | shape |
+|---|---|---|---|
+| `k8s-website` | `github.com/kubernetes/website` | `6b27baef1e44275fd4368e14375296e1dfe5af11` | i18n |
+| `cncf-toc` | `github.com/cncf/toc` | `144c2e3215884e498e744cc51e6b7cef82d654f1` | governance minutes |
+| `site-policy` | `github.com/github/site-policy` | `b9578b546d2506febda1da2cd7431644d58e512c` | legal and policy text |
+
+Ranked by evaluable human-authored cases, which is the ranking that survived
+measurement:
+
+- **`k8s-website` is the largest arm.** 14 accepted in the 400 most recent of
+  23,473 two-parent merges, essentially all human content through Prow.
+  Extrapolated, roughly 800 accepted cases over full history — more than four
+  times the control. **That figure is an extrapolation from a 400-merge sample
+  and is labelled as one;** enumerate the full history before quoting it. Treat
+  it as an **upper** estimate: the sample is the most *recent* 400 rather than a
+  random 400, and the translation volume that drives the rate is itself recent,
+  so the full-history rate is probably lower.
+- **`cncf-toc` is the cleanest arm.** 71 accepted, every one a human-authored
+  merge, no bot involvement at all, and it is the minutes shape §2.2 names
+  first. The smallest absolute count of the three and the least ambiguous.
+- **`site-policy` is the smallest real contribution and stays as a supporting
+  arm.** Of its 78 accepted cases, 49 are authored by the bot. Filtering there
+  would be filtering by merge author, which the paragraph above calls the wrong
+  classifier, so the remaining 29 were checked by subject: **four are still the
+  `automated-sync` export shape with a person on the button**, and four more are
+  `repo-sync`. That leaves **25** on the stricter reading, or **21** if
+  `repo-sync` is also a sync rather than two parties authoring — which needs the
+  diffs read and has not been. So this arm brings somewhere between 21 and 25
+  cases, not 1321 and not 29. The shape is exactly what §2.2 predicted and
+  nothing else in the candidate set has it, which is why it stays; a result
+  quoted from this arm must say which cases it used.
+
+Pins are recorded because a corpus that moves between registration and run turns
+drift into a finding; §3.2's `obsidian-help` arm is what that costs.
+
+**§5's bot exclusion, re-run on the right denominator.** The exclusion is for a
+corpus "predominantly single-author or bot-generated", and it exists because the
+concurrent case is the thing being tested — so the population that matters is
+the cases the arm selects, not the commit log. An earlier draft cleared
+`site-policy` on commit share (32% bot) while the arm selects on merge pairs,
+where the bot is 1174 of 1321, or 89%. That is a guard measured on a denominator
+the selection does not use, which is one of the shapes this project keeps
+catching in itself. On accepted cases the bot share is 63%, which is why
+`site-policy` is demoted rather than primary. It is not excluded outright
+because its 29 human cases are real and are the only legal-text coverage
+available.
+
+**Author count does not predict concurrency.** 46 authors at `site-policy`
+against 6,706 at `kubernetes/website` settles that much, and it is worth
+recording because §5 as registered asked for "real multi-author git history",
+which selected for the wrong property. What this arm needs is documents that get
+edited together. The stronger claim — that the relation is close to inverse — is
+not supported: ordered by author count the ratios go 46 → 43.6%, 523 → 0.5%,
+711 → 1.3%, 6,706 → 0.015%, which is not monotone.
+
+**Excluded, with the reason:**
+
+- **`python/peps`** — excluded on volume. Over `.md` and `.rst` it has one
+  both-sides path; over all paths, including the `.txt` era that covers most of
+  its history, 11 both-sides against 807 one-side, a ratio of 1.3% that is
+  slightly *above* the control's 1.1%. So it is not that PEPs have no
+  concurrency — that reading was an artefact of the extension filter. Eleven
+  pairs cannot carry an arm, and that is the reason. Recorded because §5 named
+  proposal repositories first and the measurement refused them.
+- Any corpus predominantly single-author or bot-generated, per the exclusion
+  above, measured on the cases the arm selects.
+
+**How these were measured.** `git rev-list --merges`, then per merge
+`merge-base --all` (skipping multiple bases), `diff --name-only base parent` on
+both sides for the shared paths, then `show` on base and both parents to apply
+the harness's convergent and add/add and delete/modify drops. `cncf/toc` reports
+100 both-sides here against 101 by the cruder count, the difference being one
+merge dropped at `multi_base` before counting.
+
 ## 6. What each outcome publishes as
 
 Both are deliverables. Neither is a failure.
@@ -346,6 +468,7 @@ where they are inconvenient.
 
 | date | section | change | reason |
 |---|---|---|---|
+| 2026-10-06 | §5 | Named and pinned three duplicate-heavy corpora — `kubernetes/website`, `cncf/toc`, `github/site-policy` — ranked by evaluable human-authored cases. `python/peps` excluded on volume. §5.1 carries the measurement. | The corpus-list amendment §5 requires and §8 permits, made before the arm runs. A first draft of §5.1 ranked on both-sides pairs and claimed that is what `find_merge_cases` selects; it is not, and running the harness's own classification cut `site-policy` from 1321 to 78 accepted, 49 of those being a bot merging its own sync branch. The ranking inverted. Also corrected: the bot exclusion had been cleared on commit share while the arm selects on merge pairs, and merge author turned out to be a proxy that misleads in both directions. |
 | 2026-09-10 | §1, §8.2 | Withdrew the claim that the old `obsidian-help` bucket line "cannot be reconciled per-bucket"; it reconciles at `a3985b58` as `2+78+90+212+2 = 384`, the line having been truncated to its three largest buckets. Qualified the 885 reconciliation as pin-dependent. | Reproduced by the spike harness at `a3985b58`, not at §3's pin — see kindspec/research#8, which corrects the same conflation. A correction that itself carried two false claims. |
 | 2026-09-09 | §5 | `cmspec` promoted from held-out to full control arm; `rust-book` named the strongest control and `obsidian-help` demoted to a mechanism control. | The re-run shows `cmspec` was measured in both arms, not skipped; the skipped arm is `obsidian-help` gap=25. `obsidian-help` has moved since D8 ran. This is the corpus-list amendment §8 expressly permits, made before measurement begins. |
 | 2026-09-09 | §1 | The claim narrowed from "not one is typed `prose`, in either strategy, in any arm" to "not one is typed `prose` under the **hardened** policy, in any of the five measuring arms" — naive now has one. Table replaced with committed harness output. | kindspec/research#3 re-ran the harness and committed its output for the first time; `obsidian-help` has moved and one naive silent-wrong is now typed `prose`. Forced by evidence outside this spike, before this spike measured anything. See kindspec/blockspec#7. |
