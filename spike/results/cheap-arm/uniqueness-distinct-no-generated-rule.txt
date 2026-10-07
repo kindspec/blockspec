@@ -1,0 +1,108 @@
+
+### k8s-website  files=8259  blocks>=20ch=281173
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code       27965      2207 ( 7.9%)         19914 ( 71.2%)  |      13265        352     5214
+heading    41780      3238 ( 7.8%)         19100 ( 45.7%)  |      27917        335     5237
+html       51587     11915 (23.1%)         24781 ( 48.0%)  |      29043        933     2237
+list       30218      6336 (21.0%)         10519 ( 34.8%)  |      22002        879     2303
+prose     128992      5021 ( 3.9%)         20775 ( 16.1%)  |     115140       1309     6923
+table        631         0 ( 0.0%)            84 ( 13.3%)  |        577          0       30
+
+### k8s-website-en  files=2513  blocks>=20ch=82316
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code        7435       503 ( 6.8%)           832 ( 11.2%)  |       6941        206      338
+heading    13242      2022 (15.3%)          4564 ( 34.5%)  |       8989         17      311
+html       12344      3105 (25.2%)          9614 ( 77.9%)  |       3411        321      681
+list        6662       386 ( 5.8%)           858 ( 12.9%)  |       6041        116      237
+prose      42429       979 ( 2.3%)          3069 (  7.2%)  |      40240        244      880
+table        204         0 ( 0.0%)             2 (  1.0%)  |        203          0        1
+
+### cncf-toc  files=598  blocks>=20ch=24796
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code          60         0 ( 0.0%)             4 (  6.7%)  |         58          0        2
+heading     5330        55 ( 1.0%)          2406 ( 45.1%)  |       3374         14      450
+html         588       216 (36.7%)           266 ( 45.2%)  |        338          7       16
+list        5635        18 ( 0.3%)          1517 ( 26.9%)  |       4434          9      316
+prose      12844       173 ( 1.3%)          1789 ( 13.9%)  |      11673         46      618
+table        339         0 ( 0.0%)            16 (  4.7%)  |        331          0        8
+
+### site-policy  files=61  blocks>=20ch=2235
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code           4         0 ( 0.0%)             2 ( 50.0%)  |          3          0        1
+heading      491         0 ( 0.0%)            25 (  5.1%)  |        478          0       12
+html           9         0 ( 0.0%)             8 ( 88.9%)  |          3          0        2
+list         256         0 ( 0.0%)             8 (  3.1%)  |        252          0        4
+prose       1470        12 ( 0.8%)            60 (  4.1%)  |       1437          4       27
+table          5         0 ( 0.0%)             0 (  0.0%)  |          5          0        0
+
+### k8s-website  files=8259  blocks>=40ch=237313
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code       25208      1582 ( 6.3%)         17403 ( 69.0%)  |      12555        282     4750
+heading    17553       422 ( 2.4%)          5783 ( 32.9%)  |      14325        196     2555
+html       49997     11198 (22.4%)         23802 ( 47.6%)  |      28296        846     2101
+list       24745      3255 (13.2%)          6724 ( 27.2%)  |      19828        566     1807
+prose     119180      3255 ( 2.7%)         16892 ( 14.2%)  |     108405        959     6117
+table        630         0 ( 0.0%)            84 ( 13.3%)  |        576          0       30
+
+### k8s-website-en  files=2513  blocks>=40ch=70696
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code        6820       363 ( 5.3%)           617 (  9.0%)  |       6475        156      272
+heading     4969        13 ( 0.3%)           316 (  6.4%)  |       4735          6       82
+html       12296      3103 (25.2%)          9587 ( 78.0%)  |       3388        320      679
+list        6304       298 ( 4.7%)           746 ( 11.8%)  |       5759         89      201
+prose      40104       482 ( 1.2%)          2062 (  5.1%)  |      38774        172      732
+table        203         0 ( 0.0%)             2 (  1.0%)  |        202          0        1
+
+### cncf-toc  files=598  blocks>=40ch=20620
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code          57         0 ( 0.0%)             4 (  7.0%)  |         55          0        2
+heading     2264         2 ( 0.1%)           735 ( 32.5%)  |       1703          1      174
+html         363         8 ( 2.2%)            53 ( 14.6%)  |        322          4       12
+list        5471        18 ( 0.3%)          1442 ( 26.4%)  |       4328          9      299
+prose      12126       121 ( 1.0%)          1580 ( 13.0%)  |      11101         39      555
+table        339         0 ( 0.0%)            16 (  4.7%)  |        331          0        8
+
+### site-policy  files=61  blocks>=40ch=1799
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code           4         0 ( 0.0%)             2 ( 50.0%)  |          3          0        1
+heading      139         0 ( 0.0%)             6 (  4.3%)  |        136          0        3
+html           1         0 ( 0.0%)             0 (  0.0%)  |          1          0        0
+list         238         0 ( 0.0%)             8 (  3.4%)  |        234          0        4
+prose       1412         9 ( 0.6%)            55 (  3.9%)  |       1382          3       25
+table          5         0 ( 0.0%)             0 (  0.0%)  |          5          0        0
+
+### k8s-website  files=8259  blocks>=120ch=141659
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code       12657       247 ( 2.0%)          7311 ( 57.8%)  |       7585         59     2239
+heading     1790        42 ( 2.3%)           355 ( 19.8%)  |       1599         21      164
+html       36948      4076 (11.0%)         15576 ( 42.2%)  |      22818        481     1446
+list       14313       313 ( 2.2%)          1747 ( 12.2%)  |      13241        100      675
+prose      75330       795 ( 1.1%)          5816 (  7.7%)  |      72066        271     2552
+table        621         0 ( 0.0%)            84 ( 13.5%)  |        567          0       30
+
+### k8s-website-en  files=2513  blocks>=120ch=48922
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code        3760        79 ( 2.1%)           175 (  4.7%)  |       3670         38       85
+heading      724         0 ( 0.0%)             2 (  0.3%)  |        723          0        1
+html       11513      2756 (23.9%)          9077 ( 78.8%)  |       3045        318      609
+list        4485        64 ( 1.4%)           255 (  5.7%)  |       4297         12       67
+prose      28241        85 ( 0.3%)           787 (  2.8%)  |      27784         33      330
+table        199         0 ( 0.0%)             2 (  1.0%)  |        198          0        1
+
+### cncf-toc  files=598  blocks>=120ch=14998
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code          43         0 ( 0.0%)             4 (  9.3%)  |         41          0        2
+heading      930         0 ( 0.0%)           185 ( 19.9%)  |        799          0       54
+html         303         0 ( 0.0%)            27 (  8.9%)  |        281          0        5
+list        4130         8 ( 0.2%)           710 ( 17.2%)  |       3594          4      174
+prose       9261        36 ( 0.4%)           976 ( 10.5%)  |       8642         17      357
+table        331         0 ( 0.0%)            16 (  4.8%)  |        323          0        8
+
+### site-policy  files=61  blocks>=120ch=1399
+type           n   dup in same file   dup anywhere in corpus | distinct: n  same file   corpus
+code           1         0 ( 0.0%)             0 (  0.0%)  |          1          0        0
+heading        4         0 ( 0.0%)             0 (  0.0%)  |          4          0        0
+html           1         0 ( 0.0%)             0 (  0.0%)  |          1          0        0
+list         215         0 ( 0.0%)             6 (  2.8%)  |        212          0        3
+prose       1173         0 ( 0.0%)            46 (  3.9%)  |       1149          0       22
+table          5         0 ( 0.0%)             0 (  0.0%)  |          5          0        0

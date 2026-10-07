@@ -705,3 +705,371 @@ print(len({(x['case'],x['block_index']) for x in r}), 'distinct blocks')"
 
 So: 85 records, over 64 distinct base blocks, from **16 distinct cases**, all
 `rust-book`. The single case §6.1 names contributes 44 of the 85 records.
+
+## 2026-10-07 — §12. The cheap arm: D8's anchor and uniqueness drivers on the §5.1 corpora
+
+**This decides nothing.** It is input to a superseding pre-registration that has
+not been written. No tier is assigned, no verdict is drawn, and nothing below is
+read against §3's FOUND conditions or §1's control gate. `PRE-REGISTRATION.md`
+and `ORACLE.md` are untouched.
+
+### What was run
+
+D8's single-edit anchor analysis (`anchor_eval3.py`: anchor a block at `C_i`,
+re-resolve it at `C_{i+gap}` of the same file, grade against D8's line oracle)
+and its quote-uniqueness measurement (`e4_uniqueness.py`), on the three corpora
+`PRE-REGISTRATION.md` §5.1 names, at its pins:
+
+| name | source | pin |
+|---|---|---|
+| `k8s-website` | `github.com/kubernetes/website` | `6b27baef1e44275fd4368e14375296e1dfe5af11` |
+| `cncf-toc` | `github.com/cncf/toc` | `144c2e3215884e498e744cc51e6b7cef82d654f1` |
+| `site-policy` | `github.com/github/site-policy` | `b9578b546d2506febda1da2cd7431644d58e512c` |
+
+Full working-tree clones checked out at the pin. The mechanism is
+kindspec/research at `d51ce09cdb23af32f35e7a3c6111ac21ab0f033f`, unmodified.
+
+```sh
+CORPORA=/path/to/clones \
+D8_DIR=/path/to/research/experiments/D8-identity \
+  spike/harness/run_cheap_arm.sh
+```
+
+`harness/run_cheap_arm.sh` runs three stages and stops on the first failure;
+`harness/d8_cheap_arm.py` is the driver. Outputs are in `results/cheap-arm/`.
+
+### The adaptation, and what it does not touch
+
+Both originals hardcode `corpora/rust-book`, `corpora/obsidian-help` and
+`corpora/cmspec` relative to the working directory, so they cannot be pointed
+anywhere else. `d8_cheap_arm.py` **imports** the mechanism (`blocks`,
+`anchor_of`, `git`, `line_oracle`, `reanchor2`, `btype`) from `--d8-dir` and
+**copies only the two driver loops**, `anchor_eval3.run()` with its printer and
+`e4_uniqueness.py`'s top-level loop. Changed in the copies, and nothing else:
+
+1. The corpus is `--corpus NAME REPO PIN PATHSPEC`. Headers print `NAME` where
+   the originals printed `basename(repo)`.
+2. The file list is D8's rule (`git ls-files PATHSPEC`, keep `*.md`, in that
+   order), minus generated files under `--generated-rule` (`none`, the default,
+   leaves D8's list unchanged; `anywhere` and `yaml-fence` are described below
+   and in §12.1).
+3. `--frontmatter-type` (off by default) labels blocks inside a leading YAML
+   fence `frontmatter` instead of calling `btype()`. This is D8 §11 item 8's
+   missing rule. It changes labels only, because `reanchor2()` never sees a type.
+4. `--gaps` (default `5,25`, as D8), `--show-wrong` (off by default; prints
+   each silent-wrong, as D8 §3.2 quotes its own), and `--distinct` (off by
+   default; adds the uniqueness counts over distinct block contents).
+5. It fails loudly: exit 2 on a missing or non-git corpus, a HEAD that is not
+   the stated pin, tracked changes in the work tree (the uniqueness arm reads
+   the work tree), an empty selection, a corpus that yields no blocks, or an
+   anchor run that evaluates no version pair at any gap; exit 1 if an arm raised.
+   e4's silent skip of unreadable files is printed whenever it is non-zero.
+   None fired on these corpora.
+
+It never writes bytecode, so the research checkout is not modified.
+
+### Validation, before any new corpus was read
+
+**Stage 1. Byte-identical reproduction** (`results/cheap-arm/validation.txt`).
+At D8 §3's pins (`rust-book` `1500248d…`, `obsidian-help` `327a782e…`,
+`cmspec` `3da93942…`, which are **not** `harness/corpora.json`'s pins), the
+adapted driver's `uniqueness` at 20, 40 and 120, concatenated, is byte-identical
+to `results-e4.txt`, and its `anchors` output is byte-identical to
+`results-anchor3.txt`. The sha256s are equal and `cmp` is silent on both. The
+unmodified originals reproduce both artifacts too, run from a directory holding
+those clones.
+
+**Stage 2. Red states** (`results/cheap-arm/red-states.txt`).
+
+- *The originals' defect, shown* (kindspec/research#6). Run from a directory
+  with no `corpora/`, `e4_uniqueness.py 40` prints `files=0 blocks>=40ch=0` and
+  exits 0, and `anchor_eval3.py` prints six `too few (0)` lines and exits 0.
+- *The adapted driver, each way of reading nothing:* a missing path, a non-git
+  path, a HEAD that is not the pin, a tracked file modified in the work tree, a
+  pathspec that selects nothing (for both subcommands), files that yield zero
+  blocks, a corpus with no version pair at any gap, and a `--d8-dir` without
+  the scripts. **All nine exit 2.**
+- *The stage-1 gate, broken:* `anchors --frontmatter-type` on D8's corpora
+  relabels the YAML silent-wrong D8 §3.2 discusses, and `cmp` against
+  `results-anchor3.txt` reports `differ: byte 741, line 13`. So the gate can
+  see a single changed label.
+
+### The prose-subset rule
+
+Applied to all three corpora alike. **When this rule was set relative to when
+the first outputs were read is not recorded**: the rule, the runner and the
+outputs landed in one commit, and `selection-before-generated-rule.txt` is
+itself an output. Read it as a rule chosen by the person who ran the arm, not
+as a pre-registered one. §12.1 runs the alternatives.
+
+- **Root.** Use the directory the published site renders from where there is
+  one (`kubernetes/website`: `content/`). Otherwise use the whole repository.
+- **Minus forge metadata.** Drop `.github/` (issue and PR templates).
+- **Minus files that say they are generated** (`--generated-rule anywhere`). A
+  file is dropped when its text matches, anywhere in the file,
+  `^auto_generated:[ \t]*true[ \t]*$` (multiline, case-insensitive;
+  kubernetes/website's frontmatter key for generator output) or
+  `THIS FILE IS AUTO-GENERATED` (case-insensitive; cncf/toc's generator banner,
+  from `tags.yaml`). "Anywhere" is wider than "its own frontmatter": §12.1
+  counts the translations it drops only because they quote the English
+  frontmatter in an HTML comment.
+- **Nothing else.** Translations, archives (`cncf-toc/.archive/`) and templated
+  project documents stay in.
+
+`k8s-website-en` (`content/en/`, the English source) is reported **beside** the
+all-languages arm, not instead of it. §5.1 chose this corpus for its i18n shape,
+so dropping the translations would have dropped the reason for choosing it.
+
+From `results/cheap-arm/selection.txt` and `selection-before-generated-rule.txt`:
+
+| arm | pathspec | before generated rule | excluded as generated | measured |
+|---|---|---|---|---|
+| `k8s-website` | `content/*.md` | 8259 | 566 | **7693** |
+| `k8s-website-en` | `content/en/*.md` | 2513 | 305 | **2208** |
+| `cncf-toc` | `*.md :(exclude).github/` | 598 | 11 | **587** |
+| `site-policy` | `*.md :(exclude).github/` | 61 | 0 | **61** |
+
+Every excluded path is listed in `selection.txt`. These are excluded before the
+pathspec, by `git ls-files '*.md' | wc -l` at the pin less the pathspec's count:
+17 in `kubernetes/website` outside `content/` (`archetypes/`, root files,
+`.github/`, `static/`, `scripts/`, `update-imported-docs/`), 7 under `cncf/toc`'s
+`.github/`, and 2 under `site-policy`'s `.github/`.
+
+### Quote uniqueness: the prose rows
+
+**This section is the `anywhere` selection only, and like the anchor result it
+is not robust to the selection rule.** `anywhere` is one of three committed
+selections, not a default. For example, `k8s-website` prose at ≥40 has 481
+distinct within-file-duplicated contents under `anywhere`, 933 under
+`yaml-fence` and 959 under `none`. §12.1 has all three.
+
+`results/cheap-arm/uniqueness.txt`, D8's classifier, verbatim. The ≥40 rows
+are the threshold `DESIGN-BRIEF.md` §1 argues from:
+
+```
+### k8s-website     files=7693  blocks>=40ch=196405 | prose     110918      1524 ( 1.4%)         13358 ( 12.0%)
+### k8s-website-en  files=2208  blocks>=40ch=56643  | prose      37948       482 ( 1.3%)          1955 (  5.2%)
+### cncf-toc        files=587   blocks>=40ch=20532  | prose      12120       121 ( 1.0%)          1574 ( 13.0%)
+### site-policy     files=61    blocks>=40ch=1799   | prose       1412         9 ( 0.6%)            55 (  3.9%)
+```
+
+The columns are: prose blocks, duplicated within the same file, duplicated
+anywhere in the corpus. All three are **instance** counts. For comparison, D8's corpora at ≥40, from
+`results-e4.txt`: `rust-book` `prose 2938 0 ( 0.0%) 0 ( 0.0%)` and
+`obsidian-help` `prose 2526 16 ( 0.6%) 48 ( 1.9%)`. The 20 and 120 arms, and
+every non-prose row, are in the file.
+
+**Instances are not distinct authored blocks** (contract §4,
+`PRE-REGISTRATION.md` §7). A paragraph repeated within one file, in each of
+seventeen translated copies, is seventeen within-file instances. `--distinct`
+counts distinct block contents instead (`uniqueness-distinct.txt`, same
+selection). Its three columns are distinct prose contents, distinct contents
+duplicated within some file, and distinct contents duplicated anywhere in the
+corpus. At ≥40, verbatim:
+
+```
+k8s-website     | prose     110918      1524 ( 1.4%)         13358 ( 12.0%)  |     102489        481     4929
+k8s-website-en  | prose      37948       482 ( 1.3%)          1955 (  5.2%)  |      36701        172      708
+cncf-toc        | prose      12120       121 ( 1.0%)          1574 ( 13.0%)  |      11098         39      552
+site-policy     | prose       1412         9 ( 0.6%)            55 (  3.9%)  |       1382          3       25
+```
+
+So `k8s-website`'s 1524 within-file instances are **481 distinct contents**,
+and `cncf-toc`'s 121 are **39**. What those contents are (shortcodes,
+templated notes, or authored sentences) is not classified by any committed
+output.
+
+Typing frontmatter separately (`uniqueness-frontmatter.txt`) moves the ≥40
+prose rows to `k8s-website 101829 1524 ( 1.5%) 12059 ( 11.8%)` and
+`k8s-website-en 35143 482 ( 1.4%) 1923 ( 5.5%)`. The prose within-file counts
+do not change. That does not mean no within-file duplicate is frontmatter:
+`k8s-website` at ≥40 prints `frontmatter 9619 1`, and the heading row drops
+from 299 to 298 within-file duplicates. So the one duplicated frontmatter
+block had been typed `heading` by `btype()`, not `prose`.
+`cncf-toc` moves to `prose 12118 121 ( 1.0%)` and `site-policy` to
+`prose 1355 9 ( 0.7%)`.
+
+### Anchor resolution
+
+**This section is the `anywhere` selection only, and its result is not robust
+to the selection rule.** §12.1 has the other two selections.
+
+`results/cheap-arm/anchors.txt`, at gaps 1, 5 and 25. D8's sampling is
+unchanged: 14 files per corpus, 30 blocks per pair, `seed=7`, and an arm with
+fewer than 50 oracle-confident anchors prints `too few (N)` and is not scored.
+
+```
+### k8s-website content/*.md gap=1  pairs=30  oracle-confident anchors=407
+### k8s-website content/*.md gap=5: too few (36)
+### k8s-website content/*.md gap=25: too few (0)
+### k8s-website-en content/en/*.md gap=1  pairs=13  oracle-confident anchors=223
+### k8s-website-en content/en/*.md gap=5  pairs=10  oracle-confident anchors=203
+### k8s-website-en content/en/*.md gap=25  pairs=4  oracle-confident anchors=81
+### cncf-toc *.md :(exclude).github/ gap=1  pairs=16  oracle-confident anchors=385
+### cncf-toc *.md :(exclude).github/ gap=5  pairs=6  oracle-confident anchors=164
+### cncf-toc *.md :(exclude).github/ gap=25  pairs=4  oracle-confident anchors=52
+### site-policy *.md :(exclude).github/ gap=1  pairs=46  oracle-confident anchors=627
+### site-policy *.md :(exclude).github/ gap=5  pairs=16  oracle-confident anchors=178
+### site-policy *.md :(exclude).github/ gap=25: too few (0)
+```
+
+That is 9 scored arms of 12. Across them, the harness printed **8 silent-wrong
+records** (`anchors-silent-wrongs.txt` has each with its quote, the resolved
+block and the oracle's block). They come from **three distinct blocks**:
+
+- **`k8s-website` gap=1, naive and hard, typed `prose`.** The file is
+  `content/zh-cn/docs/reference/glossary/cri-o.md`, `24d17ed091..dcaafc7335`.
+  The file carries its English original in HTML comments after the real YAML
+  fence. At `C_i` the anchored block is the tail of that commented-out English
+  frontmatter (`aka:\ntags:\n- tool\n-->`), followed by the commented English
+  definition and its Chinese translation. At `C_j` those are two blocks. The
+  oracle names the first and `reanchor2` resolved to the second, `FUZZY` under
+  both policies. `--frontmatter-type` still types it `prose`, because the block
+  starts after the YAML fence closes.
+- **`cncf-toc` gap=5, naive only, typed `prose`, two records.** The file is
+  `projects/kserve/kserve-incubation-dd.md`, the same quoted text in two
+  version pairs. An adopter-interview reference line for Cloudera resolves
+  onto the near-identical line for Nutanix. The oracle's target is the Cloudera line
+  with its link rewritten. The hardened policy refuses it in both pairs as
+  `REFUSED_MARGIN`. That was checked by calling `reanchor2` on those two pairs,
+  and it is not in a committed file.
+- **`site-policy` gap=5, naive and hard, typed `heading`, four records.** The
+  file is `Policies/content-removal-policies/github-private-information-removal-policy.md`,
+  the same quoted text in two version pairs. A heading plus its first
+  paragraph becomes two blocks. The oracle names the heading and the anchor
+  resolved to the paragraph.
+
+So, under the `anywhere` selection, the hardened policy and D8's classifier, one
+scored arm prints a
+`prose`-typed silent-wrong (`k8s-website` gap=1, n=1). Two of the three blocks,
+including that one, are a block **split in two** between `C_i` and `C_j`.
+Whether resolving to either half is wrong is a question about the oracle, which
+this measurement does not settle.
+
+### What these numbers do not say
+
+- **Nothing about merges.** This is D8's version-skip arm: one file, two
+  commits, no `git merge`. `LOG.md` §9 is why that is still informative, and
+  it is all this is.
+- **Nothing about blocks under 20 characters.** Both drivers discard them, and
+  the anchor driver also discards quotes under 20. §6.2's undecidable shape is
+  *short* single-line repeated blocks. So the shape §11 says "has not been
+  measured" in these corpora **still has not been**. The uniqueness rows bound
+  duplication at ≥20 characters and nothing shorter.
+- **The anchor arms are thin.** 14 files per corpus is D8's sample size, kept
+  so the method is D8's. Over 7693 `k8s-website` files it is a small sample:
+  the all-languages arm scores only at gap=1, and its 14 sampled files include
+  translations with shallow history. Any rate from a 4- to 46-pair arm is
+  labelled by its pair count above, and should be quoted with it.
+- **Instance counts are not distinct authored blocks, in either column.**
+  `k8s-website` replicates content across 17 languages, and untranslated code
+  and identifiers count as corpus-wide duplicates. Each translated copy also
+  carries its own within-file duplicates, so the within-file column is
+  inflated too. Contract §4's trap applies to both. The distinct-content
+  columns remove duplication *within* a language, because the same bytes count
+  once. They do not remove replication *across* languages: a translated
+  paragraph has different bytes in each language and counts once per language
+  (`k8s-website` 481 against `k8s-website-en` 172). So they are not "distinct
+  authored blocks" in the contract §4 sense either.
+- **`btype()` is D8's.** Every type label above is the harness's, frontmatter
+  aside, and both runs are committed. Hugo shortcodes, HTML comments inside
+  translated files, and adopter reference lines all type as `prose`.
+- **The entropy predicate is word-based** (D8 §11 item 3). `k8s-website`
+  includes zh-cn, ja and ko, and the one hardened prose-typed silent-wrong
+  under the `anywhere` selection is in a zh-cn file. That is an observation, not a diagnosis. It was not
+  investigated further.
+- **No tier, no verdict, no comparison to §1's gate.** §1's gate is defined
+  over D8's five control arms, and these are not those arms.
+
+### §12.1 The anchor result is not robust to the selection rule
+
+Added after an independent review of §12. §12 above was corrected in place
+while unmerged: the claims about distinct blocks, about frontmatter
+duplicates and about when the rule was set, plus the regex text.
+
+**Why the rule moves the anchor result.** D8's sample is
+`Random(7).shuffle(files)[:14]`. Removing one file from the list re-draws all
+14. So the generated-file rule does more than drop generated files from the
+sample: it changes which human-authored files are drawn. Three selections are
+run and committed. **None is preferred here.** Which one to use belongs to the
+superseding pre-registration, along with whether 14 files is enough.
+
+| `--generated-rule` | what it drops | k8s-website | k8s-website-en | cncf-toc | site-policy |
+|---|---|---|---|---|---|
+| `none` | nothing (D8's list) | 8259 | 2513 | 598 | 61 |
+| `anywhere` | §12's rule | 7693 | 2208 | 587 | 61 |
+| `yaml-fence` | the k8s key only inside the leading YAML fence, the cncf banner anywhere | 7935 | 2208 | 587 | 61 |
+
+These counts come from `selection-before-generated-rule.txt`, `selection.txt`
+and `selection-yaml-fence-rule.txt`. **`yaml-fence` is post hoc**: it was
+written after `anywhere`'s outputs and the review had been read, and it is
+reported as a comparison, not as a correction. The two rules differ on
+**242** `k8s-website` files, all under `content/zh-cn/`. In each, the key
+appears only inside an HTML comment that quotes the English page's
+frontmatter, not in the file's own YAML. Checked over every occurrence of the
+key in those files. The count, run from `spike/results/cheap-arm/`:
+
+```
+$ python3 -I -c "
+import collections
+def ex(p):
+    out=set(); on=False
+    for l in open(p):
+        if l.startswith('### '): on=l.split()[1]=='k8s-website'
+        elif on and l.startswith('  - '): out.add(l[4:].rstrip())
+    return out
+d=ex('selection.txt')-ex('selection-yaml-fence-rule.txt')
+print(len(d), collections.Counter(f.split('/')[1] for f in d))"
+242 Counter({'zh-cn': 242})
+```
+
+**Reconciled with the review's 261.** Counted the same way over the
+`k8s-website` excluded lists in `selection.txt` and
+`selection-yaml-fence-rule.txt`:
+
+- `anywhere` drops 566 files: en 305, zh-cn 259, bn 1, ko 1.
+- `yaml-fence` drops 324 files: en 305, zh-cn 17, bn 1, ko 1.
+- Every `yaml-fence` drop is also an `anywhere` drop.
+
+261 is every non-English `anywhere` drop. It splits into the 242 above, which
+only `anywhere` drops and where the key sits only inside an HTML comment, and
+19 that both rules drop, where the key is in the file's own leading YAML
+fence. None of the 19 matches the banner.
+
+**Hardened, prose-typed silent-wrongs, per selection** (D8's classifier;
+`anchors.txt`, `anchors-no-generated-rule.txt`, `anchors-yaml-fence-rule.txt`;
+each record is quoted in the matching `anchors-silent-wrongs*.txt`):
+
+| selection | scored arms | silent-wrong records (blocks) | hardened, `prose`-typed |
+|---|---|---|---|
+| `none` | 8 of 12 | 7 (3): k8s gap=5 `html` (2 blocks), site-policy gap=5 `heading` | **0** |
+| `anywhere` | 9 of 12 | 8 (3): k8s gap=1 `prose`, cncf gap=5 `prose` (naive only), site-policy gap=5 `heading` | **1** |
+| `yaml-fence` | 10 of 12 | 6 (2): cncf gap=5 `prose` (naive only), site-policy gap=5 `heading` | **0** |
+
+**So whether this arm shows any hardened, prose-typed silent-wrong depends on
+which files are excluded before sampling.** The one §12 reports appears under
+one of the three selections only. The site-policy records are the only ones
+present in all three, because site-policy's file list is the same under every
+rule.
+
+**The uniqueness counts move too.** They read every selected file, so the
+change is in population, not sample. Prose at ≥40, from the three
+`uniqueness-distinct*.txt` files (instances, then distinct contents):
+
+```
+none        k8s-website  prose 119180  3255 ( 2.7%)  16892 ( 14.2%) | 108405  959  6117
+anywhere    k8s-website  prose 110918  1524 ( 1.4%)  13358 ( 12.0%) | 102489  481  4929
+yaml-fence  k8s-website  prose 116662  3122 ( 2.7%)  15600 ( 13.4%) | 106648  933  5586
+```
+
+`k8s-website-en` and `site-policy` are identical under `anywhere` and
+`yaml-fence`. `cncf-toc` is identical under those two and differs under `none`
+only by its 11 banner files (`prose 12126 121 ( 1.0%)`). The full tables are
+in the files.
+
+**Also added: a clean-tree check.** The uniqueness arm reads the work tree, not
+`HEAD`, so a pinned HEAD with modified tracked files would have measured
+something other than the pin. `check_corpus` now exits 2 on any tracked change
+(`git status --porcelain --untracked-files=no`), and `red-states.txt` shows it
+firing on a clone with one edited file. The six corpora were clean, and the
+`anywhere` outputs regenerate byte-identically with the check in place.

@@ -1,0 +1,44 @@
+
+### k8s-website content/*.md gap=1  pairs=24  oracle-confident anchors=378
+   block types: code=23 heading=54 html=128 list=27 prose=144 table=2
+   naive  correct  99.7%   LOUD-refusal   0.3%   SILENT-WRONG  0.00%  (n=0)
+   hard   correct  98.1%   LOUD-refusal   1.9%   SILENT-WRONG  0.00%  (n=0)
+
+### k8s-website content/*.md gap=5  pairs=13  oracle-confident anchors=259
+   block types: code=11 heading=42 html=95 list=21 prose=88 table=2
+   naive  correct  97.7%   LOUD-refusal   1.5%   SILENT-WRONG  0.77%  (n=2)  by type: html=2
+   hard   correct  89.2%   LOUD-refusal  10.4%   SILENT-WRONG  0.39%  (n=1)  by type: html=1
+### k8s-website content/*.md gap=25: too few (39)
+
+### k8s-website-en content/en/*.md gap=1  pairs=12  oracle-confident anchors=172
+   block types: code=21 heading=34 html=48 list=26 prose=43
+   naive  correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+   hard   correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+
+### k8s-website-en content/en/*.md gap=5  pairs=7  oracle-confident anchors=145
+   block types: code=27 heading=27 html=30 list=26 prose=35
+   naive  correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+   hard   correct  95.9%   LOUD-refusal   4.1%   SILENT-WRONG  0.00%  (n=0)
+### k8s-website-en content/en/*.md gap=25: too few (0)
+
+### cncf-toc *.md :(exclude).github/ gap=1  pairs=10  oracle-confident anchors=168
+   block types: heading=22 list=65 prose=81
+   naive  correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+   hard   correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+
+### cncf-toc *.md :(exclude).github/ gap=5  pairs=2  oracle-confident anchors=52
+   block types: heading=5 list=18 prose=29
+   naive  correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+   hard   correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+### cncf-toc *.md :(exclude).github/ gap=25: too few (49)
+
+### site-policy *.md :(exclude).github/ gap=1  pairs=46  oracle-confident anchors=627
+   block types: heading=123 html=2 list=102 prose=400
+   naive  correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+   hard   correct 100.0%   LOUD-refusal   0.0%   SILENT-WRONG  0.00%  (n=0)
+
+### site-policy *.md :(exclude).github/ gap=5  pairs=16  oracle-confident anchors=178
+   block types: heading=47 list=14 prose=117
+   naive  correct  98.9%   LOUD-refusal   0.0%   SILENT-WRONG  1.12%  (n=2)  by type: heading=2
+   hard   correct  98.9%   LOUD-refusal   0.0%   SILENT-WRONG  1.12%  (n=2)  by type: heading=2
+### site-policy *.md :(exclude).github/ gap=25: too few (0)
