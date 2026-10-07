@@ -346,7 +346,7 @@ where they are inconvenient.
 
 | date | section | change | reason |
 |---|---|---|---|
-| 2026-09-10 | §1, §8.2 | Withdrew the claim that the old `obsidian-help` bucket line "cannot be reconciled per-bucket"; it reconciles at D8's pin as `2+78+90+212+2 = 384`, the line having been truncated to its three largest buckets. Qualified the 885 reconciliation as pin-dependent. | Reproduced by the spike harness at D8's pin (kindspec/blockspec#8). A correction that itself carried a false claim, caught on review. |
+| 2026-09-10 | §1, §8.2 | Withdrew the claim that the old `obsidian-help` bucket line "cannot be reconciled per-bucket"; it reconciles at `a3985b58` as `2+78+90+212+2 = 384`, the line having been truncated to its three largest buckets. Qualified the 885 reconciliation as pin-dependent. | Reproduced by the spike harness at `a3985b58`, not at §3's pin — see kindspec/research#8, which corrects the same conflation. A correction that itself carried two false claims. |
 | 2026-09-09 | §5 | `cmspec` promoted from held-out to full control arm; `rust-book` named the strongest control and `obsidian-help` demoted to a mechanism control. | The re-run shows `cmspec` was measured in both arms, not skipped; the skipped arm is `obsidian-help` gap=25. `obsidian-help` has moved since D8 ran. This is the corpus-list amendment §8 expressly permits, made before measurement begins. |
 | 2026-09-09 | §1 | The claim narrowed from "not one is typed `prose`, in either strategy, in any arm" to "not one is typed `prose` under the **hardened** policy, in any of the five measuring arms" — naive now has one. Table replaced with committed harness output. | kindspec/research#3 re-ran the harness and committed its output for the first time; `obsidian-help` has moved and one naive silent-wrong is now typed `prose`. Forced by evidence outside this spike, before this spike measured anything. See kindspec/blockspec#7. |
 
@@ -396,15 +396,19 @@ misdiagnosed it and the misdiagnosis reached kindspec/research as well. The
 registered table showed `heading=78 list=90 prose=212` against a printed `384`,
 which does not sum, and both this section and D8 §3.2 concluded the figures
 "cannot be reconciled per-bucket at all". **They reconcile.** Re-running the
-harness at D8's pin prints the full bucket list:
+harness against `a3985b58` prints the full bucket list — that tree, not
+research §3's pin `327a782e`, which gives `anchors=343` and a different bucket
+list for the same arm:
 
     obsidian-help en/*.md gap=5  oracle-confident anchors=384
        block types: code=2 heading=78 list=90 prose=212 table=2
 
 `2+78+90+212+2 = 384`. The old line was **truncated to its three largest
 buckets**, not corrupted — which also disposes of the guess that a `code=4`
-bucket had gone missing. Filed against kindspec/research, whose merged text still
-carries the stronger claim.
+bucket had gone missing. kindspec/research#8 carries the same correction, and
+also corrects the tree: `a3985b58` is the commit the local corpus cache sat at,
+seven first-parent commits behind §3's pin. Two repositories used "pin" for two
+different trees, and this paragraph had the wrong one.
 
 §8.1 quotes §1 as registered, uncorrected, because that is what it actually
 said.
