@@ -667,12 +667,14 @@ amendment logged in its §8 on 2026-10-06 and corrected on 2026-10-07. That
 landed in kindspec/blockspec#11 and #12, which changed `PRE-REGISTRATION.md`
 only and wrote no entry here; this is that entry.
 
-**What has not changed:** the arm has not been run, and §6.2 still holds —
-it names those corpora as the short, repeated-block shape TLLC cannot
-adjudicate, so the arm needs a superseding oracle statement before its prose numbers can be
-believed. Whether to write a superseding pre-registration before running
-blockspec#2, or to run it under the current one as it stands, is an open owner
-decision. This file records it as open and decides neither way.
+**What has not changed:** the arm has not been run, and §6.2 still stands.
+§6.2 predates the corpus choice and characterises the duplicate-heavy arm in
+general: the corpora §5 calls for are the short, repeated-block shape TLLC
+cannot adjudicate, so that arm needs a superseding oracle statement before its
+prose numbers can be believed. Whether the three corpora §5.1 now names exhibit
+that shape has not been measured. Whether to write a superseding
+pre-registration before running blockspec#2, or to run it under the current one
+as it stands, is an open owner decision. This file records it as open and decides neither way.
 
 ### kindspec/research#5 is closed
 
@@ -688,15 +690,14 @@ stands: nothing in this spike cites or depends on that figure.
 `results/merge-arm-candidates.jsonl` — one per mis-resolved base block per
 policy — not of merge cases. Elsewhere in this file "candidate" means a
 both-sides `.md` path (§7's 224), so the word is carrying two units. Counted
-from the committed file:
+from the committed file, run from the repository root:
 
 ```
-python3 -I -c "import json,collections
+$ python3 -I -c "import json,collections
 r=[json.loads(l) for l in open('spike/results/merge-arm-candidates.jsonl')]
 print(len(r), collections.Counter(x['policy'] for x in r))
 print(len({x['case'] for x in r}), 'distinct cases')
 print(len({(x['case'],x['block_index']) for x in r}), 'distinct blocks')"
-
 85 Counter({'naive': 64, 'hard': 21})
 16 distinct cases
 64 distinct blocks
