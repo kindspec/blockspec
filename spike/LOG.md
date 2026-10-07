@@ -837,6 +837,12 @@ pathspec, by `git ls-files '*.md' | wc -l` at the pin less the pathspec's count:
 
 ### Quote uniqueness: the prose rows
 
+**This section is the `anywhere` selection only, and like the anchor result it
+is not robust to the selection rule.** `anywhere` is one of three committed
+selections, not a default. For example, `k8s-website` prose at ≥40 has 481
+distinct within-file-duplicated contents under `anywhere`, 933 under
+`yaml-fence` and 959 under `none`. §12.1 has all three.
+
 `results/cheap-arm/uniqueness.txt`, D8's classifier, verbatim. The ≥40 rows
 are the threshold `DESIGN-BRIEF.md` §1 argues from:
 
@@ -960,7 +966,11 @@ this measurement does not settle.
   and identifiers count as corpus-wide duplicates. Each translated copy also
   carries its own within-file duplicates, so the within-file column is
   inflated too. Contract §4's trap applies to both. The distinct-content
-  columns above are the counts that are not inflated.
+  columns remove duplication *within* a language, because the same bytes count
+  once. They do not remove replication *across* languages: a translated
+  paragraph has different bytes in each language and counts once per language
+  (`k8s-website` 481 against `k8s-website-en` 172). So they are not "distinct
+  authored blocks" in the contract §4 sense either.
 - **`btype()` is D8's.** Every type label above is the harness's, frontmatter
   aside, and both runs are committed. Hugo shortcodes, HTML comments inside
   translated files, and adopter reference lines all type as `prose`.
@@ -1013,8 +1023,18 @@ print(len(d), collections.Counter(f.split('/')[1] for f in d))"
 242 Counter({'zh-cn': 242})
 ```
 
-The review reported 261 (259 zh-cn) for the same question. That figure was not
-reproduced here, and the criterion behind it is not in the review's tools.
+**Reconciled with the review's 261.** Counted the same way over the
+`k8s-website` excluded lists in `selection.txt` and
+`selection-yaml-fence-rule.txt`:
+
+- `anywhere` drops 566 files: en 305, zh-cn 259, bn 1, ko 1.
+- `yaml-fence` drops 324 files: en 305, zh-cn 17, bn 1, ko 1.
+- Every `yaml-fence` drop is also an `anywhere` drop.
+
+261 is every non-English `anywhere` drop. It splits into the 242 above, which
+only `anywhere` drops and where the key sits only inside an HTML comment, and
+19 that both rules drop, where the key is in the file's own leading YAML
+fence. None of the 19 matches the banner.
 
 **Hardened, prose-typed silent-wrongs, per selection** (D8's classifier;
 `anchors.txt`, `anchors-no-generated-rule.txt`, `anchors-yaml-fence-rule.txt`;
