@@ -24,20 +24,28 @@ What changed in each copy, and nothing else:
      Headers print NAME where the original printed `os.path.basename(repo)`,
      so a corpus named as D8 names it prints D8's bytes.
   2. The file list comes from `select_files()`: D8's own rule
-     (`git ls-files PATHSPEC`, keep `*.md`, in ls-files order) minus, only when
-     --exclude-generated is given, files whose own text declares them generated.
-     Without that flag the list is D8's, element for element.
+     (`git ls-files PATHSPEC`, keep `*.md`, in ls-files order), minus files
+     that declare themselves generated under --generated-rule:
+       none        D8's list, element for element (the default)
+       anywhere    GENERATED_KEY or GENERATED_BANNER anywhere in the file
+       yaml-fence  GENERATED_KEY only inside the leading YAML fence, and
+                   GENERATED_BANNER anywhere (added after `anywhere` was run;
+                   see LOG.md §12.1)
+     The anchor sample is `Random(7).shuffle(files)[:14]`, so any change to
+     the list re-draws the whole sample.
   3. --frontmatter-type (off by default) types a block lying inside a leading
      YAML frontmatter fence as `frontmatter` instead of calling `btype()`.
      D8 §11 item 8: btype() has no frontmatter rule and calls it `prose`. It
      changes LABELS only -- reanchor2() never sees a type.
   4. --gaps (anchors; default 5,25 as D8) selects the version-skip gaps, and
      --show-wrong (off by default) prints each silent-wrong, as D8 §3.2 quotes
-     its own. Neither changes what is sampled or how it is scored.
+     its own, and --distinct (uniqueness, off by default) adds the same counts
+     over distinct block contents. None changes what is sampled or scored.
   5. It FAILS LOUDLY. The originals exit 0 printing `files=0` or
      `too few (0)` when run from the wrong directory (kindspec/research#6).
      This exits 2 on a missing or non-git corpus, on a HEAD that is not the
-     stated pin, on an empty selection, and on an arm that read nothing; and 1
+     stated pin, on tracked changes in the work tree (uniqueness reads it),
+     on an empty selection, and on an arm that read nothing; and 1
      on any arm that raised.
 
 Bytecode is not written: --d8-dir is a checkout this script must not modify.
@@ -48,7 +56,7 @@ import random
 import re
 import subprocess
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 
 sys.dont_write_bytecode = True
 
@@ -72,10 +80,19 @@ def load_d8(path):
 
 # ---------------------------------------------------------------- selection
 
-GENERATED = re.compile(
-    r"^auto_generated:[ \t]*true[ \t]*$"          # kubernetes/website frontmatter
-    r"|THIS FILE IS AUTO-GENERATED",               # cncf/toc generator banner
-    re.MULTILINE | re.IGNORECASE)
+GENERATED_KEY = re.compile(      # kubernetes/website frontmatter key
+    r"^auto_generated:[ \t]*true[ \t]*$", re.MULTILINE | re.IGNORECASE)
+GENERATED_BANNER = re.compile(   # cncf/toc generator banner
+    r"THIS FILE IS AUTO-GENERATED", re.IGNORECASE)
+
+
+def is_generated(text, rule):
+    if GENERATED_BANNER.search(text):
+        return True
+    if rule == "anywhere":
+        return bool(GENERATED_KEY.search(text))
+    end = frontmatter_end(text)
+    return end >= 0 and bool(GENERATED_KEY.search(text[:end]))
 
 
 def check_corpus(name, repo, pin):
@@ -90,16 +107,21 @@ def check_corpus(name, repo, pin):
         die(f"{name}: {repo} is inside a work tree rooted at {top}, not its root")
     if head != pin:
         die(f"{name}: HEAD is {head}, pinned at {pin}")
+    r = subprocess.run(["git", "-C", repo, "status", "--porcelain", "--untracked-files=no"],
+                       capture_output=True, text=True)
+    if r.returncode != 0 or r.stdout.strip():
+        die(f"{name}: work tree has tracked changes; uniqueness reads the work tree\n"
+            f"{r.stdout.strip()[:400]}")
 
 
-def select_files(name, repo, pathspec, exclude_generated):
+def select_files(name, repo, pathspec, rule):
     r = subprocess.run(["git", "-C", repo, "ls-files", *pathspec.split()],
                        capture_output=True, text=True)
     if r.returncode != 0:
         die(f"{name}: git ls-files failed: {r.stderr.strip()}")
     files = [f for f in r.stdout.split("\n") if f.endswith(".md")]
     excluded = []
-    if exclude_generated:
+    if rule != "none":
         keep = []
         for f in files:
             try:
@@ -107,7 +129,7 @@ def select_files(name, repo, pathspec, exclude_generated):
             except Exception:
                 keep.append(f)      # unreadable: uniqueness counts it as skipped
                 continue
-            (excluded if GENERATED.search(t) else keep).append(f)
+            (excluded if is_generated(t, rule) else keep).append(f)
         files = keep
     if not files:
         die(f"{name}: pathspec {pathspec!r} selects no .md files in {repo}")
@@ -214,6 +236,9 @@ def cmd_uniqueness(a, corpora):
     MINLEN = a.minlen
     for name, repo, pathspec, files in corpora:
         per_file_dup=Counter(); corpus=Counter(); tot=Counter(); nfiles=0; unreadable=0
+        # --distinct: the same counts over distinct block CONTENTS, not
+        # instances, so a block replicated across files counts once.
+        d_all=defaultdict(set); d_pf=defaultdict(set); d_cross=defaultdict(set)
         texts = {}
         for f in files:
             try: t=open(os.path.join(repo,f),encoding='utf-8').read()
@@ -222,20 +247,23 @@ def cmd_uniqueness(a, corpora):
             bs=[b for b in blocks(t) if len(b['content'])>=MINLEN]
             c=Counter(b['content'] for b in bs)
             for b in bs:
-                ty=typer(t,b); tot[ty]+=1
-                if c[b['content']]>1: per_file_dup[ty]+=1
+                ty=typer(t,b); tot[ty]+=1; d_all[ty].add(b['content'])
+                if c[b['content']]>1: per_file_dup[ty]+=1; d_pf[ty].add(b['content'])
                 corpus[b['content']]+=1
         cross=Counter()
         for f, t in texts.items():
             for b in blocks(t):
-                if len(b['content'])>=MINLEN and corpus[b['content']]>1: cross[typer(t,b)]+=1
+                if len(b['content'])>=MINLEN and corpus[b['content']]>1:
+                    ty=typer(t,b); cross[ty]+=1; d_cross[ty].add(b['content'])
         print(f"\n### {name}  files={nfiles}  blocks>={MINLEN}ch={sum(tot.values())}")
         if unreadable:
             print(f"unreadable files skipped: {unreadable}")
-        print(f"{'type':<9}{'n':>7}{'dup in same file':>19}{'dup anywhere in corpus':>25}")
+        print(f"{'type':<9}{'n':>7}{'dup in same file':>19}{'dup anywhere in corpus':>25}"
+              + (f"{'| distinct: n':>14}{'same file':>11}{'corpus':>9}" if a.distinct else ""))
         for ty in sorted(tot):
             n=tot[ty]
-            print(f"{ty:<9}{n:>7}{per_file_dup[ty]:>10} ({100*per_file_dup[ty]/n:4.1f}%){cross[ty]:>14} ({100*cross[ty]/n:5.1f}%)")
+            print(f"{ty:<9}{n:>7}{per_file_dup[ty]:>10} ({100*per_file_dup[ty]/n:4.1f}%){cross[ty]:>14} ({100*cross[ty]/n:5.1f}%)"
+                  + (f"  |{len(d_all[ty]):>11}{len(d_pf[ty]):>11}{len(d_cross[ty]):>9}" if a.distinct else ""))
         if nfiles == 0 or not tot:
             die(f"{name}: read {nfiles} files and {sum(tot.values())} blocks -- nothing measured")
 
@@ -261,7 +289,10 @@ def main():
                     help="kindspec/research experiments/D8-identity, unmodified")
     ap.add_argument("--corpus", nargs=4, action="append", required=True,
                     metavar=("NAME", "REPO", "PIN", "PATHSPEC"))
-    ap.add_argument("--exclude-generated", action="store_true")
+    ap.add_argument("--generated-rule", choices=("none", "anywhere", "yaml-fence"),
+                    default="none")
+    ap.add_argument("--distinct", action="store_true",
+                    help="uniqueness: add distinct-content columns")
     ap.add_argument("--frontmatter-type", action="store_true")
     ap.add_argument("--minlen", type=int, default=20)
     ap.add_argument("--gaps", default="5,25")
@@ -273,7 +304,7 @@ def main():
     corpora, excluded_by = [], {}
     for name, repo, pin, pathspec in a.corpus:
         check_corpus(name, repo, pin)
-        files, excluded = select_files(name, repo, pathspec, a.exclude_generated)
+        files, excluded = select_files(name, repo, pathspec, a.generated_rule)
         corpora.append((name, repo, pathspec, files))
         excluded_by[name] = excluded
     {"anchors": cmd_anchors, "uniqueness": cmd_uniqueness}.get(

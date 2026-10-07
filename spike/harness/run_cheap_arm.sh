@@ -20,8 +20,10 @@
 #                     results-anchor3.txt byte for byte at D8 §3's pins
 #   2. red states  -- the originals exit 0 on an empty run; the adapted
 #                     driver exits non-zero on each way of reading nothing
-#   3. the corpora -- selection census, uniqueness at 20/40/120, anchors at
-#                     gaps 1/5/25; each with D8's classifier and again with
+#   3. the corpora -- under each of three selection rules (none, anywhere,
+#                     yaml-fence): selection census, uniqueness at 20/40/120
+#                     with distinct-content counts, anchors at gaps 1/5/25.
+#                     The anywhere rule also runs with D8's classifier and with
 #                     frontmatter typed separately; and every silent-wrong
 #                     printed (anchors-silent-wrongs.txt)
 set -euo pipefail
@@ -42,7 +44,7 @@ D8_CORPORA=(
 )
 # The prose-subset rule (LOG.md §12): the directory the published site renders
 # from where there is one (kubernetes/website: content/), else the whole
-# repository; minus forge metadata (.github/); minus, by --exclude-generated,
+# repository; minus forge metadata (.github/); minus, by --generated-rule,
 # files whose own text declares them generated. k8s-website-en is the English
 # source alone, reported beside the all-languages arm, not instead of it.
 NEW_CORPORA=(
@@ -78,6 +80,8 @@ printf '# t\n\nOne paragraph of prose that is long enough to count.\n' > "$scrat
 git -C "$scratch/shallow" -c user.name=t -c user.email=t@t add a.md
 git -C "$scratch/shallow" -c user.name=t -c user.email=t@t commit -qm t
 SH=$(git -C "$scratch/shallow" rev-parse HEAD)
+git clone -q "$scratch/shallow" "$scratch/dirty"
+printf 'An uncommitted edit to a tracked file.\n' >> "$scratch/dirty/a.md"
 git init -q "$scratch/blank"
 : > "$scratch/blank/a.md"
 git -C "$scratch/blank" -c user.name=t -c user.email=t@t add a.md
@@ -111,6 +115,8 @@ run() {  # run <expect: zero|nonzero> <label> <cmd...>
     "${ARM[@]}" uniqueness --d8-dir "$D8" --corpus rust-book "$scratch/empty" $RB 'src/*.md'
   run nonzero "uniqueness: HEAD is not the stated pin" \
     "${ARM[@]}" uniqueness --d8-dir "$D8" --corpus rust-book "$CORPORA/rust-book" 917544888a55e4da7109bdba8c88c893c0da70f4 'src/*.md'
+  run nonzero "uniqueness: tracked file modified in the work tree" \
+    "${ARM[@]}" uniqueness --d8-dir "$D8" --corpus dirty "$scratch/dirty" "$SH" '*.md'
   run nonzero "uniqueness: pathspec selects nothing" \
     "${ARM[@]}" uniqueness --d8-dir "$D8" --corpus rust-book "$CORPORA/rust-book" $RB 'en/*.md'
   run nonzero "uniqueness: files read, zero blocks" \
@@ -136,16 +142,31 @@ cat "$r"
 [ "$fails" -eq 0 ] || { echo "red-state check failed -- stop" >&2; exit 1; }
 
 # ---- 3. the corpora ----------------------------------------------------------
-"${ARM[@]}" select --d8-dir "$D8" "${NEW_CORPORA[@]}" --exclude-generated > "$OUT/selection.txt"
+# The selection rule (--generated-rule) re-draws the anchor sample, which is
+# Random(7).shuffle(files)[:14]. All three rules are run and committed; none is
+# preferred here (LOG.md §12.1). `anywhere` keeps the original file names.
+#   none        no generated-file exclusion
+#   anywhere    the rule as first run
+#   yaml-fence  post hoc: the k8s key counts only inside the leading YAML fence
+"${ARM[@]}" select --d8-dir "$D8" "${NEW_CORPORA[@]}" --generated-rule anywhere > "$OUT/selection.txt"
 "${ARM[@]}" select --d8-dir "$D8" "${NEW_CORPORA[@]}" > "$OUT/selection-before-generated-rule.txt"
+"${ARM[@]}" select --d8-dir "$D8" "${NEW_CORPORA[@]}" --generated-rule yaml-fence > "$OUT/selection-yaml-fence-rule.txt"
 for fm in "" --frontmatter-type; do
   sfx=${fm:+-frontmatter}
   for n in 20 40 120; do
-    "${ARM[@]}" uniqueness --d8-dir "$D8" "${NEW_CORPORA[@]}" --exclude-generated $fm --minlen "$n"
+    "${ARM[@]}" uniqueness --d8-dir "$D8" "${NEW_CORPORA[@]}" --generated-rule anywhere $fm --minlen "$n"
   done > "$OUT/uniqueness$sfx.txt"
-  "${ARM[@]}" anchors --d8-dir "$D8" "${NEW_CORPORA[@]}" --exclude-generated $fm --gaps 1,5,25 \
+  "${ARM[@]}" anchors --d8-dir "$D8" "${NEW_CORPORA[@]}" --generated-rule anywhere $fm --gaps 1,5,25 \
     > "$OUT/anchors$sfx.txt"
 done
-"${ARM[@]}" anchors --d8-dir "$D8" "${NEW_CORPORA[@]}" --exclude-generated --frontmatter-type \
-  --gaps 1,5,25 --show-wrong > "$OUT/anchors-silent-wrongs.txt"
+for rule in anywhere none yaml-fence; do
+  case $rule in anywhere) sfx= ;; none) sfx=-no-generated-rule ;; yaml-fence) sfx=-yaml-fence-rule ;; esac
+  for n in 20 40 120; do
+    "${ARM[@]}" uniqueness --d8-dir "$D8" "${NEW_CORPORA[@]}" --generated-rule $rule --distinct --minlen "$n"
+  done > "$OUT/uniqueness-distinct$sfx.txt"
+  [ $rule = anywhere ] || "${ARM[@]}" anchors --d8-dir "$D8" "${NEW_CORPORA[@]}" --generated-rule $rule \
+    --gaps 1,5,25 > "$OUT/anchors$sfx.txt"
+  "${ARM[@]}" anchors --d8-dir "$D8" "${NEW_CORPORA[@]}" --generated-rule $rule --frontmatter-type \
+    --gaps 1,5,25 --show-wrong > "$OUT/anchors-silent-wrongs$sfx.txt"
+done
 ls -l "$OUT"
