@@ -286,6 +286,73 @@ permitted; an amendment changing §3 or §4 is not.
 **Exclusion, stated now:** a corpus whose history is predominantly single-author
 or bot-generated is out, because the concurrent case is the thing being tested.
 
+### 5.1 Named 2026-10-06, before any measurement
+
+Five candidates were measured on the only property this arm can use: how often
+the **same** prose file is changed on **both** sides of a two-parent merge.
+That is what `find_merge_cases` selects, so a corpus without it contributes
+nothing however duplicate-heavy its text looks.
+
+    corpus                 both-sides    one-side   ratio   authors  top  bot
+    github/site-policy           1321        1706   43.6%        46  19%  32%
+    rust-book (control)           190       16496    1.1%         -    -    -
+    cncf/toc                      101       18707    0.5%       523  18%  11%
+    kubernetes/website      17 of 400     113906    0.015%     6706  20%   1%
+    python/peps                     1          70       -        711   8%  10%
+
+`kubernetes/website` is the 400 most recent of 23,473 two-parent merges; the
+others are full history. "both-sides" counts `(merge, path)` pairs where the
+path changed against the merge base on both parents. Measured with `git
+rev-list --merges`, `merge-base` and `diff --name-only` per merge.
+
+**Chosen, and pinned:**
+
+| corpus | source | pin |
+|---|---|---|
+| `site-policy` | `github.com/github/site-policy` | `b9578b546d2506febda1da2cd7431644d58e512c` |
+| `cncf-toc` | `github.com/cncf/toc` | `144c2e3215884e498e744cc51e6b7cef82d654f1` |
+| `k8s-website` | `github.com/kubernetes/website` | `6b27baef1e44275fd4368e14375296e1dfe5af11` |
+
+They cover three of the five candidate shapes: legal and policy text, governance
+minutes, and i18n. Pins are recorded because a corpus that moves between the
+registration and the run turns a drift into a finding — §3.2's `obsidian-help`
+arm is what that costs.
+
+**Why `site-policy` is the primary arm.** Its ratio is 43.6%: nearly half the
+`.md` paths it touches in a merge are touched on both sides. That is two orders
+of magnitude above every other candidate and 40× the control. The mechanism is
+structural rather than accidental — a clause lives in several policy documents
+at once, and a release edits them together — which is exactly the shape §2.2
+predicted and the one this arm exists to reach.
+
+**Why the other two are included anyway.** `cncf-toc` is the minutes shape D8
+names first, 523 authors, no dominant one. `k8s-website` has the lowest rate of
+any candidate but the largest absolute history; extrapolated from the sample it
+holds roughly a thousand both-sides pairs, and it is the only i18n coverage —
+the "same sentence many times over" case.
+
+**The measurement that reframes the arm.** Author count does not predict
+concurrency, and it is close to inversely related. `python/peps` has 711 authors
+over 11,646 commits and **one** both-sides path in its entire history;
+`kubernetes/website` has 6,706 authors and a 0.015% rate. Both are repositories
+where many people each own a different file. `site-policy` has 46 authors and
+the highest rate by far, because its *documents* are coupled.
+
+So "duplicate-heavy prose with real multi-author history" was the wrong
+predicate, and §5 as registered would have selected for the wrong thing. What
+this arm needs is **documents that get edited together**, which is a property of
+how a corpus is maintained rather than of how many people maintain it.
+
+**Excluded, with the reason:**
+
+- **`python/peps`** — measured out. One both-sides path in 11,646 commits. The
+  obvious templated-proposal candidate, and it has no same-file concurrency at
+  all: a PEP has one owner. Recorded because §5 named proposal repositories
+  first and the measurement refused them.
+- Any corpus predominantly single-author or bot-generated, per the exclusion
+  above. `site-policy` was checked against it: `site-policy-bot` is 32% of
+  commits, which is not predominant, and no human author exceeds 19%.
+
 ## 6. What each outcome publishes as
 
 Both are deliverables. Neither is a failure.
@@ -346,6 +413,7 @@ where they are inconvenient.
 
 | date | section | change | reason |
 |---|---|---|---|
+| 2026-10-06 | §5 | Named the three duplicate-heavy corpora and pinned them: `github/site-policy`, `cncf/toc`, `kubernetes/website`. Recorded `python/peps` as measured out. Added §5.1 with the selection measurement. | The corpus-list amendment §5 requires and §8 permits, made before any measurement. Selection is on both-sides-of-a-merge frequency, the only property this arm can use; `site-policy` is 43.6% against the control's 1.1%. Also records that author count does not predict concurrency, so §5's registered predicate selected for the wrong property. |
 | 2026-09-10 | §1, §8.2 | Withdrew the claim that the old `obsidian-help` bucket line "cannot be reconciled per-bucket"; it reconciles at `a3985b58` as `2+78+90+212+2 = 384`, the line having been truncated to its three largest buckets. Qualified the 885 reconciliation as pin-dependent. | Reproduced by the spike harness at `a3985b58`, not at §3's pin — see kindspec/research#8, which corrects the same conflation. A correction that itself carried two false claims. |
 | 2026-09-09 | §5 | `cmspec` promoted from held-out to full control arm; `rust-book` named the strongest control and `obsidian-help` demoted to a mechanism control. | The re-run shows `cmspec` was measured in both arms, not skipped; the skipped arm is `obsidian-help` gap=25. `obsidian-help` has moved since D8 ran. This is the corpus-list amendment §8 expressly permits, made before measurement begins. |
 | 2026-09-09 | §1 | The claim narrowed from "not one is typed `prose`, in either strategy, in any arm" to "not one is typed `prose` under the **hardened** policy, in any of the five measuring arms" — naive now has one. Table replaced with committed harness output. | kindspec/research#3 re-ran the harness and committed its output for the first time; `obsidian-help` has moved and one naive silent-wrong is now typed `prose`. Forced by evidence outside this spike, before this spike measured anything. See kindspec/blockspec#7. |
