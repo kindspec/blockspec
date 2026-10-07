@@ -23,6 +23,10 @@
 == uniqueness: HEAD is not the stated pin
    exit=2 (expected nonzero) -> as-expected
    stderr| d8_cheap_arm: rust-book: HEAD is 1500248d8f230566e4ec9f27fcbb8fe9e2898ab1, pinned at 917544888a55e4da7109bdba8c88c893c0da70f4
+== uniqueness: tracked file modified in the work tree
+   exit=2 (expected nonzero) -> as-expected
+   stderr| d8_cheap_arm: dirty: work tree has tracked changes; uniqueness reads the work tree
+   stderr| M a.md
 == uniqueness: pathspec selects nothing
    exit=2 (expected nonzero) -> as-expected
    stderr| d8_cheap_arm: rust-book: pathspec 'en/*.md' selects no .md files in $CORPORA/rust-book
