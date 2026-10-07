@@ -1,257 +1,247 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Pre-registration 2: does prose admit a silent-wrong under any edit?
 
-**Status: DRAFT, for owner approval.** Here "committed" in the owner's
-decision means *merged to `main`*. Nothing under this document runs before it
-merges. Once merged, it supersedes `PRE-REGISTRATION.md` for blockspec#2.
-`PRE-REGISTRATION.md` and `ORACLE.md` remain unchanged as the record of what
-was registered first.
+**Status: DRAFT, for owner approval.** In the owner's decision, "committed"
+means *merged to `main`*. Nothing under this document runs before it merges.
+Once merged, it supersedes `PRE-REGISTRATION.md` for blockspec#2.
+`PRE-REGISTRATION.md` and `ORACLE.md` stay unchanged as the record of what was
+registered first.
 
-**Citations.** A blockspec path means its content at `d49e7ef3ea20`, and a
+**Citations.** A blockspec path means its content at `d49e7ef3ea20`. A
 `research/` path means kindspec/research at `71d97a1e6f36`, unless another
-commit is named. Every figure is followed by the command that produced it,
-run from `spike/results/` unless stated.
+commit is named. Every figure is given with the command that produced it, run
+from `spike/results/` unless stated otherwise.
 
 ---
 
 ## 0. Choices the owner is approving
 
-The 2026-10-07 decision did not settle these. Approving the draft approves
+The 2026-10-07 decision left each of these open. Approving the draft approves
 all of them. To change one, edit the draft before it merges.
 
-1. **Real history only.** FOUND needs a case from a pinned corpus's history (§2). *Alt:* count reachability; the answer is then already FOUND by `plant_cases/single-leg-01`.
-2. **SPLIT is an undecidable verdict (§5.2).** It was named after reading `LOG.md` §12, so it is not blind. It disposes of the only two hardened, F5-eligible silent-wrongs the cheap arm printed (see the note below). *Alt:* split cases are decided by TLLC's plurality vote, then tiered blind.
-3. **Arm 0 runs first, with a 10% twin-share bar (§6.5).** It is a backstop and is not expected to bind. *Alt:* report Arm 0 with no bar.
-4. **The `yaml-fence` generated-file rule, with a hash-ranked sampler (§6.3).** `yaml-fence` excludes a subset of what `anywhere` excludes, so it is the more inclusive rule. *Alt:* FOUND must hold under `none`, `anywhere` and `yaml-fence`.
-5. **`k8s-en` and `k8s-l10n` are separate arms (§6.4).** *Alt:* English only.
-6. **FOUND needs the hardened policy (F4).** *Alt:* either policy.
-7. **FOUND needs a natural-language type: `prose`, `list` or `heading` (F5).** *Alt:* any type.
-8. **The cell floor is 300 distinct decided blocks (§6.6).** *Alt:* D8's 50 anchors.
-9. **Sample sizes (§6.5):** 1,000 edits per arm for E, 500 pairs per gap per arm for S, and a full census for M. *Alt:* a full census everywhere.
-10. **Named references (R) are a second mechanism (§3).** *Alt:* quote anchors (Q) only.
-11. **What an overall NOT FOUND needs (§6.7).** Q must reach NOT FOUND in both `k8s-en` and `cncf-toc`, and R must reach it in one of them. If only Q does, the result is "NOT FOUND (Q only)". *Alt:* any one cell is enough.
-12. **D8's corpora at D8 §3's pins (§6.2).** *Alt:* `harness/corpora.json`'s pins.
-13. **`site-policy` (§6.2).** M can yield FOUND only from the strict set. E and S can yield FOUND, and commits by bot authors count there. *Alt:* the set of 25 for M, or bot commits excluded from E and S.
-14. **The first registration's §5 exclusion of single-author and bot-dominated corpora is dropped.** After `LOG.md` §9 the single-author edit is part of the question, and generated *files* are handled by §6.3. *Alt:* keep the exclusion. E would then lose its point.
-15. **E and S use TLLC in its one-leg form (§5.1), not D8's `line_oracle`.** One oracle governs every arm. *Alt:* `line_oracle` for E and S, for comparability with D8.
-16. **NEAR MISS is narrowed (§4.2).** The frozen rule was "four of five". Here it is a decided mis-resolution that fails exactly one of F4, F5, F7 or F8. *Alt:* the frozen definition carried over unchanged.
-17. **The first run's 85 records are not tiered (§7.3).** This reverses `STATE.md` §2 item 2, "tier the candidates, blind". *Alt:* tier them blind as a separate export that carries no verdict.
+1. **Real history only (§2).** FOUND needs a case from the history of a pinned corpus. *Alternative:* count reachability, in which case the answer is already FOUND by `plant_cases/single-leg-01`.
+2. **SPLIT is an undecidable verdict (§5.2).** It was named after reading `LOG.md` §12, so it is not blind. It would dispose of the only two hardened silent-wrongs the cheap arm printed that are eligible under F5. Both are named below. *Alternative:* decide split cases by TLLC's plurality vote, then tier them blind.
+3. **Arm 0 runs first, with a 10% twin-share bar (§6.5).** The bar is a backstop and is not expected to bind. *Alternative:* report Arm 0 with no bar.
+4. **The generated-file rule is `yaml-fence`, and samples are hash-ranked (§6.3).** Its exclusions are a subset of `anywhere`'s, so it is the more inclusive rule. *Alternative:* FOUND must hold under all three rules.
+5. **`k8s-en` and `k8s-l10n` are separate arms (§6.4).** *Alternative:* English only.
+6. **FOUND needs the hardened policy (F4).** *Alternative:* either policy.
+7. **FOUND needs a block of type `prose`, `list` or `heading` (F5).** *Alternative:* any type.
+8. **A cell needs at least 300 distinct decided units to report NOT FOUND (§6.6).** *Alternative:* D8's floor of 50 anchors.
+9. **Sample sizes (§6.5).** E takes 1,000 edits per arm, S takes 500 pairs per gap per arm, and M is a full census. *Alternative:* a full census everywhere.
+10. **Named references (R) are a second mechanism (§3).** *Alternative:* quote anchors (Q) only.
+11. **What NOT FOUND needs overall (§6.7).** Q must reach NOT FOUND in `k8s-en` and in `cncf-toc`, and R in at least one of them. If only Q does, the result is NOT FOUND (Q only). *Alternative:* any one cell is enough.
+12. **D8's corpora are read at D8 §3's pins (§6.2).** *Alternative:* the pins in `harness/corpora.json`.
+13. **`site-policy` (§6.2).** M can yield FOUND only from the strict set. E and S can yield FOUND, and commits by bots count. *Alternative:* the 25-case set for M, or exclude bot commits from E and S.
+14. **The exclusion of single-author or bot-dominated corpora is dropped.** That exclusion is the first registration's §5. *Alternative:* keep it, and exclude any corpus predominantly single-author or bot-generated, measured on the cases each arm selects.
+15. **E and S use TLLC's one-leg form (§5.1), not D8's `line_oracle`.** *Alternative:* use `line_oracle` for E and S, for comparability with D8.
+16. **NEAR MISS is redefined (§6.7).** The first registration had two definitions: §3 says "four out of five is a near miss", and §6 says "NEAR MISS (tier C or D only)". Here a near miss is one of three named categories of decided mis-resolution. *Alternative:* carry over either first-registration definition.
+17. **The first run's 85 records are not tiered (§7.3).** This reverses `STATE.md` §2 item 3 (kindspec/.github `cb976f4906a1`), "tier the candidates, blind". *Alternative:* tier them blind as a separate export that carries no verdict.
+18. **Tiers are computed from answers, and one tier definition is adapted (§7.1, §7.2).** §7.2's rule defines the tier. The tier table is illustrative only. Tier A's "in both parents" becomes "before the edit", because E and S have one parent. *Alternative:* the first registration's wording with no adaptation, which leaves A undefined for E and S.
+19. **The tierer model is pinned to `claude-opus-5-5`, and there is one tiering run (§7.3).** *Alternative:* the harness's default fresh agent, with its identity logged.
 
-**The two cases SPLIT disposes of (§0 item 2).** These come from D8's
-`line_oracle`, not TLLC, but they have the same shape. `LOG.md` §12
-describes each as a block that split in two.
+**The two cases SPLIT would dispose of.** Both are D8 `line_oracle` cases from
+`LOG.md` §12, and `LOG.md` §12 describes each as a block split in two. **That
+TLLC would also call them SPLIT is a prediction that has not been run.**
 
 - `k8s-website` gap=1, `content/zh-cn/docs/reference/glossary/cri-o.md`.
-  This is hardened and prose-typed, and it appears under `anywhere` only.
+  Prose-typed, hardened, present under `anywhere` only.
 - `site-policy` gap=5,
   `Policies/content-removal-policies/github-private-information-removal-policy.md`.
-  This is hardened and heading-typed, with two records, and it appears under
-  all three rules.
+  Heading-typed, hardened, 2 records, present under all three rules.
 
-Under the three rules, the hardened silent-wrong lines are these:
-
-- `none`: `html=1` and `heading=2`;
-- `anywhere`: `prose=1` and `heading=2`;
-- `yaml-fence`: `heading=2` only.
-
-Command, for each of `anchors-no-generated-rule.txt`, `anchors.txt` and
-`anchors-yaml-fence-rule.txt` in `cheap-arm/`:
+Command, run on each of `cheap-arm/anchors-no-generated-rule.txt`,
+`cheap-arm/anchors.txt` and `cheap-arm/anchors-yaml-fence-rule.txt`:
 `grep -B4 -E "^ +hard .*SILENT-WRONG .*\(n=[1-9]" <f> | grep -E "^###|^ +hard"`.
 
 ## 1. Why this supersedes `PRE-REGISTRATION.md`
 
 The first registration's §8 allows §3, §4 and §6 to change only through a new
-pre-registration.
+pre-registration. There are three reasons to change them.
 
-**1.1 FOUND leaves out the shape that was found.** `LOG.md` §9 shows one
-author, in one commit, producing a hardened `EXACT` prose silent-wrong
-(`plant_cases/single-leg-01`). The frozen §3(5) requires a defect "created by
-the merge". Merges are also a small share of editing. The three control
-corpora have 195 accepted both-sides cases against 19,337 `.md` paths changed
-on one side only. Commands, on `merge-arm.txt`:
+**1.1 FOUND excludes the shape that was found.** `LOG.md` §9 shows one author
+in one commit producing a hardened `EXACT` prose silent-wrong
+(`plant_cases/single-leg-01`). The first registration's §3(5) requires a defect
+"created by the merge", which that case is not. Merges are also a small share
+of editing. The three control corpora have 195 accepted both-sides cases
+against 19,337 `.md` paths changed on one side only:
 
-- `grep -o "ACCEPTED [0-9]*" merge-arm.txt | awk '{s+=$2}END{print s}'`
-  gives 195.
+- `grep -o "ACCEPTED [0-9]*" merge-arm.txt | awk '{s+=$2}END{print s}'` gives
+  195.
 - `grep -o "exactly ONE side: [0-9]*" merge-arm.txt | awk '{s+=$4}END{print s}'`
-  gives 19,337.
+  gives 19337.
 
 **1.2 TLLC cannot decide repeated blocks.** `LOG.md` §6.2 and
-`harness/oracle_limitation.py` show this. `ORACLE.md` is frozen, so §5 is the
-new oracle statement.
+`harness/oracle_limitation.py` show this. `ORACLE.md` is frozen, so §5 of this
+document is the new oracle statement.
 
-**1.3 Neither the unit nor the selection was fixed, and the result moved.**
+**1.3 The unit and the selection were not fixed, and the result moved.**
 
-- **The selection.** D8's sampler is `Random(7).shuffle(files)[:14]`.
-  Excluding any file redraws the whole sample. The hardened prose-typed
-  silent-wrong count was 0 under `none`, 1 under `anywhere` and 0 under
-  `yaml-fence`. Command, per file: `grep -E "^ +hard .*by type:.*prose=" <f> |
-  grep -oE "prose=[0-9]+"`, summed (empty is 0).
-- **The unit.** Instance counts overstate distinct content. In
-  `k8s-website`, 1,524 within-file duplicate prose instances at ≥40
-  characters are 481 distinct contents (`sed -n 44p
-  cheap-arm/uniqueness-distinct.txt`).
+- **Selection.** D8 samples with `Random(7).shuffle(files)[:14]`, so excluding
+  any one file redraws the whole sample. As a result, the count of hardened
+  prose-typed silent-wrongs was 0 under `none`, 1 under `anywhere` and 0 under
+  `yaml-fence`. Command, per file:
+  `grep -E "^ +hard .*by type:.*prose=" <f> | grep -oE "prose=[0-9]+"`,
+  summed, with an empty result counted as 0.
+- **Not the exclusion itself.** `cri-o.md` is in neither rule's excluded list.
+  `grep -c cri-o cheap-arm/selection.txt cheap-arm/selection-yaml-fence-rule.txt`
+  gives 0 and 0. The record disappeared because the sample was redrawn.
+- **Unit.** Counting instances overstates distinct content. In `k8s-website`,
+  1,524 within-file duplicate prose instances at ≥40 characters are 481
+  distinct contents (`sed -n 44p cheap-arm/uniqueness-distinct.txt`).
 
 ## 2. The question
 
 > **In the real editing history of the pinned corpora, does a prose document
-> under stock git come to contain a reference that a mechanism prose would
-> need (§3) resolves silently to the wrong target? The result must be a
-> well-formed file. The error must be false by an oracle independent of the
+> under stock git come to contain a reference which a mechanism that prose
+> would need (§3) resolves silently to the wrong target? The file must be
+> well-formed. The result must be wrong by an oracle independent of the
 > mechanism, and a reader holding only that file must be unable to detect
-> it. Any edit counts: one commit (arm E), a span of commits (arm S), or a
-> two-parent merge (arm M).**
+> it. The edit can be any of: one commit (arm E), a span of commits (arm S),
+> or a two-parent merge (arm M).**
 
 ## 3. The mechanisms
 
 The mechanism code is kindspec/research `experiments/D8-identity/` at
 **`d51ce09cdb23`**. `anchor_eval.py`, `anchor_eval2.py` and `anchor_eval3.py`
-are byte-identical there and at `f088cd76fd13`, the commit the control arm
-imports. They differ at `71d97a1`. Command, in the research checkout:
+are byte-identical there and at `f088cd76fd13`, which the control arm imports,
+and they differ at `71d97a1`. Command, in the research checkout:
 `git show <c>:experiments/D8-identity/<f> | sha256sum`.
 
-- **Q, the quote anchor.** It is imported unchanged. `anchor_eval.anchor_of`
-  builds the anchor and `anchor_eval3.reanchor2` resolves it. This is D8
-  §7.3, steps 2 to 5.
-- **R, the named reference.** This is D8 §7.2 and §7.3 step 1. It is **new
-  harness code**, with two functions **copied verbatim** from `d51ce09`. Both
-  source modules run experiments when imported, so they cannot be imported.
-  - **Names.** `slugs()` from `e9_headings.py`, lines 8–13, is applied to
-    each block that `btype()` types `heading`. Applying it only to those
-    blocks keeps `#` lines inside code fences from becoming names. The
-    `{#id}` syntax is not used, because D8 §7.2 rejects it.
-  - **Region markers.** These use `REGION` and `regions()` from
-    `e6_transclude.py`, lines 14 and 17–31. A region marker's target is the block
-    after the marker. Begin/end spans have no D8 implementation and are not
-    measured.
-  - **Resolution.** Region markers are tried first, then slugs. Zero
-    matches, or more than one, is `#REF!`, which counts as LOUD.
-  - **The target of a slug** is its **section**: the heading block and every
-    block up to the next heading of the same or a higher level.
-  - **R is correct** iff the resolved section contains TLLC's plurality
-    block for the base section (§5.1).
-- **Transclusion** is a use of Q and R, not a third resolver. It is judged in
-  tiering (§7.2).
+- **Q, the quote anchor.** Imported unchanged. `anchor_eval.anchor_of` builds
+  the anchor and `anchor_eval3.reanchor2` resolves it (D8 §7.3 steps 2–5).
+- **R, the named reference** (D8 §7.2, §7.3 step 1). This is **new harness
+  code**, with two pieces **copied verbatim** from `d51ce09`. They are copied
+  because their modules run experiments when imported.
+  - **Slugs.** `slugs()` from `e9_headings.py` lines 8–13, applied only to
+    blocks that `btype()` types `heading`. The `{#id}` syntax, which D8 §7.2
+    rejects, is not used.
+  - **Region markers.** `REGION` and `regions()` from `e6_transclude.py`
+    lines 14 and 17–31. The target is the block after the marker. Begin/end
+    spans have no D8 implementation and are not measured.
+  - **Resolution.** Region markers are tried first, then slugs. Zero matches,
+    or more than one, is `#REF!`, and that counts as LOUD.
+  - **Target.** A slug's target is its section: the heading plus the blocks up
+    to the next heading of the same or a higher level. R is correct if and
+    only if the resolved section contains TLLC's plurality block (§5.1).
+- **Transclusion.** This is a way of using Q and R, not a third mechanism. It
+  is judged in tiering (§7.2).
 
-Every evaluated block is anchored with Q. Every section or region whose name
-resolves uniquely at the before-state is also anchored with R. Q and R are
-reported separately.
+Every evaluated block is anchored with Q. Every name that resolves uniquely at
+the before-state is anchored with R.
 
-## 4. FOUND, and NOT FOUND
+## 4. FOUND
 
-### 4.1 FOUND: a single record must meet every condition
+A record is FOUND only if it meets all nine conditions:
 
 - **F1. Real history.** The before-state(s) and the edit are commits of a
-  pinned corpus (§6.2). The path is in the arm's selection (§6.3). For
-  `site-policy` M, the case is in the strict set.
-- **F2. Stock git only.** No driver, `.gitattributes`, filter or hook is
-  involved.
-  - For M, `git merge` in the harness's hermetic repository exits 0, leaves
-    no conflict markers, and `git ls-files -u` is empty.
-  - For E and S, the committed after-blob comes out byte-identical when it is
-    re-expressed through `stock_merge` with leg C set to the base.
+  pinned corpus (§6.2), and the path is in the arm's selection (§6.3). A
+  `site-policy` M case must also be in the strict set.
+- **F2. Stock git only.** No merge driver, `.gitattributes`, filter or hook.
+  - **M.** `git merge` in the harness's hermetic repository exits 0, leaves no
+    conflict marker, and `git ls-files -u` is empty.
+  - **E and S.** No merge takes place. The before- and after-states are blobs
+    read with `git show`, which applies no filter or driver. F2 cannot fail
+    here, by construction, and that is accepted: these arms have no merge for
+    it to test. Running them through `stock_merge` with leg C equal to the
+    base reproduces leg A by construction, so it is not counted as a check.
 - **F3. Well-formed.** Every input state and the result pass
-  `fences_balanced`, and D8's `blocks()` yields at least two blocks for each.
-  This is the only well-formedness check there is.
-- **F4. Wrong under the hardened policy.** The mechanism resolves, not
-  LOUD, somewhere other than the oracle's **decided** target. Resolving
-  where the oracle says `DELETED` also counts. That case is reported as
-  `WRONG_on_deleted`, and labelled weaker (`ORACLE.md` §4).
-- **F5. A natural-language block.** For Q, the base block is typed `prose`,
-  `list` or `heading` by `btype()`. Blocks inside a leading YAML fence are
-  typed `frontmatter`. R targets always pass F5.
-- **F6. The edit created it.** Every input state is well-formed, and the
-  tierer does not record visible author error (question 4 in §7.2).
-- **F7. A reader cannot see it.** The tierer records that the error is not
-  visible from the after-file and the reference (question 3).
-- **F8. Tier A or B**, by the blind procedure in §7.
-- **F9. It reproduces.** A standalone reproduction from the pins, run from
-  a clean checkout, regenerates the record byte for byte.
+  `fences_balanced`, and D8's `blocks()` finds at least 2 blocks in each.
+  This is the only well-formedness check the harness has.
+- **F4. Wrong under the hardened policy.** The mechanism resolves without a
+  LOUD refusal, and lands somewhere other than the oracle's **decided** target.
+  If the oracle says the target was `DELETED`, any resolution counts as wrong.
+  That variant is reported as `WRONG_on_deleted` and is weaker (`ORACLE.md`
+  §4).
+- **F5. A natural-language block.** For Q, the base block's type is `prose`,
+  `list` or `heading`. Blocks inside a leading YAML fence are typed
+  `frontmatter` and do not qualify. Every R unit meets F5.
+- **F6. The edit created the defect.** Every input state is well-formed, and
+  the tierer answers question 4 "no".
+- **F7. A reader cannot see it.** The tierer answers question 3 "no".
+- **F8. Tier A or B**, as §7.2 computes it.
+- **F9. It reproduces.** A standalone reproduction from the pins, run in a
+  clean checkout, regenerates the record byte for byte.
 
-One qualifying distinct block is enough.
+One qualifying distinct unit is enough for FOUND.
 
-### 4.2 NOT FOUND, beyond what F1 to F9 already exclude
+Two further cases are not findings, whatever else holds:
 
-- A planted or constructed case.
-- A verdict of `UNKNOWN` or `UNDECIDABLE-*` (§5.2).
-- A case that qualifies only under a selection rule other than `yaml-fence`.
-
-**NEAR MISS.** A decided record fails exactly one of F4 (it is naive-only),
-F5, F7 or F8 (it is tier C or D), and meets every other condition.
+- an oracle verdict of `UNKNOWN` or `UNDECIDABLE-*` (§5.2);
+- a case that qualifies only under a selection rule other than `yaml-fence`.
 
 ## 5. The oracle
 
-This is the superseding oracle statement that `LOG.md` §6.2 and §9 call for.
+This section is the superseding oracle statement that `LOG.md` §6.2 and §9 call
+for.
 
-### 5.1 TLLC, plus its one-leg and section forms
+### 5.1 TLLC and its forms
 
-- **TLLC.** The oracle is TLLC as `ORACLE.md` §2 defines it and
-  `harness/prose_merge.py` `tllc()` implements it, unmodified. That includes
-  `UNKNOWN`, `DELETED` and the fence in `ORACLE.md` §4.
-- **The one-leg form, for E and S.** Leg C is the base and the merged text
-  is the after-state. Both legs then reduce to one alignment, base to
-  after.
-- **The section form, for R.** The base unit is the section or region.
-  `frac_L` and the plurality vote run over that unit's non-blank lines. The
-  plurality vote gives one block of the after-state, and R is graded against
-  it (§3).
+- **TLLC.** `ORACLE.md` §2 defines it and `harness/prose_merge.py` `tllc()`
+  implements it. It is used unmodified, including `UNKNOWN`, `DELETED` and the
+  fence in `ORACLE.md` §4.
+- **One-leg form (E and S).** Leg C is the base and the merged text is the
+  after-state, so both legs reduce to the single alignment base→after.
+- **Section form (R).** The base unit is the section or region. `frac_L` and
+  the plurality vote run over the unit's non-blank lines, and the vote names
+  the after-state block that R is graded against (§3).
 
-### 5.2 What it cannot decide
+### 5.2 What the oracle cannot decide
 
-Neither rule reads the mechanism's answer. Both rules run on every
-`SURVIVED` verdict before grading. In each, `k` is the base unit, `t` is
-TLLC's target and `M` is the after-text.
+Neither rule below reads the mechanism's answer. Both run on every `SURVIVED`
+verdict before it is graded. Terms:
 
-For Q, the unit is a block. For R, the unit is the section or region, and
-"block" below means "section". The R form of each rule is new code. It must
-pass V3.
+- `k` is the base unit, `t` is TLLC's target, and `M` is the after-text.
+- For Q, a unit is a block.
+- For R, a unit **for this section only** is the span from a heading to the
+  next heading of any level. The rules over R units are new code and must pass
+  V3.
+- A **twin** is a unit that is byte-identical to another unit in the same
+  text.
 
 **UNDECIDABLE-REPEAT.**
 
-- **Twins.** A twin is a unit whose content is byte-identical to another
-  unit's content in the same text.
-- **The twin set.** `T` is the set of units in `M`, other than `t`, that are
-  twins of `t` or of `k`. If `T` is empty, the verdict is decided.
-- **Context score.** Otherwise, each `c` in `{t} ∪ T` gets a score
-  `ctx(c)` from 0 to 2. It counts how many of these two pairs hold:
-  - `M[c-1]` is TLLC's target for `B[k-1]`;
-  - `M[c+1]` is TLLC's target for `B[k+1]`.
+1. Let `T` be the units in `M`, other than `t`, that are twins of `t` or of
+   `k`. If `T` is empty, the verdict is decided.
+2. Otherwise, give each `c` in `{t} ∪ T` a score `ctx(c)` from 0 to 2: the
+   number of these that hold:
+   - `M[c-1]` is TLLC's target for `B[k-1]`;
+   - `M[c+1]` is TLLC's target for `B[k+1]`.
+3. A pair counts only if three things are true:
+   - both indices exist, so a first or last unit gets nothing on the missing
+     side;
+   - the base neighbour has no twin in `B`;
+   - its target has no twin in `M`.
+4. The verdict is decided if and only if `ctx(t) ≥ 1` and `ctx(t)` is greater
+   than `ctx(c)` for every `c` in `T`. Otherwise it is UNDECIDABLE-REPEAT.
 
-  A pair counts only if three things hold:
-  - both of its indices exist (a first or last unit contributes nothing for
-    the missing side);
-  - the base neighbour has no twin in `B`;
-  - its target has no twin in `M`.
-- **Decision.** The verdict is decided iff `ctx(t) ≥ 1` and `ctx(t) >
-  ctx(c)` for every `c` in `T`. Otherwise it is UNDECIDABLE-REPEAT.
-
-**UNDECIDABLE-SPLIT.** A verdict is UNDECIDABLE-SPLIT when the mapped lines
-of `k`, under the proposing leg(s), fall in two or more units of `M`.
+**UNDECIDABLE-SPLIT.** The mapped lines of `k`, under the leg or legs that
+proposed a target, fall in two or more units of `M`.
 
 **Counting.**
 
 - A distinct unit (§6.1) is **decided** if any of its instances is decided.
-  `SURVIVED`-decided and `DELETED` both count as decided.
-- A distinct unit is **undecidable** if no instance is decided and at least
-  one is `UNDECIDABLE-*`.
+  A decided `SURVIVED` and a `DELETED` both count as decided.
+- A distinct unit is **undecidable** if none of its instances is decided and
+  at least one is `UNDECIDABLE-*`.
 - A unit whose every instance is `UNKNOWN` is counted as `UNKNOWN`.
 - A qualifying record must be a decided instance.
-- Undecidable and `UNKNOWN` counts are reported per cell, in instances and
-  in distinct units. They never enter a rate, a pass or a find.
+- Undecidable and `UNKNOWN` counts are reported per cell, as instances and as
+  distinct units. They never enter a rate, a pass or a find.
 
-TLLC decides descent, not falsity (`ORACLE.md` §5). Falsity is settled by
-tiering (§7).
+TLLC decides descent, not falsity (`ORACLE.md` §5). Tiering (§7) settles
+whether anything false is asserted.
 
 ## 6. Units, corpora, selection, sampling, floors
 
 ### 6.1 Unit
 
-The distinct authored unit is keyed as follows:
+A distinct authored unit is keyed as:
 
-- a Q block: `(arm, sha256(block content))`;
-- an R unit: `(arm, name, sha256(unit content))`.
+- for Q, `(arm, sha256(block content))`;
+- for R, `(arm, name, sha256(unit content))`.
 
-Every verdict, floor and published rate counts distinct units. Instance
-counts may appear beside them, labelled as instances.
+Every verdict, floor and published rate counts distinct units. Instance counts
+may appear beside them if labelled as instances.
 
 ### 6.2 Corpora and pins
 
@@ -265,349 +255,344 @@ counts may appear beside them, labelled as instances.
 | `cncf-toc` | cncf/toc | `144c2e3215884e498e744cc51e6b7cef82d654f1` | `*.md :(exclude).github/` |
 | `site-policy` | github/site-policy | `b9578b546d2506febda1da2cd7431644d58e512c` | `*.md :(exclude).github/` |
 
-- **Where the pins come from.** The D8 rows use D8 §3's pins, where the
-  research artifacts reproduce (`cheap-arm/validation.txt`). The others use
-  the first registration's §5.1 pins.
-- **`harness/corpora.json`'s pins** serve only V1 and V2.
-- **An unreachable pin** makes its arm NO VERDICT. No substitute is used.
+- The first three arms use D8 §3's pins (see `cheap-arm/validation.txt`). The
+  rest use the first registration's §5.1 pins.
+- The pins in `harness/corpora.json` are used only for V1 and V2.
+- If a pin is unreachable, its arm reports NO VERDICT.
 
-**The strict `site-policy` set (M only).** An accepted merge is excluded when
-its subject line, `git log -1 --format=%s <merge>`, contains `automated-sync`
-or `repo-sync` as a case-sensitive substring. The first registration's §5.1
-expects this to leave 21 cases. If the rule gives a different count, the
-rule's count stands and the difference is logged. The set of 25 (excluding
-`automated-sync` only) is reported beside it and is not verdict-bearing. In
-E and S, every commit counts, whoever authored it, and the author is
-recorded.
+**The strict `site-policy` set (M only).** An accepted merge is excluded if its
+subject line contains `automated-sync` or `repo-sync`, matched as a
+case-sensitive substring of the output of `git log -1 --format=%s <merge>`.
+The first registration's §5.1 expects 21 cases to remain. If the rule leaves a
+different number, the rule's count stands and the difference is logged. The
+25-case set excludes `automated-sync` only. It is reported beside the strict
+set and carries no verdict.
+
+In E and S, every commit counts, whoever made it, and its author is recorded.
 
 ### 6.3 Selection and sampling
 
-**Generated files.** A file is excluded when its leading YAML fence matches
-`^auto_generated:[ \t]*true[ \t]*$` (multiline, case-insensitive), or when
-its text contains `THIS FILE IS AUTO-GENERATED`. This is `d8_cheap_arm.py
---generated-rule yaml-fence`, evaluated at the pin.
+**Generated files.** A file is excluded if its leading YAML fence matches
+`^auto_generated:[ \t]*true[ \t]*$` (multiline, case-insensitive), or if its
+text contains `THIS FILE IS AUTO-GENERATED`. This is `d8_cheap_arm.py
+--generated-rule yaml-fence`, evaluated at the pin. The reason is that a file
+declares its provenance in its own metadata, and a key quoted inside an HTML
+comment is a quotation, not a declaration. `none` and `anywhere` are reported
+beside it and carry no verdict.
 
-- **Why this rule.** A file declares its provenance in its own metadata. The
-  same key inside an HTML comment is a quotation of another file's
-  metadata.
-- **The disclosure.** `yaml-fence` printed 0 in §1.3. That 0 does not come
-  from excluding the file behind the 1. `cri-o.md` is in neither excluded
-  list: `grep -c cri-o cheap-arm/selection.txt
-  cheap-arm/selection-yaml-fence-rule.txt` gives 0 and 0. The record
-  disappeared because the sample was redrawn.
-- **The other rules.** `none` and `anywhere` are reported beside it and
-  carry no verdict.
+**Sampling.**
 
-**The sampler.**
-
-- **Ranking.** A population is ranked by `sha256("prereg2:" + arm + ":" +
-  key)`, and the sample is the *k* lowest. The key is `commit:path` for E and
+- A population is ranked by `sha256("prereg2:" + arm + ":" + key)`, and the
+  sample is the *k* lowest-ranked. The key is `commit:path` for E and
   `path:i:gap` for S.
-- **Stability.** Excluding an unselected item cannot change the sample.
-- **What has not been done.** No ranking was computed before this merged,
-  and the salt `prereg2` was not varied.
-- **Packet order.** The export (§7.3) is ordered by `sha256("prereg2-export:"
-  + packet key)`.
-
-No other randomness is used.
+- Excluding an item that was not selected cannot change the sample.
+- No ranking was computed before this merged, and the salt was not varied.
+- There is no other randomness, except the export nonce in §7.3.
 
 ### 6.4 Translations
 
-- **Separate arms.** `k8s-en` and `k8s-l10n` are never pooled.
-- **What the per-arm key does not do.** It does not stop a translated
-  paragraph from counting once per language. Each translation has different
-  bytes (`LOG.md` §12), so `k8s-l10n`'s distinct counts are per
-  (language, content).
-- **Reporting.** The per-language breakdown is reported. Rates from
-  `k8s-l10n` are labelled this way.
-- **FOUND.** A translation is authored text, so FOUND from `k8s-l10n`
-  stands.
+`k8s-en` and `k8s-l10n` are never pooled. Each translation of a paragraph has
+different bytes, so `k8s-l10n` counts a translated paragraph once per language
+(`LOG.md` §12). Its rates are labelled accordingly, and a FOUND there stands,
+because a translation is authored text.
 
 ### 6.5 Arms, in order
 
-**Arm 0, the census of oracle reach.** It runs at each pin over the whole
-selection. It counts:
+**Arm 0: a census of oracle reach.** This runs at each pin over the whole
+selection, with no sampling. Broken down by type, it counts:
 
-- blocks under 20 characters, which are excluded because the mechanism skips
-  them (`skip:short_quote`);
+- blocks under 20 characters, which the mechanism skips (`skip:short_quote`);
 - distinct contents of 20 characters or more;
-- those contents that have a within-file twin;
-- of those, the single-line twins and the adjacent-run twins.
-
-Every count is broken down by type.
+- those with a twin in the same file;
+- of those, how many are single-line twins and how many are adjacent-run
+  twins.
 
 **The bar.** If more than 10% of an arm's distinct natural-language contents
-of 20 characters or more have a within-file twin, that arm does not run under
-this document. It reports **NO VERDICT (oracle reach)**.
+of 20 characters or more have a twin in the same file, that arm reports **NO
+VERDICT (oracle reach)** and does not run.
 
-The bar is a backstop and is not expected to bind. Under `yaml-fence` at 20
-characters or more, the largest share in any committed output is `list` in
-`k8s-website` (all languages): 854 of 21,830, or 3.9%. Prose there is 1,283
-of 113,275, or 1.1%. Commands, using `uniqueness-distinct-yaml-fence-rule.txt`
-(lines 5–35):
+The bar is a backstop and is not expected to bind. In the committed outputs at
+20 characters or more, the largest share is `list` in `k8s-website` (all
+languages):
 
-    awk 'NR<=36&&/^###/{a=$2} NR<=36&&/^(heading|list|prose) /{print NR,a,$1,$(NF-1)"/"$(NF-2)}'
+| rule | twins / distinct `list` contents | share |
+|---|---|---|
+| `yaml-fence` | 854 / 21,830 | 3.9% |
+| `none` | 879 / 22,002 | 4.0% |
 
-No committed output separates `k8s-l10n`.
+Command, on each `cheap-arm/uniqueness-distinct*.txt`:
+`awk 'NR<=36&&/^###/{a=$2} NR<=36&&/^(heading|list|prose) /{print $(NF-1)/$(NF-2),a,$1,$(NF-1)"/"$(NF-2)}' <f> | sort -rn | head -1`.
 
-**Arm E, single commits.**
+No committed output gives `k8s-l10n` on its own.
 
-- **Population.** `(commit, path)` pairs where the commit is a non-merge
-  (`git rev-list --no-merges <pin>`), the path is in the selection at the
-  pin, and the commit modifies the path against its parent (`--no-renames`).
-  Adds, deletes and renames are counted and excluded.
-- **Sample.** 1,000 pairs per arm, or the whole population if smaller.
-- **Blocks.** All blocks are evaluated.
+**Arm E: single commits.**
 
-**Arm S, spans of commits.**
+- **Population:** each `(commit, path)` where the commit is not a merge
+  (`git rev-list --no-merges <pin>`), the path is selected at the pin, and the
+  commit modifies the path against its parent (`--no-renames`).
+- **Excluded:** adds, deletes and renames, each counted.
+- **Sample:** 1,000 per arm, with every block evaluated.
 
-- **History.** Per selected path, `git log --format=%H --reverse -- <path>`
-  at the pin.
-- **Pairs.** `(cs[i], cs[i+gap])` for gaps 5 and 25, where both blobs exist
+**Arm S: spans of commits.**
+
+- **History:** for each selected path, `git log --format=%H --reverse --
+  <path>` at the pin.
+- **Pairs:** `(cs[i], cs[i+gap])` for gaps 5 and 25, where both blobs exist
   and differ.
-- **Sample.** 500 pairs per gap per arm.
-- **Blocks.** All blocks are evaluated.
+- **Sample:** 500 per gap per arm, with every block evaluated.
 
-**Arm M, merges.**
+**Arm M: merges.** A census of every merge.
 
-- **Census.** All merges at the pin.
-- **Enumerator.** `find_merge_cases`'s enumeration and drop counters are
-  kept, and convergent edits stay out (`LOG.md` §7).
-- **New code.** The committed function filters on a path prefix. This arm
-  needs a **new pathspec-aware filter** that applies §6.2's pathspec and
-  §6.3's rule, and it must pass V3.
+- `find_merge_cases` supplies the enumeration and drop counters. Convergent
+  edits stay out (`LOG.md` §7).
+- **New code:** a pathspec-aware filter that applies §6.2 and §6.3. It must
+  pass V3.
 
-**Cells.** A cell is an arm, crossed with one of E, S5, S25 or M, crossed
-with Q or R.
+**Cells.** A cell is one arm, crossed with one of E, S5, S25 or M, crossed with
+one mechanism, Q or R.
 
 ### 6.6 Cell verdicts
 
-- **FOUND.** At least one record meets F1 to F9.
+- **FOUND.** At least one record meets F1–F9.
 - **NOT FOUND.** No record qualifies, and all of these hold:
   - the arm passed Arm 0;
-  - at least **300** distinct decided natural-language units;
+  - the cell has at least **300** distinct decided natural-language units;
   - distinct undecidable units are at most 10% of decided plus undecidable.
 
-  A NOT FOUND reports the actual *n* and the bound it supports, 3/*n* at 95%
-  (the rule of three). In the large arms the floor is expected to be
-  non-binding, so the *n* is the content of the result.
-- **NO VERDICT, with its reason.** Every other case. It is never reported
-  as zero.
+  A NOT FOUND reports its actual *n* and the bound 3/*n* at 95% (the rule of
+  three). The floor is expected not to bind in the large arms.
+- **NO VERDICT, with its reason.** Every other case. It is never reported as
+  zero.
 
 ### 6.7 Overall verdict
 
-- **FOUND** if any cell is FOUND.
-- **NOT FOUND** if no cell is FOUND and both of these hold:
-  - for Q, `k8s-en` and `cncf-toc` each have a NOT FOUND cell in E, S5 or
-    S25;
-  - for R, at least one of those two arms has a NOT FOUND cell.
-- **NOT FOUND (Q only)** if the Q condition holds and the R condition does
-  not.
-- **NEAR MISS** if the NOT FOUND conditions hold and at least one near miss
-  exists (§4.2).
-- **INCONCLUSIVE** otherwise.
+The overall verdict is the first of these that applies:
+
+1. **FOUND**, if any cell is FOUND.
+2. **NOT FOUND**, if both hold:
+   - for Q, `k8s-en` and `cncf-toc` each have a NOT FOUND cell in E, S5 or
+     S25;
+   - for R, at least one of those two arms has a NOT FOUND cell.
+3. **NOT FOUND (Q only)**, if only the Q condition in 2 holds.
+4. **INCONCLUSIVE**, otherwise.
+
+**Near misses** do not form a separate verdict. They are reported alongside
+verdict 2 or 3, which is then published as "… with near misses". There are
+three categories, each counted in distinct units:
+
+- **(i)** an exported record that meets every condition except F7 or F8
+  (tier C), according to its answers;
+- **(ii)** a decided hardened mis-resolution that fails only F5. These are not
+  tiered, and are labelled untiered.
+- **(iii)** a decided mis-resolution under the naive policy only, meeting
+  F1–F3 and F5. These are not tiered, and are labelled untiered.
 
 ## 7. Severity, and blind tiering
 
-### 7.1 Tiers, unchanged from the first registration's §4
+### 7.1 Tiers
+
+The rule in §7.2 defines the tier. This table illustrates it, using the first
+registration's wording with one adaptation (§0 item 18). Tiers D and E are not
+in the packet, because an exported record is already a decided, clean, silent
+mis-resolution.
 
 | tier | shape | qualifies |
 |---|---|---|
-| **A** | A derived or transcluded value or passage in the result is wrong: a count, an index, a transcluded figure, or transcluded prose that silently resolves to different content than it did before the edit | yes |
+| **A** | A derived or transcluded value or passage is wrong — transcluded prose that silently resolves to different content than it did before the edit | yes |
 | **B** | A reference resolves silently to the wrong target, and the reference carries an assertion about that target | yes |
-| **C** | A reference resolves silently to the wrong target, and nothing asserted becomes false | **no**: report it, do not build on it |
-| **D** | Content is reordered, duplicated or dropped in a way the authors would reject, but nothing asserts anything false | **no** |
-| **E** | The merge conflicts, or the reader refuses the file | **no** |
+| **C** | A reference resolves silently to the wrong target, carrying no assertion — a bare "see also" | **no**: report, do not build on |
 
-- **When.** A tier is assigned from these definitions, before the frequency
-  is known, by someone who has not seen it.
-- **Unplaceable.** A record that cannot be placed is UNPLACEABLE, which is
-  not a finding.
-- **Revision.** After the join, a tier changes only through a **second blind
-  tierer** who receives the same packet and the same prompt (Appendix A).
-  The second tier replaces the first only if it is lower. No other revision
-  is allowed.
+Tiers are assigned before any frequency is known, by someone who has not seen
+one. **No tier is revised after `tiers.jsonl` is committed.**
 
-### 7.2 The four questions
+### 7.2 Questions, and the computed tier
 
-Every record is a hypothetical reference, so the tierer answers four
-questions:
+For each packet the tierer answers four questions from the files alone:
 
-1. **Assertion use.** Would an assertion true of the oracle's target be
-   false, or change a reader's action, about the mechanism's target?
-2. **Transclusion use.** Would rendering the mechanism's target instead of
-   the oracle's change what the document says?
+1. **Assertion use.** Would a statement that is true of the oracle's target,
+   about what it says or what it applies to, be false of the mechanism's
+   target?
+2. **Transclusion use.** Would rendering the mechanism's target in place of the
+   oracle's change what the document says?
 3. **Visibility (F7).** Could a reader holding only the after-file and the
-   reference tell?
-4. **Author error (F6).** Is this explained by an author error visible in
-   the file?
+   reference tell that the reference landed wrong?
+4. **Author error (F6).** Is the mis-resolution explained by an author error
+   that is visible in the file?
 
-**The tier** is A if question 2 is yes. Otherwise it is B if question 1 is
-yes. Otherwise it is C.
+The tier is **computed** from the answers: A if question 2 is yes, otherwise B
+if question 1 is yes, otherwise C. If the tierer cannot answer question 1 or
+question 2, the packet is UNPLACEABLE, which is not a finding.
 
-### 7.3 The procedure
+### 7.3 Procedure
 
-**The export.** One packet is exported per distinct (unit, mechanism target,
-oracle target) among records that meet all of these:
+**The export.** One packet is exported for each distinct (unit, mechanism
+target, oracle target) whose record:
 
-- they are decided mis-resolutions under the **hardened** policy;
-- they meet F1 to F5;
-- their input states are well-formed.
+- is a decided mis-resolution under the hardened policy;
+- meets F1–F5;
+- has well-formed input states.
 
-Naive-only records and records outside F5 are not exported. They are
-reported as near misses, untiered.
+Each packet holds:
 
-**What a packet holds:**
-
-- the before-file(s), the after-file and, for M, both legs;
-- the reference (the quote selector or the name);
-- the mechanism status;
+- the before-file or files, the after-file, and for M both legs;
+- the reference (quote selector or name), with its status;
 - the text of both targets;
-- §7.1, §7.2 and Appendix A.
+- §7.1's table, §7.2 and Appendix A.
 
-**What a packet leaves out:** counts, rates, denominators, sharing
-information, other records, totals, the corpus, and `LOG.md`. The order and
-names come from §6.3's export hash. A committed validator fails any packet
-that carries a field outside an allow-list.
+A packet holds no counts, rates, denominators, sharing information, other
+records, totals or `LOG.md`. A committed validator fails any field outside an
+allow-list.
 
-**Planted packets.** The export mixes in planted packets, named and ordered
-the same way as real ones:
+**Names, order and the nonce.** Before any arm runs, a 32-byte nonce is drawn
+from `os.urandom` and written into a sealed manifest. The manifest also holds
+the plant names and their expected answers. The manifest's sha256 is committed
+in the validation commit, and the manifest itself is committed after
+`tiers.jsonl`. Each packet is named by the first 16 hex characters of
+`sha256(nonce + ":" + packet key)`, and packets are ordered by name.
 
-| packet | expected tier | why |
-|---|---|---|
-| `single-leg-01` | **A** | Transcluding the appendix shows the superseded wording. |
-| two proposals, each with the same status line ("Status: approved by TOC vote."), where the anchor lands on the other proposal's line | **B** | The text is identical, so question 2 is no, but an assertion about the approval moves to the wrong proposal. |
-| a sentence repeated byte-identically within one paragraph group, with the mechanism landing on the other copy | **C** | Nothing becomes false under either use. |
+**Plants.** The three plants in Appendix B are mixed into the export, named and
+ordered in the same way as real packets. **The tiering is void if any plant's
+computed tier falls on the wrong side of the B/C line, or if any plant's answer
+to question 3 or question 4 differs from the expected answer.** Confusing A
+with B does not void it, because F8 accepts either. When the tiering is void,
+every cell that exported at least one packet becomes NO VERDICT. Cells that
+exported none are unaffected.
 
-**If any planted packet gets a different tier, the tiering is void and every
-cell is NO VERDICT.** The plants are built and committed with V3. They are
-identified in a sealed manifest whose sha256 is committed before tiering.
+**The tierer.**
 
-**The tierer** runs **exactly once**, and the first `tiers.jsonl` it writes
-is binding. A packet it leaves untiered is UNPLACEABLE, and no rerun
-happens.
+- **Model.** A fresh agent on the pinned model `claude-opus-5-5`, with no
+  authoring conversation.
+- **Isolation.** It works in a directory that holds only the export, with no
+  blockspec checkout. That is the filesystem barrier of org contract §2.1. The
+  network barrier depends on the agent following its prompt, and is honoured,
+  not enforced.
+- **Runs.** There is one run. The first `tiers.jsonl` binds and is committed as
+  written. A rerun is allowed only if the run produced no `tiers.jsonl`, or one
+  with zero lines. Any other untiered packet, plants included, is UNPLACEABLE,
+  and an untiered plant does not void the tiering.
+- **Disqualification.** Whoever ran an arm may not tier.
 
-- **Who.** The tierer is a fresh agent of whatever kind the harness
-  provides. Its model and identity are logged.
-- **What it gets.** No authoring conversation. It works in a directory that
-  holds only the export, with no blockspec checkout. That is the filesystem
-  barrier in org contract §2.1.
-- **The network barrier is honour-system.** The prompt forbids access to
-  kindspec repositories, and nothing enforces it.
-- **The output.** `tiers.jsonl` is committed as written, before any join.
-- **The log.** `LOG.md` records the export manifest (each file's sha256 and
-  the packet count, which the tierer can see), Appendix A as sent, the date,
-  the agent and model, and the commit.
+**What `LOG.md` records:** the export manifest (sha256 of each file), the
+packet count, Appendix A as sent, the date, the model id, and the commit.
 
-Whoever ran an arm may not tier. The first run's 85 records are not tiered
-(§0 item 17). Arm M here runs at D8 §3's pins, which differ from the first
-run's for `rust-book` and `obsidian-help` (`harness/corpora.json`), so it
-does not regenerate that population.
+**Accepted leak.** The tierer can see the packet count, which is the number of
+exported mis-resolutions plus 3. That is a numerator with no denominator, so
+it is not the frequency of any shape. The plants are new texts. They are not
+taken from `single-leg-01`, which is public in `LOG.md` §9.
 
 ## 8. Outcomes
 
-The first registration's §6 stands, and both directions are deliverables.
-What changes:
+The first registration's §6 stands. The differences are below.
 
-- **FOUND.** The reproduction gives the frequency per cell, as distinct
-  qualifying units over distinct decided units, with the undecidable counts
-  beside it. blockspec then proceeds to blockspec#3, #4 and #5.
-- **NOT FOUND.** This requires both Q and R. A finding is published: prose
-  does not earn a format under these mechanisms. It gives each cell's *n*
-  and its bound, Arm 0's sub-20 count, and every undecidable count. The
-  repository says it is not being built. This goes to the owner before
-  publication (org contract §7).
-- **NOT FOUND (Q only).** It is published as a finding about quote anchors.
-  Named references are listed as unmeasured, blockspec#2 stays open for R,
-  and there is no "not being built" statement.
-- **NEAR MISS.** Published as NOT FOUND, with the near misses described.
-- **INCONCLUSIVE.** Published with the cells that lacked coverage.
-  blockspec#2 stays open, and nothing is built (`DESIGN-BRIEF.md` §2).
+- **FOUND.** The write-up is the reproduction.
+  - For M: the merge base, the two legs and the stock-git command line.
+  - For E: the parent commit and the commit, with `git show <c>:<path>` for
+    each side.
+  - For S: the two endpoint commits, with the same `git show` commands.
+
+  Every write-up also gives the before- and after-files, the oracle's decided
+  verdict, the packet answers, and per-cell distinct qualifying and decided
+  counts with the undecidable counts. blockspec then proceeds to blockspec#3,
+  #4 and #5.
+- **NOT FOUND (needs Q and R).** The published finding is that prose does not
+  earn a format under these mechanisms. It gives each cell's *n* and its bound,
+  Arm 0's count of blocks under 20 characters, and every undecidable count. It
+  states that blockspec is not being built. Org contract §7 requires it to go
+  to the owner first.
+- **NOT FOUND (Q only).** The finding is about quote anchors only. R is listed
+  as unmeasured, blockspec#2 stays open for R, and there is no "not being
+  built" statement.
+- **INCONCLUSIVE.** The write-up names the cells that lacked coverage.
+  blockspec#2 stays open and nothing is built (`DESIGN-BRIEF.md` §2).
 
 ## 9. Validation, and the order of work
 
-Each step's transcript is committed under `results/prereg2/` before the next
-step starts.
+Each step's transcript is committed under `results/prereg2/`. **A failed V step
+stops the work until it is fixed and re-validated, before any scoring arm
+runs.**
 
-- **V1.** The control gate (`run_control.sh`, then `check_control_gate.py`)
-  passes at `corpora.json`'s pins.
-- **V2.** Each of these regenerates **byte-identically**, checked by `cmp`
-  and sha256:
+- **V1.** The control gate (`run_control.sh` then `check_control_gate.py`)
+  passes at the pins in `corpora.json`.
+- **V2.** Each of the following regenerates byte-identically, checked with
+  `cmp` and sha256:
   - `results/control-arm.txt`;
-  - `results/merge-arm.txt` and `merge-arm-candidates.jsonl`, using
-    `spike/README.md`'s command at `corpora.json`'s pins;
-  - research's `results-e4.txt` and `results-anchor3.txt` at D8 §3's pins;
+  - `merge-arm.txt` and `merge-arm-candidates.jsonl`, using the command in
+    `spike/README.md` at the pins in `corpora.json`;
+  - research's `results-e4.txt` and `results-anchor3.txt`, at D8 §3's pins;
   - all of `results/cheap-arm/`, using `run_cheap_arm.sh`.
-- **V3.** Every new component goes red on a planted case and on an empty
-  input. At minimum:
-  - **REPEAT.** `oracle_limitation.py`'s case comes out UNDECIDABLE-REPEAT.
-    A planted case with two identical multi-line paragraphs in different
-    contexts, one of them edited, comes out decided and `WRONG`.
-  - **REPEAT and SPLIT on the existing plants.** `wrong-01`,
-    `single-leg-01` and `clean-01` keep their committed verdicts and stay
-    decided.
-  - **SPLIT.** A planted paragraph split in two comes out UNDECIDABLE-SPLIT.
-  - **The section forms of REPEAT and SPLIT.** Each has a planted case of
-    its own.
+- **V3.** Each new component goes red on a planted case, and on an empty input.
+  - **REPEAT.** `oracle_limitation.py`'s case comes out UNDECIDABLE-REPEAT. Two
+    identical multi-line paragraphs in different contexts, one of them edited,
+    come out decided and `WRONG`.
+  - **REPEAT and SPLIT leave known cases alone.** `wrong-01`, `single-leg-01`
+    and `clean-01` stay decided, with their committed verdicts.
+  - **SPLIT.** A paragraph split in two comes out UNDECIDABLE-SPLIT.
+  - **R units.** The R form of REPEAT and of SPLIT each has its own planted
+    case.
   - **R.**
     - A heading renamed onto another section's name comes out decided and
       `WRONG`.
-    - A vanished name gives `#REF!`, and so does a duplicated name.
+    - A name that disappears gives `#REF!`, and so does a duplicated name.
     - A `#` line inside a code fence is not a name.
-    - The copied `slugs()` and `regions()` are byte-identical to their
-      source lines at `d51ce09`.
-  - **Arm E and Arm S.** A repository holding `single-leg-01` as one commit
-    yields that record. An empty repository exits non-zero.
-  - **The M filter and §6.3's rule.** A generated key in the file's own
-    fence excludes the file. The same key in an HTML comment does not.
-  - **The sampler.** Removing an unselected item leaves the sample
+    - The copied `slugs()` and `regions()` match their source lines at
+      `d51ce09` byte for byte.
+  - **E and S enumerators.** A repository that holds `single-leg-01` as one
+    commit yields that record. An empty repository exits non-zero.
+  - **M filter and §6.3 rule.** A generated key in a file's own fence excludes
+    the file. The same key inside an HTML comment does not.
+  - **Sampler.** Removing an item that was not selected leaves the sample
     byte-identical.
-  - **Distinct counting.** A duplicate counts once.
-  - **The decided rule.** One decided instance plus one undecidable instance
+  - **Distinct count.** A duplicate is counted once.
+  - **Decided rule.** One decided instance plus one undecidable instance
     counts as decided.
-  - **The floor.** 299 gives NO VERDICT, 300 gives NOT FOUND, and an empty
-    cell gives NO VERDICT, never zero.
-  - **The Arm 0 bar.** A planted corpus over 10% stops its arm.
-  - **The export validator.** A packet that carries a count fails it.
-  - **The planted-packet check.** A misplaced plant voids the tiering.
-  - **The aggregator.** Empty input gives no verdict and exits non-zero.
-- **V4.** A mutation sweep over the new gates, in `armed_check.sh` style.
-  Hashes are taken before and after each mutation, and a mutation that does
-  not apply is reported as BROKEN, never as survived.
-- **V5.** `armed_check.sh`, `--selftest-selection`,
-  `selection_guard_red.sh` and `oracle_limitation.py` stay green and armed.
+  - **Floor.** 299 gives NO VERDICT, 300 gives NOT FOUND, and an empty cell
+    gives NO VERDICT, never zero.
+  - **Arm 0 bar.** A planted corpus over 10% stops its arm.
+  - **Export validator.** It rejects a packet that carries a count.
+  - **Void rule.** It fires on a plant that crosses the B/C line, and on a plant
+    whose question 3 or question 4 answer mismatches. It does not fire on A↔B
+    confusion.
+  - **Aggregator.** Empty input gives no verdict and exits non-zero.
+- **V4.** A mutation sweep over the new gates, in the style of
+  `armed_check.sh`. Each mutation is hash-verified, and a mutation that does
+  not apply is reported as BROKEN.
+- **V5.** `armed_check.sh`, `--selftest-selection`, `selection_guard_red.sh`
+  and `oracle_limitation.py` stay green and armed.
 
-**The commit order** is a sequence of separate commits:
+**Commit order.** These are separate commits, in this order:
 
-1. validation;
-2. Arm 0's results;
-3. the scoring arms' results and the export, with the sealed manifest of the
-   planted packets;
+1. validation, with the harness sha and the hash of the sealed manifest;
+2. Arm 0 results;
+3. scoring-arm results and the export;
 4. `tiers.jsonl`;
-5. the join and the verdict.
+5. the sealed manifest, the join and the verdict.
 
-**The stop rule.** Sometimes the harness cannot implement a definition here
-as written.
+**The harness at the validation commit is the implementation, and its sha is
+recorded in `LOG.md`.**
 
-- **Before Arm 0's results are committed,** the work stops and the gap goes
-  to the owner, who may approve a superseding pre-registration. No arm runs
-  in the meantime.
-- **After that commit,** a gap found then makes the affected cells NO
-  VERDICT; it is not grounds to supersede.
+**Gaps.** A gap is a definition here that the harness cannot implement as
+written. What happens depends on when it is found:
 
-No definition is reinterpreted, at either stage.
+- **Before the Arm 0 commit.** A gap, shown by a committed red test, stops
+  the work, and the owner may supersede this pre-registration.
+- **Between the Arm 0 commit and the scoring-arm commit.** A gap may be
+  declared only with a committed red test that shows it. It makes the affected
+  cells NO VERDICT, and it is not grounds to supersede.
+- **After the scoring-arm commit.** No gap claim, code change or later
+  supersession alters any cell.
 
 ## 10. Amendment rules
 
-**Frozen when this merges:** §0, §2 to §8, §9's commit order and stop rule,
-§10 itself, and Appendix A.
+**Frozen when this merges:** §0, §2–§8, §9's commit order, the gap rules and
+the V-failure rule, §10 itself, and Appendices A and B.
 
-- **A frozen section that is wrong** is replaced by a further
-  pre-registration, not edited. Any later pre-registration cannot change the
-  verdict computed under this one, and that verdict is published first.
-- **§1 and the V-list in §9** may be corrected only where they are wrong
-  about a fact. Each correction is logged below with the original wording.
-- **Pins never change.**
+- **A frozen section that is wrong.** Before the Arm 0 commit it may be
+  replaced by a further pre-registration. After that commit, no further
+  pre-registration may address this question in a way that changes any cell
+  or the overall verdict computed here. That verdict is published first.
+- **§1 and §9's V-list.** These may be corrected only where they are wrong
+  about a fact. Each correction is logged below, with the original wording.
+- **Pins.** Pins never change.
 
 Edits made while this is a draft PR are not amendments.
 
@@ -616,25 +601,101 @@ Edits made while this is a draft PR are not amendments.
 
 ## Appendix A — the tierer's prompt, verbatim
 
-> You are tiering records for an experiment. Work only with the files in
-> this directory. Do not open, search for, or fetch any kindspec repository,
-> issue or pull request, locally or over the network. Do not ask how many
-> records exist elsewhere or how often anything occurs.
+> You are answering questions about records from an experiment. Work only with
+> the files in this directory. Do not open, search for, or fetch any kindspec
+> repository, issue or pull request, locally or over the network.
 >
-> Each packet describes one hypothetical reference: a quote anchor or a
-> name, taken against a "before" file and resolved against an "after" file.
-> The packet gives the target the mechanism resolved to and the target an
-> independent oracle says is correct. They differ. Read the tier
-> definitions and the four questions included in each packet (§7.1, §7.2).
+> Each packet describes one hypothetical reference — a quote anchor or a name —
+> taken against a "before" file and resolved against an "after" file. It gives
+> the target the mechanism resolved to and the target an independent oracle
+> says is correct. They differ. Read the four questions in the packet.
 >
-> For every packet, answer the four questions from the files alone, and
-> assign a tier: A if question 2 is yes, otherwise B if question 1 is yes,
-> otherwise C. If you cannot place a packet from the definitions, record
-> UNPLACEABLE with your reasoning. Do not invent a tier.
+> For every packet, answer the four questions from the files alone. If you
+> cannot answer question 1 or question 2, set `"unplaceable": true` and say
+> why.
 >
-> Write one JSON object per line to `tiers.jsonl`, in any order:
+> Write one JSON object per line to `tiers.jsonl`:
 > `{"packet": <name>, "q1": "yes"|"no", "q2": "yes"|"no",
-> "q3_visible": "yes"|"no", "q4_author_error": "yes"|"no",
-> "tier": "A"|"B"|"C"|"UNPLACEABLE", "why": <one line>}`.
-> Write each line when you decide it. Do not revise a line once written.
-> When every packet has a line, stop.
+> "q3": "yes"|"no", "q4": "yes"|"no", "unplaceable": true|false,
+> "why": <one line>}`.
+>
+> Write each line as you decide it, and do not revise a line once it is
+> written. Stop when every packet has a line.
+
+## Appendix B — planted packets, verbatim
+
+Each plant is a packet with one base, one after-state, the anchored block, the
+mechanism's target and the oracle's target. In each plant, the anchored block
+is the one the reference was taken against in the base.
+
+**P-A.** Expected answers: q1 yes, q2 yes, q3 no, q4 no. Expected tier: **A**.
+
+Base:
+
+    ## Ingest service
+
+    Requests are retried three times before the job fails.
+
+    ## Export service
+
+    Exports are written to the archive bucket nightly.
+
+After:
+
+    ## Ingest service
+
+    Requests are retried five times before the job fails.
+
+    ## Export service
+
+    Exports are written to the archive bucket nightly.
+
+    Requests are retried three times before the job fails.
+
+- Anchored: `Requests are retried three times before the job fails.` (Ingest).
+- Mechanism target: the last block (Export).
+- Oracle target: `Requests are retried five times before the job fails.`
+
+**P-B.** Expected answers: q1 yes, q2 no, q3 no, q4 no. Expected tier: **B**.
+
+Base:
+
+    ## Project Alpha
+
+    Alpha moves sandbox telemetry into the shared pipeline.
+
+    Status: approved by TOC vote on 2026-03-04.
+
+    ## Project Beta
+
+    Beta adds a conformance badge to the landscape.
+
+    Status: approved by TOC vote on 2026-03-04.
+
+After: identical to the base, except that the two sections are swapped (Beta
+first).
+
+- Anchored: the Alpha status line.
+- Mechanism target: the status line under Beta.
+- Oracle target: the status line under Alpha.
+
+**P-C.** Expected answers: q1 no, q2 no, q3 no, q4 no. Expected tier: **C**.
+
+Base:
+
+    ## Maintenance windows
+
+    > **Note:** All times in this section are UTC.
+
+    Windows open at 02:00 and close at 04:00 on Sundays.
+
+    Emergency windows may open at any time with one hour's notice.
+
+    > **Note:** All times in this section are UTC.
+
+After: identical to the base, except that the first window sentence reads
+`03:00 and close at 05:00`.
+
+- Anchored: the first Note.
+- Mechanism target: the second Note.
+- Oracle target: the first Note.
