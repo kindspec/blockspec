@@ -1,0 +1,7 @@
+research: d51ce09cdb23af32f35e7a3c6111ac21ab0f033f  0 modified paths under D8-identity
+2a5adf9e803731284caa23b7d606f42ea87359abe195589afc5363e20266ba34  adapted driver
+2a5adf9e803731284caa23b7d606f42ea87359abe195589afc5363e20266ba34  research results-e4.txt
+BYTE-IDENTICAL: results-e4.txt
+d016413d443f51fb0ac23da60ecadb6fd4c0eb9eef9917ef952075a991508af0  adapted driver
+d016413d443f51fb0ac23da60ecadb6fd4c0eb9eef9917ef952075a991508af0  research results-anchor3.txt
+BYTE-IDENTICAL: results-anchor3.txt

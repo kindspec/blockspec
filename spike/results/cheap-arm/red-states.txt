@@ -1,0 +1,53 @@
+-- the originals, run from a directory with no corpora/ (kindspec/research#6)
+== original e4_uniqueness.py 40, wrong cwd
+   exit=0 (expected zero) -> as-expected
+   stdout| 
+   stdout| ### rust-book  files=0  blocks>=40ch=0
+   stdout| type           n   dup in same file   dup anywhere in corpus
+   stdout| 
+== original anchor_eval3.py, wrong cwd
+   exit=0 (expected zero) -> as-expected
+   stdout| ### rust-book src/*.md gap=5: too few (0)
+   stdout| ### rust-book src/*.md gap=25: too few (0)
+   stdout| ### obsidian-help en/*.md gap=5: too few (0)
+   stdout| ### obsidian-help en/*.md gap=25: too few (0)
+
+-- the adapted driver, each way of reading nothing
+== uniqueness: corpus path does not exist
+   exit=2 (expected nonzero) -> as-expected
+   stderr| d8_cheap_arm: rust-book: corpus directory does not exist: $SCRATCH/empty/rust-book
+== uniqueness: path exists, is not a git work tree
+   exit=2 (expected nonzero) -> as-expected
+   stderr| d8_cheap_arm: rust-book: not a git work tree: $SCRATCH/empty
+   stderr| fatal: not a git repository (or any of the parent directories): .git
+== uniqueness: HEAD is not the stated pin
+   exit=2 (expected nonzero) -> as-expected
+   stderr| d8_cheap_arm: rust-book: HEAD is 1500248d8f230566e4ec9f27fcbb8fe9e2898ab1, pinned at 917544888a55e4da7109bdba8c88c893c0da70f4
+== uniqueness: pathspec selects nothing
+   exit=2 (expected nonzero) -> as-expected
+   stderr| d8_cheap_arm: rust-book: pathspec 'en/*.md' selects no .md files in $CORPORA/rust-book
+== uniqueness: files read, zero blocks
+   exit=2 (expected nonzero) -> as-expected
+   stdout| 
+   stdout| ### blank  files=1  blocks>=20ch=0
+   stdout| type           n   dup in same file   dup anywhere in corpus
+   stderr| d8_cheap_arm: blank: read 1 files and 0 blocks -- nothing measured
+== anchors: pathspec selects nothing
+   exit=2 (expected nonzero) -> as-expected
+   stderr| d8_cheap_arm: rust-book: pathspec 'en/*.md' selects no .md files in $CORPORA/rust-book
+== anchors: files selected, no version pair at any gap
+   exit=2 (expected nonzero) -> as-expected
+   stdout| ### shallow *.md gap=5: too few (0)
+   stdout| ### shallow *.md gap=25: too few (0)
+   stderr| d8_cheap_arm: shallow: no version pair evaluated at any gap -- nothing was read
+== --d8-dir without the D8 scripts
+   exit=2 (expected nonzero) -> as-expected
+   stderr| d8_cheap_arm: --d8-dir has no anchor_eval3.py: $SCRATCH/empty
+
+-- the validation gate itself: frontmatter typing relabels D8's YAML
+   silent-wrong (D8 §3.2), so stage 1's cmp must now report a difference
+== cmp of results-anchor3.txt against a --frontmatter-type run
+   exit=1 (expected nonzero) -> as-expected
+   stdout| $SCRATCH/a3fm $D8_DIR/results-anchor3.txt differ: byte 741, line 13
+
+unexpected exits: 0

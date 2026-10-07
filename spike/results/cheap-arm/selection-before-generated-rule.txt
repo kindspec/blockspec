@@ -1,0 +1,4 @@
+### k8s-website  pathspec='content/*.md'  included=8259  excluded-as-generated=0
+### k8s-website-en  pathspec='content/en/*.md'  included=2513  excluded-as-generated=0
+### cncf-toc  pathspec='*.md :(exclude).github/'  included=598  excluded-as-generated=0
+### site-policy  pathspec='*.md :(exclude).github/'  included=61  excluded-as-generated=0
