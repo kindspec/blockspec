@@ -13,7 +13,8 @@ Read in this order:
 | `ORACLE.md` | the oracle, named and frozen **before** the merge arm ran, as §3.1 requires. **It is frozen, and §6 of it is wrong** — read `LOG.md` §9 and §6.2 alongside it, never on its own. |
 | `harness/` | the harness, its planted cases, and the two gates |
 | `results/` | raw output, pasted, not summarised |
-| `LOG.md` | the running record. Candidate cases live here with `tier: UNASSIGNED`. |
+| `results/merge-arm-candidates.jsonl` | the merge arm's candidate *records*, one per mis-resolved block per policy and one or more per case, each with `tier: UNASSIGNED` |
+| `LOG.md` | the running record. |
 
 ## What this arm adds to D8
 
@@ -104,6 +105,10 @@ says so rather than firing a spurious warning.
   seen the frequency*. Whoever ran this has seen frequencies and is disqualified
   from tiering their own results. Candidates carry `"tier": "UNASSIGNED"`.
 - **No verdict.** §6's FOUND / NOT FOUND / NEAR MISS is not decided here.
-- **No duplicate-heavy corpora.** §5's second arm requires an amendment naming
-  them, recorded in §8 with a date and a reason, with an argument per choice.
-  That has not been done, so that arm has not been run.
+- **No duplicate-heavy results.** The corpora are chosen: `PRE-REGISTRATION.md`
+  §5.1 names and pins them, by the §5 amendment logged in §8. The arm itself
+  has not been run, and `LOG.md` §6.2 (see "Read these before believing
+  anything here") says it needs a superseding oracle statement before its
+  prose numbers can be believed. Whether to write a superseding
+  pre-registration before running it, or to run it under this one as it
+  stands, is an **open owner decision**; nothing in this directory decides it.
