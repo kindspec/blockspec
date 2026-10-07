@@ -1,8 +1,10 @@
 # blockspec
 
-**Status: not started.** This repository is a stub. It exists so the decisions
-already made are not lost, and so the design pass can begin from them rather
-than from a blank page.
+**Status: design pass.** There is no specification, no conformance suite and no
+implementation. What exists is a design brief and a pre-registered spike,
+`spike/` (blockspec#2): its criterion is committed and its harness validated,
+and it has **no verdict** — whether prose has a silent-wrong-merge worth a
+format is still undecided. Start at `spike/README.md`.
 
 blockspec is the **block kind** in [kindspec](https://github.com/kindspec) — a
 specification and conformance suite for prose documents that must survive
@@ -15,7 +17,7 @@ part of every one of them:
 | | unit | identity | status |
 |---|---|---|---|
 | [rowspec](https://github.com/kindspec/rowspec) | rows | opaque row ids | draft 0, published |
-| **blockspec** | blocks | **deliberately no minted ids** | not started |
+| **blockspec** | blocks | **deliberately no minted ids** | design pass |
 | [nodespec](https://github.com/kindspec/nodespec) | nodes | named, not positional | not started |
 
 ## The thing that makes this different from rowspec
