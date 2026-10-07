@@ -347,16 +347,24 @@ measurement:
   23,473 two-parent merges, essentially all human content through Prow.
   Extrapolated, roughly 800 accepted cases over full history — more than four
   times the control. **That figure is an extrapolation from a 400-merge sample
-  and is labelled as one;** enumerate the full history before quoting it.
+  and is labelled as one;** enumerate the full history before quoting it. Treat
+  it as an **upper** estimate: the sample is the most *recent* 400 rather than a
+  random 400, and the translation volume that drives the rate is itself recent,
+  so the full-history rate is probably lower.
 - **`cncf-toc` is the cleanest arm.** 71 accepted, every one a human-authored
   merge, no bot involvement at all, and it is the minutes shape §2.2 names
   first. The smallest absolute count of the three and the least ambiguous.
 - **`site-policy` is the smallest real contribution and stays as a supporting
-  arm.** Of its 78 accepted cases, 49 are the bot merging its own sync branch,
-  leaving about 29 that are genuinely two parties editing near-duplicate legal
-  text. That shape is exactly what §2.2 predicted and nothing else in the
-  candidate set has it, which is why it stays — but 29 cases, not 1321, is what
-  it brings, and a result quoted from this arm must say which cases it used.
+  arm.** Of its 78 accepted cases, 49 are authored by the bot. Filtering there
+  would be filtering by merge author, which the paragraph above calls the wrong
+  classifier, so the remaining 29 were checked by subject: **four are still the
+  `automated-sync` export shape with a person on the button**, and four more are
+  `repo-sync`. That leaves **25** on the stricter reading, or **21** if
+  `repo-sync` is also a sync rather than two parties authoring — which needs the
+  diffs read and has not been. So this arm brings somewhere between 21 and 25
+  cases, not 1321 and not 29. The shape is exactly what §2.2 predicted and
+  nothing else in the candidate set has it, which is why it stays; a result
+  quoted from this arm must say which cases it used.
 
 Pins are recorded because a corpus that moves between registration and run turns
 drift into a finding; §3.2's `obsidian-help` arm is what that costs.
