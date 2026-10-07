@@ -13,7 +13,8 @@ Read in this order:
 | `ORACLE.md` | the oracle, named and frozen **before** the merge arm ran, as §3.1 requires. **It is frozen, and §6 of it is wrong** — read `LOG.md` §9 and §6.2 alongside it, never on its own. |
 | `harness/` | the harness, its planted cases, and the two gates |
 | `results/` | raw output, pasted, not summarised |
-| `LOG.md` | the running record. The merge arm's candidate *records* — one per mis-resolved block per policy, one or more per case — are in `results/merge-arm-candidates.jsonl`, each with `tier: UNASSIGNED`. |
+| `results/merge-arm-candidates.jsonl` | the merge arm's candidate *records*, one per mis-resolved block per policy and one or more per case, each with `tier: UNASSIGNED` |
+| `LOG.md` | the running record. |
 
 ## What this arm adds to D8
 
