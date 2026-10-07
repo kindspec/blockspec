@@ -378,8 +378,8 @@ where the bot is 1174 of 1321, or 89%. That is a guard measured on a denominator
 the selection does not use, which is one of the shapes this project keeps
 catching in itself. On accepted cases the bot share is 63%, which is why
 `site-policy` is demoted rather than primary. It is not excluded outright
-because its 29 human cases are real and are the only legal-text coverage
-available.
+because the 21 to 25 cases that survive subject classification are real and are
+the only legal-text coverage available.
 
 **Author count does not predict concurrency.** 46 authors at `site-policy`
 against 6,706 at `kubernetes/website` settles that much, and it is worth
@@ -469,6 +469,7 @@ where they are inconvenient.
 | date | section | change | reason |
 |---|---|---|---|
 | 2026-10-06 | §5 | Named and pinned three duplicate-heavy corpora — `kubernetes/website`, `cncf/toc`, `github/site-policy` — ranked by evaluable human-authored cases. `python/peps` excluded on volume. §5.1 carries the measurement. | The corpus-list amendment §5 requires and §8 permits, made before the arm runs. A first draft of §5.1 ranked on both-sides pairs and claimed that is what `find_merge_cases` selects; it is not, and running the harness's own classification cut `site-policy` from 1321 to 78 accepted, 49 of those being a bot merging its own sync branch. The ranking inverted. Also corrected: the bot exclusion had been cleared on commit share while the arm selects on merge pairs, and merge author turned out to be a proxy that misleads in both directions. |
+| 2026-10-07 | §5 | The `site-policy` arm restated as **21 to 25** cases rather than 29. | 29 was the 78 accepted minus the 49 bot-authored *merges* — filtering by merge author, which §5.1 itself establishes as the wrong classifier two paragraphs earlier. By subject, four of the 29 are the same `automated-sync` export shape with a person on the button and four more are `repo-sync`, giving 25 on the stricter reading and 21 if `repo-sync` is also a sync. The diffs have not been read, so it stays a range. Logged separately because the first correction's own row asserted the figure it got wrong. |
 | 2026-09-10 | §1, §8.2 | Withdrew the claim that the old `obsidian-help` bucket line "cannot be reconciled per-bucket"; it reconciles at `a3985b58` as `2+78+90+212+2 = 384`, the line having been truncated to its three largest buckets. Qualified the 885 reconciliation as pin-dependent. | Reproduced by the spike harness at `a3985b58`, not at §3's pin — see kindspec/research#8, which corrects the same conflation. A correction that itself carried two false claims. |
 | 2026-09-09 | §5 | `cmspec` promoted from held-out to full control arm; `rust-book` named the strongest control and `obsidian-help` demoted to a mechanism control. | The re-run shows `cmspec` was measured in both arms, not skipped; the skipped arm is `obsidian-help` gap=25. `obsidian-help` has moved since D8 ran. This is the corpus-list amendment §8 expressly permits, made before measurement begins. |
 | 2026-09-09 | §1 | The claim narrowed from "not one is typed `prose`, in either strategy, in any arm" to "not one is typed `prose` under the **hardened** policy, in any of the five measuring arms" — naive now has one. Table replaced with committed harness output. | kindspec/research#3 re-ran the harness and committed its output for the first time; `obsidian-help` has moved and one naive silent-wrong is now typed `prose`. Forced by evidence outside this spike, before this spike measured anything. See kindspec/blockspec#7. |
