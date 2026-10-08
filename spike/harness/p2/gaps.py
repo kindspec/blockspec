@@ -20,8 +20,13 @@ entry is dated by the commit that first carries it, C:
 
 - C not strictly after the Arm 0 commit: the gap was found before Arm 0,
   which stops the work, so the aggregator refuses;
-- C strictly after the Arm 0 commit and strictly before the scoring-arm
-  commit: its cells become NO VERDICT, and the reason names the gap;
+- C strictly after the Arm 0 commit, strictly before the scoring-arm
+  commit, and in the history of every score run's binding.head: its cells
+  become NO VERDICT, and the reason names the gap;
+- C before the scoring-arm commit but not in the history of every score
+  run's binding.head -- merged after scoring ran, results in view: it is
+  listed as declared after scoring ran and alters no cell (round 7, LOG
+  §22; stricter than §9's letter, which dates by the scoring-arm commit);
 - C at or after the scoring-arm commit, or outside its history: it alters
   no cell, and is listed. A gaps.json version from then on is never a
   reason to refuse, whatever it says, malformed included (round 6).
@@ -44,6 +49,7 @@ from .binding import RESULTS_REL, _git, history_unsound, toplevel
 GAPS_REL = os.path.join(RESULTS_REL, "gaps.json")
 GAP_TESTS_REL = os.path.join(RESULTS_REL, "gaps") + os.sep
 ARM0_REL = os.path.join(RESULTS_REL, "arm0")
+SCORE_REL = os.path.join(RESULTS_REL, "score")
 KEYS = {"id", "log", "red_test", "cells", "why"}
 MODES = ("E", "S5", "S25", "M")
 MECHS = ("Q", "R")
@@ -69,6 +75,24 @@ def _is_ancestor(spike, a, b):
 def _one_adding_commit(spike, rel):
     _, out, _ = _git(spike, "log", "--full-history", "--format=%H", "--diff-filter=A", "--", rel)
     return out.split()
+
+
+def score_heads(spike, scoring_commit):
+    """The binding.head of every score output in the scoring-arm commit: the
+    commits the score runs executed at (round 7)."""
+    rc, out, _ = _git(spike, "ls-tree", "--full-tree", "--name-only", f"{scoring_commit}:{_rel_top(spike, SCORE_REL)}")
+    heads = []
+    for arm in (out.split() if rc == 0 else []):
+        raw = _show(spike, scoring_commit, os.path.join(SCORE_REL, arm, "status.json"))
+        try:
+            h = json.loads(raw)["binding"]["head"]
+            assert isinstance(h, str) and re.match(r"^[0-9a-f]{40}$", h)
+        except (ValueError, KeyError, TypeError, AssertionError):
+            raise GapError(f"score/{arm}/status.json at {scoring_commit[:12]} has no binding.head")
+        heads.append(h)
+    if not heads:
+        raise GapError(f"the scoring-arm commit {scoring_commit[:12]} carries no score output")
+    return heads
 
 
 def validate_entry(e, arms):
@@ -107,13 +131,43 @@ def load_gaps(spike, scoring_commit, arms):
     if not versions:
         raise GapError(f"{GAPS_REL} is not committed")
     arm0 = _one_adding_commit(spike, ARM0_REL)
+    heads = score_heads(spike, scoring_commit) if scoring_commit is not None else []
 
     def judged(c):
-        """Strictly before the scoring-arm commit, in its history."""
-        return scoring_commit is None or (c != scoring_commit and _is_ancestor(spike, c, scoring_commit))
+        """In the scoring-arm commit's history. The commit itself is never in
+        the history of a score run's head, which it records, so
+        before_score_ran leaves it out (§21's boundary; §22)."""
+        return scoring_commit is None or _is_ancestor(spike, c, scoring_commit)
+
+    def before_score_ran(c):
+        """In the history of every score run's binding.head (round 7): a gap
+        merged after the runs, though before the scoring-arm commit, was
+        chosen with the results in view."""
+        for h in heads:
+            if _git(spike, "cat-file", "-e", f"{h}^{{commit}}")[0] != 0:
+                raise GapError(f"cannot date {GAPS_REL} at {c[:12]} against the score runs: their "
+                               f"binding.head {h[:12]} is not in this repository; fetch the score PR's head")
+            if not _is_ancestor(spike, c, h):
+                return False
+        return True
     first_seen, body, notes, listed = {}, {}, [], set()
     for c in versions:
         raw = _show(spike, c, GAPS_REL)
+        if judged(c) and scoring_commit is not None and not before_score_ran(c):
+            try:
+                late = [e for e in json.loads(raw)["gaps"] if isinstance(e, dict)] if raw is not None else []
+            except (ValueError, KeyError, TypeError):
+                late = []
+                notes.append(f"{GAPS_REL} at {c[:12]} is malformed; it was declared after scoring ran, "
+                             "so it alters no cell")
+            for e in late:
+                key = (str(e.get("id")), json.dumps(e, sort_keys=True))
+                if e.get("id") in body and body[e.get("id")] == e or key in listed:
+                    continue
+                listed.add(key)
+                notes.append(f"gap {e.get('id')} (LOG {e.get('log')}) as it reads at {c[:12]} was "
+                             "declared after scoring ran: it alters no cell")
+            continue
         if not judged(c):
             try:
                 late = [e for e in json.loads(raw)["gaps"] if isinstance(e, dict)] if raw is not None else []

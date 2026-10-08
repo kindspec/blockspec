@@ -78,6 +78,8 @@ def fixture_repo(root, commits, merges=()):
     for msg, files in commits:
         for p, t in files.items():
             fp = os.path.join(root, p)
+            if callable(t):
+                t = t(g)
             if t is None:
                 os.remove(fp)
                 continue
@@ -87,6 +89,11 @@ def fixture_repo(root, commits, merges=()):
         g("add", "-A")
         g("commit", "-q", "--allow-empty", "-m", msg)
     return g("rev-parse", "HEAD"), g
+
+
+def score_at_head(g):
+    """A score status.json whose run executed at the current HEAD."""
+    return json.dumps({"binding": {"head": g("rev-parse", "HEAD")}}) + "\n"
 
 
 def cli(*args):
@@ -1928,8 +1935,10 @@ def bound_fixture(tmp, name="bf"):
     return root, sp, g, bdir, manifest
 
 
-def run_bound(sp, bdir, *args):
+def run_bound(sp, bdir, *args, drop=()):
     env = dict(os.environ, **GIT_ENV, PREREG2_BUNDLE_DIR=bdir)
+    for k in drop:
+        env.pop(k, None)
     r = subprocess.run([sys.executable, "-I", "-S", "-B", os.path.join(sp, "harness", "prereg2.py"), *args],
                        capture_output=True, text=True, env=env)
     return r.returncode, r.stdout + r.stderr
@@ -1977,6 +1986,15 @@ def t_round5(a, tmp):
           rc != 0 and not os.path.exists(os.path.join(sp, "results", "prereg2", "score", "rust-book"))
           and not os.path.exists(os.path.join(sp, BD.marker_rel("score", "rust-book"))), out[-200:])
     commit_all(g, "the failed score's transcript")
+    g("checkout", "-q", "-b", "bad-gaps")
+    open(os.path.join(sp, "results", "prereg2", "gaps.json"), "w").write("{not json\n")
+    commit_all(g, "a malformed gaps.json before scoring")
+    rc, out = run_bound(sp, empty, "score", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir", w("4p"))
+    check("P2: score's bound preflight refuses a malformed gaps.json before scoring",
+          rc == 2 and "is not {\"gaps\"" in out, out[-200:])
+    g("checkout", "-q", "-f", "main")
+    g("clean", "-q", "-fd", "spike")
+    g("branch", "-q", "-D", "bad-gaps")
     rc, out = run_bound(sp, bdir, "score", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir", w("5"))
     check("H-1: ... so the next score runs and executes", rc == 0 and os.path.exists(
         os.path.join(sp, "results", "prereg2", "score", "rust-book", "status.json")), out[-300:])
@@ -1994,6 +2012,15 @@ def t_round5(a, tmp):
     g("checkout", "-q", "-f", "main")
     g("clean", "-q", "-fd", "spike")
     g("branch", "-q", "-D", "per-arm")
+    g("checkout", "-q", "-b", "bad-gaps")
+    open(os.path.join(sp, "results", "prereg2", "gaps.json"), "w").write("{not json\n")
+    commit_all(g, "a malformed gaps.json before export")
+    rc, out = run_bound(sp, bdir, "export", "--d8-dir", a.d8_dir, "--manifest", manifest)
+    check("P4: export's bound preflight refuses a malformed gaps.json", rc == 2 and "is not {\"gaps\"" in out
+          and not os.path.exists(os.path.join(cd, "prereg2", "export.json")), out[-200:])
+    g("checkout", "-q", "-f", "main")
+    g("clean", "-q", "-fd", "spike")
+    g("branch", "-q", "-D", "bad-gaps")
     rc, out = run_bound(sp, bdir, "export", "--d8-dir", a.d8_dir, "--manifest", manifest)
     check("N15: export runs bound and writes its marker", rc == 0 and os.path.exists(
         os.path.join(sp, BD.marker_rel("export", None))), out[-300:])
@@ -2015,6 +2042,11 @@ def t_round5(a, tmp):
     check("MEDIUM-1: a malformed gaps.json after the scoring-arm commit does not stop aggregate; it is listed",
           rc == 0 and "malformed" in out and "alters no cell" in out, out[-300:])
     commit_all(g, "verdict again")
+    rc, out = run_bound(sp, bdir, "tier-model", drop=("ANTHROPIC_API_KEY",))
+    check("P5: tier-model's preflight is final: a malformed gaps.json after the scoring-arm commit does not block "
+          "it (it stops later, at the missing API key)",
+          rc == 2 and "ANTHROPIC_API_KEY is not set" in out and "is not {" not in out, out[-300:])
+    commit_all(g, "tier-model refused for want of a key")
     rc, out = run_bound(sp, bdir, "tier-run", "--agent-cmd", "/bin/true")
     check("N18: a bound tier-run that names --agent-cmd is refused", rc == 2 and "takes no --agent-cmd" in out,
           out[-200:])
@@ -2251,7 +2283,7 @@ def t_gaps(a, tmp):
             elif step == "gap":
                 commits.append(("gap", files_gap))
             elif step == "score":
-                commits.append(("score", {"spike/results/prereg2/score/k8s-en/status.json": "{}\n"}))
+                commits.append(("score", {"spike/results/prereg2/score/k8s-en/status.json": score_at_head}))
             else:
                 commits.append((step, {f"spike/{step}.md": step + "\n"}))
         _, g = fixture_repo(root, commits)
@@ -2278,7 +2310,7 @@ def t_gaps(a, tmp):
     g("checkout", "-q", "-b", "x")
     open(os.path.join(sp, "score.md"), "w").write("x\n")
     os.makedirs(os.path.join(sp, "results", "prereg2", "score", "k8s-en"))
-    open(os.path.join(sp, "results", "prereg2", "score", "k8s-en", "status.json"), "w").write("{}\n")
+    open(os.path.join(sp, "results", "prereg2", "score", "k8s-en", "status.json"), "w").write(score_at_head(g))
     commit_all(g, "score")
     sc = g("log", "--format=%H", "--diff-filter=A", "--", "spike/results/prereg2/score")
     r = raised(lambda: GP.load_gaps(sp, sc, K.ARMS))
@@ -2292,7 +2324,7 @@ def t_gaps(a, tmp):
                                 "spike/harness/x.py": "red\n"})
         _, gg = fixture_repo(root, [("base", {"spike/a.md": "a\n"}),
                                     ("arm0", {"spike/results/prereg2/arm0/k8s-en.json": "{}\n"}),
-                                    ("gap", fl), ("score", {"spike/results/prereg2/score/k8s-en/status.json": "{}\n"})])
+                                    ("gap", fl), ("score", {"spike/results/prereg2/score/k8s-en/status.json": score_at_head})])
         sc2 = gg("log", "--format=%H", "--diff-filter=A", "--", "spike/results/prereg2/score")
         r = raised(lambda: GP.load_gaps(os.path.join(root, "spike"), sc2, K.ARMS))
         why = {"with no LOG entry": "has no entry", "whose red test lies outside results/prereg2/gaps/": "must lie under",
@@ -2302,7 +2334,7 @@ def t_gaps(a, tmp):
     fl = {k: v for k, v in files_gap.items() if not k.endswith("red.txt")}
     _, gg = fixture_repo(root, [("base", {"spike/a.md": "a\n"}),
                                 ("arm0", {"spike/results/prereg2/arm0/k8s-en.json": "{}\n"}),
-                                ("gap", fl), ("score", {"spike/results/prereg2/score/k8s-en/status.json": "{}\n"})])
+                                ("gap", fl), ("score", {"spike/results/prereg2/score/k8s-en/status.json": score_at_head})])
     sc2 = gg("log", "--format=%H", "--diff-filter=A", "--", "spike/results/prereg2/score")
     r = raised(lambda: GP.load_gaps(os.path.join(root, "spike"), sc2, K.ARMS))
     check("M-e: a gap whose red test is not committed is refused", r and "red test" in r, r)
@@ -2365,8 +2397,11 @@ class GapRepo:
     def arm0(self):
         return self.commit("arm0", {"results/prereg2/arm0/k8s-en.json": "{}\n"})
 
-    def score(self):
-        return self.commit("score", {"results/prereg2/score/k8s-en/status.json": "{}\n"})
+    def score(self, head=None):
+        """The score run executed at head (default HEAD), then committed."""
+        head = head or self.g("rev-parse", "HEAD")
+        return self.commit("score", {"results/prereg2/score/k8s-en/status.json":
+                                     json.dumps({"binding": {"head": head}}) + "\n"})
 
     def gap(self, entries, msg="gap", **kw):
         write_gap(self.sp, entries, **kw)
@@ -2561,6 +2596,142 @@ def t_round6(a, tmp):
           rc == 2 and "prereg2_plants was loaded from" in out, out[-200:])
 
 
+def reverify(sp):
+    r = subprocess.run(["bash", os.path.join(sp, "harness", "prereg2_reverify.sh"), sp],
+                       capture_output=True, text=True, env=dict(os.environ, **GIT_ENV))
+    return r.returncode, r.stdout + r.stderr
+
+
+def t_round7(a, tmp):
+    section("Round 7: a gap chosen after seeing results (LOG §22)")
+    r = GapRepo(tmp, "r7after")
+    r.arm0()
+    r.g("checkout", "-q", "-b", "score")
+    run_head = r.commit("score runs on its branch; their outputs are not yet merged")
+    r.g("checkout", "-q", "main")
+    r.gap([gap_entry()], "gap PR, squash-merged after the score runs")
+    r.score(head=run_head)
+    err, (gaps, notes) = r.load()
+    check("gap_pr_after_score_run: a gap merged after the score runs, before the scoring-arm commit, alters no cell "
+          "and is listed as declared after scoring ran",
+          err is None and gaps == {} and any("declared after scoring ran" in n for n in notes), (err, gaps, notes))
+    r = GapRepo(tmp, "r7aftermal")
+    r.arm0()
+    r.g("checkout", "-q", "-b", "score")
+    run_head = r.commit("score runs on its branch")
+    r.g("checkout", "-q", "main")
+    r.commit("a malformed gaps.json merged after the score runs", {"results/prereg2/gaps.json": "{not json\n"})
+    r.score(head=run_head)
+    err, (gaps, notes) = r.load()
+    check("... and a malformed gaps.json merged then is listed, never refused",
+          err is None and gaps == {} and any("malformed" in n and "after scoring ran" in n for n in notes),
+          (err, gaps, notes))
+    r = GapRepo(tmp, "r7before")
+    r.arm0()
+    r.gap([gap_entry()])
+    r.g("checkout", "-q", "-b", "score")
+    run_head = r.commit("score runs after the gap")
+    r.g("checkout", "-q", "main")
+    r.score(head=run_head)
+    err, (gaps, notes) = r.load()
+    check("... while a gap in the history of every score run's head still makes its cell NO VERDICT",
+          err is None and ("k8s-en", "E", "Q") in gaps, (err, gaps, notes))
+    r = GapRepo(tmp, "r7twoarms")
+    r.arm0()
+    r.g("checkout", "-q", "-b", "score")
+    h1 = r.commit("the first arm's score run")
+    r.g("checkout", "-q", "main")
+    r.gap([gap_entry()])
+    r.g("checkout", "-q", "score")
+    r.g("merge", "-q", "--no-edit", "main")
+    h2 = r.commit("the second arm's score run, after main (and the gap) were merged in")
+    r.g("checkout", "-q", "main")
+    os.makedirs(os.path.join(r.sp, "results", "prereg2", "score", "cncf-toc"), exist_ok=True)
+    open(os.path.join(r.sp, "results", "prereg2", "score", "cncf-toc", "status.json"), "w").write(
+        json.dumps({"binding": {"head": h1}}) + "\n")
+    r.score(head=h2)
+    err, (gaps, notes) = r.load()
+    check("... and one that only some score runs saw alters no cell (every head must descend from it)",
+          err is None and gaps == {} and any("declared after scoring ran" in n for n in notes), (err, gaps, notes))
+    r = GapRepo(tmp, "r7branch")
+    r.arm0()
+    r.g("checkout", "-q", "-b", "side")
+    r.gap([gap_entry()])
+    run_head = r.commit("score runs on the gap's branch")
+    r.g("checkout", "-q", "main")
+    r.score(head=run_head)
+    r.g("merge", "-q", "--no-ff", "--no-edit", "side")
+    err, (gaps, notes) = r.load()
+    check("a gap every score run saw, but outside the scoring-arm commit's history, still alters no cell",
+          err is None and gaps == {} and notes, (err, gaps, notes))
+    r = GapRepo(tmp, "r7missing")
+    r.arm0()
+    r.gap([gap_entry()])
+    r.score(head="f" * 40)
+    err, _ = r.load()
+    check("a score run's binding.head that is not in the repository is refused, not read as either side",
+          err and "not in this repository" in err, err)
+    r = GapRepo(tmp, "r7nohead")
+    r.arm0()
+    r.gap([gap_entry()])
+    r.commit("score", {"results/prereg2/score/k8s-en/status.json": "{}\n"})
+    err, _ = r.load()
+    check("a score output with no binding.head is refused", err and "no binding.head" in err, err)
+
+    section("Round 7: the validation commit adds VALIDATION only, whatever it touches")
+    from p2 import binding as BD
+    for f in ("ORACLE.md", "PRE-REGISTRATION-2.md"):
+        root, sp, g = binding_repo(tmp, "val-" + f)
+        open(os.path.join(sp, f), "a").write("\nan edit in the validation PR\n")
+        run_copy(sp, "seal", "--manifest", os.path.join(tmp, f + "-manifest.json"))
+        commit_all(g, "a validation PR that also edits " + f)
+        st, rs = BD.check(sp, "arm0", "rust-book")
+        check(f"a validation commit that also changes {f} is refused",
+              not st["bound"] and any("itself changes the harness" in x for x in rs), rs)
+        rc, out = reverify(sp)
+        check(f"prereg2_reverify.sh fails a validation commit that changes {f}",
+              rc == 1 and "FAIL  the validation commit has no parent, or changes" in out, out[-300:])
+    root, sp, g = binding_repo(tmp, "val-root")
+    run_copy(sp, "seal", "--manifest", os.path.join(tmp, "root-manifest.json"))
+    g("checkout", "-q", "--orphan", "solo")
+    commit_all(g, "the harness and VALIDATION in one root commit")
+    g("branch", "-q", "-D", "main")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("a root validation commit (no parent) is refused",
+          not st["bound"] and any("itself changes the harness" in x for x in rs), rs)
+    rc, out = reverify(sp)
+    check("prereg2_reverify.sh fails a root validation commit", rc == 1 and "FAIL  the validation commit" in out,
+          out[-300:])
+
+    section("Round 7: the fresh-clone review step is a committed script")
+    readme = open(os.path.join(os.path.dirname(HERE), "README.md")).read()
+    check("README's review step runs harness/prereg2_reverify.sh",
+          "\nharness/prereg2_reverify.sh " in readme.split("What the harness checks")[1].split("```")[1])
+    root, sp, g = binding_repo(tmp, "rv")
+    run_copy(sp, "seal", "--manifest", os.path.join(tmp, "rv-manifest.json"))
+    commit_all(g, "validation")
+    rc, out = reverify(sp)
+    check("prereg2_reverify.sh passes a sound validation commit", rc == 0 and "reverify: PASS" in out, out[-300:])
+    res = os.path.join(sp, "results", "prereg2")
+    os.makedirs(os.path.join(res, "arm0"))
+    open(os.path.join(res, "arm0", "k8s-en.json"), "w").write("{}\n")
+    commit_all(g, "arm0")
+    os.makedirs(os.path.join(res, "score", "k8s-en"))
+    open(os.path.join(res, "score", "k8s-en", "status.json"), "w").write("{}\n")
+    commit_all(g, "score")
+    sc = g("rev-parse", "HEAD")
+    open(os.path.join(res, "tier-model.json"), "w").write(json.dumps({"scoring_commit": sc}) + "\n")
+    commit_all(g, "tier-model")
+    rc, out = reverify(sp)
+    check("prereg2_reverify.sh passes a tier-model.json that recorded the scoring-arm commit",
+          rc == 0 and "PASS  tier-model recorded the scoring-arm commit" in out, out[-300:])
+    open(os.path.join(res, "tier-model.json"), "w").write(json.dumps({"scoring_commit": "e" * 40}) + "\n")
+    commit_all(g, "tier-model names another commit")
+    rc, out = reverify(sp)
+    check("prereg2_reverify.sh fails a tier-model.json that recorded another commit",
+          rc == 1 and "FAIL  tier-model recorded " + "e" * 40 in out, out[-300:])
+
+
 def t_aggregator(a, tmp):
     section("Aggregator: empty input")
     from p2 import aggregate as AG
@@ -2657,6 +2828,7 @@ def main():
         lambda: t_round5(a, tmp),
         lambda: t_gaps(a, tmp),
         lambda: t_round6(a, tmp),
+        lambda: t_round7(a, tmp),
         lambda: t_aggregator(a, tmp),
     ]
     try:

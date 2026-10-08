@@ -1625,3 +1625,53 @@ It checks that a gap's red test is committed under
 so it does not show the test is red. Running an arbitrary test inside the
 harness would make that test part of the harness, which the validation
 commit binds. The red state is for the gap's reviewers to confirm.
+
+## 2026-10-08 — §22. Round-7 review: a gap chosen after seeing results
+
+No arm has run. The round-7 review looked at blockspec#16 at `5655248`. It
+found one gap in the gap rule, and checks that were missing. This entry
+records the changes.
+
+### A gap counts only if every score run saw it
+
+The review's scenario: the scoring arms run on their branch, so their
+results are known. A separate gap pull request is then squash-merged to
+`main`, and only then the score pull request. The gap's commit lies before
+the scoring-arm commit and in its history, so under §21 it made a cell NO
+VERDICT. It was chosen with the results in view.
+
+Each score output records `binding.head`, the commit its run executed at.
+A gap now counts only if its commit is an ancestor of every score output's
+`binding.head`, as well as strictly between the Arm 0 commit and the
+scoring-arm commit. Any other gap is listed as "declared after scoring
+ran" and alters no cell. A `binding.head` that is missing, or that is not
+in the repository, is refused rather than read either way; fetching the
+score pull request's head resolves it.
+
+This is a reading. §9 dates a gap by the scoring-arm commit: "Between the
+Arm 0 commit and the scoring-arm commit". Under one squash commit per §9
+step, that commit lands after the runs it records, so the letter admits a
+gap chosen after the results were seen. The reading implements §9's intent,
+that no gap claim made with the results in view alters a cell. It is
+stricter than the letter: it can only take a gap away, never add one.
+
+It also implies §21's boundary for a gap in the scoring-arm commit itself.
+That commit records each run's `binding.head`, so it cannot be an ancestor
+of any of them. The separate test for that boundary was removed: no input
+could reach it, and V4's mutant of it survived as an equivalent mutant.
+
+### Checks added
+
+- `score` and `export` each refuse a malformed `gaps.json` in their bound
+  preflight, and `tier-model` is not blocked by one after the scoring-arm
+  commit (its preflight reads the scoring-arm commit, as `aggregate` does).
+- The validation-diff refusal is tested for `ORACLE.md` and
+  `PRE-REGISTRATION-2.md`, not only the harness, and for a validation
+  commit with no parent.
+
+### The fresh-clone review step is a script
+
+The README's review step is now `harness/prereg2_reverify.sh`, committed
+with the harness, so the validation commit binds it. It prints PASS or FAIL
+for each check, and exits 1 if any failed. V3 runs it on fixture
+repositories, and V4 mutates it.

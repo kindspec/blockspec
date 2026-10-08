@@ -480,10 +480,8 @@ MUTATIONS = [
     # round 6: the reviewer's mutants_r6.py (G1-G12, K4, H2, H3, D3), adapted, and MEDIUM-1/3
     ("G1: a gap in the Arm 0 commit itself counted as after it", "p2/gaps.py",
      "if len(arm0) != 1 or c == arm0[0] or not", "if len(arm0) != 1 or not"),
-    ("G2: a gap in the scoring-arm commit itself judged", "p2/gaps.py",
-     "(c != scoring_commit and _is_ancestor(spike, c, scoring_commit))", "_is_ancestor(spike, c, scoring_commit)"),
     ("G3: a gap outside the scoring commit's history judged", "p2/gaps.py",
-     "(c != scoring_commit and _is_ancestor(spike, c, scoring_commit))", "(c != scoring_commit)"),
+     "return scoring_commit is None or _is_ancestor(spike, c, scoring_commit)", "return True"),
     ("G4: a gap may be withdrawn", "p2/gaps.py", "        if gone:\n", "        if False:\n"),
     ("G5: duplicate gap ids accepted", "p2/gaps.py", '            if e["id"] in ids:\n', "            if False:\n"),
     ("G6: the red test checked at HEAD, not at the gap's commit", "p2/gaps.py",
@@ -535,6 +533,45 @@ MUTATIONS = [
      '        self.f.write("")'),
     ("repro: any regeneration accepted", "prereg2.py",
      "    ok = regen == committed", "    ok = regen is not None"),
+    ("R7: a gap merged after the score runs counted", "p2/gaps.py",
+     "        if judged(c) and scoring_commit is not None and not before_score_ran(c):", "        if False:"),
+    ("R7: only one score run's head checked", "p2/gaps.py",
+     "        heads.append(h)", "        heads[:] = [h]"),
+    ("R7: a binding.head missing from the repository read as after", "p2/gaps.py",
+     '            if _git(spike, "cat-file", "-e", f"{h}^{{commit}}")[0] != 0:', "            if False:"),
+    ("R7: a score output with no binding.head skipped", "p2/gaps.py",
+     '            raise GapError(f"score/{arm}/status.json at {scoring_commit[:12]} has no binding.head")',
+     "            continue"),
+    ("R7: a malformed gaps.json merged after the score runs refuses", "p2/gaps.py",
+     "                late = []\n                notes.append(f\"{GAPS_REL} at {c[:12]} is malformed; it was declared",
+     "                raise GapError('late')\n                notes.append(f\"{GAPS_REL} at {c[:12]} is malformed; it was declared"),
+    ("R7: a gap merged after the score runs skipped silently (not listed)", "p2/gaps.py",
+     "                notes.append(f\"gap {e.get('id')} (LOG {e.get('log')}) as it reads at {c[:12]} was \"",
+     "                0 and notes.append(f\"gap {e.get('id')} (LOG {e.get('log')}) as it reads at {c[:12]} was \""),
+    ("MEDIUM-1: a gap after the scoring-arm commit skipped silently (not listed)", "p2/gaps.py",
+     "                notes.append(f\"gap {e.get('id')} (LOG {e.get('log')}) as it reads at {c[:12]}, at or after \"",
+     "                0 and notes.append(f\"gap {e.get('id')} (LOG {e.get('log')}) as it reads at {c[:12]}, at or after \""),
+    ("P2: no gap preflight for score", "prereg2.py",
+     'a.cmd in ("arm0", "score", "export", "tier-model", "tier-run"):', 'a.cmd in ("arm0", "export", "tier-model", "tier-run"):'),
+    ("P3: no gap preflight for arm0", "prereg2.py",
+     'a.cmd in ("arm0", "score", "export", "tier-model", "tier-run"):', 'a.cmd in ("score", "export", "tier-model", "tier-run"):'),
+    ("P4: no gap preflight for export", "prereg2.py",
+     'a.cmd in ("arm0", "score", "export", "tier-model", "tier-run"):', 'a.cmd in ("arm0", "score", "tier-model", "tier-run"):'),
+    ("P5: tier-model's preflight not final", "prereg2.py",
+     'final=a.cmd in ("tier-model", "tier-run")', 'final=a.cmd in ("tier-run",)'),
+    ("validation diff covers the harness only", "p2/binding.py",
+     '"diff", "--quiet", f"{vc}^", vc, "--", *BOUND_PATHS)', '"diff", "--quiet", f"{vc}^", vc, "--", "harness")'),
+    ("a root validation commit accepted", "p2/binding.py",
+     '_git(spike, "rev-parse", "--verify", "-q", f"{vc}^")[0] != 0 or _git(',
+     '_git(spike, "rev-parse", "--verify", "-q", f"{vc}^")[0] == 0 and _git('),
+    ("R1: reverify drops the tier-model comparison", "prereg2_reverify.sh",
+     '[ "$rec" = "${sc[0]}" ]', "true"),
+    ("R2: reverify drops the validation diff", "prereg2_reverify.sh",
+     'g diff --quiet "$V^" "$V" -- "${bound[@]}"', "true"),
+    ("reverify: the validation diff covers the harness only", "prereg2_reverify.sh",
+     "bound=(harness PRE-REGISTRATION-2.md ORACLE.md)", "bound=(harness)"),
+    ("README: the review step no longer runs reverify", "../README.md",
+     "harness/prereg2_reverify.sh      # exits 0", "true      # exits 0"),
 ]
 
 
@@ -560,7 +597,7 @@ def main():
             os.makedirs(root)
             shutil.copytree(os.path.join(SPIKE, "harness"), os.path.join(root, "harness"),
                             ignore=shutil.ignore_patterns("__pycache__"))
-            for f in ("PRE-REGISTRATION-2.md", "ORACLE.md"):
+            for f in ("PRE-REGISTRATION-2.md", "ORACLE.md", "README.md"):
                 shutil.copy(os.path.join(SPIKE, f), root)
             return root
 

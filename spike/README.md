@@ -158,16 +158,16 @@ fresh clone of the merged result:
 
 ```sh
 git clone https://github.com/kindspec/blockspec fresh && cd fresh/spike
-git log --full-history --format=%H --diff-filter=A -- results/prereg2/VALIDATION  # exactly one: the validation commit
-V=<that commit>
-git diff --quiet $V^ $V -- harness PRE-REGISTRATION-2.md ORACLE.md                 # the validation commit adds VALIDATION only
-git log --full-history --format=%H $V..HEAD -- harness PRE-REGISTRATION-2.md ORACLE.md  # must print nothing
-grep -rh '"validation_commit"' results/prereg2 | sort | uniq -c                    # every output names $V
-git log --full-history --format=%H --diff-filter=A -- results/prereg2/arm0         # exactly one: the Arm 0 commit
-git log --full-history --format=%H --diff-filter=A -- results/prereg2/score        # exactly one: the scoring-arm commit ...
-grep scoring_commit results/prereg2/tier-model.json                                # ... and tier-model recorded that same commit
-git log --full-history --format='%H %cI' -- results/prereg2/gaps.json              # each gap's commit, against those two
+harness/prereg2_reverify.sh      # exits 0 only if every check prints PASS
 ```
+
+`harness/prereg2_reverify.sh` derives the validation commit (exactly one
+adds `results/prereg2/VALIDATION`), checks that it adds VALIDATION only and
+that no later commit touches the harness, `PRE-REGISTRATION-2.md` or
+`ORACLE.md`, that every output names it, that exactly one commit adds
+`results/prereg2/arm0` and one `results/prereg2/score`, and that
+`tier-model.json` recorded that scoring-arm commit. It lists each
+`gaps.json` version with its commit, to read against those (`LOG.md` §22).
 
 The corpus bundles are not in this repository. `harness/p2/bundles.json`
 records each one's sha256, size and head, and where they are kept (`LOG.md`
