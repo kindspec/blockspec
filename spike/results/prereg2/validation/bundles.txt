@@ -1,0 +1,11 @@
+# harness HEAD ba19ea682d1e528b6936dcb51cc08323989d4ca4  tracked changes under spike/: 0
+# python 3.13.5  git 2.47.3
+# corpus bundles (§6.2): sha256 against harness/p2/bundles.json, and the head each holds
+2dc07598fd32b77124e504d6499c6ff0a54dd1056d3cdf412050dca41e4f1384    58557559  rust-book.bundle  head ['1500248d8f230566e4ec9f27fcbb8fe9e2898ab1']  ok
+008cbe84af65cc7e6dd1974947bfb8a9f27be54a8641bab882bf44546acb109c    78552211  obsidian-help.bundle  head ['327a782e90481268361b5ccccdb0c224b2b13fe6']  ok
+8bf9a1d0f26233998e7c51268dcba596b678d9e479ee9e5cd32f30d8e85dcef6     2934753  cmspec.bundle  head ['3da939428d80f146f270cd1765e4ba462e96bb1b']  ok
+86096a651f3f9c5a594f33104f02fa36fcea9b1ff06ad8de4caba9680cfef0ed   541034446  kubernetes-website.bundle  head ['6b27baef1e44275fd4368e14375296e1dfe5af11']  ok
+63515ba0df9e4f78544ec3d7b3fda67f1d66ad565739b3044ecd93a21fcf8a2f    25992485  cncf-toc.bundle  head ['144c2e3215884e498e744cc51e6b7cef82d654f1']  ok
+bc8d34cb1e7182002fc2b00cc6a360f18b4a2246c1affb17af35aeea271731fb     2117354  site-policy.bundle  head ['b9578b546d2506febda1da2cd7431644d58e512c']  ok
+BUNDLES: PASS
+exit=0

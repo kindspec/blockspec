@@ -1081,3 +1081,39 @@ pre-registration before blockspec#2 runs, which settles the question §11
 recorded as open. The draft is `PRE-REGISTRATION-2.md`. It is not binding
 until the owner approves it and it merges. `PRE-REGISTRATION.md` and
 `ORACLE.md` are unchanged. No arm has run under the draft.
+
+## 2026-10-07 — §14. The harness for `PRE-REGISTRATION-2.md`, before validation
+
+No arm has run. Arm 0, E, S, M, R, the exporter and the tierer have not been
+executed against any corpus, and no sealed manifest exists. This entry
+records a harness that is **not yet validated**: under §9 the harness at the
+validation commit is the implementation, and that commit has not been made.
+It waits on an independent review and on the owner decisions below.
+
+- **Built:** `harness/prereg2.py`, `harness/p2/`, `harness/prereg2_v3.py`
+  (V3), `harness/prereg2_v4.py` (V4) and `harness/prereg2_validate.sh`
+  (V1-V5 and a bundle check).
+- **V transcripts, from the harness commit they name:**
+  `results/prereg2/validation/`. V1, V2, V3, V4 and V5 each end in `PASS`.
+  These are pre-review runs. The V steps run again at the validation commit.
+- **Bundles (§6.2):** made, not committed. Each one's sha256, size and head
+  are in `harness/p2/bundles.json`, and `results/prereg2/validation/bundles.txt`
+  checks them. Where the bundles are stored is open.
+
+Open before the validation commit, for the owner:
+
+1. §6.5 does not define "adjacent-run twin". Arm 0 counts it under a
+   provisional reading, `p2/arm0.py` `ADJACENT_RUN_RULE`. No verdict reads it.
+2. `find_merge_cases()` decodes git output strictly. kubernetes/website's
+   history holds `.md` blobs that are not UTF-8, three of them on paths
+   under `content/`. If any of these is on a both-sides path of a merge, the
+   `k8s-l10n` M arm aborts. That has not been checked, because checking it
+   means enumerating merges.
+3. V2's `merge-arm.txt` regenerates byte-identically only with `--records`
+   spelled `spike/results/...`, which is how the committed file was made. It
+   does not regenerate from `spike/README.md`'s command as written.
+   `control-arm.txt` embeds its D8 path and research commit, so it
+   regenerates only with research at `f088cd76` at that path.
+4. The tierer's working directory holds only the export. Other paths on the
+   host are still readable to it, so the filesystem barrier is weaker than
+   org contract §2.1 describes.

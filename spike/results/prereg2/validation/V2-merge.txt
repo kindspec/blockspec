@@ -1,0 +1,14 @@
+# harness HEAD ba19ea682d1e528b6936dcb51cc08323989d4ca4  tracked changes under spike/: 0
+# python 3.13.5  git 2.47.3
+# V2: the merge arm, spike/README.md's command, at harness/corpora.json's pins
+# D8 dir @ d51ce09cdb23af32f35e7a3c6111ac21ab0f033f
+# cwd: a scratch directory standing in for the repository root
+prose_merge.py exit=0
+393a88e966dcc34287a0b5ff2dc9906a0a52ccf72a9d121e2efecc4cc93c5f68  regenerated  results/merge-arm.txt
+393a88e966dcc34287a0b5ff2dc9906a0a52ccf72a9d121e2efecc4cc93c5f68  committed    results/merge-arm.txt
+BYTE-IDENTICAL: results/merge-arm.txt
+9fe7a92e32740e925d72104ddf5c989f9f09ad424375dc5755bd6419c9743b23  regenerated  results/merge-arm-candidates.jsonl
+9fe7a92e32740e925d72104ddf5c989f9f09ad424375dc5755bd6419c9743b23  committed    results/merge-arm-candidates.jsonl
+BYTE-IDENTICAL: results/merge-arm-candidates.jsonl
+V2-merge: PASS
+exit=0
