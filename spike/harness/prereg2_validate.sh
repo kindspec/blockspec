@@ -143,12 +143,12 @@ v2_cheap() {
 
 v3() {
   stamp
-  python3 -I -B "$HERE/prereg2_v3.py" --d8-dir "${D8_DIR:?}"
+  python3 -I -S -B "$HERE/prereg2_v3.py" --d8-dir "${D8_DIR:?}"
 }
 
 v4() {
   stamp
-  python3 -I -B "$HERE/prereg2_v4.py" --d8-dir "${D8_DIR:?}"
+  python3 -I -S -B "$HERE/prereg2_v4.py" --d8-dir "${D8_DIR:?}"
 }
 
 v5() {

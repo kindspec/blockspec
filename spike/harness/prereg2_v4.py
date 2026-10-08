@@ -9,8 +9,9 @@ Each mutation breaks one gate in a scratch copy of spike/harness,
 PRE-REGISTRATION-2.md and ORACLE.md, then runs V3 (prereg2_v3.py) against the copy. V3
 must go red. The mutated file is hashed before and after: a mutation whose
 pattern does not occur exactly once leaves the file unchanged and is reported
-BROKEN, never as killed or survived. V4 passes only if every mutant is
-killed, with none surviving and none BROKEN.
+BROKEN, never as killed or survived. A mutant that only crashes a V3
+section, with no named check red, counts as surviving. V4 passes only if
+every mutant is killed by a named check, with none surviving and none BROKEN.
 """
 import argparse
 import hashlib
@@ -173,7 +174,8 @@ MUTATIONS = [
     ("tier-run: runs before the start day", "p2/tierrun.py",
      "    if today < start:", "    if False:"),
     ("tier-run: an invalid export is sent", "p2/tierrun.py",
-     "    if bad:\n        raise TierRefused", "    if False:\n        raise TierRefused"),
+     '    if bad:\n        raise TierRefused("the export fails its validator: "',
+     '    if False:\n        raise TierRefused("the export fails its validator: "'),
     ("undecodable: an M case with a non-UTF-8 input is merged anyway", "p2/arms.py",
      '    if any(has_surrogate(case[k]) for k in ("base", "a", "c")):\n        return UNDECODABLE, None\n', ""),
     ("undecodable: E/S read non-UTF-8 with replacement", "p2/arms.py",
@@ -372,18 +374,111 @@ MUTATIONS = [
     ("B4: export may execute twice", "p2/binding.py",
      '    if cmd in ("arm0", "score", "export") and executed(spike, cmd, arm):',
      '    if cmd in ("arm0", "score") and executed(spike, cmd, arm):'),
-    ("M3: a removed marker re-enables the arm", "p2/binding.py",
-     '    _, out, _ = _git(spike, "log", "--all", "--format=%H", "--diff-filter=A", "--", rel)\n    return bool(out.strip())',
-     "    return False"),
     ("C4: seal ignores VALIDATION's history", "prereg2.py",
      "    if os.path.lexists(vp) or hist.strip():", "    if os.path.lexists(vp):"),
-    ("M1: no isolation required", "prereg2.py",
-     "        if not sys.flags.isolated:", "        if False:"),
     ("M1: bytecode caches read", "prereg2.py",
      'sys.pycache_prefix = os.path.join(os.sep, "nonexistent", f"prereg2-nopyc-{os.getpid()}")', "pass"),
     ("M2: an unbound run opens a real bundle", "prereg2.py",
      "    if not BOUND_RUN:\n        raise SystemExit(\"refusing: an unbound run never opens",
      "    if False:\n        raise SystemExit(\"refusing: an unbound run never opens"),
+    # round 5: the reviewer's mutants_r5.py (N1-N34), adapted where the code moved
+    ("N1: VALIDATION added twice accepted", "p2/binding.py", "    if len(added) != 1:\n", "    if len(added) < 1:\n"),
+    ("N3: VALIDATION may carry extra fields", "p2/binding.py", ' and set(v) == {"manifest_sha256"}', ""),
+    ("N5: the later-commit range reversed", "p2/binding.py", 'f"{vc}..HEAD"', 'f"HEAD..{vc}"'),
+    ("N6: ORACLE.md not a bound path", "p2/binding.py",
+     'BOUND_PATHS = ("harness", "PRE-REGISTRATION-2.md", "ORACLE.md")', 'BOUND_PATHS = ("harness", "PRE-REGISTRATION-2.md")'),
+    ("N7: a symlinked harness file accepted", "p2/binding.py",
+     "        if os.path.islink(p) or not os.path.isfile(p):", "        if not os.path.isfile(p):"),
+    ("N9: only HEAD's history searched for a marker", "p2/binding.py",
+     '_git(spike, "log", "--all", "--reflog", "--full-history", "--format=%H",',
+     '_git(spike, "log", "--full-history", "--format=%H",'),
+    ("N10: the work-tree marker ignored", "p2/binding.py",
+     "    if os.path.lexists(os.path.join(spike, rel)):\n        return True\n", ""),
+    ("N11: score not guarded by its marker", "p2/binding.py",
+     '    if cmd in ("arm0", "score", "export") and executed(spike, cmd, arm):',
+     '    if cmd in ("arm0", "export") and executed(spike, cmd, arm):'),
+    ("N12: every uncommitted transcript exempt", "p2/binding.py",
+     "        if own and path == own:", "        if os.sep + 'transcripts' + os.sep in path:"),
+    ("N13: a .n transcript suffix not stripped", "p2/binding.py",
+     "    if head and tail.isdigit():\n        stem = head\n", ""),
+    ("N14: the arm0 marker written before the corpus opens", "prereg2.py",
+     '    try:\n        repo, pin, pathspec, bsha = corpus_for(a, K, a.work_dir)\n    except K.NoVerdict as e:\n        executed(tr, "arm0", a.arm)',
+     '    executed(tr, "arm0", a.arm)\n    try:\n        repo, pin, pathspec, bsha = corpus_for(a, K, a.work_dir)\n    except K.NoVerdict as e:\n        pass'),
+    ("N15: export writes no marker", "prereg2.py", '    executed(tr, "export", None)\n', ""),
+    ("N16: --opt=value forms not compared", "prereg2.py", '            name = tok.split("=", 1)[0]', "            name = tok"),
+    ("N17: a prescan/parse disagreement accepted", "prereg2.py", "        if unbound != prescan_unbound:", "        if False:"),
+    ("N18: a bound run may pass --agent-cmd", "prereg2.py", '"agent_cmd": None, ', ""),
+    ("N19: a bound run may pass --fixture-pin", "prereg2.py", '"fixture_pin": None,\n', "\n"),
+    ("N21: a no-verdict input skips the pin check", "prereg2.py",
+     '    if "no_verdict" in o and "pin" not in o:', '    if "no_verdict" in o:'),
+    ("N22: an input's validation commit not compared", "prereg2.py",
+     '    if not o.get("bound") or (tr.state["bound"] and o.get("binding", {}).get("validation_commit")\n                              != tr.state.get("validation_commit")):',
+     '    if not o.get("bound"):'),
+    ("N23: a reproduction from another validation commit accepted", "prereg2.py",
+     '        if not fixture_ok and o.get("binding", {}).get("validation_commit") != tr.state.get(\n                "validation_commit"):',
+     "        if False:"),
+    ("N24: score accepts an Arm 0 result of another validation commit", "prereg2.py",
+     '    return not tr.state["bound"] or (a0.get("bound") is True and a0.get("binding", {}).get(\n        "validation_commit") == tr.state.get("validation_commit"))',
+     '    return not tr.state["bound"] or a0.get("bound") is True'),
+    ("N25: modes_requested not checked", "prereg2.py",
+     '\n                                          or s.get("modes_requested") != ["E", "S5", "S25", "M"]):', "):"),
+    ("N26: an unbound executed transcript counts as bound", "prereg2.py",
+     '.append("# harness bound: True" in text)', ".append(True)"),
+    ("N27: H4 misses a twin of k in M's first unit", "p2/oracle.py",
+     "        return not any(Mc[c] == Bc[k] for c in range(len(Mc)))",
+     "        return not any(Mc[c] == Bc[k] for c in range(1, len(Mc)))"),
+    ("N28: p in no unit falls to the first unit", "p2/evaluate.py",
+     '                t = h["m_b2u"].get(p)', '                t = h["m_b2u"].get(p, 0)'),
+    ("N33: tier-model.json of another scoring commit accepted", "p2/tierrun.py",
+     '    if choice.get("scoring_commit") != commit:', "    if False:"),
+    # round 5: H-1, M-a, M-c, M-d, M-e
+    ("H-1: score's directory made before the corpus opens", "prereg2.py",
+     '    try:\n        repo, pin, pathspec, bsha = corpus_for(a, K, a.work_dir)\n    except K.NoVerdict as e:\n        executed(tr, "score", a.arm)',
+     '    os.makedirs(out_dir, exist_ok=True)\n    try:\n        repo, pin, pathspec, bsha = corpus_for(a, K, a.work_dir)\n    except K.NoVerdict as e:\n        executed(tr, "score", a.arm)'),
+    ("M-a: no marker copy in the common git directory", "p2/binding.py",
+     "    if cd:\n        paths.append(", "    if False:\n        paths.append("),
+    ("M-a: the common-dir marker not checked", "p2/binding.py",
+     '    if cd and os.path.lexists(os.path.join(cd, "prereg2", os.path.basename(rel))):', "    if False:"),
+    ("M-a: the reflog not searched", "p2/binding.py",
+     '"log", "--all", "--reflog", "--full-history"', '"log", "--all", "--full-history"'),
+    ("M-c: no --full-history when counting VALIDATION's adds", "p2/binding.py",
+     '_git(spike, "log", "--full-history", "--format=%H", "--diff-filter=A", "--", VALIDATION_REL)',
+     '_git(spike, "log", "--format=%H", "--diff-filter=A", "--", VALIDATION_REL)'),
+    ("M-c: a shallow repository accepted", "p2/binding.py",
+     '    if sh.strip() == "true":', "    if False:"),
+    ("M-c: replace refs accepted", "p2/binding.py", "    if rep.strip():", "    if False:"),
+    ("M-c: grafts accepted", "p2/binding.py",
+     '    if cd and os.path.exists(os.path.join(cd, "info", "grafts")):', "    if False:"),
+    ("M-c: the caller's GIT_* variables kept", "p2/binding.py",
+     '    e = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}', "    e = dict(os.environ)"),
+    ("M-d: --d8-dir left on sys.path", "p2/mech.py",
+     '            sys.path[:] = [x for x in sys.path if os.path.realpath(x or ".") != os.path.realpath(d8_dir)]',
+     "            sys.path.insert(0, d8_dir)"),
+    ("M-d: module origins not checked", "prereg2.py",
+     "        shadowed = check_modules()\n        if shadowed:\n            tr.record_binding",
+     "        shadowed = []\n        if shadowed:\n            tr.record_binding"),
+    ("M-d: -S not required", "prereg2.py",
+     "        if not (sys.flags.isolated and sys.flags.no_site):", "        if not sys.flags.isolated:"),
+    ("M1: no isolation required", "prereg2.py",
+     "        if not (sys.flags.isolated and sys.flags.no_site):", "        if False:"),
+    ("M3: a removed marker re-enables the arm", "p2/binding.py",
+     '    _, out, _ = _git(spike, "log", "--all", "--reflog", "--full-history", "--format=%H",\n                     "--diff-filter=A", "--", rel)\n    return bool(out.strip())',
+     "    return False"),
+    ("M-e: a gap does not override its cell", "p2/aggregate.py",
+     "    for cid, why in (gaps or {}).items():\n        if cid in cells:", "    for cid, why in (gaps or {}).items():\n        if False:"),
+    ("M-e: a gap before Arm 0 accepted", "p2/gaps.py",
+     '        if len(arm0) != 1 or c == arm0[0] or not _is_ancestor(spike, arm0[0], c):', "        if False:"),
+    ("M-e: a gap after the scoring commit applied", "p2/gaps.py",
+     '        if c == scoring_commit or _is_ancestor(spike, scoring_commit, c):', "        if False:"),
+    ("M-e: a gap may be edited", "p2/gaps.py",
+     '            if e["id"] in body and body[e["id"]] != e:', "            if False:"),
+    ("M-e: a gap's LOG entry not checked", "p2/gaps.py",
+     '        if not re.search(r"— " + re.escape(e["log"]) + r"\\.", logtxt):', "        if False:"),
+    ("M-e: a gap's red test not checked", "p2/gaps.py",
+     "        if _git(spike, \"cat-file\", \"-e\", f\"{c}:{_rel_top(spike, e['red_test'])}\")[0] != 0:", "        if False:"),
+    ("M-e: a gap's red test may lie anywhere", "p2/gaps.py",
+     '    if not (isinstance(rt, str) and rt.startswith(GAP_TESTS_REL) and ".." not in rt.split(os.sep)):',
+     "    if not isinstance(rt, str):"),
     ("transcript: no exit status written", "p2/transcript.py",
      '        self.f.write(f"\\n# end: {now()}\\n# {how}: exit status {rc}\\n")',
      '        self.f.write("")'),
@@ -403,7 +498,7 @@ def main():
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
 
     def v3(root):
-        return subprocess.run([sys.executable, "-I", "-B", os.path.join(root, "harness", "prereg2_v3.py"),
+        return subprocess.run([sys.executable, "-I", "-S", "-B", os.path.join(root, "harness", "prereg2_v3.py"),
                                "--d8-dir", a.d8_dir], capture_output=True, text=True, env=env)
 
     tmp = tempfile.mkdtemp(prefix="prereg2-v4.")
@@ -441,8 +536,16 @@ def main():
                 continue
             r = v3(root)
             fails = [ln.strip()[6:] for ln in r.stdout.splitlines() if ln.startswith("  FAIL")]
-            if r.returncode != 0:
+            named = [f for f in fails if not f.startswith("section raised")]
+            if r.returncode != 0 and not named:
+                # A mutant that only crashes a section is not shown red by a
+                # check that names the gate; it counts as surviving.
+                survived += 1
+                print(f"MUTATION {n:2} {name}: *** KILLED ONLY BY A CRASH [{before} -> {after}] "
+                      f"({(fails or ['(no output)'])[0][:110]}) ***")
+            elif r.returncode != 0:
                 killed += 1
+                fails = named
                 why = fails[0] if fails else (r.stdout.strip().splitlines() or ["(no output)"])[-1]
                 print(f"MUTATION {n:2} {name}: KILLED [{before} -> {after}] "
                       f"({len(fails)} check(s) red; first: {why[:110]})")

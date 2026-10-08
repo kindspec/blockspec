@@ -70,12 +70,22 @@ def load(d8_dir):
               f"at {D8_PIN[:12]}: " + "; ".join(bad), file=sys.stderr)
         raise Refused(2)
     if D8 is None:
-        if d8_dir not in sys.path:
-            sys.path.insert(0, d8_dir)
-        import anchor_eval  # noqa: E402
-        import anchor_eval2  # noqa: E402
-        import anchor_eval3  # noqa: E402
-        D8, D82, D83 = anchor_eval, anchor_eval2, anchor_eval3
+        # Load the three files by explicit path, never by putting --d8-dir on
+        # sys.path: a planted string.py there must not shadow the standard
+        # library (re-review M-d). Every module they import is imported
+        # first, and anchor_eval2/3's own sys.path.insert of their directory
+        # is undone as soon as each has run.
+        import collections, difflib, hashlib, json, random, subprocess, tempfile  # noqa: E401,F401
+        import importlib.util
+        mods = []
+        for name in ("anchor_eval", "anchor_eval2", "anchor_eval3"):
+            spec = importlib.util.spec_from_file_location(name, os.path.join(d8_dir, name + ".py"))
+            mod = importlib.util.module_from_spec(spec)
+            sys.modules[name] = mod
+            spec.loader.exec_module(mod)
+            sys.path[:] = [x for x in sys.path if os.path.realpath(x or ".") != os.path.realpath(d8_dir)]
+            mods.append(mod)
+        D8, D82, D83 = mods
     P.D8, P.D83 = D8, D83
     C.D8, C.D82, C.D83 = D8, D82, D83
     return D8, D82, D83

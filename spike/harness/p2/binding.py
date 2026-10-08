@@ -1,7 +1,15 @@
 # SPDX-License-Identifier: MIT
 """§9: "The harness at the validation commit is the implementation." This
-module makes the harness enforce that, rather than leave it to the operator
-(reviews C1, C3, B6; re-review H2, H3, M3; LOG.md §16 and §18).
+module checks that, mechanically, before every bound run (reviews C1, C3, B6;
+re-reviews H2, H3, M3, M-a, M-c; LOG.md §16, §18, §20).
+
+WHAT IT DOES NOT ENFORCE. Whoever runs the harness can run other code: an
+operator who edits this file, or runs a program of their own, defeats every
+check here. A forged history -- an orphan branch carrying its own harness and
+VALIDATION -- derives a validation commit of its own. These checks stop
+mistakes and casual shortcuts; the guarantee is the review step in
+spike/README.md: in each §9 pull request, re-derive the validation commit
+in a fresh clone and compare it with every output's binding.validation_commit.
 
 THE VALIDATION COMMIT IS DERIVED, never named. `prereg2.py seal` writes
 `results/prereg2/VALIDATION`, which holds the sealed manifest's sha256 (§7.3:
@@ -26,8 +34,15 @@ Every bound command checks:
   An execution is marked by `results/prereg2/executed/<cmd>[-<arm>].json`,
   written only once the corpus (or, for export, the scored input) is
   actually opened, so a refusal or a usage error does not use up the arm
-  (H3). The marker is looked for in the work tree and in every ref's
-  history (`git log --all`), so deleting it does not re-enable the arm (M3).
+  (H3). A second copy goes in the common git directory
+  (`$(git rev-parse --git-common-dir)/prereg2/`), shared by every worktree.
+  The marker is looked for in the work tree, the common git directory, and
+  every ref's history and reflog (`git log --all --reflog`), so `rm`,
+  `git clean`, deleting a branch or a second worktree does not re-enable
+  the arm (M3, M-a).
+- the history is not shallow and is not rewritten by replace refs or
+  grafts, every history walk uses --full-history, and every git call runs
+  without the caller's GIT_* variables or user config (M-c).
 """
 import json
 import os
@@ -45,9 +60,41 @@ HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
 
+def git_env():
+    """Git as a stranger's clone sees it: no GIT_* variable from the caller
+    (GIT_DIR, GIT_WORK_TREE, ...), no system or user config, and no replace
+    objects (re-review M-c)."""
+    e = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    e.update({"GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": os.devnull,
+              "GIT_CONFIG_SYSTEM": os.devnull, "GIT_NO_REPLACE_OBJECTS": "1",
+              "GIT_TERMINAL_PROMPT": "0", "LC_ALL": "C"})
+    return e
+
+
 def _git(spike, *a):
-    r = subprocess.run(["git", "-C", spike, *a], capture_output=True, text=True)
+    r = subprocess.run(["git", "-C", spike, *a], capture_output=True, text=True, env=git_env())
     return r.returncode, r.stdout, r.stderr
+
+
+def common_dir(spike):
+    rc, out, _ = _git(spike, "rev-parse", "--git-common-dir")
+    return os.path.realpath(os.path.join(spike, out.strip())) if rc == 0 else None
+
+
+def history_unsound(spike):
+    """A history the derivation cannot trust: shallow, or rewritten by
+    replace refs or grafts."""
+    bad = []
+    _, sh, _ = _git(spike, "rev-parse", "--is-shallow-repository")
+    if sh.strip() == "true":
+        bad.append("the repository is shallow; the validation commit cannot be derived from a cut history")
+    _, rep, _ = _git(spike, "for-each-ref", "--format=%(refname)", "refs/replace/")
+    if rep.strip():
+        bad.append(f"replace refs rewrite this history: {rep.split()[0]}")
+    cd = common_dir(spike)
+    if cd and os.path.exists(os.path.join(cd, "info", "grafts")):
+        bad.append("info/grafts rewrites this history")
+    return bad
 
 
 def toplevel(spike):
@@ -57,13 +104,13 @@ def toplevel(spike):
 
 def derive_validation(spike=SPIKE):
     """(validation commit, manifest sha256, reasons)."""
-    _, added, _ = _git(spike, "log", "--format=%H", "--diff-filter=A", "--", VALIDATION_REL)
+    _, added, _ = _git(spike, "log", "--full-history", "--format=%H", "--diff-filter=A", "--", VALIDATION_REL)
     added = added.split()
     if len(added) != 1:
         return None, None, [f"{len(added)} commits in HEAD's history add {VALIDATION_REL}; "
                             "the validation commit is the one that adds it"]
     vc = added[0]
-    _, touched, _ = _git(spike, "log", "--format=%H", "--", VALIDATION_REL)
+    _, touched, _ = _git(spike, "log", "--full-history", "--format=%H", "--", VALIDATION_REL)
     if touched.split() != [vc]:
         return vc, None, [f"{VALIDATION_REL} has changed since the validation commit added it"]
     top = toplevel(spike)
@@ -129,19 +176,31 @@ def executed(spike, cmd, arm):
     rel = marker_rel(cmd, arm)
     if os.path.lexists(os.path.join(spike, rel)):
         return True
-    _, out, _ = _git(spike, "log", "--all", "--format=%H", "--diff-filter=A", "--", rel)
+    cd = common_dir(spike)
+    if cd and os.path.lexists(os.path.join(cd, "prereg2", os.path.basename(rel))):
+        return True
+    _, out, _ = _git(spike, "log", "--all", "--reflog", "--full-history", "--format=%H",
+                     "--diff-filter=A", "--", rel)
     return bool(out.strip())
 
 
 def mark_executed(spike, cmd, arm, transcript_path):
     """Written once the corpus (or, for export, its input) is opened. An
     existing marker is never overwritten."""
-    p = os.path.join(spike, marker_rel(cmd, arm))
-    os.makedirs(os.path.dirname(p), exist_ok=True)
-    fd = os.open(p, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
-    with os.fdopen(fd, "w") as f:
-        f.write(json.dumps({"cmd": cmd, "arm": arm,
-                            "transcript": os.path.basename(transcript_path)}, sort_keys=True) + "\n")
+    body = json.dumps({"cmd": cmd, "arm": arm, "transcript": os.path.basename(transcript_path)},
+                      sort_keys=True) + "\n"
+    cd = common_dir(spike)
+    paths = [os.path.join(spike, marker_rel(cmd, arm))]
+    # A second copy outside the work tree, in the repository's common git
+    # directory: shared by every worktree, and not removed by `rm`,
+    # `git clean` or deleting a branch (re-review M-a).
+    if cd:
+        paths.append(os.path.join(cd, "prereg2", os.path.basename(marker_rel(cmd, arm))))
+    for p in paths:
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        fd = os.open(p, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+        with os.fdopen(fd, "w") as f:
+            f.write(body)
 
 
 def check(spike=SPIKE, cmd=None, arm=None, own_transcript=None):
@@ -152,12 +211,14 @@ def check(spike=SPIKE, cmd=None, arm=None, own_transcript=None):
     state = {"head": head, "validation_commit": None, "manifest_sha256": None}
     if not head:
         reasons.append("not a git work tree")
+    elif history_unsound(spike):
+        reasons += history_unsound(spike)
     else:
         vc, msha, rs = derive_validation(spike)
         reasons += rs
         state.update(validation_commit=vc, manifest_sha256=msha)
         if vc and not rs:
-            _, later, _ = _git(spike, "rev-list", f"{vc}..HEAD", "--", *BOUND_PATHS)
+            _, later, _ = _git(spike, "rev-list", "--full-history", f"{vc}..HEAD", "--", *BOUND_PATHS)
             if later.strip():
                 reasons.append(f"a commit after the validation commit {vc[:12]} changes the harness, "
                                f"PRE-REGISTRATION-2.md or ORACLE.md: {later.split()[0][:12]}")

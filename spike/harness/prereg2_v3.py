@@ -41,7 +41,7 @@ def raised(fn):
     try:
         fn()
         return None
-    except Exception as e:
+    except (Exception, SystemExit) as e:
         return f"{type(e).__name__}: {e}"
 
 
@@ -104,7 +104,14 @@ def recs_of(inst):
 
 
 def one(inst, mech, index=None, name=None):
-    for r in recs_of(inst):
+    """The record asked for, or None. An evaluation that raises gives None, so
+    the named check reading it goes red, rather than the whole section."""
+    try:
+        recs = recs_of(inst)
+    except Exception as e:
+        print(f"  (evaluate raised {type(e).__name__}: {e})")
+        return None
+    for r in recs:
         if r["mech"] == mech and (index is None or r.get("index") == index) \
                 and (name is None or r.get("name") == name):
             return r
@@ -426,7 +433,7 @@ def t_r(a):
 def t_plants(a, tmp):
     section("Plants: harness/prereg2_plants.py")
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
-    r = subprocess.run([sys.executable, "-I", "-B", os.path.join(HERE, "prereg2_plants.py"),
+    r = subprocess.run([sys.executable, "-I", "-S", "-B", os.path.join(HERE, "prereg2_plants.py"),
                         "--d8-dir", a.d8_dir], capture_output=True, text=True, env=env)
     check("prereg2_plants.py prints PLANTS: PASS and exits 0",
           r.returncode == 0 and "PLANTS: PASS" in r.stdout, r.stdout.strip().splitlines()[-1:])
@@ -441,7 +448,7 @@ def t_plants(a, tmp):
     check("the P-C mutation (§7.3: base with only the window sentence edited) applies",
           mutated != src)
     open(os.path.join(mdir, "prereg2_plants.py"), "w").write(mutated)
-    r = subprocess.run([sys.executable, "-I", "-B", os.path.join(mdir, "prereg2_plants.py"),
+    r = subprocess.run([sys.executable, "-I", "-S", "-B", os.path.join(mdir, "prereg2_plants.py"),
                         "--d8-dir", a.d8_dir], capture_output=True, text=True, env=env)
     check("... and prereg2_plants.py goes red on it",
           r.returncode != 0 and "PLANTS: FAIL" in r.stdout, r.stdout.strip().splitlines()[-1:])
@@ -1189,7 +1196,7 @@ def _t_tier_run(a, tmp, X, TRN, stubs, creds, canary):
             stub = os.path.join(tmp, f"slow{lines}.py")
             open(stub, "w").write(SLOW % lines)
             os.chmod(stub, 0o755)
-            cmd = [sys.executable, "-I", "-B", os.path.join(HERE, "prereg2.py"), "tier-run",
+            cmd = [sys.executable, "-I", "-S", "-B", os.path.join(HERE, "prereg2.py"), "tier-run",
                    "--export", exp, "--state-dir", os.path.join(tmp, state), "--repo", old_repo,
                    "--scoring-commit", old, "--agent-cmd", stub, "--transcript-dir",
                    os.path.join(tmp, state + "-t"), "--credentials", creds, "--unbound",
@@ -1556,14 +1563,16 @@ def binding_repo(tmp, name="br"):
     return root, sp, g
 
 
-def run_copy(sp, *args, isolated=True, direct=False):
+def run_copy(sp, *args, isolated=True, direct=False, flags=None):
     """Run the copy's prereg2.py. Its bundle directory is empty, so even a
     run that wrongly got past every check could open no real corpus."""
     empty = os.path.join(os.path.dirname(os.path.dirname(sp)), "no-bundles")
     os.makedirs(empty, exist_ok=True)
     env = dict(os.environ, **GIT_ENV, PREREG2_BUNDLE_DIR=empty)
     exe = os.path.join(sp, "harness", "prereg2.py")
-    argv = [exe] if direct else [sys.executable] + (["-I"] if isolated else []) + ["-B", exe]
+    if flags is None:
+        flags = (["-I", "-S"] if isolated else []) + ["-B"]
+    argv = [exe] if direct else [sys.executable] + flags + [exe]
     r = subprocess.run(argv + list(args), capture_output=True, text=True, env=env)
     return r.returncode, r.stdout + r.stderr
 
@@ -1839,7 +1848,12 @@ def t_preflight(a, tmp):
     check("C3/H3: one executed bound transcript per arm0, score and export passes, and a refused run "
           "beside it does not count", prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]) == [],
           prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]))
+    os.rename(os.path.join(td, "2026-10-10T000000Z-arm0-k8s-en.txt"), os.path.join(tmp, "held.txt"))
     tw("2026-10-10T010000Z-arm0-k8s-en.txt", bound=False)
+    bad = prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"])
+    check("N26: an arm whose only executed arm0 transcript is unbound is refused",
+          any("arm0-k8s-en" in b for b in bad), bad)
+    os.rename(os.path.join(tmp, "held.txt"), os.path.join(td, "2026-10-10T000000Z-arm0-k8s-en.txt"))
     bad = prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"])
     check("C3: a second executed arm0 transcript for an arm, even unbound, is refused",
           any("arm0-k8s-en" in b for b in bad), bad)
@@ -1870,6 +1884,395 @@ def t_preflight(a, tmp):
           prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]) == [], prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]))
     n, path = TRN.binding_run(st)
     check("C2: then the second run's tiers bind", n == 2 and path.endswith("tier-work-2/tiers.jsonl"), (n, path))
+
+
+class FakeTr:
+    def __init__(self, bound, vc):
+        self.state = {"bound": bound, "validation_commit": vc}
+
+
+def bound_fixture(tmp, name="bf"):
+    """A copy of this harness whose rust-book arm points at a fixture corpus
+    bundled here, sealed and committed as its own validation commit. Bound
+    runs on it open only the fixture bundle; every other arm's bundle is
+    absent."""
+    import hashlib
+    import re
+    corp = os.path.join(tmp, name + "-corpus")
+    commits = [(f"c{v}", {"a.md": d("# A", f"Paragraph one of the fixture, version {v}, long enough.",
+                                    "Paragraph two stays the same across versions here.",
+                                    f"Paragraph three, edition {v % 3}, also long enough.")})
+               for v in range(8)]
+    pin, cg = fixture_repo(corp, commits)
+    bdir = os.path.join(tmp, name + "-bundles")
+    os.makedirs(bdir)
+    cg("bundle", "create", "-q", os.path.join(bdir, "rust-book.bundle"), "HEAD")
+    bsha = hashlib.sha256(open(os.path.join(bdir, "rust-book.bundle"), "rb").read()).hexdigest()
+    root, sp, g = binding_repo(tmp, name)
+    cpath = os.path.join(sp, "harness", "p2", "corpus.py")
+    src = open(cpath).read()
+    src2 = re.sub(r'"rust-book": \{"bundle": "rust-book", "pin": "[0-9a-f]{40}",\n                  "pathspec": "src/\*\.md", "prefix": "src/"\}',
+                  f'"rust-book": {{"bundle": "rust-book", "pin": "{pin}",\n                  "pathspec": "*.md", "prefix": ""}}', src)
+    assert src2 != src
+    open(cpath, "w").write(src2)
+    bj = os.path.join(sp, "harness", "p2", "bundles.json")
+    meta = json.load(open(bj))
+    meta["rust-book"] = {"sha256": bsha, "bytes": os.path.getsize(os.path.join(bdir, "rust-book.bundle")),
+                         "head": pin}
+    open(bj, "w").write(json.dumps(meta, indent=1) + "\n")
+    commit_all(g, "fixture arm")
+    manifest = os.path.join(tmp, name + "-manifest.json")
+    rc, out = run_copy(sp, "seal", "--manifest", manifest)
+    assert rc == 0, out
+    commit_all(g, "validation")
+    return root, sp, g, bdir, manifest
+
+
+def run_bound(sp, bdir, *args):
+    env = dict(os.environ, **GIT_ENV, PREREG2_BUNDLE_DIR=bdir)
+    r = subprocess.run([sys.executable, "-I", "-S", "-B", os.path.join(sp, "harness", "prereg2.py"), *args],
+                       capture_output=True, text=True, env=env)
+    return r.returncode, r.stdout + r.stderr
+
+
+def t_round5(a, tmp):
+    section("Round 5: bound runs end to end on a fixture arm (H-1, N11, N14, N15)")
+    from p2 import binding as BD
+    root, sp, g, bdir, manifest = bound_fixture(tmp)
+    cd = BD.common_dir(sp)
+    w = lambda n: os.path.join(tmp, "bfw-" + n)  # noqa: E731
+    empty = os.path.join(tmp, "bf-nobundles")
+    os.makedirs(empty)
+    rc, out = run_bound(sp, empty, "arm0", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir", w("1"))
+    check("N14: an arm0 whose bundle cannot be opened writes no marker, in the work tree or the git dir",
+          rc != 0 and not os.path.exists(os.path.join(sp, BD.marker_rel("arm0", "rust-book")))
+          and not os.path.exists(os.path.join(cd, "prereg2", "arm0-rust-book.json")), out[-200:])
+    commit_all(g, "the failed arm0's transcript")
+    rc, out = run_bound(sp, bdir, "arm0", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir", w("2"))
+    tx = [open(os.path.join(sp, "results", "prereg2", "transcripts", t)).read() for t in transcripts(sp)
+          if t.endswith(("-arm0-rust-book.txt", "-arm0-rust-book.2.txt"))]
+    check("H3: ... so the next arm0 runs, bound, and executes",
+          rc == 0 and any("# harness bound: True" in t and "\n# executed: " in t for t in tx), out[-300:])
+    check("M-a: its marker is in the work tree and in the common git directory",
+          os.path.exists(os.path.join(sp, BD.marker_rel("arm0", "rust-book")))
+          and os.path.exists(os.path.join(cd, "prereg2", "arm0-rust-book.json")))
+    commit_all(g, "arm0 rust-book")
+    rc, out = run_bound(sp, bdir, "arm0", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir", w("3"))
+    check("H3: a second arm0 rust-book is refused", rc == 2 and "already executed" in out, out[-200:])
+    commit_all(g, "refused")
+    rc, out = run_bound(sp, empty, "score", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir", w("4"))
+    check("H-1: a score whose bundle cannot be opened leaves no score/<arm>/ and no marker",
+          rc != 0 and not os.path.exists(os.path.join(sp, "results", "prereg2", "score", "rust-book"))
+          and not os.path.exists(os.path.join(sp, BD.marker_rel("score", "rust-book"))), out[-200:])
+    commit_all(g, "the failed score's transcript")
+    rc, out = run_bound(sp, bdir, "score", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir", w("5"))
+    check("H-1: ... so the next score runs and executes", rc == 0 and os.path.exists(
+        os.path.join(sp, "results", "prereg2", "score", "rust-book", "status.json")), out[-300:])
+    commit_all(g, "score rust-book")
+    rc, out = run_bound(sp, bdir, "score", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir", w("6"))
+    check("N11: a second score rust-book is refused by its marker", rc == 2 and "already executed" in out, out[-200:])
+    commit_all(g, "refused")
+    rc, out = run_bound(sp, bdir, "export", "--d8-dir", a.d8_dir, "--manifest", manifest)
+    check("N15: export runs bound and writes its marker", rc == 0 and os.path.exists(
+        os.path.join(sp, BD.marker_rel("export", None))), out[-300:])
+    commit_all(g, "export")
+    rc, out = run_bound(sp, bdir, "export", "--d8-dir", a.d8_dir, "--manifest", manifest)
+    check("N15: a second export is refused", rc == 2 and "already executed" in out, out[-200:])
+    commit_all(g, "refused")
+    rc, out = run_bound(sp, bdir, "tier-run", "--agent-cmd", "/bin/true")
+    check("N18: a bound tier-run that names --agent-cmd is refused", rc == 2 and "takes no --agent-cmd" in out,
+          out[-200:])
+    commit_all(g, "refused")
+    rc, out = run_bound(sp, bdir, "arm0", "--d8-dir", a.d8_dir, "--arm", "cncf-toc", "--work-dir", w("7"),
+                        "--fixture-pin", "0" * 40)
+    check("N19: a bound run that names --fixture-pin is refused", rc == 2 and "takes no --fixture-pin" in out,
+          out[-200:])
+    commit_all(g, "refused")
+    rc, out = run_bound(sp, bdir, "arm0", "--d8-dir", a.d8_dir, "--arm=zzz", "--arm=cncf-toc", "--work-dir", w("8"))
+    check("N16: a repeated --opt=value is refused", rc == 2 and "given more than once" in out, out[-200:])
+    commit_all(g, "refused")
+    rc, out = run_bound(sp, bdir, "arm0", "--d8-dir", a.d8_dir, "--arm", "cncf-toc", "--work-dir", w("9"),
+                        "--fixture-repo=")
+    check("N17: an option that reads unbound but parses bound (--fixture-repo=) is refused",
+          rc == 2 and "parse differently" in out, out[-200:])
+    commit_all(g, "refused")
+
+    section("Round 5: a marker survives every escape (M-a)")
+    st, rs = BD.check(sp, "arm0", "cmspec")
+    check("M-a: before any escape test, arm0 cmspec is allowed", st["bound"], rs)
+    mk = os.path.join(sp, BD.marker_rel("arm0", "cmspec"))
+    open(mk, "w").write("{}\n")
+    st, rs = BD.check(sp, "arm0", "cmspec")
+    check("N10: an uncommitted work-tree marker (with no git-dir copy) blocks the arm",
+          not st["bound"] and any("already executed" in r for r in rs), rs)
+    os.remove(mk)
+    g("checkout", "-q", "-b", "abandoned")
+    open(os.path.join(sp, BD.marker_rel("arm0", "cncf-toc")), "w").write("{}\n")
+    commit_all(g, "a marker on a PR branch")
+    g("checkout", "-q", "main")
+    st, rs = BD.check(sp, "arm0", "cncf-toc")
+    check("N9: a marker committed only on another branch blocks the arm (git log --all)",
+          not st["bound"] and any("already executed" in r for r in rs), rs)
+    g("branch", "-q", "-D", "abandoned")
+    st, rs = BD.check(sp, "arm0", "cncf-toc")
+    check("M-a: ... and still after that branch is deleted (git log --reflog)",
+          not st["bound"] and any("already executed" in r for r in rs), rs)
+    BD.mark_executed(sp, "arm0", "site-policy", os.path.join(tmp, "x.txt"))
+    os.remove(os.path.join(sp, BD.marker_rel("arm0", "site-policy")))
+    g("clean", "-q", "-fd", "spike/results")
+    st, rs = BD.check(sp, "arm0", "site-policy")
+    check("M-a: an uncommitted marker removed with rm and git clean still blocks the arm (git-dir copy)",
+          not st["bound"] and any("already executed" in r for r in rs), rs)
+    wt2 = os.path.join(tmp, "bf-wt2")
+    g("worktree", "add", "-q", "--detach", wt2)
+    st, rs = BD.check(os.path.join(wt2, "spike"), "arm0", "site-policy")
+    check("M-a: a second git worktree cannot run the arm again", not st["bound"]
+          and any("already executed" in r for r in rs), rs)
+    st, rs = BD.check(os.path.join(wt2, "spike"), "arm0", "k8s-en")
+    check("M-a: ... though it may run an arm that has not executed", st["bound"], rs)
+    g("worktree", "remove", "--force", wt2)
+
+    section("Round 5: the derivation's history (M-c)")
+    hx = os.path.join(tmp, "dbl")
+    _, hg = fixture_repo(hx, [("base", {"spike/x.md": "x\n"})])
+    hg("checkout", "-q", "-b", "side")
+    os.makedirs(os.path.join(hx, "spike", "results", "prereg2"), exist_ok=True)
+    open(os.path.join(hx, "spike", BD.VALIDATION_REL), "w").write(json.dumps({"manifest_sha256": "ab" * 32}) + "\n")
+    hg("add", "-A")
+    hg("commit", "-q", "-m", "side adds VALIDATION")
+    hg("checkout", "-q", "main")
+    os.makedirs(os.path.join(hx, "spike", "results", "prereg2"), exist_ok=True)
+    open(os.path.join(hx, "spike", BD.VALIDATION_REL), "w").write(json.dumps({"manifest_sha256": "ab" * 32}) + "\n")
+    hg("add", "-A")
+    hg("commit", "-q", "-m", "main adds the same VALIDATION")
+    hg("merge", "-q", "--no-edit", "side")
+    vc_, _, rs = BD.derive_validation(os.path.join(hx, "spike"))
+    check("M-c: VALIDATION added on both sides of a merge counts twice (--full-history), and is refused",
+          vc_ is None and any("2 commits" in r for r in rs), rs)
+    sh = os.path.join(tmp, "shallow")
+    subprocess.run(["git", "clone", "-q", "--depth", "1", "file://" + root, sh], check=True,
+                   env=dict(os.environ, **GIT_ENV), capture_output=True)
+    st, rs = BD.check(os.path.join(sh, "spike"), "arm0", "k8s-l10n")
+    check("M-c: a shallow clone is refused", not st["bound"] and any("shallow" in r for r in rs), rs)
+    rp = os.path.join(tmp, "replaced")
+    subprocess.run(["git", "clone", "-q", root, rp], check=True, env=dict(os.environ, **GIT_ENV), capture_output=True)
+    subprocess.run(["git", "-C", rp, "replace", "--graft", "HEAD"], check=True, env=dict(os.environ, **GIT_ENV),
+                   capture_output=True)
+    st, rs = BD.check(os.path.join(rp, "spike"), "arm0", "k8s-l10n")
+    check("M-c: a history rewritten by git replace is refused", not st["bound"]
+          and any("replace refs" in r for r in rs), rs)
+    gr = os.path.join(tmp, "grafted")
+    subprocess.run(["git", "clone", "-q", root, gr], check=True, env=dict(os.environ, **GIT_ENV), capture_output=True)
+    head = subprocess.run(["git", "-C", gr, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    open(os.path.join(gr, ".git", "info", "grafts"), "w").write(head + "\n")
+    st, rs = BD.check(os.path.join(gr, "spike"), "arm0", "k8s-l10n")
+    check("M-c: a history rewritten by info/grafts is refused", not st["bound"]
+          and any("grafts" in r for r in rs), rs)
+    st0, _ = BD.check(sp, "arm0", "k8s-l10n")
+    saved = {k: os.environ.get(k) for k in ("GIT_DIR", "GIT_WORK_TREE")}
+    os.environ["GIT_DIR"] = os.path.join(hx, ".git")
+    os.environ["GIT_WORK_TREE"] = hx
+    try:
+        st1, rs1 = BD.check(sp, "arm0", "k8s-l10n")
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    check("M-c: GIT_DIR and GIT_WORK_TREE in the environment do not redirect the binding check",
+          st1["validation_commit"] == st0["validation_commit"] and st1["bound"] == st0["bound"], (st1, rs1))
+
+    section("Round 5: smaller survivors (N3, N6, N7, N13, N21-N28, N33)")
+    ex = os.path.join(tmp, "extra")
+    fixture_repo(ex, [("v", {"spike/results/prereg2/VALIDATION": json.dumps(
+        {"manifest_sha256": "ab" * 32, "note": "x"}) + "\n"})])
+    vcx, msx, rsx = BD.derive_validation(os.path.join(ex, "spike"))
+    check("N3: a VALIDATION with any field besides manifest_sha256 is refused", msx is None and rsx, rsx)
+    orc = os.path.join(sp, "ORACLE.md")
+    o0 = open(orc).read()
+    open(orc, "a").write("\nedited\n")
+    st, rs = BD.check(sp, "arm0", "k8s-l10n")
+    check("N6: an edited ORACLE.md is not bound", not st["bound"] and any("ORACLE.md" in r for r in rs), rs)
+    open(orc, "w").write(o0)
+    tgt = os.path.join(sp, "harness", "p2", "tiers.py")
+    real = os.path.join(tmp, "tiers-real.py")
+    shutil.copy(tgt, real)
+    g("update-index", "--assume-unchanged", "spike/harness/p2/tiers.py")
+    os.remove(tgt)
+    os.symlink(real, tgt)
+    st, rs = BD.check(sp, "arm0", "k8s-l10n")
+    check("N7: a harness file replaced by a symlink to identical bytes, hidden with --assume-unchanged, is not bound",
+          not st["bound"] and any("not a regular file" in r for r in rs), rs)
+    os.remove(tgt)
+    shutil.copy(real, tgt)
+    g("update-index", "--no-assume-unchanged", "spike/harness/p2/tiers.py")
+    check("N13: a transcript's .<n> suffix is not part of its tag",
+          BD.transcript_tag("2026-10-08T000000Z-arm0-cmspec.2.txt") == "arm0-cmspec"
+          and BD.transcript_tag("2026-10-08T000000Z-export.txt") == "export")
+    import prereg2
+    vca, vcb = "a" * 40, "b" * 40
+    r = raised(lambda: prereg2.check_input_binding({"bound": True, "binding": {"validation_commit": vcb}},
+                                                   "x", FakeTr(True, vca), False))
+    check("N22: a bound input from another validation commit is refused", r and "not a bound output" in r, r)
+    rd = os.path.join(tmp, "rp")
+    os.makedirs(rd)
+    json.dump({"id": "r1", "ok": True, "bound": True, "binding": {"validation_commit": vcb},
+               "committed_sha256": "c" * 64, "regenerated_sha256": "c" * 64}, open(os.path.join(rd, "r.json"), "w"))
+    check("N23: a reproduction from another validation commit is not bound",
+          prereg2.load_repro(rd, FakeTr(True, vca), False)["r1"]["bound"] is False)
+    check("N24: score refuses an Arm 0 result of another validation commit",
+          not prereg2.arm0_input_ok({"bound": True, "binding": {"validation_commit": vcb}}, FakeTr(True, vca))
+          and prereg2.arm0_input_ok({"bound": True, "binding": {"validation_commit": vca}}, FakeTr(True, vca)))
+    r = raised(lambda: prereg2.check_pin_and_bundle({"arm": "k8s-en", "no_verdict": "x", "pin": "0" * 40,
+                                                      "bundle_sha256": "0" * 64}, "x"))
+    check("N21: a no-verdict input that names a wrong pin is refused", r and "was not run at" in r, r)
+    from p2 import oracle as O
+    check("N27: with t undefined, a twin of k in M's first unit makes the verdict undecidable",
+          O.repeat_rule(["X", "Y"], ["X", "Z"], lambda i: None, 0, None) is False)
+    base = ("## Alpha\n\nFailed jobs are retried three times\nbefore an alert is raised\nto the on-call engineer.\n\n"
+            "## Beta\n\nExports are written to the archive bucket nightly.\n")
+    after = ("Failed jobs are retried three times\nbefore an alert is raised\nto the on-call engineer.\n\n"
+             "## Alpha\n\nExports are written to the archive bucket nightly.\n\n"
+             "## Alpha\n\nExports are written to the archive bucket nightly.\n")
+    r = one(inst1(base, after), "R", name="alpha")
+    check("N28: p in no unit is not taken as the first unit: with a twin of that unit elsewhere, still decided",
+          r and r["oracle"] == "SURVIVED" and r["decided"], r and (r["oracle"], r["target"]))
+    from p2 import tierrun as TRN
+    st_dir = os.path.join(tmp, "n33")
+    os.makedirs(st_dir)
+    json.dump({"model": "claude-opus-5-5", "why": "x", "scoring_commit": "f" * 40}, open(os.path.join(st_dir, "tier-model.json"), "w"))
+    mp = os.path.join(tmp, "n33-m.json")
+    from p2 import export as X
+    msha = X.seal(mp)
+    exp = os.path.join(tmp, "n33-export")
+    X.export(exp, X.load_manifest(mp, msha), [], {})
+    oldr = os.path.join(tmp, "n33-repo")
+    oc, _ = fixture_repo(oldr, [("s", {"x.md": "x\n"})])
+    r = raised(lambda: TRN.run(exp, st_dir, oldr, oc, "late", "/bin/true", log=lambda *x: None))
+    check("N33: tier-run refuses a tier-model.json chosen for another scoring-arm commit",
+          r and "another scoring-arm commit" in r, r)
+    sc = os.path.join(tmp, "n25", "k8s-en")
+    os.makedirs(sc)
+    from p2 import corpus as K
+    json.dump(dict(arm="k8s-en", bound=True, binding={"validation_commit": vca}, modes=["E"], sample_e=1000,
+                   sample_s=500, modes_requested=["E"], pin=K.ARMS["k8s-en"]["pin"],
+                   bundle_sha256=K.bundles()["kubernetes-website"]["sha256"]), open(os.path.join(sc, "status.json"), "w"))
+    r = raised(lambda: prereg2.load_scores(os.path.dirname(sc), FakeTr(True, vca)))
+    check("N25: a score that did not request all four modes is refused", r and "1,000 and 500" in r, r)
+
+    section("Round 5: module loading (M-d)")
+    forged = os.path.join(tmp, "d8-planted")
+    shutil.copytree(a.d8_dir, forged, ignore=shutil.ignore_patterns("__pycache__"))
+    open(os.path.join(forged, "colorsys.py"), "w").write("import sys\nsys.stderr.write('PLANTED STDLIB MODULE\\n')\n")
+    pr = subprocess.run([sys.executable, "-I", "-S", "-B", "-c",
+                         "import sys; sys.path.insert(0, sys.argv[1]); from p2 import mech; mech.load(sys.argv[2]); "
+                         "import colorsys; print(colorsys.__file__)", HERE, forged], capture_output=True, text=True)
+    check("M-d: after loading --d8-dir, a module planted there does not shadow the standard library",
+          pr.returncode == 0 and "PLANTED" not in pr.stderr and forged not in pr.stdout, (pr.stdout, pr.stderr[-200:]))
+    r2, sp2, g2 = binding_repo(tmp, "shadow")
+    pk = os.path.join(sp2, "harness", "p2", "binding")
+    os.makedirs(pk)
+    shutil.copy(os.path.join(sp2, "harness", "p2", "binding.py"), os.path.join(pk, "__init__.py"))
+    rc, out = run_copy(sp2, "validate-export", os.path.join(tmp, "nothing"), "--unbound", "--transcript-dir",
+                       os.path.join(tmp, "shadow-t"))
+    check("M-d: an untracked p2/binding/ package that shadows binding.py is refused",
+          rc == 2 and "p2.binding was loaded from" in out, out[-300:])
+    rc, out = run_copy(sp, "validate-export", os.path.join(tmp, "nothing"), "--unbound", "--transcript-dir",
+                       os.path.join(tmp, "nosite-t"), flags=["-I", "-B"])
+    check("M-d: run without -S (so a .pth file could run), the harness refuses",
+          rc == 2 and "-I -S" in out, out[-200:])
+
+
+def t_gaps(a, tmp):
+    section("§9's gap rule, implemented (M-e)")
+    from p2 import aggregate as AG
+    from p2 import gaps as GP
+    from p2 import corpus as K
+    m = manifest_for_test()
+    recs = [wrong_rec("k8s-en", "E", "w1")] + [syn("k8s-en", "E", "Q", f"u{i}") for i in range(400)]
+    res = AG.aggregate({"k8s-en": {"passes_bar": True}}, syn_scores("k8s-en", recs), m, good_tiers(m), {},
+                       {("k8s-en", "E", "Q"): "gap G1 (LOG §21): the E enumerator cannot follow renames"})
+    c = res["cells"][("k8s-en", "E", "Q")]
+    check("M-e: a declared gap makes its cell NO VERDICT, whatever it would have been, and names the gap",
+          c["verdict"] == "NO VERDICT" and "gap G1 (LOG §21)" in c["reason"] and "without_the_gap" in c, c)
+    check("M-e: ... and leaves other cells alone",
+          res["cells"][("k8s-en", "E", "R")]["reason"] != c["reason"])
+    gr = os.path.join(tmp, "gaprepo")
+    log = "# log\n\n## 2026-10-09 — §21. A gap\n\ntext\n"
+    entry = {"id": "G1", "log": "§21", "red_test": "results/prereg2/gaps/G1/red.txt",
+             "cells": [["k8s-en", "E", "Q"]], "why": "the enumerator cannot follow renames"}
+    gj = json.dumps({"gaps": [entry]}) + "\n"
+    files_gap = {"spike/results/prereg2/gaps.json": gj, "spike/results/prereg2/gaps/G1/red.txt": "red\n",
+                 "spike/LOG.md": log}
+
+    def repo(name, order):
+        root = os.path.join(tmp, name)
+        commits = []
+        for step in order:
+            if step == "arm0":
+                commits.append(("arm0", {"spike/results/prereg2/arm0/k8s-en.json": "{}\n"}))
+            elif step == "gap":
+                commits.append(("gap", files_gap))
+            elif step == "score":
+                commits.append(("score", {"spike/results/prereg2/score/k8s-en/status.json": "{}\n"}))
+            else:
+                commits.append((step, {f"spike/{step}.md": step + "\n"}))
+        _, g = fixture_repo(root, commits)
+        sc = g("log", "--format=%H", "--diff-filter=A", "--", "spike/results/prereg2/score")
+        return os.path.join(root, "spike"), sc, g
+    sp, sc, g = repo("gap-between", ["base", "arm0", "gap", "score"])
+    gaps, notes = GP.load_gaps(sp, sc, K.ARMS)
+    check("M-e: a gap declared between the Arm 0 commit and the scoring-arm commit makes its cells NO VERDICT",
+          gaps == {("k8s-en", "E", "Q"): "gap G1 (LOG §21): the enumerator cannot follow renames"}, gaps)
+    sp, sc, g = repo("gap-before", ["base", "gap", "arm0", "score"])
+    r = raised(lambda: GP.load_gaps(sp, sc, K.ARMS))
+    check("M-e: a gap declared before the Arm 0 commit is refused: per §9 it stops the work",
+          r and "stops the work" in r, r)
+    sp, sc, g = repo("gap-after", ["base", "arm0", "score", "gap"])
+    got = []
+    r = raised(lambda: got.append(GP.load_gaps(sp, sc, K.ARMS)))
+    gaps, notes = got[0] if got else (None, [])
+    check("M-e: a gap declared after the scoring-arm commit alters no cell, and is listed",
+          r is None and gaps == {} and notes and "alters no cell" in notes[0], (r, gaps, notes))
+    sp, sc, g = repo("gap-edited", ["base", "arm0", "gap"])
+    open(os.path.join(sp, "results", "prereg2", "gaps.json"), "w").write(
+        json.dumps({"gaps": [dict(entry, cells=[["cncf-toc", "E", "Q"]])]}) + "\n")
+    commit_all(g, "edit the gap")
+    g("checkout", "-q", "-b", "x")
+    open(os.path.join(sp, "score.md"), "w").write("x\n")
+    os.makedirs(os.path.join(sp, "results", "prereg2", "score", "k8s-en"))
+    open(os.path.join(sp, "results", "prereg2", "score", "k8s-en", "status.json"), "w").write("{}\n")
+    commit_all(g, "score")
+    sc = g("log", "--format=%H", "--diff-filter=A", "--", "spike/results/prereg2/score")
+    r = raised(lambda: GP.load_gaps(sp, sc, K.ARMS))
+    check("M-e: a declared gap may not be edited afterwards", r and "never edited" in r, r)
+    for label, bad in (("with no LOG entry", dict(entry, log="§99")),
+                       ("whose red test lies outside results/prereg2/gaps/", dict(entry, red_test="harness/x.py")),
+                       ("that names no real cell", dict(entry, cells=[["k8s-en", "X", "Q"]])),
+                       ("with an extra key", dict(entry, extra=1))):
+        root = os.path.join(tmp, "gap-bad-" + str(abs(hash(label)) % 10000))
+        fl = dict(files_gap, **{"spike/results/prereg2/gaps.json": json.dumps({"gaps": [bad]}) + "\n",
+                                "spike/harness/x.py": "red\n"})
+        _, gg = fixture_repo(root, [("base", {"spike/a.md": "a\n"}),
+                                    ("arm0", {"spike/results/prereg2/arm0/k8s-en.json": "{}\n"}),
+                                    ("gap", fl), ("score", {"spike/results/prereg2/score/k8s-en/status.json": "{}\n"})])
+        sc2 = gg("log", "--format=%H", "--diff-filter=A", "--", "spike/results/prereg2/score")
+        r = raised(lambda: GP.load_gaps(os.path.join(root, "spike"), sc2, K.ARMS))
+        why = {"with no LOG entry": "has no entry", "whose red test lies outside results/prereg2/gaps/": "must lie under",
+               "that names no real cell": "is not a cell", "with an extra key": "exactly the keys"}[label]
+        check(f"M-e: a gap {label} is refused", r and r.startswith("GapError") and why in r, r)
+    root = os.path.join(tmp, "gap-notest")
+    fl = {k: v for k, v in files_gap.items() if not k.endswith("red.txt")}
+    _, gg = fixture_repo(root, [("base", {"spike/a.md": "a\n"}),
+                                ("arm0", {"spike/results/prereg2/arm0/k8s-en.json": "{}\n"}),
+                                ("gap", fl), ("score", {"spike/results/prereg2/score/k8s-en/status.json": "{}\n"})])
+    sc2 = gg("log", "--format=%H", "--diff-filter=A", "--", "spike/results/prereg2/score")
+    r = raised(lambda: GP.load_gaps(os.path.join(root, "spike"), sc2, K.ARMS))
+    check("M-e: a gap whose red test is not committed is refused", r and "red test" in r, r)
+    root = os.path.join(tmp, "gap-none")
+    _, gg = fixture_repo(root, [("base", {"spike/a.md": "a\n"})])
+    check("M-e: no gaps.json, no gap", GP.load_gaps(os.path.join(root, "spike"), "0" * 40, K.ARMS) == ({}, []))
 
 
 def t_aggregator(a, tmp):
@@ -1965,6 +2368,8 @@ def main():
         lambda: t_review_a5_b1_a3(a),
         lambda: t_binding(a, tmp),
         lambda: t_preflight(a, tmp),
+        lambda: t_round5(a, tmp),
+        lambda: t_gaps(a, tmp),
         lambda: t_aggregator(a, tmp),
     ]
     try:

@@ -83,7 +83,7 @@ def floor_verdict(n_decided, n_undecidable, passed_arm0):
     return "NOT FOUND", f"n={n_decided}, bound 3/n = {3 / n_decided:.5f} at 95%"
 
 
-def aggregate(arm0, scores, manifest, tiers, repro):
+def aggregate(arm0, scores, manifest, tiers, repro, gaps=None):
     """
     arm0:    {arm: {"passes_bar": bool} | {"no_verdict": reason}}
     scores:  {arm: {"no_verdict": reason} |
@@ -92,6 +92,8 @@ def aggregate(arm0, scores, manifest, tiers, repro):
     tiers:   {packet name: answers} from tiers.read_tiers
     repro:   {record id: reproduction result (id, ok, bound, committed_sha256,
               regenerated_sha256)}
+    gaps:    {(arm, mode, mech): reason}, from p2.gaps.load_gaps: §9's gap rule
+             makes each such cell NO VERDICT, whatever it would have been
     """
     if not arm0 or not scores or not any(s.get("records") for s in scores.values()):
         raise Empty("no Arm 0 result or no scored record: no verdict")
@@ -122,6 +124,11 @@ def aggregate(arm0, scores, manifest, tiers, repro):
                                   "reason": sc.get("no_verdict", f"{mode} not run")}
                     continue
                 cells[cid] = cell(arm, mode, mech, sc, nonce, tiers, repro, void, near, reps)
+    for cid, why in (gaps or {}).items():
+        if cid in cells:
+            was = cells[cid]
+            cells[cid] = {"verdict": "NO VERDICT", "reason": f"§9 gap: {why}",
+                          "without_the_gap": {k: v for k, v in was.items() if k in ("verdict", "reason")}}
     return {"cells": cells, "void": void, "overall": overall(cells, near),
             "near_misses": {k: len(v) for k, v in near.items()}}
 

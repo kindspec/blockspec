@@ -124,24 +124,24 @@ commit exists.
 # the V steps; each writes results/prereg2/validation/<stage>.txt
 D8_DIR=... CORPORA_V1=... CORPORA=... harness/prereg2_validate.sh V1   # also V2, V3, V4, V5
 harness/prereg2_validate.sh bundles                                     # §6.2 bundle integrity
-python3 -I -B harness/prereg2_v3.py --d8-dir "$D8_DIR"                    # V3 alone, no corpus
-python3 -I -B harness/prereg2_v4.py --d8-dir "$D8_DIR"                    # V4, the mutation sweep
+python3 -I -S -B harness/prereg2_v3.py --d8-dir "$D8_DIR"                    # V3 alone, no corpus
+python3 -I -S -B harness/prereg2_v4.py --d8-dir "$D8_DIR"                    # V4, the mutation sweep
 
 # §9's order of work, once validated -- the first execution of each binds
-python3 -I -B harness/prereg2.py seal --manifest <outside the repo>                # writes results/prereg2/VALIDATION
-python3 -I -B harness/prereg2.py arm0  --d8-dir "$D8_DIR" --arm <arm> --work-dir W
-python3 -I -B harness/prereg2.py score --d8-dir "$D8_DIR" --arm <arm> --work-dir W
-python3 -I -B harness/prereg2.py export --d8-dir "$D8_DIR" --manifest M
-python3 -I -B harness/prereg2.py tier-model                                      # on the start day
-python3 -I -B harness/prereg2.py tier-run
-python3 -I -B harness/prereg2.py repro --d8-dir "$D8_DIR" --arm <arm> --id <record id> --work-dir W
-python3 -I -B harness/prereg2.py aggregate --d8-dir "$D8_DIR" --manifest M
+python3 -I -S -B harness/prereg2.py seal --manifest <outside the repo>                # writes results/prereg2/VALIDATION
+python3 -I -S -B harness/prereg2.py arm0  --d8-dir "$D8_DIR" --arm <arm> --work-dir W
+python3 -I -S -B harness/prereg2.py score --d8-dir "$D8_DIR" --arm <arm> --work-dir W
+python3 -I -S -B harness/prereg2.py export --d8-dir "$D8_DIR" --manifest M
+python3 -I -S -B harness/prereg2.py tier-model                                      # on the start day
+python3 -I -S -B harness/prereg2.py tier-run
+python3 -I -S -B harness/prereg2.py repro --d8-dir "$D8_DIR" --arm <arm> --id <record id> --work-dir W
+python3 -I -S -B harness/prereg2.py aggregate --d8-dir "$D8_DIR" --manifest M
 ```
 
 Every invocation writes a transcript under `results/prereg2/transcripts/`,
 opened before its arguments are parsed, so usage errors and aborted runs are
-recorded too. The harness refuses to run without `python3 -I` and never reads
-a bytecode cache. A bound command runs only when `harness/p2/binding.py`
+recorded too. The harness refuses to run without `python3 -I -S`, loads each
+module from its tracked file, and never reads a bytecode cache. A bound command runs only when `harness/p2/binding.py`
 passes: the validation commit, derived as the one commit that added
 `results/prereg2/VALIDATION`, holds the harness byte for byte and no later
 commit touches it, and nothing under `results/prereg2/` is uncommitted, so
@@ -149,6 +149,19 @@ each invocation is committed before the next one (`LOG.md` §16, §18). Each
 §9 step lands on `main` as one squash commit. `--unbound` and the fixture
 flags exist for the V3 tests; such runs write nowhere under
 `results/prereg2/` except their refusals, and carry no verdict.
+
+**What the harness checks, and what it does not** (`LOG.md` §20). The checks
+stop mistakes and casual shortcuts. They cannot stop whoever runs the
+harness from running other code, and a forged history derives a validation
+commit of its own. So the review of each §9 pull request does this, in a
+fresh clone of the merged result:
+
+```sh
+git clone https://github.com/kindspec/blockspec fresh && cd fresh/spike
+git log --full-history --format=%H --diff-filter=A -- results/prereg2/VALIDATION  # exactly one: the validation commit
+git log --full-history --format=%H <that commit>..HEAD -- harness PRE-REGISTRATION-2.md ORACLE.md  # must print nothing
+grep -rh '"validation_commit"' results/prereg2 | sort | uniq -c                    # every output names that commit
+```
 
 The corpus bundles are not in this repository. `harness/p2/bundles.json`
 records each one's sha256, size and head, and where they are kept (`LOG.md`

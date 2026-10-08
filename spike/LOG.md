@@ -1474,3 +1474,87 @@ The evidence per finding is `V4.txt`. Every §18 finding, and every surviving
 mutant from the re-review, is a V4 mutant, and V4 reports
 `158 mutants: 158 killed, 0 survived, 0 BROKEN`. Each kill names the check
 that went red; none is a crash.
+
+## 2026-10-08 — §20. Round-5 review of the harness: findings applied
+
+No arm has run. The round-5 review looked at blockspec#16 at `4de5c56`.
+
+### What the harness checks, and what it does not
+
+The binding is checked by the harness. It is not guaranteed by it. Anyone
+who runs the harness can run other code: an edited `binding.py`, or a
+program of their own. A forged history also derives a validation commit of
+its own, for example an orphan branch carrying its own harness and
+VALIDATION.
+
+So the checks stop mistakes and casual shortcuts. The guarantee is a review
+step, now in `spike/README.md`: each §9 pull request's review re-derives the
+validation commit in a fresh clone, and compares it with every output's
+`binding.validation_commit`.
+
+### Corrections to §18 and §19
+
+- **§18, H3.** §18 says "a refused or mistyped run leaves its transcript but
+  does not use up the arm". That was not true of every failure.
+
+  `score` created `score/<arm>/` before it opened the corpus. A run whose
+  bundle could not be opened (missing, wrong sha256, or an existing work
+  repository) therefore left an empty directory, and the next run refused
+  on it: "exists; the first execution binds".
+
+  Now `arm0` and `score` create their output only after the execution
+  marker is written. The first-execution refusal is keyed on the marker, or
+  on a result file, never on a directory. `export` and `tier-run` already
+  created their output only after their checks.
+- **§19.** §19 says that in V4, "none is a crash". That was false. V4's
+  mutant 115 (R1) was killed only by a section crash, which V4 counted as a
+  red check.
+
+  Now V4 counts a mutant that only crashes a V3 section, with no named
+  check red, as surviving. V3's `one()` turns an evaluation that raises into
+  a red named check.
+
+### What changed
+
+- **M-a, the marker.** The execution marker gets a second copy in the
+  common git directory, `$(git rev-parse --git-common-dir)/prereg2/executed/`.
+  It is looked for in three places:
+  - the work tree;
+  - that directory;
+  - `git log --all --reflog --full-history`.
+
+  So deleting a branch, `rm` or `git clean` of an uncommitted marker, and a
+  second worktree each leave the arm refused. A marker reaches only the
+  repository it was written in: a fresh clone has no git-directory copy and
+  no reflog. That gap is closed by the review step above, not by the
+  harness.
+- **M-c, the derivation's history.** Every history walk in the derivation
+  uses `--full-history`. A shallow repository is refused, as is a history
+  rewritten by replace refs or `info/grafts`. Binding git calls run without
+  the caller's `GIT_*` variables, without user or system config, and with
+  `GIT_NO_REPLACE_OBJECTS=1`.
+- **M-d, module loading.** The harness requires `python3 -I -S`, and its
+  shebang is `env -S python3 -I -S -B`. It loads the three D8 files by
+  explicit path, and takes `--d8-dir` back off `sys.path` once they have
+  run. It checks that every harness module's `__file__` is the tracked file
+  it names.
+- **M-e, §9's gap rule.** This implements the document's rule; it is not a
+  reading.
+  - A gap is declared in `results/prereg2/gaps.json`. Its red test lives
+    under `results/prereg2/gaps/`, outside the harness. Each entry names its
+    LOG entry and its cells.
+  - An entry is dated by the first commit that carries it.
+  - An entry dated at or before the Arm 0 commit is refused: §9 says such a
+    gap stops the work.
+  - An entry strictly between the Arm 0 commit and the scoring-arm commit
+    makes its cells NO VERDICT, and the reason names the gap.
+  - An entry at or after the scoring-arm commit alters no cell, and is
+    listed.
+  - Two choices are this harness's own, not the document's: an entry may
+    never be edited or withdrawn once committed, and its LOG entry and red
+    test must be committed with it.
+- **LOW.**
+  - `seal`'s "outside the repository" check now uses the repository's top
+    level.
+  - Of the 33 round-4 mutants, F6a was dropped on purpose: §18 removed the
+    unread well-formedness half of F6 that it mutated.

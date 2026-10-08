@@ -64,9 +64,12 @@ def is_late(cday, today):
 
 def scoring_commit(spike):
     """The one commit in HEAD's history that added results/prereg2/score/."""
-    r = subprocess.run(["git", "-C", spike, "log", "--format=%H", "--diff-filter=A", "--",
-                        SCORE_REL], capture_output=True, text=True)
-    commits = [c for c in r.stdout.split() if c]
+    from .binding import _git, history_unsound
+    bad = history_unsound(spike)
+    if bad:
+        raise TierRefused("; ".join(bad))
+    _, out, _ = _git(spike, "log", "--full-history", "--format=%H", "--diff-filter=A", "--", SCORE_REL)
+    commits = [c for c in out.split() if c]
     if len(commits) != 1:
         raise TierRefused(f"{len(commits)} commits add {SCORE_REL} in HEAD's history; "
                           "the scoring-arm results must land as one commit")

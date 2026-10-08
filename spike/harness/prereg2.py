@@ -1,16 +1,16 @@
-#!/usr/bin/env -S python3 -I -B
+#!/usr/bin/env -S python3 -I -S -B
 # SPDX-License-Identifier: MIT
 """PRE-REGISTRATION-2.md, the harness. blockspec#2. Run it isolated:
 
-    python3 -I -B harness/prereg2.py seal       --manifest PATH   (before validation, once)
-    python3 -I -B harness/prereg2.py arm0       --d8-dir D8 --arm ARM --work-dir W [--bundle-dir D]
-    python3 -I -B harness/prereg2.py score      --d8-dir D8 --arm ARM --work-dir W [--bundle-dir D]
-    python3 -I -B harness/prereg2.py export     --d8-dir D8 --manifest PATH
-    python3 -I -B harness/prereg2.py tier-model                   (on the start day)
-    python3 -I -B harness/prereg2.py tier-run   [--late-reason TEXT] [--credentials FILE]
-    python3 -I -B harness/prereg2.py repro      --d8-dir D8 --arm ARM --id RECORD --work-dir W
-    python3 -I -B harness/prereg2.py aggregate  --d8-dir D8 --manifest PATH
-    python3 -I -B harness/prereg2.py validate-export DIR
+    python3 -I -S -B harness/prereg2.py seal       --manifest PATH   (before validation, once)
+    python3 -I -S -B harness/prereg2.py arm0       --d8-dir D8 --arm ARM --work-dir W [--bundle-dir D]
+    python3 -I -S -B harness/prereg2.py score      --d8-dir D8 --arm ARM --work-dir W [--bundle-dir D]
+    python3 -I -S -B harness/prereg2.py export     --d8-dir D8 --manifest PATH
+    python3 -I -S -B harness/prereg2.py tier-model                   (on the start day)
+    python3 -I -S -B harness/prereg2.py tier-run   [--late-reason TEXT] [--credentials FILE]
+    python3 -I -S -B harness/prereg2.py repro      --d8-dir D8 --arm ARM --id RECORD --work-dir W
+    python3 -I -S -B harness/prereg2.py aggregate  --d8-dir D8 --manifest PATH
+    python3 -I -S -B harness/prereg2.py validate-export DIR
 
 §9's order of work binds: validation, then Arm 0, then the scoring arms and
 the export, then tiers.jsonl, then the sealed manifest, the join and the
@@ -18,11 +18,15 @@ verdict. Each step lands on main as one squash commit (LOG.md §16, ruled
 2026-10-08). The bundles are read from --bundle-dir, else $PREREG2_BUNDLE_DIR,
 else the durable local copy recorded in p2/bundles.json (LOG.md §15).
 
-THE BINDING IS ENFORCED HERE (LOG.md §16, §18). Every invocation writes a
+THE BINDING IS CHECKED HERE (LOG.md §16, §18, §20). What it does not stop:
+whoever runs the harness can run other code, and a forged history derives a
+validation commit of its own; each §9 pull request's review re-derives the
+validation commit in a fresh clone (spike/README.md). Every invocation writes a
 transcript under results/prereg2/transcripts/, opened before its arguments
 are parsed, so a usage error, a refusal and an abort are all recorded. It
-refuses unless run with `python3 -I` (no PYTHONPATH or site injection), and
-it never reads bytecode caches. Options cannot be abbreviated or repeated.
+refuses unless run with `python3 -I -S` (no PYTHONPATH, site or .pth
+injection), loads every module from its tracked file, and never reads
+bytecode caches. Options cannot be abbreviated or repeated.
 A bound command (anything but seal and validate-export) runs only when
 p2/binding.check passes: the validation commit -- derived, the one commit that
 added results/prereg2/VALIDATION -- holds this harness byte for byte, no later
@@ -55,6 +59,10 @@ sys.path.insert(0, HERE)
 from p2 import binding as BD  # noqa: E402
 from p2 import mech as Mx  # noqa: E402
 from p2 import transcript as TR  # noqa: E402
+# Every harness module is imported here, at start, so that check_modules can
+# confirm each came from its tracked file (re-review M-d).
+from p2 import aggregate, arm0, arms, corpus, evaluate, export, gaps, oracle, tierrun, tiers  # noqa: E402,F401
+import prereg2_plants  # noqa: E402,F401
 
 SPIKE = os.path.dirname(HERE)
 RESULTS = os.path.join(SPIKE, "results", "prereg2")
@@ -154,7 +162,7 @@ def cmd_seal(a, tr):
         print(f"refusing: {BD.VALIDATION_REL} exists; the manifest is sealed once, before "
               "validation (review C4)", file=sys.stderr)
         return 2
-    if inside(a.manifest, SPIKE):
+    if inside(a.manifest, BD.toplevel(SPIKE) or SPIKE):
         print("refusing: the sealed manifest is kept outside the repository until after "
               "tiers.jsonl (§7.3)", file=sys.stderr)
         return 2
@@ -172,7 +180,6 @@ def cmd_arm0(a, tr):
     from p2 import corpus as K
     out = {"arm": a.arm, "binding": binding_of(tr), "bound": tr.state["bound"]}
     path = os.path.join(a.out_dir, f"{a.arm}.json")
-    os.makedirs(a.out_dir, exist_ok=True)
     if os.path.exists(path):
         print(f"refusing: {path} exists; the first execution binds", file=sys.stderr)
         return 2
@@ -180,11 +187,13 @@ def cmd_arm0(a, tr):
         repo, pin, pathspec, bsha = corpus_for(a, K, a.work_dir)
     except K.NoVerdict as e:
         executed(tr, "arm0", a.arm)
+        os.makedirs(a.out_dir, exist_ok=True)
         out["no_verdict"] = str(e)
         print(f"NO VERDICT: {e}")
         jdump(out, path)
         return 3
     executed(tr, "arm0", a.arm)
+    os.makedirs(a.out_dir, exist_ok=True)
     K.check_pin(a.arm, repo, pin)
     out.update(pin=pin, pathspec=pathspec, bundle_sha256=bsha, rules={})
     sel = K.selection(a.arm, repo, pathspec)
@@ -218,16 +227,18 @@ def cmd_score(a, tr):
     from p2 import corpus as K
     bound = tr.state["bound"]
     out_dir = os.path.join(a.out_dir, a.arm)
-    if os.path.exists(out_dir):
-        print(f"refusing: {out_dir} exists; the first execution binds", file=sys.stderr)
+    # The first execution binds, and it is the execution marker that says so
+    # (binding.check). A status.json here means an execution wrote its
+    # result; an empty directory means nothing (re-review H-1).
+    if os.path.exists(os.path.join(out_dir, "status.json")):
+        print(f"refusing: {out_dir}/status.json exists; the first execution binds", file=sys.stderr)
         return 2
     a0p = os.path.join(a.arm0_dir, f"{a.arm}.json")
     if not os.path.isfile(a0p):
         print(f"refusing: no Arm 0 result for {a.arm} at {a0p}; Arm 0 runs first", file=sys.stderr)
         return 2
     a0 = json.load(open(a0p))
-    if bound and (not a0.get("bound") or a0.get("binding", {}).get("validation_commit")
-                  != tr.state.get("validation_commit")):
+    if not arm0_input_ok(a0, tr):
         print(f"refusing: {a0p} is not a bound result of this validation commit", file=sys.stderr)
         return 2
     if not a0.get("passes_bar"):
@@ -236,16 +247,17 @@ def cmd_score(a, tr):
     modes = a.modes.split(",")
     status = {"arm": a.arm, "binding": binding_of(tr), "bound": bound, "modes": [], "counts": {},
               "modes_requested": modes, "sample_e": a.sample_e, "sample_s": a.sample_s}
-    os.makedirs(out_dir)
     try:
         repo, pin, pathspec, bsha = corpus_for(a, K, a.work_dir)
     except K.NoVerdict as e:
         executed(tr, "score", a.arm)
+        os.makedirs(out_dir, exist_ok=True)
         status["no_verdict"] = str(e)
         jdump(status, os.path.join(out_dir, "status.json"))
         print(f"NO VERDICT: {e}")
         return 3
     executed(tr, "score", a.arm)
+    os.makedirs(out_dir, exist_ok=True)
     K.check_pin(a.arm, repo, pin)
     status.update(pin=pin, pathspec=pathspec, bundle_sha256=bsha)
     sel = K.selection(a.arm, repo, pathspec)
@@ -313,6 +325,26 @@ def check_input_binding(o, what, tr, fixture_ok):
     if not o.get("bound") or (tr.state["bound"] and o.get("binding", {}).get("validation_commit")
                               != tr.state.get("validation_commit")):
         raise SystemExit(f"refusing: {what} is not a bound output of this validation commit")
+
+
+def load_repro(repro_dir, tr, fixture_ok):
+    """{record id: reproduction result}. A result from another validation
+    commit is marked unbound, so it is not F9."""
+    repro = {}
+    for p in sorted(glob.glob(os.path.join(repro_dir, "*.json"))):
+        o = json.load(open(p))
+        if not fixture_ok and o.get("binding", {}).get("validation_commit") != tr.state.get(
+                "validation_commit"):
+            o = dict(o, bound=False)
+        repro[o["id"]] = o
+    return repro
+
+
+def arm0_input_ok(a0, tr):
+    """score's Arm 0 input: on a bound run, a bound result of this
+    validation commit."""
+    return not tr.state["bound"] or (a0.get("bound") is True and a0.get("binding", {}).get(
+        "validation_commit") == tr.state.get("validation_commit"))
 
 
 def check_pin_and_bundle(o, what):
@@ -500,15 +532,20 @@ def cmd_aggregate(a, tr):
     tiers, problems = T.read_tiers(tpath) if tpath else ({}, ["no tiering run"])
     for p in problems:
         print("tiers.jsonl:", p)
-    repro = {}
-    for p in glob.glob(os.path.join(a.repro_dir, "*.json")):
-        o = json.load(open(p))
-        if not a.fixture_ok and o.get("binding", {}).get("validation_commit") != tr.state.get(
-                "validation_commit"):
-            o = dict(o, bound=False)
-        repro[o["id"]] = o
+    repro = load_repro(a.repro_dir, tr, a.fixture_ok)
+    gaps, gap_notes = {}, []
+    if tr.state["bound"]:
+        from p2 import corpus as K
+        from p2 import gaps as GP
+        try:
+            gaps, gap_notes = GP.load_gaps(SPIKE, TRN.scoring_commit(SPIKE), K.ARMS)
+        except (GP.GapError, TRN.TierRefused) as e:
+            print(f"refusing: {e}", file=sys.stderr)
+            return 2
+    for n_ in gap_notes:
+        print(n_)
     try:
-        res = AG.aggregate(arm0, scores, m, tiers, repro)
+        res = AG.aggregate(arm0, scores, m, tiers, repro, gaps)
     except AG.Empty as e:
         print(f"NO VERDICT: {e}", file=sys.stderr)
         return 2
@@ -660,6 +697,23 @@ BOUND_DEFAULTS = {"transcript_dir": None, "out_dir": None, "out": None, "state_d
                   "fixture_pathspec": None, "unbound": False}
 
 
+def check_modules():
+    """Each harness module must be the tracked file it names: an untracked
+    p2/binding/ package, say, would otherwise shadow p2/binding.py."""
+    bad = []
+    for name, mod in sorted(sys.modules.items()):
+        if name == "p2" or name.startswith("p2."):
+            rel = os.path.join("p2", "__init__.py") if name == "p2" else os.path.join("p2", name[3:] + ".py")
+        elif name in ("d8_cheap_arm", "prose_merge", "prereg2_plants"):
+            rel = name + ".py"
+        else:
+            continue
+        f = getattr(mod, "__file__", None)
+        if not f or os.path.realpath(f) != os.path.realpath(os.path.join(HERE, rel)):
+            bad.append(f"{name} was loaded from {f}, not {rel}")
+    return bad
+
+
 def repeated_options(argv):
     """Options given more than once. argparse keeps the last, so a repeated
     --arm could aim a run's checks at one arm and its work at another."""
@@ -690,10 +744,15 @@ def main(argv=None):
     rc, how = 1, "exited"
     BOUND_RUN = False
     try:
-        if not sys.flags.isolated:
-            tr.record_binding({"bound": False, "reasons": ["not run with python3 -I"]})
-            raise SystemExit("refusing: run the harness as `python3 -I -B harness/prereg2.py`: "
-                             "without -I, PYTHONPATH and site packages can replace its code (M1)")
+        if not (sys.flags.isolated and sys.flags.no_site):
+            tr.record_binding({"bound": False, "reasons": ["not run with python3 -I -S"]})
+            raise SystemExit("refusing: run the harness as `python3 -I -S -B harness/prereg2.py`: "
+                             "without -I and -S, PYTHONPATH, site packages and .pth files can "
+                             "replace its code (M1, M-d)")
+        shadowed = check_modules()
+        if shadowed:
+            tr.record_binding({"bound": False, "reasons": shadowed})
+            raise SystemExit("refusing: " + "; ".join(shadowed) + " (M-d)")
         rep = repeated_options(argv)
         if rep:
             tr.record_binding({"bound": False, "reasons": [f"repeated {', '.join(rep)}"]})
@@ -739,6 +798,9 @@ def main(argv=None):
         resolve_paths(a, BOUND_RUN)
         if hasattr(a, "d8_dir"):
             Mx.load(a.d8_dir)
+            shadowed = check_modules()
+            if shadowed:
+                raise SystemExit("refusing: " + "; ".join(shadowed) + " (M-d)")
         rc = {"seal": cmd_seal, "arm0": cmd_arm0, "score": cmd_score,
               "export": cmd_export, "validate-export": cmd_validate_export, "repro": cmd_repro,
               "aggregate": cmd_aggregate, "tier-model": cmd_tier_model,
