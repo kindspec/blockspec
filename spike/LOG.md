@@ -1558,3 +1558,70 @@ validation commit in a fresh clone, and compares it with every output's
     level.
   - Of the 33 round-4 mutants, F6a was dropped on purpose: §18 removed the
     unread well-formedness half of F6 that it mutated.
+
+## 2026-10-08 — §21. Round-6 review: the gap rule's edges, and the validation commit
+
+No arm has run. The round-6 review looked at blockspec#16 at `e563655`. It
+found no HIGH and three MEDIUMs. This entry records the changes, and one
+correction to §20.
+
+### Gaps after the scoring-arm commit never block a verdict
+
+Before this change, `load_gaps` held every version of `gaps.json` to the
+rule. A later version broke it in three ways the review reproduced:
+
+- a typo in a LOG section;
+- a reworded `why`;
+- JSON that does not parse.
+
+Any of these made the bound `aggregate` refuse for good. Nothing could
+repair it, because gaps are immutable and the ruleset forbids rewriting
+history. That contradicts §9: "After the scoring-arm commit … no gap claim
+… alters any cell."
+
+Now a version of `gaps.json` at or after the scoring-arm commit is never a
+reason to refuse. It is listed, whatever it says, malformed included.
+
+The rule is also checked before the end:
+
+- `arm0`, `score`, `export`, `tier-model` and `tier-run` check it in their
+  bound preflight, so a breach inside the window shows up while it can
+  still be dealt with;
+- a gap declared before Arm 0 now stops `arm0` and `score`, not only
+  `aggregate`, as §9's "stops the work" says.
+
+### The validation commit adds VALIDATION only
+
+A bound run refuses when the validation commit's diff against its parent
+touches `spike/harness`, `PRE-REGISTRATION-2.md` or `ORACLE.md`. The review
+showed the case this closes: a validation pull request that also set
+`FLOOR = 1` produced a bound NOT FOUND.
+
+The README's fresh-clone review step now:
+
+- runs the same diff;
+- re-derives the Arm 0 commit and the scoring-arm commit;
+- checks the scoring-arm commit against the one `tier-model.json`
+  recorded, so a rebase that backdates a gap is caught.
+
+### A correction to §20: the gap rule has readings
+
+§20 says the gap rule "implements the document's rule; it is not a reading".
+The rule is the document's. Where its edges fall, the document does not say,
+so these are readings:
+
+- **In the Arm 0 commit itself.** A gap declared there counts as declared
+  before Arm 0, so it stops the work.
+- **In the scoring-arm commit itself.** A gap declared there counts as
+  after scoring, so it alters no cell.
+- **Outside the scoring-arm commit's history.** A gap on a side branch
+  that is merged only after the scoring-arm commit counts as after, so it
+  alters no cell.
+
+### What the gap check does not do
+
+It checks that a gap's red test is committed under
+`results/prereg2/gaps/` by the gap's own commit. It does not run the test,
+so it does not show the test is red. Running an arbitrary test inside the
+harness would make that test part of the harness, which the validation
+commit binds. The red state is for the gap's reviewers to confirm.

@@ -218,6 +218,14 @@ def check(spike=SPIKE, cmd=None, arm=None, own_transcript=None):
         reasons += rs
         state.update(validation_commit=vc, manifest_sha256=msha)
         if vc and not rs:
+            # The validation commit adds VALIDATION and nothing that is
+            # bound: a validation PR that also edited the harness would bind
+            # an implementation no review saw as the harness (round 6,
+            # MEDIUM-3).
+            if _git(spike, "rev-parse", "--verify", "-q", f"{vc}^")[0] != 0 or _git(
+                    spike, "diff", "--quiet", f"{vc}^", vc, "--", *BOUND_PATHS)[0] != 0:
+                reasons.append(f"the validation commit {vc[:12]} itself changes the harness, "
+                               "PRE-REGISTRATION-2.md or ORACLE.md; it may add VALIDATION only")
             _, later, _ = _git(spike, "rev-list", "--full-history", f"{vc}..HEAD", "--", *BOUND_PATHS)
             if later.strip():
                 reasons.append(f"a commit after the validation commit {vc[:12]} changes the harness, "

@@ -327,6 +327,27 @@ def check_input_binding(o, what, tr, fixture_ok):
         raise SystemExit(f"refusing: {what} is not a bound output of this validation commit")
 
 
+def bound_gaps(spike, tr, final=False):
+    """§9's gap rule on a bound run: ({cell: reason}, notes). final=True is
+    aggregate, tier-model and tier-run, which come after the scoring-arm
+    commit and need it. Otherwise it is the preflight of arm0, score and
+    export, which run before that commit exists -- score on a branch with
+    one commit per arm, squashed afterwards -- so every gaps.json version is
+    held to the rule; a gap that breaks it is seen while it can still be
+    dealt with (round 6, MEDIUM-1). Refuses (SystemExit) on any gap the rule
+    does not allow."""
+    from p2 import corpus as K
+    from p2 import gaps as GP
+    from p2 import tierrun as TRN
+    if not tr.state["bound"]:
+        return {}, []
+    try:
+        sc = TRN.scoring_commit(spike) if final else None
+        return GP.load_gaps(spike, sc, K.ARMS)
+    except (GP.GapError, TRN.TierRefused) as e:
+        raise SystemExit(f"refusing: {e}")
+
+
 def load_repro(repro_dir, tr, fixture_ok):
     """{record id: reproduction result}. A result from another validation
     commit is marked unbound, so it is not F9."""
@@ -533,15 +554,10 @@ def cmd_aggregate(a, tr):
     for p in problems:
         print("tiers.jsonl:", p)
     repro = load_repro(a.repro_dir, tr, a.fixture_ok)
-    gaps, gap_notes = {}, []
-    if tr.state["bound"]:
-        from p2 import corpus as K
-        from p2 import gaps as GP
-        try:
-            gaps, gap_notes = GP.load_gaps(SPIKE, TRN.scoring_commit(SPIKE), K.ARMS)
-        except (GP.GapError, TRN.TierRefused) as e:
-            print(f"refusing: {e}", file=sys.stderr)
-            return 2
+    try:
+        gaps, gap_notes = bound_gaps(SPIKE, tr, final=True)
+    except SystemExit:
+        raise
     for n_ in gap_notes:
         print(n_)
     try:
@@ -795,6 +811,9 @@ def main(argv=None):
             if not a.bundle_dir:
                 from p2 import corpus as K
                 a.bundle_dir = K.DEFAULT_BUNDLE_DIR
+        if BOUND_RUN and a.cmd in ("arm0", "score", "export", "tier-model", "tier-run"):
+            for n_ in bound_gaps(SPIKE, tr, final=a.cmd in ("tier-model", "tier-run"))[1]:
+                print(n_)
         resolve_paths(a, BOUND_RUN)
         if hasattr(a, "d8_dir"):
             Mx.load(a.d8_dir)

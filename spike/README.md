@@ -159,8 +159,14 @@ fresh clone of the merged result:
 ```sh
 git clone https://github.com/kindspec/blockspec fresh && cd fresh/spike
 git log --full-history --format=%H --diff-filter=A -- results/prereg2/VALIDATION  # exactly one: the validation commit
-git log --full-history --format=%H <that commit>..HEAD -- harness PRE-REGISTRATION-2.md ORACLE.md  # must print nothing
-grep -rh '"validation_commit"' results/prereg2 | sort | uniq -c                    # every output names that commit
+V=<that commit>
+git diff --quiet $V^ $V -- harness PRE-REGISTRATION-2.md ORACLE.md                 # the validation commit adds VALIDATION only
+git log --full-history --format=%H $V..HEAD -- harness PRE-REGISTRATION-2.md ORACLE.md  # must print nothing
+grep -rh '"validation_commit"' results/prereg2 | sort | uniq -c                    # every output names $V
+git log --full-history --format=%H --diff-filter=A -- results/prereg2/arm0         # exactly one: the Arm 0 commit
+git log --full-history --format=%H --diff-filter=A -- results/prereg2/score        # exactly one: the scoring-arm commit ...
+grep scoring_commit results/prereg2/tier-model.json                                # ... and tier-model recorded that same commit
+git log --full-history --format='%H %cI' -- results/prereg2/gaps.json              # each gap's commit, against those two
 ```
 
 The corpus bundles are not in this repository. `harness/p2/bundles.json`
