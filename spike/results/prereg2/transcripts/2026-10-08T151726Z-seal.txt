@@ -1,0 +1,14 @@
+# prereg2 seal
+# argv: prereg2.py seal --manifest /home/cam/kindspec-data/prereg2-seal/sealed-manifest.json
+# start: 2026-10-08T15:17:26Z
+# blockspec HEAD: 0dd32dde58ed0dbea6c3575876e51ef24ff5a29e
+# python 3.13.5
+# harness bound: False
+#   not bound: seal is not bound
+
+sealed manifest written: /home/cam/kindspec-data/prereg2-seal/sealed-manifest.json
+sha256: 11e509133bc2603a3ff3cc64fcfabd5310b7cfe0285ea725bc937a895e299bdb, written to results/prereg2/VALIDATION
+commit VALIDATION in the validation commit; that commit is the one that adds it
+
+# end: 2026-10-08T15:17:27Z
+# exited: exit status 0
