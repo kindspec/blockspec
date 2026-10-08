@@ -1,0 +1,20 @@
+# prereg2 score cmspec
+# argv: prereg2.py score --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm cmspec --work-dir /home/cam/kindspec-data/prereg2-score-work/cmspec
+# start: 2026-10-08T18:28:28Z
+# blockspec HEAD: 3179654f27220745e893290f72e65c52398dfc04
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-08T18:28:28Z
+### cmspec E: evaluated 92 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"commits:no_merges": 1696, "excluded:add": 2, "excluded:delete": 0, "excluded:other_status": 0, "excluded:rename": 0, "path_not_selected": 3129, "population": 92, "sample": 92}, "evaluated_instances": 92, "none": {"commits:no_merges": 1696, "excluded:add": 2, "excluded:delete": 0, "excluded:other_status": 0, "excluded:rename": 0, "path_not_selected": 3129, "population": 92, "sample": 92}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"commits:no_merges": 1696, "excluded:add": 2, "excluded:delete": 0, "excluded:other_status": 0, "excluded:rename": 0, "path_not_selected": 3129, "population": 92, "sample": 92}}
+### cmspec S5: evaluated 85 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap5:excluded:blob_missing": 0, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 85, "gap5:population": 85, "paths": 2, "sample": 85}, "evaluated_instances": 85, "none": {"gap5:excluded:blob_missing": 0, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 85, "gap5:population": 85, "paths": 2, "sample": 85}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap5:excluded:blob_missing": 0, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 85, "gap5:population": 85, "paths": 2, "sample": 85}}
+### cmspec S25: evaluated 62 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 62, "gap25:population": 62, "paths": 2, "sample": 62}, "evaluated_instances": 62, "none": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 62, "gap25:population": 62, "paths": 2, "sample": 62}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 62, "gap25:population": 62, "paths": 2, "sample": 62}}
+### cmspec M: evaluated 1 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"evaluated_instances": 1, "filter": {"cases_in": 1, "dropped:not_selected": 0, "kept": 1, "kept:anywhere": 1, "kept:none": 1, "kept:yaml-fence": 1}, "find_merge_cases": {"merges:two_parent": 152, "paths:both_sides": 1, "paths:one_side": 68}, "merges": {"clean": 1, "not_clean": 0}, "not_evaluated": 0, "undecodable": 0}
+
+# end: 2026-10-08T18:29:46Z
+# exited: exit status 0
