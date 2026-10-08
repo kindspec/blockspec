@@ -1,4 +1,4 @@
-# harness HEAD a58727b1f40dca39a315109ba3b5ca33a1ac77ff  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
+# harness HEAD 09b9effdd0f1f89d22d8a7678958b966dd4e1ff6  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
 # python 3.13.5  git 2.47.3
 # V2: research's results-e4.txt and results-anchor3.txt, D8's own scripts, at D8 §3's pins
 # D8 dir @ d51ce09cdb23af32f35e7a3c6111ac21ab0f033f, 0 modified paths

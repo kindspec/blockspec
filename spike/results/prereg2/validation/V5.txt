@@ -1,4 +1,4 @@
-# harness HEAD 03801bd4dffeb31d7fcf78daacc6888680a2957d  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
+# harness HEAD 09b9effdd0f1f89d22d8a7678958b966dd4e1ff6  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
 # python 3.13.5  git 2.47.3
 == armed_check.sh
 
