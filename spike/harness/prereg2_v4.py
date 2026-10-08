@@ -480,6 +480,9 @@ MUTATIONS = [
     # round 6: the reviewer's mutants_r6.py (G1-G12, K4, H2, H3, D3), adapted, and MEDIUM-1/3
     ("G1: a gap in the Arm 0 commit itself counted as after it", "p2/gaps.py",
      "if len(arm0) != 1 or c == arm0[0] or not", "if len(arm0) != 1 or not"),
+    ("J2: the bound preflight (no scoring commit) never judges", "p2/gaps.py",
+     "return scoring_commit is None or _is_ancestor(spike, c, scoring_commit)",
+     "return scoring_commit is not None and _is_ancestor(spike, c, scoring_commit)"),
     ("G3: a gap outside the scoring commit's history judged", "p2/gaps.py",
      "return scoring_commit is None or _is_ancestor(spike, c, scoring_commit)", "return True"),
     ("G4: a gap may be withdrawn", "p2/gaps.py", "        if gone:\n", "        if False:\n"),
