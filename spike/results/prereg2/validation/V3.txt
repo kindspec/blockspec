@@ -1,4 +1,4 @@
-# harness HEAD 470b80a331e9072c7a22ecd359809a07edc1c605  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
+# harness HEAD a11f965cbeb9cbae1f70bfda1461a39c2b04d5be  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
 # python 3.13.5  git 2.47.3
 
 == D8 pin: the mechanism is kindspec/research d51ce09, or nothing runs
@@ -90,7 +90,7 @@
   ok    E: a repository holding single-leg-01 as one commit scores (exit 0)   [exit 0]
   ok    E: ... and yields that record: anchored block 1, decided, hardened WRONG   [{'cls': 'WRONG', 'hit': 7, 'mechanism_target_text': 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.', 'status': 'EXACT'}]
   ok    E: ... byte-identical to the committed record p2/fixtures/single-leg-01.E.record.json
-  ok    E: every invocation wrote a transcript   [['2026-10-08T054713Z-arm0-fixture.txt', '2026-10-08T054713Z-score-fixture.txt']]
+  ok    E: every invocation wrote a transcript   [['2026-10-08T082237Z-arm0-fixture.txt', '2026-10-08T082237Z-score-fixture.txt']]
   ok    S5: a history base, a, base, a, base, a yields the pair (cs[0], cs[5]) and that record   [S5:0:doc.md]
   ok    an empty repository exits non-zero (score)   [exit 2]
   ok    an empty repository exits non-zero (arm0)   [exit 2]
@@ -124,8 +124,8 @@
   ok    an earlier pin in the bundle's history is reachable
   ok    a pin absent from its bundle is NO VERDICT (the guard itself raises NoVerdict)   [NoVerdict: fx: pin 1111111111111111111111111111111111111111 is absent from its bundle]
   ok    a bundle whose sha256 is not the committed one is refused by the sha256 guard   [RuntimeError: fx: bundle sha256 f6d67198422a538a2a1d20b70af280ef454334611cfdaf463da2671bc055ab24 != committed 0000000000000000000000000000000000000000000000000000000000000000]
-  ok    an existing work repository is never reused (the reuse guard itself refuses)   [RuntimeError: fx: /var/tmp/cam/prereg2-v3.tldnupa4/b-w1/fx exists; corpora are always fetched fresh]
-  ok    a missing bundle is refused   [FileNotFoundError: fx: bundle not found: /var/tmp/cam/prereg2-v3.tldnupa4/nowhere/fx.bundle]
+  ok    an existing work repository is never reused (the reuse guard itself refuses)   [RuntimeError: fx: /var/tmp/cam/prereg2-v3.nw02fd8h/b-w1/fx exists; corpora are always fetched fresh]
+  ok    a missing bundle is refused   [FileNotFoundError: fx: bundle not found: /var/tmp/cam/prereg2-v3.nw02fd8h/nowhere/fx.bundle]
 
 == M: the scoring CLI on a real merge
   ok    M: a repository holding wrong-01 as a real merge scores (exit 0)   [exit 0]
@@ -135,7 +135,7 @@
 
 == Export CLI on scored fixtures
   ok    export: wrong-01's merge record plus the three plants make four packets   [exit 0, 4 packets; status bound=False]
-  ok    export: the merge packet carries base, both legs and the after-file   [[['after', 'before'], ['after', 'before'], ['after', 'before'], ['after', 'base', 'leg_a', 'leg_c']]]
+  ok    export: the merge packet carries base, both legs and the after-file   [[['after', 'base', 'leg_a', 'leg_c'], ['after', 'before'], ['after', 'before'], ['after', 'before']]]
   ok    export: it passes its validator
   ok    export: the invocation wrote a transcript
   ok    export: a second export over the first is refused   [exit 1]
@@ -194,13 +194,13 @@
 
 == Export, its validator, and the sealed manifest (§7.3)
   ok    seal draws a 32-byte nonce
-  ok    seal refuses to overwrite a sealed manifest, and the manifest is unchanged   [ExportError: /var/tmp/cam/prereg2-v3.tldnupa4/manifest.json exists; a manifest is sealed once]
-  ok    a manifest whose sha256 is not the committed one is refused   [ExportError: manifest sha256 aae6c58489c181603a88d2e53ca61735fc42d2f87a7b5d84b498a9bd16cc6af7 != committed 0000000000000000000000000000000000000000000000000000000000000000]
-  ok    an export of no real record holds the three plants   [['1191dd216e9ed2c3', '23184e00486f59ed', '6e0b79951153f0cd']]
+  ok    seal refuses to overwrite a sealed manifest, and the manifest is unchanged   [ExportError: /var/tmp/cam/prereg2-v3.nw02fd8h/manifest.json exists; a manifest is sealed once]
+  ok    a manifest whose sha256 is not the committed one is refused   [ExportError: manifest sha256 3c59a840aa6b0bdf15a96b23650a375b98b30d7b432620c7ab17621475c849e9 != committed 0000000000000000000000000000000000000000000000000000000000000000]
+  ok    an export of no real record holds the three plants   [['72c100d9e8729179', '8e862ab6b5732d00', 'fe8e063754563fc8']]
   ok    packet names are sha256(nonce + ':' + key)[:16], computed independently here
   ok    a clean export passes the validator
-  ok    the validator rejects a packet that carries a count   [["1191dd216e9ed2c3: fields outside the allow-list: ['count']"]]
-  ok    ... and a string field outside the allow-list   [["1191dd216e9ed2c3: fields outside the allow-list: ['total']"]]
+  ok    the validator rejects a packet that carries a count   [["72c100d9e8729179: fields outside the allow-list: ['count']"]]
+  ok    ... and a string field outside the allow-list   [["72c100d9e8729179: fields outside the allow-list: ['total']"]]
   ok    ... and a number in an allowed field
   ok    ... and a file outside the allow-list
   ok    ... and LOG.md at the export root
@@ -213,13 +213,13 @@
   ok    without the sandbox, the stub CAN read the canary under /home/cam/repos_kindspec and ~/.claude/projects (so the probes can fail)   [['PROBE CAN-READ canary under /home/cam/repos_kindspec', 'PROBE CAN-READ ~/.claude/projects', 'PROBE CAN-READ ~/.claude', "PROBE CAN-READ the export's PROMPT.md", 'PROBE CANNOT-READ the bound credential file']]
   ok    C6: tier-model refuses without an API key   [exit 2]
   ok    C6: a listing whose Date is not the start day is refused   [exit 2]
-  ok    C6: tier-model fetches the listing itself and fixes the pinned model, recording the Date   [{'listing_date_header': 'Tue, 02 Jan 2001 12:00:00 GMT', 'listing_day': '2001-01-02', 'listing_sha256': '42a0889f492c401b371e139c442fdf1f641d6dbdd7780a90e91bd91ecb8cb9e7', 'model': 'claude-opus-5-5', 'scoring_commit': 'af2a293dd4a1c4812830a27508efd22c4349f97e', 'start_day': '2001-01-02', 'why': 'the pinned model is listed on the start day'}]
+  ok    C6: tier-model fetches the listing itself and fixes the pinned model, recording the Date   [{'listing_date_header': 'Tue, 02 Jan 2001 12:00:00 GMT', 'listing_day': '2001-01-02', 'listing_sha256': 'f7aaeb44ca88649ce2c8a515efad892dee239ed50d3a5995b27790f487edd558', 'model': 'claude-opus-5-5', 'scoring_commit': 'af2a293dd4a1c4812830a27508efd22c4349f97e', 'start_day': '2001-01-02', 'why': 'the pinned model is listed on the start day'}]
   ok    C6: the model is chosen once   [exit 2]
   ok    unlisted pinned model: the most recent claude-opus-* is chosen
   ok    a run more than 14 days after the scoring-arm commit needs a reason   [exit 2]
   ok    C6: tier-run refuses without a committed tier-model.json   [exit 2]
   ok    a run keeps tiers.jsonl as the agent wrote it, in tier-work-1/   [exit 0]
-  ok    C2: the ledger records the run as started, then completed   [[{'at': '2026-10-08T05:47:14.433234+00:00', 'event': 'started', 'model': 'claude-opus-5-5', 'n': 1, 'work': 'tier-work-1'}, {'agent_exit': 0, 'event': 'completed', 'lines': 3, 'n': 1, 'sha256': '74c796284014eb634a6cc937285449665c6b937cfab0d5d6f4243ffb8ec8955e'}]]
+  ok    C2: the ledger records the run as started, then completed   [[{'at': '2026-10-08T08:22:38.092368+00:00', 'event': 'started', 'model': 'claude-opus-5-5', 'n': 1, 'work': 'tier-work-1'}, {'agent_exit': 0, 'event': 'completed', 'lines': 3, 'n': 1, 'sha256': '818d66ec351b5dbb2d4ebe2f83c59a946f38dfe983d10f3951e57edac32dc9ac'}]]
   ok    ... the agent saw only PROMPT.md and packets/
   ok    in the sandbox the stub cannot read the canary under /home/cam/repos_kindspec
   ok    ... cannot read ~/.claude/projects, nor ~/.claude itself
@@ -228,10 +228,10 @@
   ok    ... and the transcript logs the late reason and Appendix A as sent
   ok    a second run after a first that wrote lines is refused (the first binds)   [exit 2]
   ok    B5/20: a tiers.jsonl that exists before any recorded run is refused   [exit 2]
-  ok    C2: a run stopped by SIGTERM is in the ledger as started before the agent ran   [[{'at': '2026-10-08T05:47:14.599281+00:00', 'event': 'started', 'model': 'claude-opus-5-5', 'n': 1, 'work': 'tier-work-1'}, {'agent_exit': None, 'event': 'aborted', 'lines': 1, 'n': 1, 'sha256': 'e4ade6110ba39d5895f207f6a9b708681b68151573fe8380f1f5c44addf6f5b9'}]]
+  ok    C2: a run stopped by SIGTERM is in the ledger as started before the agent ran   [[{'at': '2026-10-08T08:22:38.250136+00:00', 'event': 'started', 'model': 'claude-opus-5-5', 'n': 1, 'work': 'tier-work-1'}, {'agent_exit': None, 'event': 'aborted', 'lines': 1, 'n': 1, 'sha256': '7e258f3b9c3b7c2a232abedd92a3330081d4e70a2154b5729363f0968f55211e'}]]
   ok    C2: ... its output is kept in tier-work-1/, not deleted
   ok    C2: ... and, having written a line, it binds: a second run is refused (SIGTERM)   [exit 2]
-  ok    C2: a run stopped by SIGKILL is in the ledger as started before the agent ran   [[{'at': '2026-10-08T05:47:15.821775+00:00', 'event': 'started', 'model': 'claude-opus-5-5', 'n': 1, 'work': 'tier-work-1'}]]
+  ok    C2: a run stopped by SIGKILL is in the ledger as started before the agent ran   [[{'at': '2026-10-08T08:22:39.526163+00:00', 'event': 'started', 'model': 'claude-opus-5-5', 'n': 1, 'work': 'tier-work-1'}]]
   ok    C2: ... its output is kept in tier-work-1/, not deleted
   ok    C2: ... and, having written a line, it binds: a second run is refused (SIGKILL)   [exit 2]
   ok    C2: a first run killed with zero lines allows one rerun, and no third   [0 2]
@@ -302,10 +302,10 @@
 
 == Binding (C1, B6, C3, B3, B10, A7; re-review H1, H2, H3, M1, M2, M3)
   ok    H2: seal writes VALIDATION holding the sealed manifest's sha256, to go in the validation commit   [st.json
-sha256: 4b6df56c228861b35438a8c43ebca14fb4277f567875fc1fcaa78e92370e1b23, written to results/prereg2/VALIDATION
+sha256: d4da0841de2cd5ac0dd452e0f4d38be4b7d6d7be8db8e1c5a5ad3f4c6d2c901f, written to results/prereg2/VALIDATION
 commit VALIDATION in the validation commit; that commit is the one that adds it
 ]
-  ok    H2: the validation commit is derived: the one commit that added VALIDATION   [('bca5f47f659f56432e426495dd548126741817fd', '4b6df56c228861b35438a8c43ebca14fb4277f567875fc1fcaa78e92370e1b23', [])]
+  ok    H2: the validation commit is derived: the one commit that added VALIDATION   [('17e08c6fdd384f33d6489ceade14d4c4a2d59018', 'd4da0841de2cd5ac0dd452e0f4d38be4b7d6d7be8db8e1c5a5ad3f4c6d2c901f', [])]
   ok    C1: a clean tree at the validation commit is bound
   ok    C4: once VALIDATION exists, a second seal is refused   [refusing: results/prereg2/VALIDATION exists; the manifest is sealed once, before validation (review C4)
 ]
@@ -314,8 +314,8 @@ commit VALIDATION in the validation commit; that commit is the one that adds it
   ok    C1: an ignored file under the harness (a stray .pyc) is not bound, by both the ls-tree walk and `git status --ignored`   [['harness/__pycache__/x.cpython-313.pyc: not in the validation commit (untracked or ignored)', 'uncommitted or ignored files under the harness or the frozen documents: !! spike/harness/__pycache__/x.cpython-313.pyc']]
   ok    C1: an untracked file under the harness is not bound   [['harness/extra.py: not in the validation commit (untracked or ignored)', 'uncommitted or ignored files under the harness or the frozen documents: ?? spike/harness/extra.py']]
   ok    C1: ... and restored, it is bound again (the checks can pass)
-  ok    H2: a commit after the validation commit that edits the harness is not bound, though the work tree matches HEAD   [['a commit after the validation commit bca5f47f659f changes the harness, PRE-REGISTRATION-2.md or ORACLE.md: 7c2658b17023', 'harness/p2/aggregate.py: work-tree bytes differ from the validation commit']]
-  ok    H2: ... nor after it is reverted: no commit after the validation commit may touch the harness   [['a commit after the validation commit bca5f47f659f changes the harness, PRE-REGISTRATION-2.md or ORACLE.md: 69c88d350798']]
+  ok    H2: a commit after the validation commit that edits the harness is not bound, though the work tree matches HEAD   [['a commit after the validation commit 17e08c6fdd38 changes the harness, PRE-REGISTRATION-2.md or ORACLE.md: 213558ce9555', 'harness/p2/aggregate.py: work-tree bytes differ from the validation commit']]
+  ok    H2: ... nor after it is reverted: no commit after the validation commit may touch the harness   [['a commit after the validation commit 17e08c6fdd38 changes the harness, PRE-REGISTRATION-2.md or ORACLE.md: 169bd13320de']]
   ok    H2: a VALIDATION changed since the validation commit added it is refused   [['results/prereg2/VALIDATION has changed since the validation commit added it']]
   ok    H2: VALIDATION added by two commits is refused   [["2 commits in HEAD's history add results/prereg2/VALIDATION; the validation commit is the one that adds it"]]
   ok    C4: with VALIDATION gone from the tree but in the history, seal is still refused   [refusing: results/prereg2/VALIDATION exists; the manifest is sealed once, before validation (review C4)
@@ -332,7 +332,7 @@ commit VALIDATION in the validation commit; that commit is the one that adds it
   ok    B4: export, once executed, may not run again   [['export has already executed (results/prereg2/executed/export.json); the first execution binds']]
   ok    H1: abbreviated --fixture-r/--fixture-pi/--fixture-pa are not accepted   [usage: prereg2.py [-h]
                   {seal,arm0,score,export,validate-export,repro,tier-model,tier-run,aggregate} ...
-prereg2.py: error: unrecognized arguments: --fixture-r /var/tmp/cam/prereg2-v3.tldnupa4/br --fixture-pi bca5f47f659f56432e426495dd548126741817fd --fixture-pa *.md
+prereg2.py: error: unrecognized arguments: --fixture-r /var/tmp/cam/prereg2-v3.nw02fd8h/br --fixture-pi 17e08c6fdd384f33d6489ceade14d4c4a2d59018 --fixture-pa *.md
 ]
   ok    H1: a repeated --arm is refused   [refusing: --arm given more than once (re-review H1)
 ]
@@ -354,7 +354,7 @@ prereg2.py: error: unrecognized arguments: --agent-c /bin/true
 ]
   ok    M1: run without python3 -I, the harness refuses   [refusing: run the harness as `python3 -I -S -B harness/prereg2.py`: without -I and -S, PYTHONPATH, site packages and .pth files can replace its code (M1, M-d)
 ]
-  ok    M1: run through its shebang, it is isolated and runs   [REJECT: /var/tmp/cam/prereg2-v3.tldnupa4/nothing: not a directory
+  ok    M1: run through its shebang, it is isolated and runs   [REJECT: /var/tmp/cam/prereg2-v3.nw02fd8h/nothing: not a directory
 EXPORT VALIDATOR: FAIL
 ]
   ok    M2: --unbound without --fixture-repo never opens a real bundle   [refusing: an unbound run never opens a real bundle; use --fixture-repo (M2)
@@ -364,17 +364,17 @@ EXPORT VALIDATOR: FAIL
   ok    M1: the harness never reads it: its verified D8 sources are compiled afresh   [elected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position
 ARM 0 x: passes the bar
 ]
-  ok    B5-13: aggregate refuses an unbound Arm 0 result (without --fixture-ok)   [refusing: /var/tmp/cam/prereg2-v3.tldnupa4/ub-a0/k8s-en.json is not a bound output of this validation commit
+  ok    B5-13: aggregate refuses an unbound Arm 0 result (without --fixture-ok)   [refusing: /var/tmp/cam/prereg2-v3.nw02fd8h/ub-a0/k8s-en.json is not a bound output of this validation commit
 ]
-  ok    H1: aggregate refuses an Arm 0 result not run at its arm's pin   [refusing: /var/tmp/cam/prereg2-v3.tldnupa4/ub-a0b/k8s-en.json was not run at k8s-en's pin from its committed bundle
+  ok    H1: aggregate refuses an Arm 0 result not run at its arm's pin   [refusing: /var/tmp/cam/prereg2-v3.nw02fd8h/ub-a0b/k8s-en.json was not run at k8s-en's pin from its committed bundle
 ]
-  ok    H1: ... or not from its committed bundle   [refusing: /var/tmp/cam/prereg2-v3.tldnupa4/ub-a0b/k8s-en.json was not run at k8s-en's pin from its committed bundle
+  ok    H1: ... or not from its committed bundle   [refusing: /var/tmp/cam/prereg2-v3.nw02fd8h/ub-a0b/k8s-en.json was not run at k8s-en's pin from its committed bundle
 ]
   ok    B5-14: aggregate refuses an unbound score result (without --fixture-ok)   [refusing: score/k8s-en is not a bound output of this validation commit
 ]
   ok    B3: aggregate refuses a score run that was not §6.5's (1,000 and 500, all four modes)   [refusing: score/k8s-en did not run §6.5's arms at 1,000 and 500
 ]
-  ok    B10: a fixture run may not write under results/prereg2/ (a bound Arm 0 result cannot be overwritten)   [refusing: an unbound run may not write under /var/tmp/cam/prereg2-v3.tldnupa4/br/spike/results/prereg2 (--out-dir /var/tmp/cam/prereg2-v3.tldnupa4/br/spike/results/prereg2/arm0)
+  ok    B10: a fixture run may not write under results/prereg2/ (a bound Arm 0 result cannot be overwritten)   [refusing: an unbound run may not write under /var/tmp/cam/prereg2-v3.nw02fd8h/br/spike/results/prereg2 (--out-dir /var/tmp/cam/prereg2-v3.nw02fd8h/br/spike/results/prereg2/arm0)
 ]
   ok    B10/A7: an unbound run that names no --transcript-dir is refused, and its transcript is written where bound ones go, to be committed   [refusing: an unbound run must name --transcript-dir outside results/prereg2/
 ]
@@ -390,12 +390,14 @@ ARM 0 x: passes the bar
   ok    C3: a started tiering run with no transcript is refused
   ok    C3: two tiering runs where the first wrote lines are refused   [['two tiering runs, though the first wrote lines']]
   ok    C3: two tiering runs where the first wrote none pass
-  ok    C2: then the second run's tiers bind   [(2, '/var/tmp/cam/prereg2-v3.tldnupa4/pf/spike/results/prereg2/tier-work-2/tiers.jsonl')]
+  ok    C2: then the second run's tiers bind   [(2, '/var/tmp/cam/prereg2-v3.nw02fd8h/pf/spike/results/prereg2/tier-work-2/tiers.jsonl')]
 
 == Round 5: bound runs end to end on a fixture arm (H-1, N11, N14, N15)
   ok    N14: an arm0 whose bundle cannot be opened writes no marker, in the work tree or the git dir   [ine 103, in open_corpus
     raise FileNotFoundError(f"{arm}: bundle not found: {bpath}")
-FileNotFoundError: rust-book: bundle not found: /var/tmp/cam/prereg2-v3.tldnupa4/bf-nobundles/rust-book.bundle
+FileNotFoundError: rust-book: bundle not found: /var/tmp/cam/prereg2-v3.nw02fd8h/bf-nobundles/rust-book.bundle
+]
+  ok    MEDIUM-1: a gap declared before Arm 0 stops arm0 too (§9: it stops the work)   [refusing: gap G1 was declared at 2e8b1bcb621f, not after the Arm 0 commit: §9 says a gap found before Arm 0 stops the work
 ]
   ok    H3: ... so the next arm0 runs, bound, and executes   [type, content) of 20 characters or more counts as an adjacent-run twin if, in at least one selected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position
 ARM 0 rust-book: passes the bar
@@ -406,7 +408,7 @@ refusing: this run would not be bound; use --fixture-repo or --unbound to run it
 ]
   ok    H-1: a score whose bundle cannot be opened leaves no score/<arm>/ and no marker   [ine 103, in open_corpus
     raise FileNotFoundError(f"{arm}: bundle not found: {bpath}")
-FileNotFoundError: rust-book: bundle not found: /var/tmp/cam/prereg2-v3.tldnupa4/bf-nobundles/rust-book.bundle
+FileNotFoundError: rust-book: bundle not found: /var/tmp/cam/prereg2-v3.nw02fd8h/bf-nobundles/rust-book.bundle
 ]
   ok    H-1: ... so the next score runs and executes   [evaluated, undecodable 0 (excluded, LOG §15)
    {"evaluated_instances": 0, "filter": {"cases_in": 0, "dropped:not_selected": 0, "kept": 0, "kept:anywhere": 0, "kept:none": 0, "kept:yaml-fence": 0}, "find_merge_cases": {}, "merges": {"clean": 0, "not_clean": 0}, "not_evaluated": 0, "undecodable": 0}
@@ -414,12 +416,23 @@ FileNotFoundError: rust-book: bundle not found: /var/tmp/cam/prereg2-v3.tldnupa4
   ok    N11: a second score rust-book is refused by its marker   [ready executed (results/prereg2/executed/score-rust-book.json); the first execution binds
 refusing: this run would not be bound; use --fixture-repo or --unbound to run it for testing, with no verdict
 ]
-  ok    N15: export runs bound and writes its marker   [exported 3 packets to /var/tmp/cam/prereg2-v3.tldnupa4/bf/spike/results/prereg2/export
-export manifest (sha256 of each file): /var/tmp/cam/prereg2-v3.tldnupa4/bf/spike/results/prereg2/export-manifest.txt
+  ok    MEDIUM-1: score's gap preflight does not take the score PR's per-arm commits for scoring-arm commits   [refusing: no Arm 0 result for cncf-toc at /var/tmp/cam/prereg2-v3.nw02fd8h/bf/spike/results/prereg2/arm0/cncf-toc.json; Arm 0 runs first
+]
+  ok    N15: export runs bound and writes its marker   [exported 3 packets to /var/tmp/cam/prereg2-v3.nw02fd8h/bf/spike/results/prereg2/export
+export manifest (sha256 of each file): /var/tmp/cam/prereg2-v3.nw02fd8h/bf/spike/results/prereg2/export-manifest.txt
 packet count: 3
 ]
   ok    N15: a second export is refused   [rt has already executed (results/prereg2/executed/export.json); the first execution binds
 refusing: this run would not be bound; use --fixture-repo or --unbound to run it for testing, with no verdict
+]
+  ok    G11: the bound CLI aggregate reads gaps.json: a gap between Arm 0 and scoring makes its cell NO VERDICT   [(0, " 0 result\n  site-policy   S5   R  NO VERDICT  no Arm 0 result\nTIERING VOID: P-A: untiered; P-B: untiered; P-C: untiered\nnear misses (distinct units): {'i': 0, 'ii': 0, 'iii': 0}\nOVERALL: INCONCLUSIVE\n", {'reason': '§9 gap: gap G1 (LOG §21): the enumerator cannot follow renames', 'verdict': 'NO VERDICT', 'without_the_gap': {'reason': '1 distinct decided natural-language units < 300', 'verdict': 'NO VERDICT'}})]
+  ok    MEDIUM-1: a malformed gaps.json after the scoring-arm commit does not stop aggregate; it is listed   [esult
+  site-policy   S25  R  NO VERDICT  no Arm 0 result
+  site-policy   S5   Q  NO VERDICT  no Arm 0 result
+  site-policy   S5   R  NO VERDICT  no Arm 0 result
+TIERING VOID: P-A: untiered; P-B: untiered; P-C: untiered
+near misses (distinct units): {'i': 0, 'ii': 0, 'iii': 0}
+OVERALL: INCONCLUSIVE
 ]
   ok    N18: a bound tier-run that names --agent-cmd is refused   [refusing: a bound run takes no --agent-cmd (§9, review C3)
 ]
@@ -442,9 +455,9 @@ refusing: this run would not be bound; use --fixture-repo or --unbound to run it
 == Round 5: the derivation's history (M-c)
   ok    M-c: VALIDATION added on both sides of a merge counts twice (--full-history), and is refused   [["2 commits in HEAD's history add results/prereg2/VALIDATION; the validation commit is the one that adds it"]]
   ok    M-c: a shallow clone is refused   [['the repository is shallow; the validation commit cannot be derived from a cut history']]
-  ok    M-c: a history rewritten by git replace is refused   [['replace refs rewrite this history: refs/replace/958168ca0a0f34ed3ddb945e45394af66ae18eab']]
+  ok    M-c: a history rewritten by git replace is refused   [['replace refs rewrite this history: refs/replace/1161e4135a71ecc82043675eb1502d4a04e59cc8']]
   ok    M-c: a history rewritten by info/grafts is refused   [['info/grafts rewrites this history']]
-  ok    M-c: GIT_DIR and GIT_WORK_TREE in the environment do not redirect the binding check   [({'head': '958168ca0a0f34ed3ddb945e45394af66ae18eab', 'validation_commit': '378af8888e1ce0ae60db20a371f05df057906c73', 'manifest_sha256': '6784106467a1a94e10479224c59b2dc47338fc413f549ef62bb2cad086c3c5b8', 'bound': True, 'reasons': []}, [])]
+  ok    M-c: GIT_DIR and GIT_WORK_TREE in the environment do not redirect the binding check   [({'head': '1161e4135a71ecc82043675eb1502d4a04e59cc8', 'validation_commit': '6ca221a813d517461b0cf540651abc27c5256353', 'manifest_sha256': 'a74d6920e459ce2083af0aa3eeba75a1acadb76aadbc5bec2b06072b838f80e3', 'bound': True, 'reasons': []}, [])]
 
 == Round 5: smaller survivors (N3, N6, N7, N13, N21-N28, N33)
   ok    N3: a VALIDATION with any field besides manifest_sha256 is refused   [['results/prereg2/VALIDATION must hold exactly a 64-hex manifest_sha256']]
@@ -462,7 +475,7 @@ refusing: this run would not be bound; use --fixture-repo or --unbound to run it
 
 == Round 5: module loading (M-d)
   ok    M-d: after loading --d8-dir, a module planted there does not shadow the standard library   [('/usr/lib/python3.13/colorsys.py\n', '')]
-  ok    M-d: an untracked p2/binding/ package that shadows binding.py is refused   [refusing: p2.binding was loaded from /var/tmp/cam/prereg2-v3.tldnupa4/shadow/spike/harness/p2/binding/__init__.py, not p2/binding.py (M-d)
+  ok    M-d: an untracked p2/binding/ package that shadows binding.py is refused   [refusing: p2.binding was loaded from /var/tmp/cam/prereg2-v3.nw02fd8h/shadow/spike/harness/p2/binding/__init__.py, not p2/binding.py (M-d)
 ]
   ok    M-d: run without -S (so a .pth file could run), the harness refuses   [refusing: run the harness as `python3 -I -S -B harness/prereg2.py`: without -I and -S, PYTHONPATH, site packages and .pth files can replace its code (M1, M-d)
 ]
@@ -472,7 +485,7 @@ refusing: this run would not be bound; use --fixture-repo or --unbound to run it
   ok    M-e: ... and leaves other cells alone
   ok    M-e: a gap declared between the Arm 0 commit and the scoring-arm commit makes its cells NO VERDICT   [{('k8s-en', 'E', 'Q'): 'gap G1 (LOG §21): the enumerator cannot follow renames'}]
   ok    M-e: a gap declared before the Arm 0 commit is refused: per §9 it stops the work   [GapError: gap G1 was declared at b465baf21048, not after the Arm 0 commit: §9 says a gap found before Arm 0 stops the work]
-  ok    M-e: a gap declared after the scoring-arm commit alters no cell, and is listed   [(None, {}, ['gap G1 (LOG §21) was declared at a04f6efdf4f3, at or after the scoring-arm commit: per §9 it alters no cell'])]
+  ok    M-e: a gap declared after the scoring-arm commit alters no cell, and is listed   [(None, {}, ['gap G1 (LOG §21) as it reads at a04f6efdf4f3, at or after the scoring-arm commit: per §9 it alters no cell'])]
   ok    M-e: a declared gap may not be edited afterwards   [GapError: gap G1 changed at 7efc6277979c; a declared gap is never edited]
   ok    M-e: a gap with no LOG entry is refused   [GapError: gap G1: LOG.md at cfb92c1f5baf has no entry §99]
   ok    M-e: a gap whose red test lies outside results/prereg2/gaps/ is refused   [GapError: gap G1: red_test must lie under results/prereg2/gaps/]
@@ -480,6 +493,33 @@ refusing: this run would not be bound; use --fixture-repo or --unbound to run it
   ok    M-e: a gap with an extra key is refused   [GapError: a gap entry must have exactly the keys ['cells', 'id', 'log', 'red_test', 'why']: {'id': 'G1', 'log': '§21', 'red_test': 'results/prereg2/gaps/G1/red.txt', 'cells': [['k8s-en', 'E', 'Q']], 'why': 'the enumerator cannot follow renames', 'extra': 1}]
   ok    M-e: a gap whose red test is not committed is refused   [GapError: gap G1: its red test results/prereg2/gaps/G1/red.txt is not committed at 64f25a4a5dcf]
   ok    M-e: no gaps.json, no gap
+
+== Round 6: §9's gap rule at its boundaries (G1-G12, MEDIUM-1)
+  ok    G1: a gap declared in the Arm 0 commit itself is before Arm 0, and stops the work   [GapError: gap G1 was declared at 7a045ef93abd, not after the Arm 0 commit: §9 says a gap found before Arm 0 stops the work]
+  ok    G2: a gap declared in the scoring-arm commit itself alters no cell, and is listed   [(None, {}, ['gap G1 (LOG §21) as it reads at dd4995db1484, at or after the scoring-arm commit: per §9 it alters no cell'])]
+  ok    G3: a gap on a side branch merged after the scoring-arm commit is outside its history: alters no cell, listed, never refused   [(None, {}, ['gap G1 (LOG §21) as it reads at 2a370f92056e, at or after the scoring-arm commit: per §9 it alters no cell'])]
+  ok    G4: a gap withdrawn before scoring is refused   [GapError: gap(s) ['G1'] removed at 1287cb5e7cf5; a declared gap is never withdrawn]
+  ok    G10: a gaps.json deleted before scoring is a withdrawal, and is refused   [GapError: gap(s) ['G1'] removed at 44fc47e3af98; a declared gap is never withdrawn]
+  ok    G5: two gaps with one id are refused   [GapError: gap G1 declared twice at b4a7c990e9d5]
+  ok    G6: a red test committed only after the gap is refused: it is checked at the gap's commit   [GapError: gap G1: its red test results/prereg2/gaps/G1/red.txt is not committed at 99e488c4183f]
+  ok    G7: a LOG entry written only after the gap is refused: it is checked at the gap's commit   [GapError: gap G1: LOG.md at bd7a33b9320e has no entry §21]
+  ok    G8: a red test path that climbs out with .. is refused   [GapError: gap G1: red_test must lie under results/prereg2/gaps/]
+  ok    G12: a gap whose why changes before scoring is refused (every field is fixed)   [GapError: gap G1 changed at 83dd8cf61584; a declared gap is never edited]
+  ok    G9: an identical gap first committed on a branch before Arm 0 is found (--full-history), and stops the work   [GapError: gap G1 was declared at d214d758b209, not after the Arm 0 commit: §9 says a gap found before Arm 0 stops the work]
+  ok    MEDIUM-1: after the scoring-arm commit, an edit, a missing LOG entry and malformed JSON are listed, never refused, and the gap declared before scoring still holds   [(None, {('k8s-en', 'E', 'Q'): 'gap G1 (LOG §21): the enumerator cannot follow renames'}, ['gap G1 (LOG §21) as it reads at ead6f08c836b, at or after the scoring-arm commit: per §9 it alters no cell', 'gap G2 (LOG §99) as it reads at f72610823473, at or after the scoring-arm commit: per §9 it alters no cell', 'results/prereg2/gaps.json at fd6e20021375 is malformed; it comes at or after the scoring-arm commit, so per §9 it alters no cell'])]
+  ok    MEDIUM-1: the bound preflight (arm0, score, export, tier-run) refuses a gap declared before Arm 0   [SystemExit: refusing: gap G1 was declared at c0369b15f479, not after the Arm 0 commit: §9 says a gap found before Arm 0 stops the work]
+  ok    MEDIUM-1: ... and passes one declared after Arm 0, before any scoring commit exists
+  ok    MEDIUM-1: an unbound run reads no gaps
+
+== Round 6: the validation commit adds VALIDATION only (MEDIUM-3), and K4, H2, H3, D3
+  ok    MEDIUM-3: a validation commit that also changes the harness is refused   [['the validation commit 891d14d01133 itself changes the harness, PRE-REGISTRATION-2.md or ORACLE.md; it may add VALIDATION only']]
+  ok    K4: an existing marker is never overwritten   [FileExistsError: [Errno 17] File exists: '/var/tmp/cam/prereg2-v3.nw02fd8h/k4repo/spike/results/prereg2/executed/arm0-cmspec.json']
+  ok    H2/H3: binding git runs with no user or system config and no replace objects   [/dev/null]
+  ok    H4: score/ added on both sides of a merge is two scoring commits (--full-history), refused   [TierRefused: 2 commits add results/prereg2/score in HEAD's history; the scoring-arm results must land as one commit]
+  ok    H5: the scoring-arm commit is not derived from a history rewritten by git replace   [TierRefused: replace refs rewrite this history: refs/replace/4fca2073f12b0b5123ec4ba6b2989595860630d9]
+  ok    H6: a harness edit on a merged side branch, reverted there, is still a later commit that touches the harness (--full-history)   [['a commit after the validation commit 3477bd170fce changes the harness, PRE-REGISTRATION-2.md or ORACLE.md: 139f05349aff']]
+  ok    D3: an untracked prereg2_plants/ package that shadows prereg2_plants.py is refused   [refusing: prereg2_plants was loaded from /var/tmp/cam/prereg2-v3.nw02fd8h/plantshadow/spike/harness/prereg2_plants/__init__.py, not prereg2_plants.py (M-d)
+]
 
 == Aggregator: empty input
   ok    empty input raises, no verdict
@@ -492,6 +532,6 @@ refusing: this run would not be bound; use --fixture-repo or --unbound to run it
   ok    any FOUND cell: FOUND
   ok    V3 itself wrote nothing under this repository's results/prereg2/
 
-356 checks, 0 failed
+382 checks, 0 failed
 V3: PASS
 exit=0
