@@ -22,17 +22,9 @@ def now():
     return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def harness_state():
-    """The blockspec commit, and whether the harness or the pre-registration
-    differs from it. A run is bound only when nothing differs."""
-    def g(*a):
-        r = subprocess.run(["git", "-C", SPIKE, *a], capture_output=True, text=True)
-        return r.stdout.strip() if r.returncode == 0 else None
-    head = g("rev-parse", "HEAD")
-    dirty = g("status", "--porcelain", "--untracked-files=all", "--", "harness",
-              "PRE-REGISTRATION-2.md", "ORACLE.md")
-    return {"head": head, "dirty": dirty.splitlines() if dirty else [],
-            "bound": bool(head) and not dirty}
+def head(spike=SPIKE):
+    r = subprocess.run(["git", "-C", spike, "rev-parse", "HEAD"], capture_output=True, text=True)
+    return r.stdout.strip() if r.returncode == 0 else None
 
 
 class _Tee:
@@ -65,19 +57,26 @@ class Transcript:
             path = os.path.join(out_dir, f"{name}.{n}.txt")
         self.path = path
         self.f = open(path, "w", encoding="utf-8", buffering=1)
-        hs = harness_state()
         self.f.write(f"# prereg2 {cmd}{' ' + label if label else ''}\n"
                      f"# argv: {' '.join(argv)}\n"
                      f"# start: {now()}\n"
-                     f"# blockspec HEAD: {hs['head']}\n"
-                     f"# harness bound: {hs['bound']}"
-                     + (f" (differs: {', '.join(hs['dirty'])})" if hs["dirty"] else "") + "\n"
-                     f"# python {sys.version.split()[0]}\n\n")
-        self.state = hs
+                     f"# blockspec HEAD: {head()}\n"
+                     f"# python {sys.version.split()[0]}\n")
+        self.state = {"bound": False, "reasons": ["binding not yet checked"]}
         self._out, self._err = sys.stdout, sys.stderr
         sys.stdout, sys.stderr = _Tee(sys.stdout, self.f), _Tee(sys.stderr, self.f)
         for s in (signal.SIGTERM, signal.SIGHUP):
             signal.signal(s, self._signal)
+
+    def record_binding(self, state):
+        """Write the binding check into the header, once, before any work."""
+        self.state = state
+        self.f.write(f"# harness bound: {state['bound']}"
+                     + (f" (validation commit {state.get('validation_commit')})" if state["bound"] else "")
+                     + "\n")
+        for r in state.get("reasons", []) if not state["bound"] else []:
+            self.f.write(f"#   not bound: {r}\n")
+        self.f.write("\n")
 
     def _signal(self, signum, frame):
         raise SystemExit(128 + signum)

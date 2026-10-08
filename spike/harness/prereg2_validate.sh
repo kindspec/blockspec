@@ -32,7 +32,7 @@ mkdir -p "$OUTDIR"
 SCR=$(mktemp -d); trap 'rm -rf "$SCR"' EXIT
 
 stamp() {
-  echo "# harness HEAD $(git -C "$HERE" rev-parse HEAD 2>/dev/null)  tracked changes under spike/: $(git -C "$HERE/.." status --porcelain --untracked-files=no -- . | wc -l)"
+  echo "# harness HEAD $(git -C "$HERE" rev-parse HEAD 2>/dev/null)  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: $(git -C "$HERE/.." status --porcelain --ignored --untracked-files=all -- harness PRE-REGISTRATION-2.md ORACLE.md | wc -l)"
   echo "# python $(python3 -c 'import sys;print(sys.version.split()[0])')  git $(git --version | cut -d' ' -f3)"
 }
 

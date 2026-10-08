@@ -60,17 +60,18 @@ def void_reasons(manifest, plant_names, tiers):
     """plant_names: {plant: packet name}. Returns the reasons the tiering is
     void; empty means it is not."""
     out = []
+    from .export import PLANT_EXPECT
     for plant, name in sorted(plant_names.items()):
-        exp = manifest["plants"][plant]["expected"]
+        # Appendix B's expectations, never the manifest's (review C4).
+        exp = PLANT_EXPECT[plant]
         ans = tiers.get(name)
         if ans is None:
             out.append(f"{plant}: untiered")
             continue
         t = tier_of(ans)
-        if t == "UNPLACEABLE":
-            out.append(f"{plant}: unplaceable, so its side of the B/C line cannot be checked")
-            continue
-        if QUALIFIES[t] != QUALIFIES[exp["tier"]]:
+        # §7.2: UNPLACEABLE "is not a finding", so it lies on the side of the
+        # B/C line that does not qualify (review A4, LOG §16).
+        if QUALIFIES.get(t, False) != QUALIFIES[exp["tier"]]:
             out.append(f"{plant}: tier {t} is on the wrong side of the B/C line (expected {exp['tier']})")
         for q in ("q3", "q4"):
             if ans[q] != exp[q]:

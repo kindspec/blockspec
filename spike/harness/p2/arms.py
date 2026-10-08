@@ -98,8 +98,6 @@ def inst_m(arm, case):
         inst["strict"], inst["set25"] = case["strict"], case["set25"]
     if not res["clean"] or res["merged"] is None:
         return None, res
-    if has_surrogate(res["merged"]):
-        return UNDECODABLE, res
     return inst, res
 
 

@@ -1208,3 +1208,144 @@ no result is changed:
   that path as `CONTROL_D8_DIR`. The V1 transcripts so far got there by
   bind-mounting a `f088cd76` clone over that path, in a private mount
   namespace.
+
+## 2026-10-08 — §16. Independent review of the harness: the binding is enforced, and the readings are logged
+
+No arm has run. Three independent reviews looked at blockspec#16 at `312b415`:
+fidelity to the document, checks that pass silently, and binding mechanics.
+This entry records how the harness now answers them, before validation.
+
+### The binding, enforced by the harness (`harness/p2/binding.py`)
+
+`results/prereg2/VALIDATION` names the validation commit and the sealed
+manifest's sha256. `prereg2.py bind` writes it after checking it, and the
+first Arm 0 commit adds it.
+
+Every bound command checks four things before it runs:
+
+- the validation commit is an ancestor of HEAD;
+- `git diff --quiet` from that commit to HEAD over `harness/`,
+  `PRE-REGISTRATION-2.md` and `ORACLE.md`;
+- every one of those files, hashed with `git hash-object`, against the
+  commit's `git ls-tree`. This means `--assume-unchanged` cannot hide an edit.
+  No untracked or ignored file may sit under the harness;
+- nothing under `results/prereg2/` is uncommitted except the command's own
+  transcript. VALIDATION is also exempt, until an Arm 0 result is committed.
+
+For arm0, score and export there is one more check: no earlier transcript of
+the same command and arm may exist.
+
+A bound command takes every path from its fixed place and accepts no
+override of any path, mode, sample size, manifest sha or agent. The
+manifest's sha256 comes from VALIDATION. A transcript opens before the
+arguments are parsed, so a usage error is recorded too. An unbound or
+fixture run must name all its outputs outside `results/prereg2/`.
+
+`aggregate` checks three more things before it gives a verdict:
+
+- every input is bound by the same validation commit;
+- every score run used §6.5's sample sizes;
+- the transcripts show exactly one bound arm0 and one bound score per arm,
+  one export, and at most two tiering runs. If there are two, the first
+  wrote zero lines.
+
+**What this does to §9's commit order.** Before each bound run, everything
+under `results/prereg2/` must be committed. So each invocation's transcript
+and output are committed before the next one starts. The reading taken here
+has three parts:
+
+- Each §9 step lands on `main` as one commit, from its own pull request:
+  validation, Arm 0, scoring and export, tiers, verdict. The repository
+  allows squash merges only.
+- The commits made within that pull request are squashed into it.
+- The validation commit is `main`'s squash commit for the validation pull
+  request. The scoring-arm commit is the one commit in HEAD's history that
+  added `results/prereg2/score/`.
+
+`tier-run` refuses if more than one commit added it. Both §9's grouping and
+the ruleset interact here, so this is put to the owner rather than decided
+silently.
+
+### Tiering (`harness/p2/tierrun.py`)
+
+- `tier-model` runs on the start day. It fetches the Models API listing
+  itself and takes the day from the response's `Date` header. It writes
+  `models-listing.json` and `tier-model.json`, which are committed.
+- `tier-run` writes "started" to `tier-runs.txt` before the agent starts.
+  Its working directory, `tier-work-<n>/`, is never deleted. The first
+  started run binds whether or not it completed.
+- `tiers.jsonl` is read without following a symlink.
+
+### Readings, each fixed here before Arm 0
+
+1. **§5.2 R slug units.** These are the heading spans and nothing else.
+   Blocks before the first heading lie in no unit. In step 1, `t` is the
+   unit holding the plurality block `p` of the §3 section's TLLC verdict
+   under check. The targets of the neighbouring units come from TLLC over
+   each neighbouring unit. If `p` lies in no unit, the rule has no `t` and
+   the record is UNDECIDABLE-REPEAT, with the note "TLLC's target lies in no
+   §5.2 unit".
+2. **SPLIT** counts every mapped line of `k` under each leg that proposed a
+   target. A mapped line in no unit is not counted.
+3. **An unplaceable plant (§7.3's void list).** UNPLACEABLE "is not a
+   finding" (§7.2), so it lies on the non-qualifying side of the B/C line.
+   An unplaceable P-A or P-B therefore voids the tiering. An unplaceable P-C
+   whose q3 and q4 answers are as expected does not.
+4. **Arm 0's bar** stops an arm only above 10%. An arm with no
+   natural-language content, 0 of 0, passes the bar, and its cells then fail
+   §6.6's floor.
+5. **The packet representative.** It is the record with the smallest id over
+   every mode of its arm. F6 and F9 are judged on that one record, for every
+   cell that exported the packet. The packet key holds no mode.
+6. **F9.** A record reproduces only if its reproduction result is bound by
+   the same validation commit and the committed and regenerated sha256s are
+   equal. A record that does not reproduce is named in its cell's reason.
+7. **Reported beside each verdict, with no verdict of their own:**
+   - every cell computed under `none` and `anywhere`;
+   - site-policy M's 25-case set;
+   - the strict set's count against the first registration's 21, with the
+     difference;
+   - each FOUND's count of finds that rest on an oracle-DELETED target,
+     labelled `WRONG_on_deleted`, weaker, `ORACLE.md` §4.
+8. **R resolution.** If any region marker carries the name, the region
+   count decides and slugs are not consulted. A region's target is the D8
+   block that holds its first line. Slugs come from blocks `btype()` types
+   `heading`, as §3 names it.
+9. **E.** Renames are counted in a separate `-M` pass, and that count
+   overlaps the add and delete counts. Blobs are read as text, with
+   universal newlines, as D8 and `find_merge_cases()` read them. An
+   undecodable case (§15) is not replaced in the sample.
+10. **The selection rules.** E and S draw one sample per rule. The union is
+    evaluated, and each record is tagged with its rules. Only `yaml-fence`
+    carries a verdict.
+11. **Arm 0's distinct contents** are keyed by (type, content), summed over
+    the natural-language types. A file at the pin that is not UTF-8 is
+    counted and excluded.
+12. **Floors** count decided units whatever F3 says.
+13. **R has no naive policy**, so near miss (iii) is Q only. Near miss (i)
+    needs F9.
+14. **Packets.**
+    - The nonce enters the name as its 32 raw bytes.
+    - `PROMPT.md` is Appendix A with its `> ` quoting removed.
+    - A DELETED target is a fixed sentence.
+15. **Tiering.** The first well-formed line for a packet binds, and a
+    malformed line leaves its packet untiered.
+16. **§6.7.** The R condition accepts a NOT FOUND cell in any mode,
+    including M. The Q condition names E, S5 and S25 only.
+
+### A V-list fact (§10)
+
+V3's REPEAT item says `oracle_limitation.py`'s case "comes out
+UNDECIDABLE-REPEAT". Its NOTE blocks are 16 characters long. That is under
+the mechanism's 20-character quote floor, so Q skips them and never grades
+them.
+
+V3 therefore checks two things. The §5.2 rule returns UNDECIDABLE-REPEAT on
+that exact case. And the whole evaluation path returns the same once the
+NOTE is lengthened past 20 characters.
+
+§10 lets the V-list be corrected on a fact, "logged below" in the
+document's own table. The document cannot change by a byte: its sha256 is
+pinned in `harness/p2/export.py`, because packets are cut from it. So the
+correction is logged here, and whether to amend the table itself is put to
+the owner.

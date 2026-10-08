@@ -115,13 +115,9 @@ def block_units(text, bl):
 
 def heading_units(text, bl):
     """R slug units for §5.2 only: the span from a heading to the next heading
-    of any level. Blocks before the first heading form one more unit, so that
-    every block lies in exactly one unit."""
+    of any level. The text names heading spans only, so blocks before the
+    first heading lie in no unit (review A4, LOG §16)."""
     starts = sorted({i for i, _, _ in Mx.headings(text, bl)})
-    if not bl:
-        return []
-    if not starts or starts[0] != 0:
-        starts = [0] + starts
     return [(s, (starts[n + 1] - 1) if n + 1 < len(starts) else len(bl) - 1)
             for n, s in enumerate(starts)]
 
@@ -137,4 +133,4 @@ def unit_of_block(units):
 def line_to_unit(text, bl, units):
     l2b = Mx.line_to_block(text, bl)
     b2u = unit_of_block(units)
-    return {L: b2u[b] for L, b in l2b.items()}
+    return {L: b2u[b] for L, b in l2b.items() if b in b2u}

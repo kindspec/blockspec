@@ -173,8 +173,6 @@ def enumerate_e(arm, repo, pin, selected):
     Returns (population [(commit, parent, path)], counts, authors)."""
     sel = set(selected)
     revs, entries, renames, parents, authors = _e_history(repo, pin)
-    if not revs:
-        raise NoVerdict(f"{arm}: no non-merge commit at {pin}")
     counts = {"commits:no_merges": len(revs), "population": 0, "excluded:add": 0,
               "excluded:delete": 0, "excluded:rename": 0, "excluded:other_status": 0,
               "path_not_selected": 0}
@@ -339,4 +337,8 @@ def m_filter(arm, repo, cases, selected_by_rule):
     if arm == "site-policy":
         counts["strict"] = sum(1 for c in kept if c["strict"] and VERDICT_RULE in c["rules"])
         counts["set25"] = sum(1 for c in kept if c["set25"] and VERDICT_RULE in c["rules"])
+        # §6.2: "If the rule leaves a different number, the rule's count
+        # stands and the difference is logged."
+        counts["strict_expected"] = SITE_POLICY_EXPECTED_STRICT
+        counts["strict_difference"] = counts["strict"] - SITE_POLICY_EXPECTED_STRICT
     return kept, counts

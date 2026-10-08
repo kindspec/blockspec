@@ -35,6 +35,16 @@ FIX = os.path.join(HERE, "p2", "fixtures")
 RESULTS = []
 
 
+def raised(fn):
+    """The name and message of what fn raises, or None. A guard's own red
+    state is observed this way, never inferred from a crash elsewhere."""
+    try:
+        fn()
+        return None
+    except Exception as e:
+        return f"{type(e).__name__}: {e}"
+
+
 def check(label, cond, detail=""):
     RESULTS.append((label, bool(cond)))
     print(f"  {'ok  ' if cond else 'FAIL'}  {label}" + (f"   [{detail}]" if detail else ""))
@@ -275,6 +285,27 @@ def t_r_units(a):
     r2 = one(inst1(before, before.replace("fetch", "download")), "R", name="install")
     check("... and the same section edited in place stays decided",
           r2 and r2["decided"] and r2["hard"]["cls"] == "correct", r2 and (r2["oracle"], r2["hard"]))
+
+
+def t_r_slug_t(a):
+    section("R slug REPEAT: t is the unit holding the §3 section's plurality block (review A1)")
+    from p2 import oracle as O
+    before = d("## Alpha", "### Detail", "Long paragraph one about alpha things here.",
+               "Another long paragraph about alpha details.")
+    r = one(inst1(before, before.replace("## Alpha", "##  Alpha", 1)), "R", name="alpha")
+    check("A1: `## Alpha` -> `##  Alpha` (same slug, no twin anywhere) is decided, not UNDECIDABLE-REPEAT",
+          r and r["oracle"] == "SURVIVED" and r["decided"] and "note" not in r, r and (r["oracle"], r.get("note")))
+    before = ("## Install\n\nThe installer supports three platforms\nand writes its log to the home directory.\n\n"
+              "### Linux\n\nRun the shell script from the release page.\n\n### macOS\n\n"
+              "Open the disk image and drag the app across.\n\n## Usage\n\nStart the service with the run command.\n")
+    after = before.replace("The installer supports three platforms\nand writes its log to the home directory.",
+                           "Installation now goes through the package manager\nand no longer writes a log file anywhere.")
+    r = one(inst1(before, after), "R", name="install")
+    check("A1: a section whose intro is rewritten, with no twin anywhere, is decided",
+          r and r["decided"], r and (r["oracle"], r.get("note")))
+    check("A4: blocks before the first heading lie in no §5.2 R unit (the text names heading spans only)",
+          O.heading_units(d("Intro paragraph here.", "## A", "Body."),
+                          Mx.D8.blocks(d("Intro paragraph here.", "## A", "Body."))) == [(1, 2)])
 
 
 def t_r(a):
@@ -542,31 +573,19 @@ def t_bundles(a, tmp):
     repo = K.open_corpus("fx", bdir, os.path.join(tmp, "b-w2"), t2)
     check("an earlier pin in the bundle's history is reachable",
           subprocess.run(["git", "-C", repo, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip() == first)
-    try:
-        K.open_corpus("fx", bdir, os.path.join(tmp, "b-w3"), {"fx": dict(table["fx"], pin="1" * 40)})
-        nv = None
-    except K.NoVerdict as e:
-        nv = str(e)
-    check("a pin absent from its bundle is NO VERDICT", nv and "absent" in nv, nv)
-    try:
-        K.open_corpus("fx", bdir, os.path.join(tmp, "b-w4"),
-                      {"fx": dict(table["fx"], bundle_meta={"sha256": "0" * 64})})
-        refused = False
-    except RuntimeError:
-        refused = True
-    check("a bundle whose sha256 is not the committed one is refused", refused)
-    try:
-        K.open_corpus("fx", bdir, os.path.join(tmp, "b-w1"), table)
-        refused = False
-    except RuntimeError:
-        refused = True
-    check("an existing work repository is never reused", refused)
-    try:
-        K.open_corpus("fx", os.path.join(tmp, "nowhere"), os.path.join(tmp, "b-w5"), table)
-        refused = False
-    except FileNotFoundError:
-        refused = True
-    check("a missing bundle is refused", refused)
+    nv = raised(lambda: K.open_corpus("fx", bdir, os.path.join(tmp, "b-w3"),
+                                      {"fx": dict(table["fx"], pin="1" * 40)}))
+    check("a pin absent from its bundle is NO VERDICT (the guard itself raises NoVerdict)",
+          nv and nv.startswith("NoVerdict") and "absent" in nv, nv)
+    r = raised(lambda: K.open_corpus("fx", bdir, os.path.join(tmp, "b-w4"),
+                                     {"fx": dict(table["fx"], bundle_meta={"sha256": "0" * 64})}))
+    check("a bundle whose sha256 is not the committed one is refused by the sha256 guard",
+          r and r.startswith("RuntimeError") and "sha256" in r, r)
+    r = raised(lambda: K.open_corpus("fx", bdir, os.path.join(tmp, "b-w1"), table))
+    check("an existing work repository is never reused (the reuse guard itself refuses)",
+          r and r.startswith("RuntimeError") and "fetched fresh" in r, r)
+    r = raised(lambda: K.open_corpus("fx", os.path.join(tmp, "nowhere"), os.path.join(tmp, "b-w5"), table))
+    check("a missing bundle is refused", r and r.startswith("FileNotFoundError"), r)
 
 
 def undecodable_repo(root):
@@ -701,6 +720,8 @@ def t_mfilter(a, tmp):
                               {r: ["doc.md"] for r in K.RULES})
     check("m_filter reads the subject with git log -1 --format=%s and drops it from the strict set",
           kept and kept[0]["strict"] is False and counts["strict"] == 0, counts)
+    check("A3/§6.2: the strict-set count is logged against the first registration's 21, with its difference",
+          counts.get("strict_expected") == 21 and counts.get("strict_difference") == -21, counts)
 
 
 def t_sampler(a):
@@ -736,6 +757,12 @@ def syn_scores(arm, recs, modes=("E",)):
     inst = {(arm, r["instance"]): {"arm": arm, "mode": r["mode"], "id": r["instance"],
                                    "rules": ["yaml-fence", "none", "anywhere"]} for r in recs}
     return {arm: {"modes": list(modes), "instances": inst, "records": recs}}
+
+
+def ROK(rid):
+    """A bound, byte-identical reproduction result for one record id."""
+    return {rid: {"id": rid, "ok": True, "bound": True, "committed_sha256": "a" * 64,
+                  "regenerated_sha256": "a" * 64}}
 
 
 def manifest_for_test():
@@ -810,12 +837,22 @@ def t_arm0(a, tmp):
     check("blocks under 20 characters are counted as skipped",
           A0.census_texts({"x.md": d("# Hi", "Short one.", "A paragraph long enough to count.")})
           ["by_type"]["prose"]["short_lt20"] == 1)
-    check("empty input does not pass", not A0.census_texts({})["passes_bar"])
+    check("A4: an arm with no natural-language content passes the bar -- §6.5 stops an arm only "
+          "above 10%", A0.census_texts({})["passes_bar"] is True)
     repo = os.path.join(tmp, "a0repo")
     pin, _ = fixture_repo(repo, [("t", texts)])
     rc, out, _, _ = score(tmp, "a0", repo, pin, "E", sample=10)
     check("the CLI: the arm reports NO VERDICT (oracle reach) and does not run",
           rc == 3 and "does not run" in out, f"exit {rc}")
+    gen = "---\ntitle: g\nauto_generated: true\n---\n\n" + d("# G", twin, twin, "Generated filler paragraph text.")
+    own = d("# Own", "A paragraph written by a person, once.", "Another paragraph, also written once.")
+    rrepo = os.path.join(tmp, "a0rule")
+    rpin, _ = fixture_repo(rrepo, [("t", {"gen.md": gen, "own.md": own})])
+    rc, out, _, _ = score(tmp, "a0rule", rrepo, rpin, "E", sample=10)
+    j = json.load(open(os.path.join(tmp, "a0rule", "arm0", "fixture.json")))
+    check("B5/21: the bar is read off the yaml-fence rule: the generated file's twins stop `none`, "
+          "and do not stop the arm", j["rules"]["none"]["passes_bar"] is False and j["passes_bar"] is True,
+          (j["rules"]["none"]["passes_bar"], j["passes_bar"]))
     t = os.path.join(tmp, "a0-transcripts")
     a0out = "".join(open(os.path.join(t, f)).read() for f in sorted(os.listdir(t)) if "arm0" in f)
     check("Arm 0 prints the adjacent-run line labelled 'provisional reading (LOG §15)', with its rule",
@@ -848,18 +885,12 @@ def t_export(a, tmp):
     sha = X.seal(mp)
     m = X.load_manifest(mp, sha)
     check("seal draws a 32-byte nonce", len(bytes.fromhex(m["nonce"])) == 32)
-    try:
-        X.seal(mp)
-        refused = False
-    except X.ExportError:
-        refused = True
-    check("seal refuses to overwrite a sealed manifest", refused)
-    try:
-        X.load_manifest(mp, "0" * 64)
-        refused = False
-    except X.ExportError:
-        refused = True
-    check("a manifest whose sha256 is not the committed one is refused", refused)
+    before_bytes = open(mp, "rb").read()
+    r = raised(lambda: X.seal(mp))
+    check("seal refuses to overwrite a sealed manifest, and the manifest is unchanged",
+          r and r.startswith("ExportError") and "sealed once" in r and open(mp, "rb").read() == before_bytes, r)
+    r = raised(lambda: X.load_manifest(mp, "0" * 64))
+    check("a manifest whose sha256 is not the committed one is refused", r and r.startswith("ExportError"), r)
     out = os.path.join(tmp, "export")
     names, keys = X.export(out, m, [], {})
     check("an export of no real record holds the three plants", len(names) == 3, names)
@@ -892,7 +923,7 @@ def t_export(a, tmp):
     empty = os.path.join(tmp, "export-empty")
     os.makedirs(empty)
     check("empty input: an empty export directory fails", X.validate(empty) != [])
-    rc, outp = cli("validate-export", empty, "--transcript-dir", os.path.join(tmp, "ve-t"))
+    rc, outp = cli("validate-export", empty, "--transcript-dir", os.path.join(tmp, "ve-t"), "--unbound")
     check("validate-export exits non-zero on it", rc != 0, f"exit {rc}")
 
 
@@ -944,11 +975,62 @@ def t_tier_run(a, tmp):
         os.remove(canary)
 
 
+class ModelsServer:
+    """A local stand-in for the Models API: one JSON page and a chosen Date."""
+
+    def __init__(self, data, date):
+        import http.server
+        import threading
+        body = json.dumps(dict(data, has_more=False)).encode()
+
+        class H(http.server.BaseHTTPRequestHandler):
+            def date_time_string(self, timestamp=None):
+                return date
+
+            def do_GET(self):
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(body)
+
+            def log_message(self, *a):
+                pass
+        self.srv = http.server.HTTPServer(("127.0.0.1", 0), H)
+        self.url = f"http://127.0.0.1:{self.srv.server_port}/v1/models"
+        threading.Thread(target=self.srv.serve_forever, daemon=True).start()
+
+    def close(self):
+        self.srv.shutdown()
+
+
+SLOW = """#!/usr/bin/python3
+import json, os, sys, time
+lines = %d
+with open("tiers.jsonl", "w") as f:
+    for n in sorted(os.listdir("packets"))[:lines]:
+        f.write(json.dumps({"packet": n, "q1": "no", "q2": "no", "q3": "no", "q4": "no",
+                            "unplaceable": False, "why": "slow stub"}) + "\\n")
+print("SLOW STUB STARTED", flush=True)
+time.sleep(60)
+"""
+LINK = """#!/usr/bin/python3
+import os
+os.symlink("/etc/hostname", "tiers.jsonl")
+print("wrote a symlink")
+"""
+
+PINNED = {"data": [{"id": "claude-opus-5-5", "created_at": "2026-01-01T00:00:00Z"},
+                   {"id": "claude-opus-6", "created_at": "2026-09-01T00:00:00Z"}]}
+UNPINNED = {"data": [{"id": "claude-opus-6", "created_at": "2026-09-01T00:00:00Z"},
+                     {"id": "claude-opus-5-1", "created_at": "2026-02-01T00:00:00Z"},
+                     {"id": "claude-sonnet-9", "created_at": "2026-10-01T00:00:00Z"}]}
+
+
 def _t_tier_run(a, tmp, X, TRN, stubs, creds, canary):
     mp = os.path.join(tmp, "tr-manifest.json")
-    X.seal(mp)
+    msha = X.seal(mp)
     exp = os.path.join(tmp, "tr-export")
-    X.export(exp, X.load_manifest(mp), [], {})
+    X.export(exp, X.load_manifest(mp, msha), [], {})
     # red first: the same stub, run without the sandbox, sees the host
     plain = os.path.join(tmp, "tr-plain")
     shutil.copytree(exp, plain)
@@ -959,65 +1041,196 @@ def _t_tier_run(a, tmp, X, TRN, stubs, creds, canary):
           [ln for ln in r.stdout.splitlines() if "PROBE" in ln])
     old_repo = os.path.join(tmp, "tr-old")
     old, _ = fixture_repo(old_repo, [("scoring-arm commit", {"x.md": "x\n"})])
-    listing = os.path.join(tmp, "models.json")
-    json.dump({"data": [{"id": "claude-opus-5-5", "created_at": "2026-01-01T00:00:00Z"},
-                        {"id": "claude-opus-6", "created_at": "2026-09-01T00:00:00Z"}]}, open(listing, "w"))
+    on_start = "Tue, 02 Jan 2001 12:00:00 GMT"
+    servers = {k: ModelsServer(v, dt) for k, (v, dt) in {
+        "pinned": (PINNED, on_start), "unpinned": (UNPINNED, on_start),
+        "late": (PINNED, "Fri, 05 Jan 2001 12:00:00 GMT")}.items()}
+    saved_key = os.environ.get("ANTHROPIC_API_KEY")
+    try:
+        def tm(state, srv="pinned", key="test-key"):
+            if key:
+                os.environ["ANTHROPIC_API_KEY"] = key
+            else:
+                os.environ.pop("ANTHROPIC_API_KEY", None)
+            return cli("tier-model", "--state-dir", os.path.join(tmp, state), "--repo", old_repo,
+                       "--scoring-commit", old, "--models-url", servers[srv].url,
+                       "--transcript-dir", os.path.join(tmp, state + "-t"), "--unbound")
 
-    def tr(state, *extra, stub="answers", commit=old, repo=old_repo, day="2001-01-02"):
-        return cli("tier-run", "--export", exp, "--out", os.path.join(tmp, state, "tiers.jsonl"),
-                   "--state-dir", os.path.join(tmp, state), "--repo", repo, "--scoring-commit", commit,
-                   "--models-listing", listing, "--listing-day", day, "--agent-cmd", stubs[stub],
-                   "--transcript-dir", os.path.join(tmp, state + "-t"), "--credentials", creds,
-                   "--unbound", *extra)
-    rc, out = tr("s1")
-    check("a run more than 14 days after the scoring-arm commit needs a reason", rc == 2 and "late" in out, f"exit {rc}")
-    rc, out = tr("s1", "--late-reason", "V3 fixture", day="2001-01-05")
-    check("a listing not fetched on the start day is refused", rc == 2 and "start day" in out, f"exit {rc}")
-    rc, out = tr("s1", "--late-reason", "V3 fixture")
-    lines = open(os.path.join(tmp, "s1", "tiers.jsonl")).read().splitlines() if rc == 0 else []
-    check("a run writes tiers.jsonl as the agent wrote it", rc == 0 and len(lines) == 3, f"exit {rc}")
-    check("... the agent saw only PROMPT.md and packets/", "cwd holds ['PROMPT.md', 'packets']" in out)
-    check("in the sandbox the stub cannot read the canary under " + CANARY_DIR,
-          "PROBE CANNOT-READ canary" in out and "PROBE CAN-READ canary" not in out)
-    check("... cannot read ~/.claude/projects, nor ~/.claude itself",
-          "PROBE CANNOT-READ ~/.claude/projects" in out and "PROBE CANNOT-READ ~/.claude\n" in out + "\n")
-    check("... can read the export and the one bound credential file",
-          "PROBE CAN-READ the export's PROMPT.md" in out and "PROBE CAN-READ the bound credential file" in out)
-    check("... and the transcript records the bwrap invocation", "sandboxed agent: bwrap " in out)
-    check("... with the pinned model, since the start day's listing serves it",
-          json.load(open(os.path.join(tmp, "s1", "tier-model.json")))["model"] == "claude-opus-5-5")
-    check("... and the transcript logs the late reason and Appendix A as sent",
-          "LATE RUN" in out and "You are answering questions about records" in out)
-    rc, out = tr("s1", "--late-reason", "V3 fixture")
-    check("a second run after a first that wrote lines is refused (the first binds)", rc == 2, f"exit {rc}")
-    rc, _ = tr("s2", "--late-reason", "V3 fixture", stub="silent")
-    rc2, out2 = tr("s2", "--late-reason", "V3 fixture", stub="silent")
-    rc3, _ = tr("s2", "--late-reason", "V3 fixture")
-    check("one rerun is allowed after a first run that wrote zero lines, and no third",
-          rc == 0 and rc2 == 0 and "RERUN" in out2 and rc3 == 2, f"{rc} {rc2} {rc3}")
-    fut_repo = os.path.join(tmp, "tr-fut")
-    os.makedirs(fut_repo)
-    env = dict(os.environ, **dict(GIT_ENV, GIT_COMMITTER_DATE="2099-01-01T00:00:00Z"))
-    subprocess.run(["git", "init", "-q", fut_repo], check=True, env=env)
-    subprocess.run(["git", "-C", fut_repo, "commit", "-q", "--allow-empty", "-m", "f"], check=True, env=env)
-    fut = subprocess.run(["git", "-C", fut_repo, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    rc, out = tr("s3", commit=fut, repo=fut_repo, day="2099-01-02")
-    check("a run before the start day is refused", rc == 2 and "tiering starts on" in out, f"exit {rc}")
-    json.dump({"data": [{"id": "claude-opus-6", "created_at": "2026-09-01T00:00:00Z"},
-                        {"id": "claude-opus-5-1", "created_at": "2026-02-01T00:00:00Z"},
-                        {"id": "claude-sonnet-9", "created_at": "2026-10-01T00:00:00Z"}]}, open(listing, "w"))
-    import datetime
-    c = TRN.choose_model(listing, datetime.date(2001, 1, 2), datetime.date(2001, 1, 2))
-    check("unlisted pinned model: the most recent claude-opus-* is chosen", c["model"] == "claude-opus-6", c)
-    bad = os.path.join(tmp, "tr-bad-export")
-    shutil.copytree(exp, bad)
-    open(os.path.join(bad, "notes.txt"), "w").write("85 records\n")
-    rc, out = cli("tier-run", "--export", bad, "--out", os.path.join(tmp, "s4", "tiers.jsonl"),
-                  "--state-dir", os.path.join(tmp, "s4"), "--repo", old_repo, "--scoring-commit", old,
-                  "--models-listing", listing, "--listing-day", "2001-01-02", "--late-reason", "x",
-                  "--agent-cmd", stubs["answers"], "--transcript-dir", os.path.join(tmp, "s4-t"),
-                  "--credentials", creds, "--unbound")
-    check("an export that fails its validator is never sent", rc == 2 and "validator" in out, f"exit {rc}")
+        def tr(state, *extra, stub="answers", commit=old, repo=old_repo):
+            return cli("tier-run", "--export", exp, "--state-dir", os.path.join(tmp, state),
+                       "--repo", repo, "--scoring-commit", commit, "--agent-cmd", stub if os.sep in stub
+                       else stubs[stub], "--transcript-dir", os.path.join(tmp, state + "-t"),
+                       "--credentials", creds, "--unbound", *extra)
+        rc, out = tm("m0", key=None)
+        check("C6: tier-model refuses without an API key", rc == 2 and "ANTHROPIC_API_KEY" in out, f"exit {rc}")
+        rc, out = tm("m0", srv="late")
+        check("C6: a listing whose Date is not the start day is refused", rc == 2 and "start day" in out, f"exit {rc}")
+        rc, out = tm("s1")
+        tmj = json.load(open(os.path.join(tmp, "s1", "tier-model.json"))) if rc == 0 else {}
+        check("C6: tier-model fetches the listing itself and fixes the pinned model, recording the Date",
+              rc == 0 and tmj.get("model") == "claude-opus-5-5" and tmj.get("listing_date_header") == on_start
+              and os.path.exists(os.path.join(tmp, "s1", "models-listing.json")), tmj)
+        rc, out = tm("s1")
+        check("C6: the model is chosen once", rc == 2 and "chosen once" in out, f"exit {rc}")
+        rc, out = tm("u1", srv="unpinned")
+        check("unlisted pinned model: the most recent claude-opus-* is chosen",
+              rc == 0 and json.load(open(os.path.join(tmp, "u1", "tier-model.json")))["model"] == "claude-opus-6")
+        rc, out = tr("s1")
+        check("a run more than 14 days after the scoring-arm commit needs a reason", rc == 2 and "late" in out, f"exit {rc}")
+        rc, out = tr("nomodel", "--late-reason", "V3 fixture")
+        check("C6: tier-run refuses without a committed tier-model.json", rc == 2 and "tier-model" in out, f"exit {rc}")
+        rc, out = tr("s1", "--late-reason", "V3 fixture")
+        w1 = os.path.join(tmp, "s1", "tier-work-1", "tiers.jsonl")
+        lines = open(w1).read().splitlines() if os.path.exists(w1) else []
+        check("a run keeps tiers.jsonl as the agent wrote it, in tier-work-1/", rc == 0 and len(lines) == 3, f"exit {rc}")
+        led = TRN.read_ledger(os.path.join(tmp, "s1"))
+        check("C2: the ledger records the run as started, then completed",
+              [e["event"] for e in led] == ["started", "completed"], led)
+        check("... the agent saw only PROMPT.md and packets/", "cwd holds ['PROMPT.md', 'packets']" in out)
+        check("in the sandbox the stub cannot read the canary under " + CANARY_DIR,
+              "PROBE CANNOT-READ canary" in out and "PROBE CAN-READ canary" not in out)
+        check("... cannot read ~/.claude/projects, nor ~/.claude itself",
+              "PROBE CANNOT-READ ~/.claude/projects" in out and "PROBE CANNOT-READ ~/.claude\n" in out + "\n")
+        check("... can read the export and the one bound credential file",
+              "PROBE CAN-READ the export's PROMPT.md" in out and "PROBE CAN-READ the bound credential file" in out)
+        check("... and the transcript records the bwrap invocation", "sandboxed agent: bwrap " in out)
+        check("... and the transcript logs the late reason and Appendix A as sent",
+              "LATE RUN" in out and "You are answering questions about records" in out)
+        rc, out = tr("s1", "--late-reason", "V3 fixture")
+        check("a second run after a first that wrote lines is refused (the first binds)", rc == 2, f"exit {rc}")
+        shutil.copytree(os.path.join(tmp, "s1"), os.path.join(tmp, "pre"), ignore=shutil.ignore_patterns(
+            "tier-work-*", "tier-runs.txt"))
+        rc, out = tr("pre", "--late-reason", "V3 fixture")
+        check("B5/20: a tiers.jsonl that exists before any recorded run is refused",
+              rc == 2 and "before any recorded run" in out, f"exit {rc}")
+        # C2: an aborted run counts. Run the CLI as a process and stop it mid-run.
+        import signal
+        import time
+
+        def abort_run(state, lines, sig):
+            shutil.copytree(os.path.join(tmp, "s1-model"), os.path.join(tmp, state)) \
+                if os.path.exists(os.path.join(tmp, "s1-model")) else None
+            stub = os.path.join(tmp, f"slow{lines}.py")
+            open(stub, "w").write(SLOW % lines)
+            os.chmod(stub, 0o755)
+            cmd = [sys.executable, "-I", "-B", os.path.join(HERE, "prereg2.py"), "tier-run",
+                   "--export", exp, "--state-dir", os.path.join(tmp, state), "--repo", old_repo,
+                   "--scoring-commit", old, "--agent-cmd", stub, "--transcript-dir",
+                   os.path.join(tmp, state + "-t"), "--credentials", creds, "--unbound",
+                   "--late-reason", "V3 fixture"]
+            pr = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            t0 = time.time()
+            while time.time() - t0 < 30:
+                if os.path.exists(os.path.join(tmp, state, "tier-runs.txt")) and \
+                        os.path.exists(os.path.join(tmp, state, "tier-work-1", "tiers.jsonl")):
+                    break
+                time.sleep(0.2)
+            time.sleep(1)
+            pr.send_signal(sig)
+            pr.communicate(timeout=30)
+            return pr.returncode
+        os.makedirs(os.path.join(tmp, "s1-model"))
+        shutil.copy(os.path.join(tmp, "s1", "tier-model.json"), os.path.join(tmp, "s1-model"))
+        for sig in (signal.SIGTERM, signal.SIGKILL):
+            st = f"ab-{sig.name}"
+            abort_run(st, 1, sig)
+            led = TRN.read_ledger(os.path.join(tmp, st))
+            check(f"C2: a run stopped by {sig.name} is in the ledger as started before the agent ran",
+                  led and led[0]["event"] == "started", led)
+            check(f"C2: ... its output is kept in tier-work-1/, not deleted",
+                  os.path.exists(os.path.join(tmp, st, "tier-work-1", "tiers.jsonl")))
+            rc, out = tr(st, "--late-reason", "V3 fixture")
+            check(f"C2: ... and, having written a line, it binds: a second run is refused ({sig.name})",
+                  rc == 2 and "binds" in out, f"exit {rc}")
+        st = "ab-zero"
+        abort_run(st, 0, signal.SIGKILL)
+        rc, out = tr(st, "--late-reason", "V3 fixture")
+        rc3, _ = tr(st, "--late-reason", "V3 fixture")
+        check("C2: a first run killed with zero lines allows one rerun, and no third",
+              rc == 0 and "RERUN" in out and rc3 == 2, f"{rc} {rc3}")
+        # B7: a symlink at /work/tiers.jsonl is refused, never followed
+        shutil.copytree(os.path.join(tmp, "s1-model"), os.path.join(tmp, "sym"))
+        link = os.path.join(tmp, "link.py")
+        open(link, "w").write(LINK)
+        os.chmod(link, 0o755)
+        rc, out = tr("sym", "--late-reason", "V3 fixture", stub=link)
+        check("B7: a symlink the agent leaves at tiers.jsonl is refused, and nothing is copied through it",
+              rc != 0 and "not a regular file" in out and not os.path.exists(os.path.join(tmp, "sym", "tiers.jsonl")),
+              f"exit {rc}")
+        fut_repo = os.path.join(tmp, "tr-fut")
+        os.makedirs(fut_repo)
+        env = dict(os.environ, **dict(GIT_ENV, GIT_COMMITTER_DATE="2099-01-01T00:00:00Z"))
+        subprocess.run(["git", "init", "-q", fut_repo], check=True, env=env)
+        subprocess.run(["git", "-C", fut_repo, "commit", "-q", "--allow-empty", "-m", "f"], check=True, env=env)
+        fut = subprocess.run(["git", "-C", fut_repo, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+        shutil.copytree(os.path.join(tmp, "s1-model"), os.path.join(tmp, "s3"))
+        rc, out = tr("s3", commit=fut, repo=fut_repo)
+        check("a run before the start day is refused", rc == 2 and "tiering starts on" in out, f"exit {rc}")
+        bad = os.path.join(tmp, "tr-bad-export")
+        shutil.copytree(exp, bad)
+        open(os.path.join(bad, "notes.txt"), "w").write("85 records\n")
+        shutil.copytree(os.path.join(tmp, "s1-model"), os.path.join(tmp, "s4"))
+        rc, out = cli("tier-run", "--export", bad, "--state-dir", os.path.join(tmp, "s4"), "--repo", old_repo,
+                      "--scoring-commit", old, "--late-reason", "x", "--agent-cmd", stubs["answers"],
+                      "--transcript-dir", os.path.join(tmp, "s4-t"), "--credentials", creds, "--unbound")
+        check("an export that fails its validator is never sent", rc == 2 and "validator" in out, f"exit {rc}")
+        # C6: the scoring-arm commit is derived
+        sc_repo = os.path.join(tmp, "sc-repo")
+        _, g = fixture_repo(sc_repo, [("validation", {"spike/x.md": "x\n"}),
+                                      ("scores", {"spike/results/prereg2/score/a/status.json": "{}\n"})])
+        c1 = g("rev-parse", "HEAD")
+        r = raised(lambda: TRN.scoring_commit(os.path.join(sc_repo, "spike")))
+        check("C6: the scoring-arm commit is the one commit that added results/prereg2/score/",
+              r is None and TRN.scoring_commit(os.path.join(sc_repo, "spike")) == c1, r)
+        os.makedirs(os.path.join(sc_repo, "spike/results/prereg2/score/b"))
+        open(os.path.join(sc_repo, "spike/results/prereg2/score/b/status.json"), "w").write("{}\n")
+        g("add", "-A")
+        g("commit", "-q", "-m", "more scores")
+        r = raised(lambda: TRN.scoring_commit(os.path.join(sc_repo, "spike")))
+        check("C6: ... and two such commits are refused", r and "one commit" in r, r)
+    finally:
+        for v in servers.values():
+            v.close()
+        if saved_key is None:
+            os.environ.pop("ANTHROPIC_API_KEY", None)
+        else:
+            os.environ["ANTHROPIC_API_KEY"] = saved_key
+
+
+def t_manifest_c4(a, tmp):
+    section("Review C4: the manifest cannot carry its own expectations")
+    from p2 import export as X
+    from p2 import tiers as T
+    mp = os.path.join(tmp, "c4-m.json")
+    X.seal(mp)
+    m = json.load(open(mp))
+    pn = {p: X.packet_name(m["nonce"], v["key"]) for p, v in m["plants"].items()}
+    wrong = {pn["P-A"]: dict(q1="yes", q2="yes", q3="no", q4="no", unplaceable=False),
+             pn["P-B"]: dict(q1="yes", q2="no", q3="no", q4="no", unplaceable=False),
+             pn["P-C"]: dict(q1="yes", q2="no", q3="yes", q4="no", unplaceable=False)}
+    m["plants"]["P-C"]["expected"] = {"q1": "yes", "q2": "no", "q3": "yes", "q4": "no", "tier": "B"}
+    fp = os.path.join(tmp, "c4-forged.json")
+    data = (json.dumps(m, sort_keys=True, indent=1) + "\n").encode()
+    open(fp, "wb").write(data)
+    import hashlib
+    r = raised(lambda: X.load_manifest(fp, hashlib.sha256(data).hexdigest()))
+    check("C4: a manifest whose plant expectations differ from Appendix B is refused, even with its own sha",
+          r and r.startswith("ExportError"), r)
+    m["plants"]["P-C"]["key"] = "plant:P-Z"
+    m["plants"]["P-C"]["expected"] = X.PLANT_EXPECT["P-C"]
+    data = (json.dumps(m, sort_keys=True, indent=1) + "\n").encode()
+    open(fp, "wb").write(data)
+    r = raised(lambda: X.load_manifest(fp, hashlib.sha256(data).hexdigest()))
+    check("C4: a manifest whose plant keys are not plant:P-x is refused", r and r.startswith("ExportError"), r)
+    forged = {"nonce": m["nonce"], "plants": {p: {"key": f"plant:{p}",
+              "expected": dict(q1="yes", q2="no", q3="yes", q4="no", tier="B")} for p in ("P-A", "P-B", "P-C")}}
+    check("C4: void_reasons reads Appendix B's expectations, never the manifest's",
+          any("P-C" in x for x in T.void_reasons(forged, pn, wrong)), T.void_reasons(forged, pn, wrong))
+    r = raised(lambda: X.load_manifest(mp, ""))
+    check("B2: an empty expected manifest sha256 is refused, not skipped (on an honest manifest)",
+          r and r.startswith("ExportError") and "required" in r, r)
+    r = raised(lambda: X.load_manifest(mp, None))
+    check("B2: a missing expected manifest sha256 is refused", r and r.startswith("ExportError"), r)
 
 
 def t_void(a):
@@ -1081,25 +1294,385 @@ def t_void(a):
     key = X.packet_key(rec)
     t = dict(good)
     t[X.packet_name(m["nonce"], key)] = dict(q1="yes", q2="no", q3="no", q4="no", unplaceable=False)
-    res = AG.aggregate(arm0, sc, m, t, {rec["id"]: True})
+    res = AG.aggregate(arm0, sc, m, t, ROK(rec["id"]))
     check("... and with it tiered B and reproduced, the cell is FOUND",
           res["cells"][("k8s-en", "E", "Q")]["verdict"] == "FOUND" and res["overall"] == "FOUND")
-    res = AG.aggregate(arm0, sc, m, t, {rec["id"]: False})
+    res = AG.aggregate(arm0, sc, m, t, {rec["id"]: dict(ROK(rec["id"])[rec["id"]], ok=False, regenerated_sha256="f" * 64)})
     check("... a record that does not reproduce (F9) is not FOUND",
           res["cells"][("k8s-en", "E", "Q")]["verdict"] != "FOUND")
-    try:
-        AG.aggregate(arm0, sc, m, t, {})
-        refused = False
-    except AG.MissingRepro:
-        refused = True
-    check("... and with no reproduction result the aggregator refuses", refused)
+    r = raised(lambda: AG.aggregate(arm0, sc, m, t, {}))
+    check("... and with no reproduction result the aggregator refuses with MissingRepro",
+          r and r.startswith("MissingRepro"), r)
     t2 = dict(t)
     t2[pn["P-C"]] = dict(t2[pn["P-C"]], q2="yes")
-    res = AG.aggregate(arm0, sc, m, t2, {rec["id"]: True})
+    res = AG.aggregate(arm0, sc, m, t2, ROK(rec["id"]))
     check("a void tiering makes a cell that exported a packet NO VERDICT",
           res["cells"][("k8s-en", "E", "Q")]["verdict"] == "NO VERDICT")
     check("... and leaves a cell that exported none alone",
           "void" not in res["cells"][("k8s-en", "E", "R")]["reason"], res["cells"][("k8s-en", "E", "R")])
+
+
+def wrong_rec(arm, mode, unit, iid=None):
+    r = dict(syn(arm, mode, "Q", unit, cls="WRONG", iid=iid), reference="q", oracle_target_text="o")
+    r["hard"] = {"cls": "WRONG", "mechanism_target_text": "m", "hit": 3, "status": "EXACT"}
+    return r
+
+
+def t_review_b5(a):
+    section("Review B5: named checks for gates whose mutants survived")
+    from p2 import aggregate as AG
+    from p2 import arm0 as A0
+    from p2 import export as X
+    from p2 import tiers as T
+    m = manifest_for_test()
+    good = good_tiers(m)
+    arm0 = {"k8s-en": {"passes_bar": True}}
+    # 1: only the yaml-fence selection counts toward a cell (F1, §6.3)
+    recs = [syn("k8s-en", "E", "Q", f"u{i}") for i in range(299)] + [syn("k8s-en", "E", "Q", "none-only")]
+    sc = syn_scores("k8s-en", recs)
+    sc["k8s-en"]["instances"][("k8s-en", "i-none-only")]["rules"] = ["none", "anywhere"]
+    c = AG.aggregate(arm0, sc, m, good, {})["cells"][("k8s-en", "E", "Q")]
+    check("B5/1: a unit selected only under `none` does not count toward the floor (299 -> NO VERDICT)",
+          c["verdict"] == "NO VERDICT" and c["distinct"]["decided"] == 299, c["distinct"])
+    # 2: the floor counts natural-language units only
+    recs = [syn("k8s-en", "E", "Q", f"u{i}") for i in range(299)] + [dict(syn("k8s-en", "E", "Q", "code"), nl=False)]
+    c = AG.aggregate(arm0, syn_scores("k8s-en", recs), m, good, {})["cells"][("k8s-en", "E", "Q")]
+    check("B5/2: a non-natural-language unit does not count toward the floor", c["verdict"] == "NO VERDICT", c["distinct"])
+    # 3, 4, 25: F6, F7 and an unplaceable real packet
+    rec = wrong_rec("k8s-en", "E", "w1")
+    sc = syn_scores("k8s-en", [rec] + [syn("k8s-en", "E", "Q", f"u{i}") for i in range(400)])
+    name = X.packet_name(m["nonce"], X.packet_key(rec))
+    for label, ans, want in (("B5/3: q4 yes (F6 fails) is not FOUND", dict(q1="yes", q2="no", q3="no", q4="yes"), "NOT FOUND"),
+                             ("B5/4: q3 yes (F7 fails) is not FOUND", dict(q1="yes", q2="no", q3="yes", q4="no"), "NOT FOUND"),
+                             ("B5/25: an unplaceable real packet is not FOUND", dict(q1="yes", q2="yes", q3="no", q4="no"), "NOT FOUND")):
+        t = dict(good)
+        t[name] = dict(ans, unplaceable="unplaceable" in label)
+        res = AG.aggregate(arm0, sc, m, t, ROK(rec["id"]))
+        c = res["cells"][("k8s-en", "E", "Q")]
+        check(label, c["verdict"] == want, c.get("reason"))
+        if "unplaceable" in label:
+            check("B5/25: ... and is not a near miss (i) either", res["near_misses"]["i"] == 0, res["near_misses"])
+        elif "q3" in label:
+            check("B5/4: ... and counts as near miss (i)", res["near_misses"]["i"] == 1, res["near_misses"])
+    # 6: §6.7's Q condition names E, S5 and S25 only
+    cells = {(arm, "M", "Q"): {"verdict": "NOT FOUND"} for arm in ("k8s-en", "cncf-toc")}
+    cells[("k8s-en", "E", "R")] = {"verdict": "NOT FOUND"}
+    check("B5/6: Q NOT FOUND only in M cells does not satisfy §6.7's Q condition",
+          AG.overall(cells, {"i": set()}) == "INCONCLUSIVE")
+    # 9: the Arm 0 bar is over every natural-language type, not prose alone
+    lt = "- This list item repeats verbatim here."
+    texts = {"a.md": d("# A", lt, "A paragraph of prose that is its own.", lt, "Another prose paragraph, also unique.")}
+    cc = A0.census_texts(texts)
+    check("B5/9: list-item twins over 10% stop the arm", not cc["passes_bar"], f"{cc['nl_twin_same_file']}/{cc['nl_distinct_ge20']}")
+    # 24: a cell of an arm that failed Arm 0 is NO VERDICT (oracle reach)
+    recs = [syn("k8s-en", "E", "Q", f"u{i}") for i in range(400)]
+    c = AG.aggregate({"k8s-en": {"passes_bar": False}}, syn_scores("k8s-en", recs), m, good, {})["cells"][("k8s-en", "E", "Q")]
+    check("B5/24: an arm that failed the Arm 0 bar is NO VERDICT (oracle reach), whatever its counts",
+          c["verdict"] == "NO VERDICT" and "oracle reach" in c["reason"], c)
+    # 10, 11: tiers.jsonl
+    tp = os.path.join(tempfile.mkdtemp(), "tiers.jsonl")
+    with open(tp, "w") as f:
+        f.write(json.dumps(dict(packet="p1", q1="yes", q2="no", q3="no", q4="no", unplaceable=False)) + "\n")
+        f.write(json.dumps(dict(packet="p1", q1="no", q2="no", q3="no", q4="no", unplaceable=False)) + "\n")
+        f.write(json.dumps(dict(packet="p2", q1="no", q2="no", q3="no", q4="no", unplaceable="no")) + "\n")
+    tt, probs = T.read_tiers(tp)
+    check("B5/10: the first line for a packet binds, a later one is not a revision",
+          tt.get("p1", {}).get("q1") == "yes" and any("first line binds" in x for x in probs), probs)
+    check("B5/11: `unplaceable` must be a boolean; \"no\" is malformed", "p2" not in tt, probs)
+    # 12 and A4: an unplaceable plant, by §7.3's own void list
+    pn = {p: X.packet_name(m["nonce"], v["key"]) for p, v in m["plants"].items()}
+    t = dict(good)
+    t[pn["P-A"]] = dict(t[pn["P-A"]], unplaceable=True)
+    check("B5/12: an unplaceable P-A (expected A) is on the non-qualifying side of B/C: void",
+          any("P-A" in x for x in T.void_reasons(m, pn, t)), T.void_reasons(m, pn, t))
+    t = dict(good)
+    t[pn["P-C"]] = dict(t[pn["P-C"]], unplaceable=True)
+    check("A4: an unplaceable P-C (expected C), q3 and q4 as expected, does not void: "
+          "UNPLACEABLE is not a finding, so it sits on C's side", T.void_reasons(m, pn, t) == [],
+          T.void_reasons(m, pn, t))
+    # 15: an UNKNOWN verdict is never decided
+    before = d("# U", "Line one of the block here.\nLine two of the block here.\nLine three of the block here.",
+               "A closing paragraph that stays.")
+    after = d("# U", "Completely new first line.\nLine two of the block here.\nAnother new third line.\nAnd a fourth.",
+              "A closing paragraph that stays.")
+    r = one(inst1(before, after), "Q", index=1)
+    check("B5/15: a block TLLC calls UNKNOWN is not decided and has no class",
+          r and r["oracle"] == "UNKNOWN" and r["decided"] is False and r["hard"]["cls"] is None, r and r["oracle"])
+
+
+def t_review_a5_b1_a3(a):
+    section("Review A5, B1, A3: one representative per packet, F9 bound, beside-reporting")
+    from p2 import aggregate as AG
+    from p2 import export as X
+    m = manifest_for_test()
+    good = good_tiers(m)
+    arm0 = {"k8s-en": {"passes_bar": True}}
+    e = wrong_rec("k8s-en", "E", "w1", iid="E:c1:doc.md")
+    s5 = wrong_rec("k8s-en", "S5", "w1", iid="S5:0:doc.md")
+    base = [syn("k8s-en", md, "Q", f"u{i}", iid=f"{md}:u{i}") for md in ("E", "S5") for i in range(400)]
+    sc = syn_scores("k8s-en", [e, s5] + base, modes=("E", "S5"))
+    key = X.packet_key(e)
+    check("A5: the two records share one packet", X.packet_key(s5) == key)
+    t = dict(good)
+    t[X.packet_name(m["nonce"], key)] = dict(q1="yes", q2="no", q3="no", q4="no", unplaceable=False)
+    r = raised(lambda: AG.aggregate(arm0, sc, m, t, ROK(e["id"])))
+    check("A5: F9 is checked on the packet's one representative (smallest id across modes) for every cell "
+          "that exported it", r is None, r)
+    if r is None:
+        res = AG.aggregate(arm0, sc, m, t, ROK(e["id"]))
+        check("A5: ... so both cells that hold it are FOUND",
+              res["cells"][("k8s-en", "E", "Q")]["verdict"] == "FOUND"
+              and res["cells"][("k8s-en", "S5", "Q")]["verdict"] == "FOUND")
+    for label, rp in (("B1: a reproduction result marked unbound is not F9", dict(ROK(e["id"])[e["id"]], bound=False)),
+                      ("B1: a reproduction whose two sha256s differ is not F9",
+                       dict(ROK(e["id"])[e["id"]], regenerated_sha256="b" * 64)),
+                      ("B1: a reproduction that says ok but carries no hashes is not F9",
+                       {"id": e["id"], "ok": True, "bound": True})):
+        res = AG.aggregate(arm0, sc, m, t, {e["id"]: rp})
+        c = res["cells"][("k8s-en", "E", "Q")]
+        check(label, c["verdict"] != "FOUND", c.get("reason"))
+        if "differ" in label:
+            check("B1/B8: ... and the cell's reason names the record that does not reproduce",
+                  e["id"] in c.get("reason", "") and "reproduce" in c.get("reason", ""), c.get("reason"))
+    d_ = dict(wrong_rec("k8s-en", "E", "del1"), oracle="DELETED", oracle_target_text=None)
+    sc = syn_scores("k8s-en", [d_] + [syn("k8s-en", "E", "Q", f"u{i}") for i in range(400)])
+    t = dict(good)
+    t[X.packet_name(m["nonce"], X.packet_key(d_))] = dict(q1="yes", q2="no", q3="no", q4="no", unplaceable=False)
+    c = AG.aggregate(arm0, sc, m, t, ROK(d_["id"]))["cells"][("k8s-en", "E", "Q")]
+    check("A3/F4: a find resting on an oracle DELETED target is reported as WRONG_on_deleted, labelled weaker",
+          c["verdict"] == "FOUND" and c.get("wrong_on_deleted") == 1 and "weaker" in c.get("reason", ""), c)
+    recs = [syn("k8s-en", "E", "Q", f"u{i}") for i in range(300)] + [syn("k8s-en", "E", "Q", "n1")]
+    sc = syn_scores("k8s-en", recs)
+    sc["k8s-en"]["instances"][("k8s-en", "i-n1")]["rules"] = ["none"]
+    c = AG.aggregate(arm0, sc, m, good, {})["cells"][("k8s-en", "E", "Q")]
+    bs = c.get("beside", {})
+    check("A3/§6.3: the cell is also computed under `none` and `anywhere`, beside and with no verdict",
+          bs.get("none", {}).get("distinct", {}).get("decided") == 301
+          and bs.get("anywhere", {}).get("distinct", {}).get("decided") == 300
+          and "verdict" not in bs.get("none", {}), bs)
+    recs = [syn("site-policy", "M", "Q", f"u{i}") for i in range(10)]
+    sc = syn_scores("site-policy", recs, modes=("M",))
+    for i, (k_, v) in enumerate(sc["site-policy"]["instances"].items()):
+        v.update(strict=i % 2 == 0, set25=True)
+    c = AG.aggregate({"site-policy": {"passes_bar": True}}, sc, m, good, {})["cells"][("site-policy", "M", "Q")]
+    check("A3/§6.2: site-policy M reports the 25-case set beside the strict set, with no verdict",
+          c["distinct"]["decided"] == 5 and c.get("beside", {}).get("set25", {}).get("distinct", {}).get("decided") == 10,
+          c.get("beside"))
+
+
+def binding_repo(tmp, name="br"):
+    """A git repository holding a copy of this spike/: harness, the frozen
+    documents. Its one commit plays the validation commit."""
+    root = os.path.join(tmp, name)
+    sp = os.path.join(root, "spike")
+    shutil.copytree(HERE, os.path.join(sp, "harness"), ignore=shutil.ignore_patterns("__pycache__"))
+    for f in ("PRE-REGISTRATION-2.md", "ORACLE.md"):
+        shutil.copy(os.path.join(os.path.dirname(HERE), f), sp)
+    open(os.path.join(root, ".gitignore"), "w").write("__pycache__/\n")
+    env = dict(os.environ, **GIT_ENV)
+
+    def g(*x):
+        return subprocess.run(["git", "-C", root, *x], check=True, capture_output=True, text=True,
+                              env=env).stdout.strip()
+    g("init", "-q", "-b", "main")
+    g("add", "-A")
+    g("commit", "-q", "-m", "validation")
+    return root, sp, g("rev-parse", "HEAD"), g
+
+
+def run_copy(sp, *args):
+    r = subprocess.run([sys.executable, "-I", "-B", os.path.join(sp, "harness", "prereg2.py"), *args],
+                       capture_output=True, text=True, env=dict(os.environ, **GIT_ENV))
+    return r.returncode, r.stdout + r.stderr
+
+
+def transcripts(sp):
+    d = os.path.join(sp, "results", "prereg2", "transcripts")
+    return sorted(os.listdir(d)) if os.path.isdir(d) else []
+
+
+def t_binding(a, tmp):
+    section("Review C1, B6, C3, B3, B10, A7: the binding is enforced by the harness")
+    from p2 import binding as BD
+    root, sp, vc, g = binding_repo(tmp)
+    msha = "ab" * 32
+    rc, out = run_copy(sp, "bind", "--validation-commit", vc, "--manifest-sha", msha)
+    check("C1: `bind` writes VALIDATION naming the validation commit and the manifest sha256",
+          rc == 0 and json.load(open(os.path.join(sp, BD.VALIDATION_REL)))["validation_commit"] == vc, out[-200:])
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("C3: bind's own transcript must be committed before a bound run", not st["bound"]
+          and any("-bind.txt" in r for r in rs), rs)
+    g("add", "spike/results/prereg2/transcripts")
+    g("commit", "-q", "-m", "commit bind's transcript, not VALIDATION")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("C1: a clean tree at the validation commit, VALIDATION not yet committed, is bound for Arm 0",
+          st["bound"], rs)
+    g("add", "-A")
+    g("commit", "-q", "-m", "arm0 commit adds VALIDATION and a transcript")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("C1: ... and still bound once VALIDATION is committed", st["bound"], rs)
+    target = os.path.join(sp, "harness", "p2", "aggregate.py")
+    orig = open(target).read()
+    open(target, "a").write("# edited\n")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("C1/B5-22: an edited harness file is not bound", not st["bound"] and any("aggregate.py" in r for r in rs), rs)
+    g("update-index", "--assume-unchanged", "spike/harness/p2/aggregate.py")
+    porcelain = g("status", "--porcelain")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("B6: hidden with --assume-unchanged (git status shows nothing), the edit is still caught by hash-object",
+          porcelain == "" and not st["bound"] and any("bytes differ" in r for r in rs), (porcelain, rs))
+    g("update-index", "--no-assume-unchanged", "spike/harness/p2/aggregate.py")
+    open(target, "w").write(orig)
+    os.makedirs(os.path.join(sp, "harness", "__pycache__"), exist_ok=True)
+    open(os.path.join(sp, "harness", "__pycache__", "x.cpython-313.pyc"), "wb").write(b"x")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("C1: an ignored file under the harness (a stray .pyc) is not bound, by both the ls-tree walk "
+          "and `git status --ignored`", not st["bound"] and any("not in the validation commit" in r for r in rs)
+          and any("!! spike/harness/__pycache__" in r for r in rs), rs)
+    shutil.rmtree(os.path.join(sp, "harness", "__pycache__"))
+    open(os.path.join(sp, "harness", "extra.py"), "w").write("x = 1\n")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("C1: an untracked file under the harness is not bound", not st["bound"], rs)
+    os.remove(os.path.join(sp, "harness", "extra.py"))
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("C1: ... and restored, it is bound again (the checks can pass)", st["bound"], rs)
+    tdir = os.path.join(sp, "results", "prereg2", "transcripts")
+    os.makedirs(tdir, exist_ok=True)
+    stray = os.path.join(tdir, "2026-10-09T000000Z-arm0-cmspec.txt")
+    open(stray, "w").write("# harness bound: True\n")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("C3: an uncommitted transcript under results/prereg2/ blocks every bound run", not st["bound"], rs)
+    g("add", "-A")
+    g("commit", "-q", "-m", "commit the cmspec transcript")
+    st, rs = BD.check(sp, "arm0", "cmspec")
+    check("C3: an earlier arm0 transcript for the same arm refuses a second arm0 (the first binds)",
+          not st["bound"] and any("first execution binds" in r for r in rs), rs)
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("C3: ... but not for another arm", st["bound"], rs)
+    g("checkout", "-q", "-b", "side", vc)
+    open(os.path.join(root, "side.txt"), "w").write("x\n")
+    g("add", "side.txt")
+    g("commit", "-q", "-m", "side")
+    side = g("rev-parse", "HEAD")
+    g("checkout", "-q", "main")
+    json.dump({"validation_commit": side, "manifest_sha256": msha}, open(os.path.join(sp, BD.VALIDATION_REL), "w"))
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("C1: a validation commit that is not an ancestor of HEAD is not bound",
+          not st["bound"] and any("ancestor" in r for r in rs), rs)
+    g("checkout", "-q", "--", "spike/results/prereg2/VALIDATION")
+    n0 = len(transcripts(sp))
+    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--work-dir", os.path.join(tmp, "w"))
+    t_new = transcripts(sp)[n0:] if len(transcripts(sp)) > n0 else []
+    check("A7: a usage error on a bound command (arm0 without --arm) still writes a transcript",
+          rc == 2 and len(transcripts(sp)) == n0 + 1, (rc, transcripts(sp)[-1:]))
+    g("add", "-A")
+    g("commit", "-q", "-m", "commit that transcript")
+    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir",
+                       os.path.join(tmp, "w"), "--transcript-dir", os.path.join(tmp, "elsewhere"))
+    check("C3: a bound run that names --transcript-dir is refused, and its transcript is still written "
+          "where bound transcripts go", rc == 2 and "takes no --transcript-dir" in out
+          and not os.path.exists(os.path.join(tmp, "elsewhere")) and len(transcripts(sp)) == n0 + 2, out[-300:])
+    g("add", "-A")
+    g("commit", "-q", "-m", "commit that transcript")
+    for flag, val in (("--sample-e", "10"), ("--modes", "E"), ("--out-dir", os.path.join(tmp, "o"))):
+        rc, out = run_copy(sp, "score", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir",
+                           os.path.join(tmp, "w"), flag, val)
+        check(f"B3/C3: a bound score run that passes {flag} is refused", rc == 2 and f"takes no {flag}" in out,
+              out[-200:])
+        g("add", "-A")
+        g("commit", "-q", "-m", "commit that transcript")
+    rc, out = run_copy(sp, "aggregate", "--d8-dir", a.d8_dir, "--manifest", os.path.join(tmp, "m.json"),
+                       "--fixture-ok")
+    check("B3: a bound aggregate that passes --fixture-ok is refused", rc == 2 and "takes no --fixture-ok" in out,
+          out[-200:])
+    g("add", "-A")
+    g("commit", "-q", "-m", "commit that transcript")
+    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--arm", "x", "--fixture-repo", root,
+                       "--fixture-pin", vc, "--fixture-pathspec", "*.md", "--transcript-dir",
+                       os.path.join(tmp, "ft"), "--out-dir", os.path.join(sp, "results", "prereg2", "arm0"))
+    check("B10: an unbound or fixture run may not write under results/prereg2/ (a bound Arm 0 result "
+          "cannot be overwritten)", rc == 2 and "may not write under" in out, out[-200:])
+    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--arm", "x", "--unbound", "--work-dir",
+                       os.path.join(tmp, "w"), "--out-dir", os.path.join(tmp, "o"))
+    check("B10/A7: an unbound run that names no --transcript-dir is refused, and its transcript is "
+          "written where bound ones go, to be committed", rc == 2 and "must name --transcript-dir" in out
+          and any(t.endswith("-arm0-x.txt") for t in transcripts(sp)), out[-200:])
+    g("add", "-A")
+    g("commit", "-q", "-m", "commit that transcript")
+    a0 = os.path.join(tmp, "ub-a0")
+    os.makedirs(a0)
+    json.dump({"arm": "k8s-en", "bound": False, "passes_bar": True}, open(os.path.join(a0, "k8s-en.json"), "w"))
+    os.makedirs(os.path.join(tmp, "ub-sc", "k8s-en"))
+    json.dump({"arm": "k8s-en", "bound": False, "modes": []}, open(os.path.join(tmp, "ub-sc", "k8s-en", "status.json"), "w"))
+    mp = os.path.join(tmp, "ub-m.json")
+    from p2 import export as X
+    sha = X.seal(mp)
+    common = ["--d8-dir", a.d8_dir, "--manifest", mp, "--manifest-sha", sha, "--state-dir",
+              os.path.join(tmp, "ub-st"), "--repro-dir", os.path.join(tmp, "ub-rp"), "--out",
+              os.path.join(tmp, "ub-v.json"), "--transcript-dir", os.path.join(tmp, "ub-t"), "--unbound",
+              "--score-dir", os.path.join(tmp, "ub-sc")]
+    rc, out = run_copy(sp, "aggregate", *common, "--arm0-dir", a0)
+    check("B5-13: aggregate refuses an unbound Arm 0 result (without --fixture-ok)",
+          rc == 2 and "is not a bound output" in out and "k8s-en.json" in out, out[-200:])
+    a0b = os.path.join(tmp, "ub-a0b")
+    os.makedirs(a0b)
+    vcj = {"validation_commit": vc}
+    json.dump({"arm": "k8s-en", "bound": True, "binding": vcj, "passes_bar": True}, open(os.path.join(a0b, "k8s-en.json"), "w"))
+    rc, out = run_copy(sp, "aggregate", *common, "--arm0-dir", a0b)
+    check("B5-14: aggregate refuses an unbound score result (without --fixture-ok)",
+          rc == 2 and "is not a bound output" in out, out[-200:])
+    json.dump({"arm": "k8s-en", "bound": True, "binding": vcj, "modes": ["E"], "sample_e": 10, "sample_s": 500,
+               "modes_requested": ["E"]}, open(os.path.join(tmp, "ub-sc", "k8s-en", "status.json"), "w"))
+    rc, out = run_copy(sp, "aggregate", *common, "--arm0-dir", a0b)
+    check("B3: aggregate refuses a score run that was not §6.5's (1,000 and 500, all four modes)",
+          rc == 2 and "1,000 and 500" in out, out[-200:])
+    rc, out = run_copy(sp, "seal", "--manifest", os.path.join(tmp, "second-seal.json"))
+    check("C4: once VALIDATION exists, a second seal is refused anywhere",
+          rc == 2 and "sealed once" in out and not os.path.exists(os.path.join(tmp, "second-seal.json")), out[-200:])
+    g("add", "-A")
+    g("commit", "-q", "-m", "commit that transcript")
+    st, rs = BD.check(sp, "export", None)
+    check("the binding check over the copy is still clean at the end (the refusals above were committed)",
+          st["bound"], rs)
+
+
+def t_preflight(a, tmp):
+    section("Review C3: aggregate's transcript preflight")
+    import prereg2
+    from p2 import tierrun as TRN
+    sp = os.path.join(tmp, "pf", "spike")
+    td = os.path.join(sp, "results", "prereg2", "transcripts")
+    os.makedirs(td)
+
+    def tw(name, bound=True):
+        open(os.path.join(td, name), "w").write(f"# prereg2\n# harness bound: {bound}\n")
+    tw("2026-10-10T000000Z-arm0-k8s-en.txt")
+    tw("2026-10-11T000000Z-score-k8s-en.txt")
+    tw("2026-10-12T000000Z-export.txt")
+    check("C3: one bound arm0, score and export transcript per arm passes",
+          prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]) == [])
+    tw("2026-10-10T010000Z-arm0-k8s-en.txt", bound=False)
+    bad = prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"])
+    check("C3: a second arm0 transcript for an arm, even unbound, is refused", any("arm0 k8s-en" in b for b in bad), bad)
+    os.remove(os.path.join(td, "2026-10-10T010000Z-arm0-k8s-en.txt"))
+    check("C3: a scored arm with no score transcript is refused",
+          any("score cncf-toc" in b for b in prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en", "cncf-toc"])))
+    st = os.path.join(sp, "results", "prereg2")
+    TRN.append_ledger(st, {"event": "started", "n": 1})
+    check("C3: a started tiering run with no transcript is refused",
+          any("no committed transcript" in b for b in prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"])))
+    tw("2026-10-13T000000Z-tier-run.txt")
+    os.makedirs(os.path.join(st, "tier-work-1"))
+    open(os.path.join(st, "tier-work-1", "tiers.jsonl"), "w").write('{"packet": "x"}\n')
+    TRN.append_ledger(st, {"event": "started", "n": 2})
+    tw("2026-10-14T000000Z-tier-run.txt")
+    bad = prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"])
+    check("C3: two tiering runs where the first wrote lines are refused", any("first wrote lines" in b for b in bad), bad)
+    open(os.path.join(st, "tier-work-1", "tiers.jsonl"), "w").write("")
+    check("C3: two tiering runs where the first wrote none pass",
+          prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]) == [])
+    n, path = TRN.binding_run(st)
+    check("C2: then the second run's tiers bind", n == 2 and path.endswith("tier-work-2/tiers.jsonl"), (n, path))
 
 
 def t_aggregator(a, tmp):
@@ -1118,11 +1691,12 @@ def t_aggregator(a, tmp):
         os.makedirs(os.path.join(tmp, dd))
     rc, out = cli("aggregate", "--d8-dir", a.d8_dir, "--transcript-dir", os.path.join(tmp, "agg-t"),
                   "--arm0-dir", os.path.join(tmp, "agg-a0"), "--score-dir", os.path.join(tmp, "agg-sc"),
-                  "--manifest", mp, "--manifest-sha", sha, "--tiers", os.path.join(tmp, "none.jsonl"),
+                  "--manifest", mp, "--manifest-sha", sha, "--state-dir", os.path.join(tmp, "agg-st"),
                   "--repro-dir", os.path.join(tmp, "agg-rp"), "--out", os.path.join(tmp, "v.json"),
                   "--fixture-ok", "--unbound")
-    check("the aggregate CLI on empty input exits non-zero with no verdict",
-          rc != 0 and "OVERALL" not in out and not os.path.exists(os.path.join(tmp, "v.json")),
+    check("the aggregate CLI on empty input exits non-zero with no verdict, for that reason",
+          rc != 0 and "NO VERDICT: no Arm 0 result" in out and "OVERALL" not in out
+          and not os.path.exists(os.path.join(tmp, "v.json")),
           f"exit {rc}")
     section("Overall verdict (§6.7)")
     cells = {}
@@ -1152,35 +1726,61 @@ def main():
     a.d8_dir = os.path.abspath(a.d8_dir)
     Mx.load(a.d8_dir)
     tmp = tempfile.mkdtemp(prefix="prereg2-v3.")
+    real_results = os.path.join(os.path.dirname(HERE), "results", "prereg2")
+
+    def listing():
+        # validation/ is where prereg2_validate.sh writes the V transcripts,
+        # possibly while V3 runs; nothing else there may change.
+        return sorted(p for p in (os.path.relpath(os.path.join(r, f), real_results)
+                                  for r, _, fs in os.walk(real_results) for f in fs)
+                      if not p.startswith("validation" + os.sep))
+    before_results = listing()
+    # Each section runs on its own: one that raises is a named failure, and
+    # the sections after it still run.
+    sections = [
+        lambda: t_d8_pin(a, tmp),
+        lambda: t_copied(a),
+        lambda: t_repeat(a),
+        lambda: t_known(a),
+        lambda: t_split(a),
+        lambda: t_wf(a),
+        lambda: t_r_units(a),
+        lambda: t_r_slug_t(a),
+        lambda: t_r(a),
+        lambda: t_plants(a, tmp),
+        lambda: t_enumerators(a, tmp),
+        lambda: t_repro(a, tmp),
+        lambda: t_undecodable(a, tmp),
+        lambda: t_bundles(a, tmp),
+        lambda: t_m_arm(a, tmp),
+        lambda: t_mfilter(a, tmp),
+        lambda: t_sampler(a),
+        lambda: t_counting(a),
+        lambda: t_arm0(a, tmp),
+        lambda: t_export(a, tmp),
+        lambda: t_tier_run(a, tmp),
+        lambda: t_manifest_c4(a, tmp),
+        lambda: t_void(a),
+        lambda: t_review_b5(a),
+        lambda: t_review_a5_b1_a3(a),
+        lambda: t_binding(a, tmp),
+        lambda: t_preflight(a, tmp),
+        lambda: t_aggregator(a, tmp),
+    ]
     try:
-        t_d8_pin(a, tmp)
-        t_copied(a)
-        t_repeat(a)
-        t_known(a)
-        t_split(a)
-        t_wf(a)
-        t_r_units(a)
-        t_r(a)
-        t_plants(a, tmp)
-        t_enumerators(a, tmp)
-        t_repro(a, tmp)
-        t_undecodable(a, tmp)
-        t_bundles(a, tmp)
-        t_m_arm(a, tmp)
-        t_mfilter(a, tmp)
-        t_sampler(a)
-        t_counting(a)
-        t_arm0(a, tmp)
-        t_export(a, tmp)
-        t_tier_run(a, tmp)
-        t_void(a)
-        t_aggregator(a, tmp)
-    except Exception:
-        import traceback
-        traceback.print_exc()
-        RESULTS.append(("no exception", False))
+        for fn in sections:
+            try:
+                fn()
+            except BaseException as e:
+                if isinstance(e, KeyboardInterrupt):
+                    raise
+                import traceback
+                traceback.print_exc()
+                check(f"section raised: {type(e).__name__}: {str(e)[:120]}", False)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+    added = sorted(set(listing()) - set(before_results))
+    check("V3 itself wrote nothing under this repository's results/prereg2/", not added, added[:3])
     fails = [lbl for lbl, ok in RESULTS if not ok]
     print(f"\n{len(RESULTS)} checks, {len(fails)} failed")
     print("V3:", "PASS" if not fails and RESULTS else "FAIL")

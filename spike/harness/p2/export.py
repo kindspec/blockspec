@@ -94,14 +94,23 @@ def seal(path, nonce=None):
     return hashlib.sha256(data).hexdigest()
 
 
-def load_manifest(path, want_sha=None):
+def load_manifest(path, want_sha):
+    """Read the sealed manifest. The expected sha256 is required (review
+    B2): a bound run takes it from the committed VALIDATION file. The plants
+    must be Appendix B's, keyed plant:P-x, with Appendix B's expectations
+    (review C4): a manifest cannot carry expectations of its own."""
+    if not want_sha or len(want_sha) != 64:
+        raise ExportError("the manifest's expected sha256 is required")
     raw = open(path, "rb").read()
     got = hashlib.sha256(raw).hexdigest()
-    if want_sha and got != want_sha:
+    if got != want_sha:
         raise ExportError(f"manifest sha256 {got} != committed {want_sha}")
     m = json.loads(raw)
-    if len(bytes.fromhex(m["nonce"])) != 32 or set(m["plants"]) != set(PLANT_EXPECT):
-        raise ExportError("malformed manifest")
+    if len(bytes.fromhex(m["nonce"])) != 32:
+        raise ExportError("malformed manifest: the nonce is not 32 bytes")
+    want = {n: {"key": f"plant:{n}", "expected": PLANT_EXPECT[n]} for n in PLANT_EXPECT}
+    if m.get("plants") != want:
+        raise ExportError("the manifest's plants are not Appendix B's")
     return m
 
 

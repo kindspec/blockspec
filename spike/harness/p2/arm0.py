@@ -70,10 +70,9 @@ def census_texts(texts):
 
 
 def bar_passes(nl_twin, nl_all):
-    """The bar: more than 10% twinned stops the arm. An arm with no
-    natural-language content at all has nothing to pass on, and does not."""
-    if nl_all == 0:
-        return False
+    """The bar: more than 10% twinned stops the arm, and nothing else does.
+    0 of 0 is not more than 10%, so an arm with no natural-language content
+    passes it (review A4, LOG §16); its cells then fail §6.6's floor."""
     return nl_twin <= BAR * nl_all
 
 
@@ -89,6 +88,4 @@ def census_repo(repo, paths):
             unreadable.append(p)
     out = census_texts(texts)
     out["files_read"], out["unreadable"] = len(texts), unreadable
-    if not texts:
-        out["passes_bar"] = False
     return out

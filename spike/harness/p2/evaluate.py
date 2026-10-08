@@ -100,10 +100,10 @@ def evaluate(inst):
             def target(i):
                 if i not in tg:
                     v, p = O.unit_oracle(base, after, legs, bb, bm, *Bu[i])
-                    tg[i] = m_b2u[p] if v == "SURVIVED" and p is not None else None
+                    tg[i] = m_b2u.get(p) if v == "SURVIVED" and p is not None else None
                 return tg[i]
             hu_cache.update(
-                B=Bu, M=Mu, target=target, b2u=O.unit_of_block(Bu),
+                B=Bu, M=Mu, target=target, b2u=O.unit_of_block(Bu), m_b2u=m_b2u,
                 Bc=[Mx.span_text(base, bb, a, z) for a, z in Bu],
                 Mc=[Mx.span_text(after, bm, a, z) for a, z in Mu],
                 lines=O.line_to_unit(after, bm, Mu))
@@ -127,11 +127,17 @@ def evaluate(inst):
                                   m_line_block):
                     verdict = "UNDECIDABLE-SPLIT"
             else:
+                # §5.2 step 1: t is the target of the SURVIVED verdict under
+                # check -- the §3 section's plurality block p -- as a §5.2
+                # unit. Neighbours' targets come from TLLC over each
+                # neighbouring unit (review A1).
                 h = slug_ctx()
                 k = h["b2u"][first]
-                t = h["target"](k)
+                t = h["m_b2u"].get(p)
                 if t is None:
-                    verdict, note = "UNDECIDABLE-REPEAT", "heading-span has no TLLC target"
+                    # LOG §16: TLLC's target lies before the first heading of
+                    # the after-state, in no §5.2 unit, so the rule has no t.
+                    verdict, note = "UNDECIDABLE-REPEAT", "TLLC's target lies in no §5.2 unit"
                 elif not O.repeat_rule(h["Bc"], h["Mc"], h["target"], k, t):
                     verdict = "UNDECIDABLE-REPEAT"
                 elif O.split_rule(base, after, legs, O.base_lines_of(base, bb, *h["B"][k]),
