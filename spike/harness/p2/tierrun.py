@@ -57,6 +57,11 @@ def start_day(repo, commit):
     return cday, cday + datetime.timedelta(days=1)
 
 
+def is_late(cday, today):
+    """§7.3: tiering runs within 14 days of the scoring-arm commit's day."""
+    return (today - cday).days > WINDOW_DAYS
+
+
 def scoring_commit(spike):
     """The one commit in HEAD's history that added results/prereg2/score/."""
     r = subprocess.run(["git", "-C", spike, "log", "--format=%H", "--diff-filter=A", "--",
@@ -255,7 +260,7 @@ def run(export_dir, state_dir, repo, commit, late_reason, agent_cmd, today=None,
     log(f"scoring-arm commit {commit}: committer day {cday} UTC; start day {start}; today {today}")
     if today < start:
         raise TierRefused(f"tiering starts on {start}, the first UTC day after the scoring-arm commit")
-    if (today - cday).days > WINDOW_DAYS:
+    if is_late(cday, today):
         if not late_reason:
             raise TierRefused(f"{(today - cday).days} days after the scoring-arm commit: "
                               f"a run after {WINDOW_DAYS} days needs --late-reason")

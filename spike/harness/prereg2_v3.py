@@ -308,6 +308,82 @@ def t_r_slug_t(a):
                           Mx.D8.blocks(d("Intro paragraph here.", "## A", "Body."))) == [(1, 2)])
 
 
+def t_rereview(a):
+    section("Re-review: H4 and the survivors R1, R5, R6, P1, D1-D3, C6a-c, V4")
+    from p2 import aggregate as AG
+    from p2 import evaluate as E
+    from p2 import export as X
+    from p2 import tierrun as TRN
+    base = ("## Alpha\n\nFailed jobs are retried three times\nbefore an alert is raised\nto the on-call engineer.\n\n"
+            "## Beta\n\nExports are written to the archive bucket nightly.\n")
+    after = ("Failed jobs are retried three times\nbefore an alert is raised\nto the on-call engineer.\n\n"
+             "## Alpha\n\nExports are written to the archive bucket nightly.\n")
+    r = one(inst1(base, after), "R", name="alpha")
+    check("H4: p in no §5.2 unit, no twin of k: t is undefined, T is empty, so the verdict is decided "
+          "(the re-review's a4case) -- and WRONG", r and r["decided"] and r["hard"]["cls"] == "WRONG"
+          and r["oracle"] == "SURVIVED", r and (r["oracle"], r["hard"]["cls"], r.get("note")))
+    rk = one(inst1("## Alpha\n\nBody line one here.\n\n## Beta\n\nBeta body here.\n",
+                   "Body line one here.\n\n## Beta\n\nBeta body here.\n\n## Alpha\n\nBody line one here.\n"), "R", name="alpha")
+    check("H4: p in no §5.2 unit with a twin of k among the units: UNDECIDABLE-REPEAT",
+          rk and rk["oracle"] == "UNDECIDABLE-REPEAT", rk and (rk["oracle"], rk["target"], rk.get("note")))
+    # R1: t is p's unit, not k's index
+    sec_a = "## A\n\nAlpha section body text, long enough."
+    b1 = d(sec_a, "## B", "Beta section body text, long enough.")
+    a1 = d("## New", "A new opening section body text.", sec_a, "## B", "Beta section body text, long enough.", sec_a)
+    r = one(inst1(b1, a1), "R", name="a")
+    check("R1: unit indices shifted by an inserted section: t is p's unit, and context decides",
+          r and r["oracle"] == "SURVIVED" and r["decided"], r and (r["oracle"], r["target"]))
+    # R5, R6: an after-side twin of the left neighbour; T from twins of t
+    P3 = "Drain the node before patching.\nWait for pods to reschedule.\nThen patch and reboot."
+    P3e = P3.replace("Drain the node", "Cordon and drain the node")
+    b5 = d("# H", "Section A text that stays put.", "Leader paragraph, unique in the base.", P3)
+    a5 = d("# H", "Section A text that stays put.", "Leader paragraph, unique in the base.", P3e,
+           "Leader paragraph, unique in the base.", P3e)
+    r = one(inst1(b5, a5), "Q", index=3)
+    check("R5/R6: the left neighbour's target has a twin in M, so it gives no context; t's own twin is in T: "
+          "UNDECIDABLE-REPEAT", r and r["target"] == 3 and r["oracle"] == "UNDECIDABLE-REPEAT",
+          r and (r["target"], r["oracle"]))
+    # P1: p is the last block of the resolved section
+    bp = d("# Doc", "## A", "Short intro.", "Line one of the main body.\nLine two of the main body.\nLine three of it.",
+           "## B", "Other text.")
+    r = one(inst1(bp, bp.replace("Short intro.", "A short intro.")), "R", name="a")
+    check("P1: p is the section's last block, and R resolving to that section is correct",
+          r and r["target"] == 3 and r["hard"]["hit"] == [1, 3] and r["hard"]["cls"] == "correct",
+          r and (r["target"], r["hard"]))
+    # D1-D3: DELETED is decided, and a resolution onto a deleted target is WRONG
+    st = AG.distinct_status([dict(syn("k8s-en", "E", "Q", "dl"), oracle="DELETED", decided=True)])
+    check("D1: a DELETED instance counts as decided", list(st.values()) == ["decided"], st)
+    bd = d("# Doc", "## Gone", "This whole section is removed by the edit, every word.", "## Kept", "Kept text here.")
+    r = one(inst1(bd, d("# Doc", "## Kept", "Kept text here.")), "R", name="gone")
+    check("D2: an R section deleted outright is DELETED, decided, and its #REF! is correct",
+          r and r["oracle"] == "DELETED" and r["decided"] and r["hard"]["cls"] == "correct",
+          r and (r["oracle"], r["decided"], r["hard"]))
+    check("D3: a Q resolution onto an oracle-DELETED target is WRONG, a refusal correct",
+          E.q_class("DELETED", 3, None) == "WRONG" and E.q_class("DELETED", None, None) == "correct")
+    # C6a-c
+    check("C6a: the committer day is the UTC day, also for a non-Z offset",
+          str(TRN.utc_day("2001-01-01T23:30:00-05:00")) == "2001-01-02"
+          and str(TRN.utc_day("2001-01-02T01:00:00+05:00")) == "2001-01-01")
+    import datetime as DT
+    cday = DT.date(2001, 1, 1)
+    check("C6b: the window is 14 days from the commit's day: day 14 is in time, day 15 is late",
+          not TRN.is_late(cday, cday + DT.timedelta(days=14)) and TRN.is_late(cday, cday + DT.timedelta(days=15)))
+    m = TRN.choose_model({"data": [{"id": "claude-opus-6", "created_at": "2026-01-01T00:00:00Z"},
+                                   {"id": "claude-opus-5-9", "created_at": "2026-09-01T00:00:00Z"}]},
+                         cday, cday)[0]
+    check("C6c: 'most recent' is by created_at, not by id", m == "claude-opus-5-9", m)
+    # V4 and kin: PLANT_EXPECT is Appendix B's, read from the document itself
+    import re
+    doc = open(os.path.join(os.path.dirname(HERE), "PRE-REGISTRATION-2.md"), encoding="utf-8").read()
+    got = {}
+    for name, q1, q2, q3, q4, tier in re.findall(
+            r"\*\*(P-[ABC])\.\*\* Expected answers: q1 (yes|no), q2 (yes|no), q3 (yes|no), "
+            r"q4 (yes|no)\. Expected tier: \*\*([ABC])\*\*", doc):
+        got[name] = {"q1": q1, "q2": q2, "q3": q3, "q4": q4, "tier": tier}
+    check("V4: PLANT_EXPECT is Appendix B's, answer for answer, as parsed from PRE-REGISTRATION-2.md",
+          len(got) == 3 and got == X.PLANT_EXPECT, got)
+
+
 def t_r(a):
     section("R: the resolver")
     # The Alpha body has three lines, so the vote over the section's lines
@@ -1370,7 +1446,7 @@ def t_review_b5(a):
     check("B5/24: an arm that failed the Arm 0 bar is NO VERDICT (oracle reach), whatever its counts",
           c["verdict"] == "NO VERDICT" and "oracle reach" in c["reason"], c)
     # 10, 11: tiers.jsonl
-    tp = os.path.join(tempfile.mkdtemp(), "tiers.jsonl")
+    tp = os.path.join(TMP, "b5-tiers.jsonl")
     with open(tp, "w") as f:
         f.write(json.dumps(dict(packet="p1", q1="yes", q2="no", q3="no", q4="no", unplaceable=False)) + "\n")
         f.write(json.dumps(dict(packet="p1", q1="no", q2="no", q3="no", q4="no", unplaceable=False)) + "\n")
@@ -1462,7 +1538,7 @@ def t_review_a5_b1_a3(a):
 
 def binding_repo(tmp, name="br"):
     """A git repository holding a copy of this spike/: harness, the frozen
-    documents. Its one commit plays the validation commit."""
+    documents. Its first commit is the harness before validation."""
     root = os.path.join(tmp, name)
     sp = os.path.join(root, "spike")
     shutil.copytree(HERE, os.path.join(sp, "harness"), ignore=shutil.ignore_patterns("__pycache__"))
@@ -1476,13 +1552,19 @@ def binding_repo(tmp, name="br"):
                               env=env).stdout.strip()
     g("init", "-q", "-b", "main")
     g("add", "-A")
-    g("commit", "-q", "-m", "validation")
-    return root, sp, g("rev-parse", "HEAD"), g
+    g("commit", "-q", "-m", "harness")
+    return root, sp, g
 
 
-def run_copy(sp, *args):
-    r = subprocess.run([sys.executable, "-I", "-B", os.path.join(sp, "harness", "prereg2.py"), *args],
-                       capture_output=True, text=True, env=dict(os.environ, **GIT_ENV))
+def run_copy(sp, *args, isolated=True, direct=False):
+    """Run the copy's prereg2.py. Its bundle directory is empty, so even a
+    run that wrongly got past every check could open no real corpus."""
+    empty = os.path.join(os.path.dirname(os.path.dirname(sp)), "no-bundles")
+    os.makedirs(empty, exist_ok=True)
+    env = dict(os.environ, **GIT_ENV, PREREG2_BUNDLE_DIR=empty)
+    exe = os.path.join(sp, "harness", "prereg2.py")
+    argv = [exe] if direct else [sys.executable] + (["-I"] if isolated else []) + ["-B", exe]
+    r = subprocess.run(argv + list(args), capture_output=True, text=True, env=env)
     return r.returncode, r.stdout + r.stderr
 
 
@@ -1491,26 +1573,31 @@ def transcripts(sp):
     return sorted(os.listdir(d)) if os.path.isdir(d) else []
 
 
-def t_binding(a, tmp):
-    section("Review C1, B6, C3, B3, B10, A7: the binding is enforced by the harness")
-    from p2 import binding as BD
-    root, sp, vc, g = binding_repo(tmp)
-    msha = "ab" * 32
-    rc, out = run_copy(sp, "bind", "--validation-commit", vc, "--manifest-sha", msha)
-    check("C1: `bind` writes VALIDATION naming the validation commit and the manifest sha256",
-          rc == 0 and json.load(open(os.path.join(sp, BD.VALIDATION_REL)))["validation_commit"] == vc, out[-200:])
-    st, rs = BD.check(sp, "arm0", "rust-book")
-    check("C3: bind's own transcript must be committed before a bound run", not st["bound"]
-          and any("-bind.txt" in r for r in rs), rs)
-    g("add", "spike/results/prereg2/transcripts")
-    g("commit", "-q", "-m", "commit bind's transcript, not VALIDATION")
-    st, rs = BD.check(sp, "arm0", "rust-book")
-    check("C1: a clean tree at the validation commit, VALIDATION not yet committed, is bound for Arm 0",
-          st["bound"], rs)
+def commit_all(g, msg="commit"):
     g("add", "-A")
-    g("commit", "-q", "-m", "arm0 commit adds VALIDATION and a transcript")
+    g("commit", "-q", "--allow-empty", "-m", msg)
+
+
+def t_binding(a, tmp):
+    section("Binding (C1, B6, C3, B3, B10, A7; re-review H1, H2, H3, M1, M2, M3)")
+    from p2 import binding as BD
+    root, sp, g = binding_repo(tmp)
+    rc, out = run_copy(sp, "seal", "--manifest", os.path.join(tmp, "b-manifest.json"))
+    v = json.load(open(os.path.join(sp, BD.VALIDATION_REL))) if rc == 0 else {}
+    import hashlib
+    check("H2: seal writes VALIDATION holding the sealed manifest's sha256, to go in the validation commit",
+          rc == 0 and v.get("manifest_sha256") == hashlib.sha256(
+              open(os.path.join(tmp, "b-manifest.json"), "rb").read()).hexdigest(), out[-200:])
+    commit_all(g, "validation: harness and VALIDATION")
+    vc = g("rev-parse", "HEAD")
+    check("H2: the validation commit is derived: the one commit that added VALIDATION",
+          BD.derive_validation(sp)[:2] == (vc, v.get("manifest_sha256")), BD.derive_validation(sp))
     st, rs = BD.check(sp, "arm0", "rust-book")
-    check("C1: ... and still bound once VALIDATION is committed", st["bound"], rs)
+    check("C1: a clean tree at the validation commit is bound", st["bound"] and st["validation_commit"] == vc, rs)
+    rc, out = run_copy(sp, "seal", "--manifest", os.path.join(tmp, "b-manifest2.json"))
+    check("C4: once VALIDATION exists, a second seal is refused",
+          rc == 2 and "sealed once" in out and not os.path.exists(os.path.join(tmp, "b-manifest2.json")), out[-200:])
+    commit_all(g, "the refused seal's transcript")
     target = os.path.join(sp, "harness", "p2", "aggregate.py")
     orig = open(target).read()
     open(target, "a").write("# edited\n")
@@ -1536,75 +1623,151 @@ def t_binding(a, tmp):
     os.remove(os.path.join(sp, "harness", "extra.py"))
     st, rs = BD.check(sp, "arm0", "rust-book")
     check("C1: ... and restored, it is bound again (the checks can pass)", st["bound"], rs)
+    # H2: the re-review's forgery -- a later commit edits the harness
+    g("checkout", "-q", "-b", "forge")
+    src = open(target).read()
+    open(target, "w").write(src.replace("FLOOR = 300", "FLOOR = 1"))
+    commit_all(g, "FLOOR = 1")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("H2: a commit after the validation commit that edits the harness is not bound, though the "
+          "work tree matches HEAD", not st["bound"] and any("after the validation commit" in r for r in rs), rs)
+    open(target, "w").write(src)
+    commit_all(g, "revert FLOOR")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("H2: ... nor after it is reverted: no commit after the validation commit may touch the harness",
+          not st["bound"], rs)
+    g("checkout", "-q", "main")
+    g("checkout", "-q", "-b", "forge-v")
+    vp = os.path.join(sp, BD.VALIDATION_REL)
+    json.dump({"manifest_sha256": "cd" * 32}, open(vp, "w"))
+    commit_all(g, "change VALIDATION")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("H2: a VALIDATION changed since the validation commit added it is refused",
+          not st["bound"] and any("has changed since" in r for r in rs), rs)
+    g("checkout", "-q", "main")
+    g("checkout", "-q", "-b", "forge-v2")
+    os.remove(vp)
+    commit_all(g, "drop VALIDATION")
+    json.dump({"manifest_sha256": "cd" * 32}, open(vp, "w"))
+    commit_all(g, "add VALIDATION again")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("H2: VALIDATION added by two commits is refused", not st["bound"]
+          and any("2 commits" in r for r in rs), rs)
+    g("checkout", "-q", "main")
+    g("checkout", "-q", "-b", "forge-rm")
+    os.remove(vp)
+    commit_all(g, "remove VALIDATION")
+    rc, out = run_copy(sp, "seal", "--manifest", os.path.join(tmp, "b-manifest3.json"))
+    check("C4: with VALIDATION gone from the tree but in the history, seal is still refused",
+          rc == 2 and "sealed once" in out and not os.path.exists(vp), out[-200:])
+    g("checkout", "-q", "-f", "main")
+    g("clean", "-q", "-fd", "spike/results")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("H2: ... and back on main the tree is bound again", st["bound"], rs)
+    hx = os.path.join(tmp, "hexrepo")
+    fixture_repo(hx, [("v", {"spike/results/prereg2/VALIDATION": '{"manifest_sha256": "HEAD~0000"}\n'})])
+    vc2, msha2, rs2 = BD.derive_validation(os.path.join(hx, "spike"))
+    check("H2: a VALIDATION whose sha256 is not 64 hex characters is refused", msha2 is None and rs2, rs2)
+    # C3 and H3
     tdir = os.path.join(sp, "results", "prereg2", "transcripts")
-    os.makedirs(tdir, exist_ok=True)
     stray = os.path.join(tdir, "2026-10-09T000000Z-arm0-cmspec.txt")
     open(stray, "w").write("# harness bound: True\n")
     st, rs = BD.check(sp, "arm0", "rust-book")
     check("C3: an uncommitted transcript under results/prereg2/ blocks every bound run", not st["bound"], rs)
-    g("add", "-A")
-    g("commit", "-q", "-m", "commit the cmspec transcript")
-    st, rs = BD.check(sp, "arm0", "cmspec")
-    check("C3: an earlier arm0 transcript for the same arm refuses a second arm0 (the first binds)",
-          not st["bound"] and any("first execution binds" in r for r in rs), rs)
-    st, rs = BD.check(sp, "arm0", "rust-book")
-    check("C3: ... but not for another arm", st["bound"], rs)
-    g("checkout", "-q", "-b", "side", vc)
-    open(os.path.join(root, "side.txt"), "w").write("x\n")
-    g("add", "side.txt")
-    g("commit", "-q", "-m", "side")
-    side = g("rev-parse", "HEAD")
-    g("checkout", "-q", "main")
-    json.dump({"validation_commit": side, "manifest_sha256": msha}, open(os.path.join(sp, BD.VALIDATION_REL), "w"))
-    st, rs = BD.check(sp, "arm0", "rust-book")
-    check("C1: a validation commit that is not an ancestor of HEAD is not bound",
-          not st["bound"] and any("ancestor" in r for r in rs), rs)
-    g("checkout", "-q", "--", "spike/results/prereg2/VALIDATION")
-    n0 = len(transcripts(sp))
-    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--work-dir", os.path.join(tmp, "w"))
-    t_new = transcripts(sp)[n0:] if len(transcripts(sp)) > n0 else []
-    check("A7: a usage error on a bound command (arm0 without --arm) still writes a transcript",
-          rc == 2 and len(transcripts(sp)) == n0 + 1, (rc, transcripts(sp)[-1:]))
-    g("add", "-A")
-    g("commit", "-q", "-m", "commit that transcript")
+    commit_all(g, "the cmspec transcript")
     rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir",
                        os.path.join(tmp, "w"), "--transcript-dir", os.path.join(tmp, "elsewhere"))
     check("C3: a bound run that names --transcript-dir is refused, and its transcript is still written "
           "where bound transcripts go", rc == 2 and "takes no --transcript-dir" in out
-          and not os.path.exists(os.path.join(tmp, "elsewhere")) and len(transcripts(sp)) == n0 + 2, out[-300:])
-    g("add", "-A")
-    g("commit", "-q", "-m", "commit that transcript")
+          and not os.path.exists(os.path.join(tmp, "elsewhere"))
+          and any(t.endswith("-arm0-rust-book.txt") for t in transcripts(sp)), out[-300:])
+    commit_all(g, "that transcript")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("H3: a refused arm0 leaves its transcript but does not use up the arm: arm0 rust-book is still allowed",
+          st["bound"], rs)
+    BD.mark_executed(sp, "arm0", "rust-book", os.path.join(tdir, "x.txt"))
+    commit_all(g, "an execution marker")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("H3: once arm0 rust-book has executed (its marker), a second arm0 rust-book is refused",
+          not st["bound"] and any("already executed" in r for r in rs), rs)
+    st, rs = BD.check(sp, "arm0", "cmspec")
+    check("H3: ... but not another arm", st["bound"], rs)
+    g("rm", "-q", "spike/results/prereg2/executed/arm0-rust-book.json")
+    commit_all(g, "git rm the marker")
+    st, rs = BD.check(sp, "arm0", "rust-book")
+    check("M3: git rm of the marker does not re-enable the arm: the history still has it",
+          not st["bound"] and any("already executed" in r for r in rs), rs)
+    BD.mark_executed(sp, "export", None, os.path.join(tdir, "x.txt"))
+    commit_all(g, "an export marker")
+    st, rs = BD.check(sp, "export", None)
+    check("B4: export, once executed, may not run again", not st["bound"], rs)
+    # H1: abbreviations and repeated flags
+    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--arm", "x", "--fixture-r", root,
+                       "--fixture-pi", vc, "--fixture-pa", "*.md", "--work-dir", os.path.join(tmp, "w"))
+    check("H1: abbreviated --fixture-r/--fixture-pi/--fixture-pa are not accepted",
+          rc == 2 and "unrecognized arguments" in out and not os.path.exists(
+              os.path.join(sp, "results", "prereg2", "arm0", "x.json")), out[-300:])
+    commit_all(g, "that transcript")
+    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--arm", "zzz", "--arm", "cncf-toc",
+                       "--work-dir", os.path.join(tmp, "w"))
+    check("H1: a repeated --arm is refused", rc == 2 and "given more than once" in out, out[-200:])
+    commit_all(g, "that transcript")
+    rc, out = run_copy(sp, "--he")
+    check("H1: no abbreviation at the top level either: --he is not --help", rc == 2 and "usage:" in out, out[-200:])
+    commit_all(g, "that transcript")
+    rc, out = run_copy(sp, "tier-run", "--agent-c", "/bin/true")
+    check("H1: an abbreviated --agent-c does not reach --agent-cmd", rc == 2 and "unrecognized" in out, out[-200:])
+    commit_all(g, "that transcript")
     for flag, val in (("--sample-e", "10"), ("--modes", "E"), ("--out-dir", os.path.join(tmp, "o"))):
         rc, out = run_copy(sp, "score", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--work-dir",
                            os.path.join(tmp, "w"), flag, val)
         check(f"B3/C3: a bound score run that passes {flag} is refused", rc == 2 and f"takes no {flag}" in out,
               out[-200:])
-        g("add", "-A")
-        g("commit", "-q", "-m", "commit that transcript")
+        commit_all(g, "that transcript")
     rc, out = run_copy(sp, "aggregate", "--d8-dir", a.d8_dir, "--manifest", os.path.join(tmp, "m.json"),
                        "--fixture-ok")
     check("B3: a bound aggregate that passes --fixture-ok is refused", rc == 2 and "takes no --fixture-ok" in out,
           out[-200:])
-    g("add", "-A")
-    g("commit", "-q", "-m", "commit that transcript")
-    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--arm", "x", "--fixture-repo", root,
-                       "--fixture-pin", vc, "--fixture-pathspec", "*.md", "--transcript-dir",
-                       os.path.join(tmp, "ft"), "--out-dir", os.path.join(sp, "results", "prereg2", "arm0"))
-    check("B10: an unbound or fixture run may not write under results/prereg2/ (a bound Arm 0 result "
-          "cannot be overwritten)", rc == 2 and "may not write under" in out, out[-200:])
-    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--arm", "x", "--unbound", "--work-dir",
-                       os.path.join(tmp, "w"), "--out-dir", os.path.join(tmp, "o"))
-    check("B10/A7: an unbound run that names no --transcript-dir is refused, and its transcript is "
-          "written where bound ones go, to be committed", rc == 2 and "must name --transcript-dir" in out
-          and any(t.endswith("-arm0-x.txt") for t in transcripts(sp)), out[-200:])
-    g("add", "-A")
-    g("commit", "-q", "-m", "commit that transcript")
+    commit_all(g, "that transcript")
+    # M1, M2
+    rc, out = run_copy(sp, "validate-export", os.path.join(tmp, "nothing"), isolated=False)
+    check("M1: run without python3 -I, the harness refuses", rc == 2 and "python3 -I" in out, out[-200:])
+    rc, out = run_copy(sp, "validate-export", os.path.join(tmp, "nothing"), direct=True)
+    check("M1: run through its shebang, it is isolated and runs", "python3 -I" not in out and "EXPORT VALIDATOR" in out,
+          out[-200:])
+    commit_all(g, "those transcripts")
+    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--arm", "rust-book", "--unbound", "--work-dir",
+                       os.path.join(tmp, "w"), "--out-dir", os.path.join(tmp, "o"), "--transcript-dir",
+                       os.path.join(tmp, "m2t"))
+    check("M2: --unbound without --fixture-repo never opens a real bundle", rc == 2 and "never opens" in out,
+          out[-200:])
+    forged = os.path.join(tmp, "d8-forged")
+    shutil.copytree(a.d8_dir, forged, ignore=shutil.ignore_patterns("__pycache__"))
+    forge = ("import importlib.util, importlib._bootstrap_external as be, os, sys\n"
+             "src = os.path.join(sys.argv[1], 'anchor_eval.py'); st = os.stat(src)\n"
+             "code = compile(open(src).read() + \"\\nimport sys as _s; _s.stderr.write('FORGED PYC LOADED\\\\n')\\n\", src, 'exec')\n"
+             "out = importlib.util.cache_from_source(src); os.makedirs(os.path.dirname(out), exist_ok=True)\n"
+             "open(out, 'wb').write(be._code_to_timestamp_pyc(code, int(st.st_mtime), st.st_size))\n")
+    subprocess.run([sys.executable, "-I", "-c", forge, forged], check=True)
+    probe = subprocess.run([sys.executable, "-I", "-c", "import sys; sys.path.insert(0, sys.argv[1]); import anchor_eval",
+                            forged], capture_output=True, text=True)
+    check("M1: the forged .pyc is loaded by a plain import (so the check can fail)",
+          "FORGED PYC LOADED" in probe.stderr, probe.stderr[-100:])
+    fx_repo = os.path.join(tmp, "m1fx")
+    fpin, _ = fixture_repo(fx_repo, [("t", {"a.md": d("# A", "Some prose that is long enough.")})])
+    rc, out = run_copy(sp, "arm0", "--d8-dir", forged, "--arm", "x", "--fixture-repo", fx_repo, "--fixture-pin",
+                       fpin, "--fixture-pathspec", "*.md", "--transcript-dir", os.path.join(tmp, "m1t"),
+                       "--out-dir", os.path.join(tmp, "m1o"))
+    check("M1: the harness never reads it: its verified D8 sources are compiled afresh",
+          rc == 0 and "FORGED PYC LOADED" not in out, out[-200:])
+    # aggregate: unbound inputs, pins and bundles, sample sizes
     a0 = os.path.join(tmp, "ub-a0")
     os.makedirs(a0)
     json.dump({"arm": "k8s-en", "bound": False, "passes_bar": True}, open(os.path.join(a0, "k8s-en.json"), "w"))
     os.makedirs(os.path.join(tmp, "ub-sc", "k8s-en"))
     json.dump({"arm": "k8s-en", "bound": False, "modes": []}, open(os.path.join(tmp, "ub-sc", "k8s-en", "status.json"), "w"))
     mp = os.path.join(tmp, "ub-m.json")
+    from p2 import corpus as K
     from p2 import export as X
     sha = X.seal(mp)
     common = ["--d8-dir", a.d8_dir, "--manifest", mp, "--manifest-sha", sha, "--state-dir",
@@ -1616,61 +1779,95 @@ def t_binding(a, tmp):
           rc == 2 and "is not a bound output" in out and "k8s-en.json" in out, out[-200:])
     a0b = os.path.join(tmp, "ub-a0b")
     os.makedirs(a0b)
-    vcj = {"validation_commit": vc}
-    json.dump({"arm": "k8s-en", "bound": True, "binding": vcj, "passes_bar": True}, open(os.path.join(a0b, "k8s-en.json"), "w"))
+    good_pin = {"pin": K.ARMS["k8s-en"]["pin"], "bundle_sha256": K.bundles()["kubernetes-website"]["sha256"]}
+    json.dump(dict(arm="k8s-en", bound=True, passes_bar=True, pin="0" * 40, bundle_sha256=good_pin["bundle_sha256"]),
+              open(os.path.join(a0b, "k8s-en.json"), "w"))
+    rc, out = run_copy(sp, "aggregate", *common, "--arm0-dir", a0b)
+    check("H1: aggregate refuses an Arm 0 result not run at its arm's pin", rc == 2 and "was not run at" in out,
+          out[-200:])
+    json.dump(dict(arm="k8s-en", bound=True, passes_bar=True, pin=good_pin["pin"], bundle_sha256="0" * 64),
+              open(os.path.join(a0b, "k8s-en.json"), "w"))
+    rc, out = run_copy(sp, "aggregate", *common, "--arm0-dir", a0b)
+    check("H1: ... or not from its committed bundle", rc == 2 and "was not run at" in out, out[-200:])
+    json.dump(dict(arm="k8s-en", bound=True, passes_bar=True, **good_pin), open(os.path.join(a0b, "k8s-en.json"), "w"))
     rc, out = run_copy(sp, "aggregate", *common, "--arm0-dir", a0b)
     check("B5-14: aggregate refuses an unbound score result (without --fixture-ok)",
           rc == 2 and "is not a bound output" in out, out[-200:])
-    json.dump({"arm": "k8s-en", "bound": True, "binding": vcj, "modes": ["E"], "sample_e": 10, "sample_s": 500,
-               "modes_requested": ["E"]}, open(os.path.join(tmp, "ub-sc", "k8s-en", "status.json"), "w"))
+    json.dump(dict(arm="k8s-en", bound=True, modes=["E"], sample_e=10, sample_s=500, modes_requested=["E"],
+                   **good_pin), open(os.path.join(tmp, "ub-sc", "k8s-en", "status.json"), "w"))
     rc, out = run_copy(sp, "aggregate", *common, "--arm0-dir", a0b)
     check("B3: aggregate refuses a score run that was not §6.5's (1,000 and 500, all four modes)",
           rc == 2 and "1,000 and 500" in out, out[-200:])
-    rc, out = run_copy(sp, "seal", "--manifest", os.path.join(tmp, "second-seal.json"))
-    check("C4: once VALIDATION exists, a second seal is refused anywhere",
-          rc == 2 and "sealed once" in out and not os.path.exists(os.path.join(tmp, "second-seal.json")), out[-200:])
-    g("add", "-A")
-    g("commit", "-q", "-m", "commit that transcript")
-    st, rs = BD.check(sp, "export", None)
+    rc, out = run_copy(sp, "arm0", "--d8-dir", a.d8_dir, "--arm", "x", "--fixture-repo", root,
+                       "--fixture-pin", vc, "--fixture-pathspec", "*.md", "--transcript-dir",
+                       os.path.join(tmp, "ft"), "--out-dir", os.path.join(sp, "results", "prereg2", "arm0"))
+    check("B10: a fixture run may not write under results/prereg2/ (a bound Arm 0 result cannot be "
+          "overwritten)", rc == 2 and "may not write under" in out, out[-200:])
+    rc, out = run_copy(sp, "export", "--d8-dir", a.d8_dir, "--unbound", "--manifest", mp, "--manifest-sha", sha,
+                       "--out", os.path.join(tmp, "o2"), "--score-dir", os.path.join(tmp, "ub-sc"))
+    check("B10/A7: an unbound run that names no --transcript-dir is refused, and its transcript is "
+          "written where bound ones go, to be committed", rc == 2 and "must name --transcript-dir" in out
+          and any(t.endswith("-export.txt") for t in transcripts(sp)), out[-200:])
+    commit_all(g, "that transcript")
+    st, rs = BD.check(sp, "arm0", "cmspec")
     check("the binding check over the copy is still clean at the end (the refusals above were committed)",
           st["bound"], rs)
 
 
 def t_preflight(a, tmp):
-    section("Review C3: aggregate's transcript preflight")
+    section("Review C3, re-review H3: aggregate's transcript preflight")
     import prereg2
+    from p2 import binding as BD
     from p2 import tierrun as TRN
     sp = os.path.join(tmp, "pf", "spike")
     td = os.path.join(sp, "results", "prereg2", "transcripts")
     os.makedirs(td)
 
-    def tw(name, bound=True):
-        open(os.path.join(td, name), "w").write(f"# prereg2\n# harness bound: {bound}\n")
+    def tw(name, bound=True, executed=True):
+        open(os.path.join(td, name), "w").write(
+            f"# prereg2\n# harness bound: {bound}\n" + ("\n# executed: now\n" if executed else ""))
+        tag = BD.transcript_tag(name)
+        if executed and bound:
+            cmd, _, arm = tag.partition("-")
+            mp = os.path.join(sp, BD.marker_rel(cmd, arm or None))
+            os.makedirs(os.path.dirname(mp), exist_ok=True)
+            open(mp, "w").write("{}\n")
     tw("2026-10-10T000000Z-arm0-k8s-en.txt")
     tw("2026-10-11T000000Z-score-k8s-en.txt")
     tw("2026-10-12T000000Z-export.txt")
-    check("C3: one bound arm0, score and export transcript per arm passes",
-          prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]) == [])
+    tw("2026-10-12T010000Z-arm0-k8s-en.txt", executed=False)
+    check("C3/H3: one executed bound transcript per arm0, score and export passes, and a refused run "
+          "beside it does not count", prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]) == [],
+          prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]))
     tw("2026-10-10T010000Z-arm0-k8s-en.txt", bound=False)
     bad = prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"])
-    check("C3: a second arm0 transcript for an arm, even unbound, is refused", any("arm0 k8s-en" in b for b in bad), bad)
+    check("C3: a second executed arm0 transcript for an arm, even unbound, is refused",
+          any("arm0-k8s-en" in b for b in bad), bad)
     os.remove(os.path.join(td, "2026-10-10T010000Z-arm0-k8s-en.txt"))
+    tw("2026-10-13T000000Z-export.txt")
+    bad = prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"])
+    check("C3b: a second executed export transcript is refused", any(b.startswith("export:") for b in bad), bad)
+    os.remove(os.path.join(td, "2026-10-13T000000Z-export.txt"))
     check("C3: a scored arm with no score transcript is refused",
-          any("score cncf-toc" in b for b in prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en", "cncf-toc"])))
+          any("score-cncf-toc" in b for b in prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en", "cncf-toc"])))
+    os.remove(os.path.join(sp, BD.marker_rel("score", "k8s-en")))
+    check("H3: an executed transcript with no execution marker is refused",
+          any("no execution marker" in b for b in prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"])))
+    open(os.path.join(sp, BD.marker_rel("score", "k8s-en")), "w").write("{}\n")
     st = os.path.join(sp, "results", "prereg2")
     TRN.append_ledger(st, {"event": "started", "n": 1})
     check("C3: a started tiering run with no transcript is refused",
           any("no committed transcript" in b for b in prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"])))
-    tw("2026-10-13T000000Z-tier-run.txt")
+    tw("2026-10-13T000000Z-tier-run.txt", executed=False)
     os.makedirs(os.path.join(st, "tier-work-1"))
     open(os.path.join(st, "tier-work-1", "tiers.jsonl"), "w").write('{"packet": "x"}\n')
     TRN.append_ledger(st, {"event": "started", "n": 2})
-    tw("2026-10-14T000000Z-tier-run.txt")
+    tw("2026-10-14T000000Z-tier-run.txt", executed=False)
     bad = prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"])
     check("C3: two tiering runs where the first wrote lines are refused", any("first wrote lines" in b for b in bad), bad)
     open(os.path.join(st, "tier-work-1", "tiers.jsonl"), "w").write("")
     check("C3: two tiering runs where the first wrote none pass",
-          prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]) == [])
+          prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]) == [], prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]))
     n, path = TRN.binding_run(st)
     check("C2: then the second run's tiers bind", n == 2 and path.endswith("tier-work-2/tiers.jsonl"), (n, path))
 
@@ -1716,6 +1913,7 @@ def t_aggregator(a, tmp):
 
 
 ARGS = None
+TMP = None
 
 
 def main():
@@ -1725,7 +1923,8 @@ def main():
     ARGS = a = ap.parse_args()
     a.d8_dir = os.path.abspath(a.d8_dir)
     Mx.load(a.d8_dir)
-    tmp = tempfile.mkdtemp(prefix="prereg2-v3.")
+    global TMP
+    tmp = TMP = tempfile.mkdtemp(prefix="prereg2-v3.")
     real_results = os.path.join(os.path.dirname(HERE), "results", "prereg2")
 
     def listing():
@@ -1746,6 +1945,7 @@ def main():
         lambda: t_wf(a),
         lambda: t_r_units(a),
         lambda: t_r_slug_t(a),
+        lambda: t_rereview(a),
         lambda: t_r(a),
         lambda: t_plants(a, tmp),
         lambda: t_enumerators(a, tmp),

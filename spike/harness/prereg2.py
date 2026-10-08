@@ -1,36 +1,39 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S python3 -I -B
 # SPDX-License-Identifier: MIT
-"""PRE-REGISTRATION-2.md, the harness. blockspec#2.
+"""PRE-REGISTRATION-2.md, the harness. blockspec#2. Run it isolated:
 
-    prereg2.py seal       --manifest PATH            (before validation, once)
-    prereg2.py bind       --validation-commit SHA --manifest-sha SHA
-    prereg2.py arm0       --d8-dir D8 --arm ARM --work-dir W [--bundle-dir D]
-    prereg2.py score      --d8-dir D8 --arm ARM --work-dir W [--bundle-dir D]
-    prereg2.py export     --d8-dir D8 --manifest PATH
-    prereg2.py tier-model                            (on the start day)
-    prereg2.py tier-run   [--late-reason TEXT] [--credentials FILE]
-    prereg2.py repro      --d8-dir D8 --arm ARM --id RECORD --work-dir W [--bundle-dir D]
-    prereg2.py aggregate  --d8-dir D8 --manifest PATH
-    prereg2.py validate-export DIR
+    python3 -I -B harness/prereg2.py seal       --manifest PATH   (before validation, once)
+    python3 -I -B harness/prereg2.py arm0       --d8-dir D8 --arm ARM --work-dir W [--bundle-dir D]
+    python3 -I -B harness/prereg2.py score      --d8-dir D8 --arm ARM --work-dir W [--bundle-dir D]
+    python3 -I -B harness/prereg2.py export     --d8-dir D8 --manifest PATH
+    python3 -I -B harness/prereg2.py tier-model                   (on the start day)
+    python3 -I -B harness/prereg2.py tier-run   [--late-reason TEXT] [--credentials FILE]
+    python3 -I -B harness/prereg2.py repro      --d8-dir D8 --arm ARM --id RECORD --work-dir W
+    python3 -I -B harness/prereg2.py aggregate  --d8-dir D8 --manifest PATH
+    python3 -I -B harness/prereg2.py validate-export DIR
 
 §9's order of work binds: validation, then Arm 0, then the scoring arms and
 the export, then tiers.jsonl, then the sealed manifest, the join and the
-verdict. The bundles are read from --bundle-dir, else $PREREG2_BUNDLE_DIR,
+verdict. Each step lands on main as one squash commit (LOG.md §16, ruled
+2026-10-08). The bundles are read from --bundle-dir, else $PREREG2_BUNDLE_DIR,
 else the durable local copy recorded in p2/bundles.json (LOG.md §15).
 
-THE BINDING IS ENFORCED HERE (LOG.md §16). Every invocation writes a
+THE BINDING IS ENFORCED HERE (LOG.md §16, §18). Every invocation writes a
 transcript under results/prereg2/transcripts/, opened before its arguments
-are even parsed, so a usage error, a refusal and an abort are all recorded.
-A bound command (anything but validate-export, seal and bind) runs only when
-p2/binding.check passes: VALIDATION names a validation commit that is an
-ancestor of HEAD, the harness and the frozen documents are byte for byte that
-commit's, nothing under results/prereg2/ is uncommitted, and, for arm0,
-score and export, no earlier transcript of the same command and arm exists.
+are parsed, so a usage error, a refusal and an abort are all recorded. It
+refuses unless run with `python3 -I` (no PYTHONPATH or site injection), and
+it never reads bytecode caches. Options cannot be abbreviated or repeated.
+A bound command (anything but seal and validate-export) runs only when
+p2/binding.check passes: the validation commit -- derived, the one commit that
+added results/prereg2/VALIDATION -- holds this harness byte for byte, no later
+commit touches it, nothing under results/prereg2/ is uncommitted, and, for
+arm0, score and export, that command has not executed for that arm before.
 A bound run takes every path from its fixed place and accepts no override.
 
---unbound, or --fixture-repo/--fixture-pin/--fixture-pathspec, runs without
-the binding, for the V3 tests. Such a run must name every output path, none
-of them under results/prereg2/, and its output carries no verdict.
+--fixture-repo/--fixture-pin/--fixture-pathspec, or --unbound for commands
+that open no corpus, run without the binding, for the V3 tests. Such a run
+must name every output path, none of them under results/prereg2/, never
+opens a real bundle, and its output carries no verdict.
 """
 import argparse
 import glob
@@ -42,6 +45,10 @@ import sys
 import traceback
 
 sys.dont_write_bytecode = True
+# Never read a bytecode cache: a forged .pyc beside a verified source would
+# otherwise be loaded in its place (re-review M1). The prefix names a
+# directory that does not exist and, with bytecode writing off, never will.
+sys.pycache_prefix = os.path.join(os.sep, "nonexistent", f"prereg2-nopyc-{os.getpid()}")
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
@@ -51,14 +58,8 @@ from p2 import transcript as TR  # noqa: E402
 
 SPIKE = os.path.dirname(HERE)
 RESULTS = os.path.join(SPIKE, "results", "prereg2")
-COMMANDS = ("seal", "bind", "arm0", "score", "export", "tier-model", "tier-run", "repro",
+COMMANDS = ("seal", "arm0", "score", "export", "tier-model", "tier-run", "repro",
             "aggregate", "validate-export")
-# Options a bound run may not pass (review C3, B3): every output and input
-# path is fixed, and nothing changes what a bound run samples or reads.
-BOUND_FORBIDDEN = ("--transcript-dir", "--out-dir", "--out", "--state-dir", "--arm0-dir",
-                   "--score-dir", "--repro-dir", "--export", "--tiers", "--modes", "--sample-e",
-                   "--sample-s", "--fixture-ok", "--scoring-commit", "--repo", "--models-url",
-                   "--manifest-sha", "--agent-cmd")
 # Each command's output options, which an unbound run must name, outside
 # results/prereg2/ (review B10).
 OUTPUTS = {"arm0": ("out_dir",), "score": ("out_dir", "arm0_dir"), "export": ("out", "score_dir"),
@@ -114,12 +115,25 @@ def corpus_for(a, K, work_dir):
     """(repo, pin, pathspec, bundle sha256 or None). Raises NoVerdict."""
     if a.fixture_repo:
         return a.fixture_repo, a.fixture_pin, a.fixture_pathspec, None
+    if not BOUND_RUN:
+        raise SystemExit("refusing: an unbound run never opens a real bundle; use --fixture-repo (M2)")
     if a.arm not in K.ARMS:
         raise SystemExit(f"unknown arm {a.arm!r}; arms: {', '.join(K.ARMS)}")
     spec = K.ARMS[a.arm]
     os.makedirs(work_dir, exist_ok=True)
     repo = K.open_corpus(a.arm, a.bundle_dir, work_dir)
     return repo, spec["pin"], spec["pathspec"], K.bundles()[spec["bundle"]]["sha256"]
+
+
+BOUND_RUN = False
+
+
+def executed(tr, cmd, arm):
+    """§9: the first EXECUTION binds. Marked once the corpus, or for export
+    its input, is opened -- never by a refusal (re-review H3)."""
+    tr.mark_executed()
+    if BOUND_RUN:
+        BD.mark_executed(SPIKE, cmd, arm, tr.path)
 
 
 def binding_of(tr):
@@ -130,8 +144,13 @@ def binding_of(tr):
 # ---------------------------------------------------------------- commands
 
 def cmd_seal(a, tr):
+    """Seal the manifest outside the repository, and write VALIDATION, the
+    manifest's sha256, to be committed in the validation commit (§7.3, §9).
+    Refused once VALIDATION exists here or in any ref's history (C4)."""
     from p2 import export as X
-    if os.path.exists(os.path.join(SPIKE, BD.VALIDATION_REL)):
+    vp = os.path.join(SPIKE, BD.VALIDATION_REL)
+    _, hist, _ = BD._git(SPIKE, "log", "--all", "--format=%H", "--diff-filter=A", "--", BD.VALIDATION_REL)
+    if os.path.lexists(vp) or hist.strip():
         print(f"refusing: {BD.VALIDATION_REL} exists; the manifest is sealed once, before "
               "validation (review C4)", file=sys.stderr)
         return 2
@@ -140,31 +159,11 @@ def cmd_seal(a, tr):
               "tiers.jsonl (§7.3)", file=sys.stderr)
         return 2
     sha = X.seal(a.manifest)
+    os.makedirs(os.path.dirname(vp), exist_ok=True)
+    jdump({"manifest_sha256": sha}, vp)
     print(f"sealed manifest written: {a.manifest}")
-    print(f"sha256: {sha}")
-    print("record it in the validation commit, and in VALIDATION with `prereg2.py bind`")
-    return 0
-
-
-def cmd_bind(a, tr):
-    """Write VALIDATION, after checking it would bind this tree."""
-    p = os.path.join(SPIKE, BD.VALIDATION_REL)
-    if os.path.exists(p):
-        print(f"refusing: {BD.VALIDATION_REL} exists", file=sys.stderr)
-        return 2
-    if len(a.manifest_sha) != 64 or len(a.validation_commit) != 40:
-        print("refusing: a 40-hex validation commit and a 64-hex manifest sha256 are required",
-              file=sys.stderr)
-        return 2
-    os.makedirs(os.path.dirname(p), exist_ok=True)
-    jdump({"validation_commit": a.validation_commit, "manifest_sha256": a.manifest_sha}, p)
-    st, reasons = BD.check(SPIKE, own_transcript=tr.path)
-    if reasons:
-        os.remove(p)
-        for r in reasons:
-            print("refusing:", r, file=sys.stderr)
-        return 2
-    print(f"wrote {BD.VALIDATION_REL}; commit it with the first Arm 0 result")
+    print(f"sha256: {sha}, written to {BD.VALIDATION_REL}")
+    print("commit VALIDATION in the validation commit; that commit is the one that adds it")
     return 0
 
 
@@ -180,10 +179,12 @@ def cmd_arm0(a, tr):
     try:
         repo, pin, pathspec, bsha = corpus_for(a, K, a.work_dir)
     except K.NoVerdict as e:
+        executed(tr, "arm0", a.arm)
         out["no_verdict"] = str(e)
         print(f"NO VERDICT: {e}")
         jdump(out, path)
         return 3
+    executed(tr, "arm0", a.arm)
     K.check_pin(a.arm, repo, pin)
     out.update(pin=pin, pathspec=pathspec, bundle_sha256=bsha, rules={})
     sel = K.selection(a.arm, repo, pathspec)
@@ -239,10 +240,12 @@ def cmd_score(a, tr):
     try:
         repo, pin, pathspec, bsha = corpus_for(a, K, a.work_dir)
     except K.NoVerdict as e:
+        executed(tr, "score", a.arm)
         status["no_verdict"] = str(e)
         jdump(status, os.path.join(out_dir, "status.json"))
         print(f"NO VERDICT: {e}")
         return 3
+    executed(tr, "score", a.arm)
     K.check_pin(a.arm, repo, pin)
     status.update(pin=pin, pathspec=pathspec, bundle_sha256=bsha)
     sel = K.selection(a.arm, repo, pathspec)
@@ -312,6 +315,20 @@ def check_input_binding(o, what, tr, fixture_ok):
         raise SystemExit(f"refusing: {what} is not a bound output of this validation commit")
 
 
+def check_pin_and_bundle(o, what):
+    """An input names a §6.2 arm, its pin and its bundle's committed sha256
+    (re-review H1)."""
+    from p2 import corpus as K
+    arm = o.get("arm")
+    if arm not in K.ARMS:
+        raise SystemExit(f"refusing: {what} names no §6.2 arm ({arm!r})")
+    if "no_verdict" in o and "pin" not in o:
+        return
+    spec = K.ARMS[arm]
+    if o.get("pin") != spec["pin"] or o.get("bundle_sha256") != K.bundles()[spec["bundle"]]["sha256"]:
+        raise SystemExit(f"refusing: {what} was not run at {arm}'s pin from its committed bundle")
+
+
 def load_scores(score_dir, tr, fixture_ok=False, sizes=True):
     """{arm: {...}} from score_dir/<arm>/. Each status must be bound by this
     validation commit, and must have run every mode at §6.5's sample sizes."""
@@ -321,6 +338,8 @@ def load_scores(score_dir, tr, fixture_ok=False, sizes=True):
         s = json.load(open(st))
         arm = s["arm"]
         check_input_binding(s, f"score/{arm}", tr, fixture_ok)
+        if not fixture_ok:
+            check_pin_and_bundle(s, f"score/{arm}")
         if "no_verdict" in s:
             scores[arm] = {"no_verdict": s["no_verdict"]}
             continue
@@ -354,6 +373,7 @@ def cmd_export(a, tr):
     if not recs:
         print("no scored records: nothing to export", file=sys.stderr)
         return 2
+    executed(tr, "export", None)
     names, _ = X.export(a.out, m, recs, inst)
     print(f"exported {len(names)} packets to {a.out}")
     lines = []
@@ -417,34 +437,39 @@ def cmd_repro(a, tr):
 
 
 def transcript_preflight(spike, arms0, arms_scored):
-    """Review C3: every transcript committed and clean (the binding check
-    already refuses any uncommitted file under results/prereg2/), exactly one
-    bound arm0 and one bound score transcript per arm with a result, one
-    export, and at most two tier-runs, the first having written zero lines
-    if there are two."""
+    """Review C3, re-review H3: every transcript committed and clean (the
+    binding check refuses any uncommitted file under results/prereg2/);
+    exactly one bound, executed arm0 and score transcript per arm with a
+    result, and its marker; one executed export; at most two tier-runs, the
+    first having written zero lines if there are two. Refused runs leave
+    transcripts that are not executions, and do not count."""
     from p2 import tierrun as TRN
     tdir = os.path.join(spike, BD.TRANSCRIPTS_REL)
     tags = {}
     for f in sorted(os.listdir(tdir)) if os.path.isdir(tdir) else []:
-        head = open(os.path.join(tdir, f), encoding="utf-8").read(4000)
-        bound = "# harness bound: True" in head
-        tags.setdefault(BD.transcript_tag(f), []).append(bound)
+        text = open(os.path.join(tdir, f), encoding="utf-8").read()
+        if "\n# executed: " in text:
+            tags.setdefault(BD.transcript_tag(f), []).append("# harness bound: True" in text)
     bad = []
+
+    def one(tag, cmd, arm):
+        if tags.get(tag) != [True]:
+            bad.append(f"{tag}: {len(tags.get(tag, []))} executed transcripts, want one bound")
+        if not os.path.isfile(os.path.join(spike, BD.marker_rel(cmd, arm))):
+            bad.append(f"{tag}: no execution marker")
     for arm in arms0:
-        if tags.get(f"arm0-{arm}") != [True]:
-            bad.append(f"arm0 {arm}: {len(tags.get(f'arm0-{arm}', []))} transcripts, want one bound")
+        one(f"arm0-{arm}", "arm0", arm)
     for arm in arms_scored:
-        if tags.get(f"score-{arm}") != [True]:
-            bad.append(f"score {arm}: {len(tags.get(f'score-{arm}', []))} transcripts, want one bound")
-    if tags.get("export") != [True]:
-        bad.append(f"export: {len(tags.get('export', []))} transcripts, want one bound")
+        one(f"score-{arm}", "score", arm)
+    one("export", "export", None)
     runs = [e for e in TRN.read_ledger(os.path.join(spike, BD.RESULTS_REL)) if e.get("event") == "started"]
     if len(runs) > 2:
         bad.append(f"{len(runs)} tiering runs started")
     if len(runs) == 2 and TRN.count_lines_bytes(TRN.safe_read(TRN.work_tiers(
             os.path.join(spike, BD.RESULTS_REL), 1))) > 0:
         bad.append("two tiering runs, though the first wrote lines")
-    if len(tags.get("tier-run", [])) < len(runs):
+    tier_tr = [f for f in os.listdir(tdir) if BD.transcript_tag(f) == "tier-run"] if os.path.isdir(tdir) else []
+    if len(tier_tr) < len(runs):
         bad.append("a started tiering run has no committed transcript")
     return bad
 
@@ -458,6 +483,8 @@ def cmd_aggregate(a, tr):
     for p in sorted(glob.glob(os.path.join(a.arm0_dir, "*.json"))):
         o = json.load(open(p))
         check_input_binding(o, p, tr, a.fixture_ok)
+        if not a.fixture_ok:
+            check_pin_and_bundle(o, p)
         arm0[o["arm"]] = {"no_verdict": o["no_verdict"]} if "no_verdict" in o and not o.get(
             "passes_bar") else {"passes_bar": bool(o.get("passes_bar"))}
     scores = load_scores(a.score_dir, tr, a.fixture_ok)
@@ -540,8 +567,12 @@ def cmd_tier_run(a, tr):
 
 
 def build_parser():
-    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    # No abbreviated option is accepted: `--fixture-r` must not reach
+    # --fixture-repo past the checks (re-review H1).
+    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0], allow_abbrev=False)
     sub = ap.add_subparsers(dest="cmd", required=True)
+    _add = sub.add_parser
+    sub.add_parser = lambda name, **kw: _add(name, allow_abbrev=False, **kw)
 
     def common(p, corpus=True):
         p.add_argument("--d8-dir", required=True)
@@ -566,10 +597,6 @@ def build_parser():
     p = sub.add_parser("seal")
     plain(p)
     p.add_argument("--manifest", required=True)
-    p = sub.add_parser("bind")
-    plain(p)
-    p.add_argument("--validation-commit", required=True)
-    p.add_argument("--manifest-sha", required=True)
     p = sub.add_parser("arm0")
     common(p)
     p.add_argument("--out-dir")
@@ -624,40 +651,82 @@ def build_parser():
     return ap
 
 
+# The option values a bound run must leave at their defaults (review C3, B3).
+BOUND_DEFAULTS = {"transcript_dir": None, "out_dir": None, "out": None, "state_dir": None,
+                  "arm0_dir": None, "score_dir": None, "repro_dir": None, "export": None,
+                  "modes": "E,S5,S25,M", "sample_e": 1000, "sample_s": 500, "fixture_ok": False,
+                  "scoring_commit": None, "repo": None, "models_url": None, "manifest_sha": None,
+                  "agent_cmd": None, "fixture_repo": None, "fixture_pin": None,
+                  "fixture_pathspec": None, "unbound": False}
+
+
+def repeated_options(argv):
+    """Options given more than once. argparse keeps the last, so a repeated
+    --arm could aim a run's checks at one arm and its work at another."""
+    seen, rep = set(), []
+    for tok in argv:
+        if tok == "--":
+            break
+        if tok.startswith("--"):
+            name = tok.split("=", 1)[0]
+            if name in seen and name not in rep:
+                rep.append(name)
+            seen.add(name)
+    return rep
+
+
 def main(argv=None):
+    global BOUND_RUN
     argv = sys.argv[1:] if argv is None else list(argv)
     cmd = argv[0] if argv and argv[0] in COMMANDS else "invalid"
-    unbound = unbound_mode(argv)
-    tdir = prescan(argv, "--transcript-dir") if unbound else None
+    prescan_unbound = unbound_mode(argv)
+    tdir = prescan(argv, "--transcript-dir") if prescan_unbound else None
     # The transcript opens before the arguments are parsed (review A7). An
     # unbound run's transcript goes where it names, never under results/.
-    if unbound and (not tdir or inside(tdir, RESULTS)):
+    if prescan_unbound and (not tdir or inside(tdir, RESULTS)):
         tdir = None
-        unbound_bad = "an unbound run must name --transcript-dir outside results/prereg2/"
-    else:
-        unbound_bad = None
     tr = TR.Transcript(cmd, prescan(argv, "--arm"), [os.path.basename(sys.argv[0])] + argv,
                        tdir or TR.DEFAULT_DIR)
     rc, how = 1, "exited"
+    BOUND_RUN = False
     try:
-        if unbound or cmd in ("seal", "bind", "validate-export", "invalid"):
-            state = {"bound": False, "reasons": ["unbound run" if unbound else f"{cmd} is not bound"],
+        if not sys.flags.isolated:
+            tr.record_binding({"bound": False, "reasons": ["not run with python3 -I"]})
+            raise SystemExit("refusing: run the harness as `python3 -I -B harness/prereg2.py`: "
+                             "without -I, PYTHONPATH and site packages can replace its code (M1)")
+        rep = repeated_options(argv)
+        if rep:
+            tr.record_binding({"bound": False, "reasons": [f"repeated {', '.join(rep)}"]})
+            raise SystemExit(f"refusing: {', '.join(rep)} given more than once (re-review H1)")
+        try:
+            a = build_parser().parse_args(argv)
+        except SystemExit:
+            tr.record_binding({"bound": False, "reasons": ["usage error"]})
+            raise
+        unbound = bool(a.unbound or getattr(a, "fixture_repo", None))
+        if unbound != prescan_unbound:
+            tr.record_binding({"bound": False, "reasons": ["the parsed options disagree with the prescan"]})
+            raise SystemExit("refusing: the options parse differently from how they read (H1)")
+        if unbound or a.cmd in ("seal", "validate-export"):
+            state = {"bound": False, "reasons": ["unbound run" if unbound else f"{a.cmd} is not bound"],
                      "head": TR.head()}
         else:
-            state, _ = BD.check(SPIKE, cmd, prescan(argv, "--arm"), tr.path)
+            state, _ = BD.check(SPIKE, a.cmd, getattr(a, "arm", None), tr.path)
         tr.record_binding(state)
-        a = build_parser().parse_args(argv)
-        if unbound_bad:
-            raise SystemExit(f"refusing: {unbound_bad}")
-        if not unbound and cmd not in ("seal", "bind", "validate-export"):
-            given = [f for f in BOUND_FORBIDDEN if prescan(argv, f) is not None or f in argv]
+        if unbound and not tdir:
+            raise SystemExit("refusing: an unbound run must name --transcript-dir outside results/prereg2/")
+        if not unbound and a.cmd not in ("seal", "validate-export"):
+            given = [k for k, v in BOUND_DEFAULTS.items() if hasattr(a, k) and getattr(a, k) != v]
             if given:
-                raise SystemExit(f"refusing: a bound run takes no {', '.join(given)} (§9, review C3)")
+                raise SystemExit("refusing: a bound run takes no "
+                                 + ", ".join("--" + g.replace("_", "-") for g in given)
+                                 + " (§9, review C3)")
             if not state["bound"]:
                 for r in state["reasons"]:
                     print("not bound:", r, file=sys.stderr)
-                raise SystemExit("refusing: this run would not be bound; pass --unbound to run it "
-                                 "for testing, with no verdict")
+                raise SystemExit("refusing: this run would not be bound; use --fixture-repo or "
+                                 "--unbound to run it for testing, with no verdict")
+            BOUND_RUN = True
         if getattr(a, "fixture_repo", None) and a.cmd in ("arm0", "score", "repro") and not (
                 a.fixture_pin and a.fixture_pathspec):
             raise SystemExit("refusing: --fixture-repo needs --fixture-pin and --fixture-pathspec")
@@ -667,10 +736,10 @@ def main(argv=None):
             if not a.bundle_dir:
                 from p2 import corpus as K
                 a.bundle_dir = K.DEFAULT_BUNDLE_DIR
-        resolve_paths(a, state["bound"])
+        resolve_paths(a, BOUND_RUN)
         if hasattr(a, "d8_dir"):
             Mx.load(a.d8_dir)
-        rc = {"seal": cmd_seal, "bind": cmd_bind, "arm0": cmd_arm0, "score": cmd_score,
+        rc = {"seal": cmd_seal, "arm0": cmd_arm0, "score": cmd_score,
               "export": cmd_export, "validate-export": cmd_validate_export, "repro": cmd_repro,
               "aggregate": cmd_aggregate, "tier-model": cmd_tier_model,
               "tier-run": cmd_tier_run}[a.cmd](a, tr)
@@ -683,6 +752,7 @@ def main(argv=None):
         traceback.print_exc()
         rc, how = 1, "aborted by an exception"
     finally:
+        BOUND_RUN = False
         tr.close(rc, how)
     return rc
 

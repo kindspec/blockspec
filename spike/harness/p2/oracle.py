@@ -85,7 +85,14 @@ def repeat_rule(Bc, Mc, target, k, t):
     """UNDECIDABLE-REPEAT. Bc, Mc: unit contents of B and M, by index.
     target(i): TLLC's SURVIVED target for B[i], as an index into Mc, or None.
     Returns True when the verdict is DECIDED, False when it is
-    UNDECIDABLE-REPEAT."""
+    UNDECIDABLE-REPEAT.
+
+    t is None when TLLC's target lies in no unit (an R slug target before
+    the after-state's first heading). Then step 1 has T = the units that are
+    twins of k; if T is empty the verdict is decided, and otherwise step 4's
+    "ctx(t) >= 1" cannot hold (review H4, LOG §18)."""
+    if t is None:
+        return not any(Mc[c] == Bc[k] for c in range(len(Mc)))
     T = [c for c in range(len(Mc)) if c != t and (Mc[c] == Mc[t] or Mc[c] == Bc[k])]
     if not T:
         return True

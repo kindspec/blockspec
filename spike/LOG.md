@@ -1349,3 +1349,114 @@ document's own table. The document cannot change by a byte: its sha256 is
 pinned in `harness/p2/export.py`, because packets are cut from it. So the
 correction is logged here, and whether to amend the table itself is put to
 the owner.
+
+## 2026-10-08 — §17. PRE-REGISTRATION-2.md is binding
+
+`PRE-REGISTRATION-2.md` still opens with "Status: DRAFT, for owner approval",
+and §13 above says it is "not binding until the owner approves it and it
+merges". Both conditions now hold:
+
+- the owner approved it on 2026-10-07;
+- blockspec#15 merged it to `main` at 2026-10-07T23:28:22Z, as `f59c109`.
+
+Run from the repository root:
+
+```
+$ gh pr view 15 --repo kindspec/blockspec --json mergedAt,mergeCommit -q '.mergedAt+" "+.mergeCommit.oid'
+2026-10-07T23:28:22Z f59c109f96b38c888368ab4b6fcbf6ac58628099
+```
+
+It is binding, and it supersedes `PRE-REGISTRATION.md` for blockspec#2. The
+document is frozen, so its status line is not edited. This entry is the
+record.
+
+## 2026-10-08 — §18. Re-review of the harness: findings applied
+
+No arm has run.
+
+### The owner's rulings
+
+The owner ruled on the two questions §16 left open:
+
+- **The commit-order reading is accepted.** Each §9 step lands on `main` as
+  one squash commit from its own pull request, and that squash commit is the
+  binding §9 commit.
+- **The frozen document is not amended for the V-list fact.** §16's
+  "A V-list fact" is the record.
+
+### What the re-review found, and the change for each
+
+The re-review looked at blockspec#16 at `281fb4f`.
+
+- **H1, options.** No option may be abbreviated, on the parser or on any
+  subcommand, and no option may be given twice. Every check runs on the
+  parsed arguments. `aggregate` also checks each Arm 0 and score input's
+  pin and bundle sha256 against `ARMS` and `bundles.json`.
+- **H2, the validation commit.** It is now derived, not named. `seal` writes
+  `results/prereg2/VALIDATION`, which holds only the sealed manifest's
+  sha256 and is committed in the validation commit itself (§7.3). The
+  validation commit is the one commit in HEAD's history that added
+  VALIDATION. A bound run is refused in any of these cases:
+  - VALIDATION has changed since that commit, or was added more than once;
+  - its sha256 is not 64 hex characters;
+  - any later commit touches the harness, `PRE-REGISTRATION-2.md` or
+    `ORACLE.md`.
+
+  `bind` is removed. §16's account of VALIDATION naming the validation
+  commit, and of `bind`, is superseded.
+- **H3, first execution.** "First execution" is now marked by
+  `results/prereg2/executed/<cmd>[-<arm>].json`. That file is written only
+  once the corpus is opened (for export, once its scored input is), and the
+  transcript gains an "# executed:" line at the same moment. So a refused or
+  mistyped run leaves its transcript but does not use up the arm.
+  `aggregate` counts executed transcripts and their markers.
+- **M3, the marker's history.** The marker is looked for in the history of
+  every ref as well as in the work tree, so deleting it does not re-enable
+  an arm.
+- **M1, isolation.** The harness refuses to run without `python3 -I`; its
+  shebang is `env -S python3 -I -B`. It never reads a bytecode cache, because
+  `sys.pycache_prefix` points at a directory that does not exist. So a
+  forged `.pyc` beside a verified D8 source is not loaded.
+- **M2, real bundles.** An unbound run never opens a real bundle. Only a
+  fixture run reaches a corpus.
+
+**Reading 1 of §16 is amended (H4).** This entry replaces §16's clause
+saying "If `p` lies in no unit, the rule has no `t` and the record is
+UNDECIDABLE-REPEAT". The amended reading follows §5.2 step 1:
+
+- when `p` lies in no §5.2 unit, `t` is undefined and T is the units that
+  are twins of `k`;
+- if T is empty, the verdict is decided;
+- otherwise step 4's "ctx(t) ≥ 1" cannot hold, and the verdict is
+  UNDECIDABLE-REPEAT.
+
+The re-review's case (`scripts/a4case.py`) now comes out decided and WRONG.
+
+**F6's first half.** F6 is "every input state is well-formed" and q4 "no".
+The first half is already a condition of export: §7.3 exports only records
+with well-formed input states. So it holds for every representative the
+aggregator sees, and `aggregate` checks only q4. The code says so.
+
+**If `tier-model` is not run on the start day,** the tierer's model cannot
+be chosen, because the listing must carry the start day's `Date`. Then
+`tier-run` refuses, no packet is tiered, and the untiered plants void the
+tiering (§7.3). Every cell that exported a packet becomes NO VERDICT.
+
+### A correction to §16 and to the pull request's description
+
+Both say that each review fix was shown red first by
+`results/prereg2/validation/V3-new-checks-against-312b415.txt`, "20 checks
+red". That overstates it:
+
+- 6 of those 20 reds are sections that crashed (`grep -c "^  FAIL  section
+  raised"` on that file);
+- 2 more are red only because the old aggregator takes a different
+  reproduction-result format, not because of the behaviour the check names;
+- so 12 are named checks red on their own behaviour;
+- only 201 of the 271 checks ran, because the crashed sections' later checks
+  never ran.
+
+The re-review gave 8 such reds; counted from the file, they are these 6 and 2.
+
+The new checks for this re-review were run red first against `281fb4f`, and
+their transcript states the same counts.

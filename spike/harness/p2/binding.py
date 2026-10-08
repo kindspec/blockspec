@@ -1,28 +1,37 @@
 # SPDX-License-Identifier: MIT
 """§9: "The harness at the validation commit is the implementation." This
 module makes the harness enforce that, rather than leave it to the operator
-(review C1, C3, B6; LOG.md §16).
+(reviews C1, C3, B6; re-review H2, H3, M3; LOG.md §16 and §18).
 
-A bound run needs `results/prereg2/VALIDATION`, a JSON file naming the
-validation commit and the sealed manifest's sha256. The first Arm 0 commit
-adds it. Every bound command checks:
+THE VALIDATION COMMIT IS DERIVED, never named. `prereg2.py seal` writes
+`results/prereg2/VALIDATION`, which holds the sealed manifest's sha256 (§7.3:
+"The manifest's sha256 is committed in the validation commit"). The validation
+commit is the one commit in HEAD's history that added VALIDATION. VALIDATION
+may never change after it, and no later commit may touch the harness,
+PRE-REGISTRATION-2.md or ORACLE.md.
 
-- the validation commit is an ancestor of HEAD;
-- `git diff --quiet <validation> HEAD` over the harness, PRE-REGISTRATION-2.md
-  and ORACLE.md;
+Every bound command checks:
+
+- exactly one commit added VALIDATION, VALIDATION has not changed since, and
+  its sha256 field is 64 hex characters;
+- no commit after the validation commit touches the bound paths;
 - the work tree holds exactly the validation commit's bytes there: each file
   is hashed with `git hash-object` and compared with `git ls-tree`, so
   `--assume-unchanged` cannot hide an edit, and no untracked or ignored file
   may sit under the harness;
 - `results/prereg2/` has nothing uncommitted except this invocation's own
-  transcript (and VALIDATION itself, before any Arm 0 result is committed),
-  so every earlier transcript, aborted ones included, is committed before
-  the next bound run starts;
-- for arm0, score and export, no earlier transcript of the same command and
-  arm exists: the first execution binds.
+  transcript, so every earlier transcript, aborted ones included, is
+  committed before the next bound run starts;
+- for arm0, score and export: the command has not executed for that arm.
+  An execution is marked by `results/prereg2/executed/<cmd>[-<arm>].json`,
+  written only once the corpus (or, for export, the scored input) is
+  actually opened, so a refusal or a usage error does not use up the arm
+  (H3). The marker is looked for in the work tree and in every ref's
+  history (`git log --all`), so deleting it does not re-enable the arm (M3).
 """
 import json
 import os
+import re
 import subprocess
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -31,6 +40,9 @@ BOUND_PATHS = ("harness", "PRE-REGISTRATION-2.md", "ORACLE.md")
 RESULTS_REL = os.path.join("results", "prereg2")
 VALIDATION_REL = os.path.join(RESULTS_REL, "VALIDATION")
 TRANSCRIPTS_REL = os.path.join(RESULTS_REL, "transcripts")
+EXECUTED_REL = os.path.join(RESULTS_REL, "executed")
+HEX40 = re.compile(r"^[0-9a-f]{40}$")
+HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
 
 def _git(spike, *a):
@@ -43,17 +55,27 @@ def toplevel(spike):
     return out.strip() if rc == 0 else None
 
 
-def read_validation(spike=SPIKE):
-    p = os.path.join(spike, VALIDATION_REL)
+def derive_validation(spike=SPIKE):
+    """(validation commit, manifest sha256, reasons)."""
+    _, added, _ = _git(spike, "log", "--format=%H", "--diff-filter=A", "--", VALIDATION_REL)
+    added = added.split()
+    if len(added) != 1:
+        return None, None, [f"{len(added)} commits in HEAD's history add {VALIDATION_REL}; "
+                            "the validation commit is the one that adds it"]
+    vc = added[0]
+    _, touched, _ = _git(spike, "log", "--format=%H", "--", VALIDATION_REL)
+    if touched.split() != [vc]:
+        return vc, None, [f"{VALIDATION_REL} has changed since the validation commit added it"]
+    top = toplevel(spike)
+    rel = os.path.relpath(os.path.join(spike, VALIDATION_REL), top)
+    rc, raw, _ = _git(spike, "show", f"{vc}:{rel}")
     try:
-        v = json.load(open(p))
-    except (OSError, ValueError) as e:
-        return None, f"no readable {VALIDATION_REL}: {e}"
-    if not (isinstance(v, dict) and isinstance(v.get("validation_commit"), str)
-            and len(v["validation_commit"]) == 40
-            and isinstance(v.get("manifest_sha256"), str) and len(v["manifest_sha256"]) == 64):
-        return None, f"{VALIDATION_REL} must name validation_commit (40 hex) and manifest_sha256 (64 hex)"
-    return v, None
+        v = json.loads(raw)
+        sha = v["manifest_sha256"]
+        assert isinstance(sha, str) and HEX64.match(sha) and set(v) == {"manifest_sha256"}
+    except (ValueError, KeyError, AssertionError, TypeError):
+        return vc, None, [f"{VALIDATION_REL} must hold exactly a 64-hex manifest_sha256"]
+    return vc, sha, []
 
 
 def harness_files_differ(spike, commit):
@@ -67,6 +89,8 @@ def harness_files_differ(spike, commit):
         meta, path = line.split("\t", 1)
         want[os.path.relpath(path, prefix)] = meta.split()[2]
     bad = []
+    if not want:
+        bad.append(f"the validation commit {commit} holds no harness")
     for rel, blob in sorted(want.items()):
         p = os.path.join(spike, rel)
         if os.path.islink(p) or not os.path.isfile(p):
@@ -95,56 +119,65 @@ def transcript_tag(fname):
     return stem[19:] if len(stem) > 19 and stem[18] == "-" else None
 
 
+def marker_rel(cmd, arm):
+    return os.path.join(EXECUTED_REL, f"{cmd}" + (f"-{arm}" if arm else "") + ".json")
+
+
+def executed(spike, cmd, arm):
+    """Whether this command has executed for this arm: its marker is in the
+    work tree, or was ever added in any ref's history."""
+    rel = marker_rel(cmd, arm)
+    if os.path.lexists(os.path.join(spike, rel)):
+        return True
+    _, out, _ = _git(spike, "log", "--all", "--format=%H", "--diff-filter=A", "--", rel)
+    return bool(out.strip())
+
+
+def mark_executed(spike, cmd, arm, transcript_path):
+    """Written once the corpus (or, for export, its input) is opened. An
+    existing marker is never overwritten."""
+    p = os.path.join(spike, marker_rel(cmd, arm))
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    fd = os.open(p, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+    with os.fdopen(fd, "w") as f:
+        f.write(json.dumps({"cmd": cmd, "arm": arm,
+                            "transcript": os.path.basename(transcript_path)}, sort_keys=True) + "\n")
+
+
 def check(spike=SPIKE, cmd=None, arm=None, own_transcript=None):
     """Returns (state, reasons). state is bound only when reasons is empty."""
     reasons = []
     rc, head, _ = _git(spike, "rev-parse", "HEAD")
     head = head.strip() if rc == 0 else None
-    v, err = read_validation(spike)
-    state = {"head": head, "validation_commit": v and v["validation_commit"],
-             "manifest_sha256": v and v["manifest_sha256"]}
+    state = {"head": head, "validation_commit": None, "manifest_sha256": None}
     if not head:
         reasons.append("not a git work tree")
-    if err:
-        reasons.append(err)
-    if v and head:
-        vc = v["validation_commit"]
-        if _git(spike, "cat-file", "-e", vc + "^{commit}")[0] != 0:
-            reasons.append(f"validation commit {vc} is not in this repository")
-        else:
-            if _git(spike, "merge-base", "--is-ancestor", vc, "HEAD")[0] != 0:
-                reasons.append(f"validation commit {vc} is not an ancestor of HEAD")
-            if _git(spike, "diff", "--quiet", vc, "HEAD", "--", *BOUND_PATHS)[0] != 0:
-                reasons.append("HEAD's harness, PRE-REGISTRATION-2.md or ORACLE.md differ from "
-                               "the validation commit")
+    else:
+        vc, msha, rs = derive_validation(spike)
+        reasons += rs
+        state.update(validation_commit=vc, manifest_sha256=msha)
+        if vc and not rs:
+            _, later, _ = _git(spike, "rev-list", f"{vc}..HEAD", "--", *BOUND_PATHS)
+            if later.strip():
+                reasons.append(f"a commit after the validation commit {vc[:12]} changes the harness, "
+                               f"PRE-REGISTRATION-2.md or ORACLE.md: {later.split()[0][:12]}")
             reasons += harness_files_differ(spike, vc)
     rc, st, _ = _git(spike, "status", "--porcelain", "--ignored", "--untracked-files=all",
                      "--", *BOUND_PATHS)
     if st.strip():
         reasons.append("uncommitted or ignored files under the harness or the frozen documents: "
                        + "; ".join(st.splitlines()[:5]))
-    # results/prereg2: nothing uncommitted but this run's own transcript, and
-    # VALIDATION before any Arm 0 result is committed.
     rc, st, _ = _git(spike, "status", "--porcelain", "--untracked-files=all", "--", RESULTS_REL)
     top = toplevel(spike) or spike
     own = os.path.realpath(own_transcript) if own_transcript else None
-    _, arm0_tracked, _ = _git(spike, "ls-files", "--", os.path.join(RESULTS_REL, "arm0"))
     for line in st.splitlines():
         path = os.path.realpath(os.path.join(top, line[3:]))
         if own and path == own:
             continue
-        if (line.startswith("?? ") and path == os.path.realpath(os.path.join(spike, VALIDATION_REL))
-                and not arm0_tracked.strip()):
-            continue
         reasons.append(f"uncommitted under {RESULTS_REL}: {line}")
-    if cmd in ("arm0", "score", "export"):
-        tdir = os.path.join(spike, TRANSCRIPTS_REL)
-        want = cmd + (f"-{arm}" if arm else "")
-        for f in sorted(os.listdir(tdir)) if os.path.isdir(tdir) else []:
-            p = os.path.realpath(os.path.join(tdir, f))
-            if p != own and transcript_tag(f) == want:
-                reasons.append(f"an earlier {cmd}{' ' + arm if arm else ''} transcript exists "
-                               f"({f}); the first execution binds")
+    if cmd in ("arm0", "score", "export") and executed(spike, cmd, arm):
+        reasons.append(f"{cmd}{' ' + arm if arm else ''} has already executed "
+                       f"({marker_rel(cmd, arm)}); the first execution binds")
     state["bound"] = not reasons
     state["reasons"] = reasons
     return state, reasons

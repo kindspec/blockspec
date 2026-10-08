@@ -6,7 +6,7 @@
 # when its transcript shows a non-zero exit, a cmp or sha256 mismatch, or a
 # surviving or BROKEN mutant (§9).
 #
-#   prereg2_validate.sh V1|V2|V3|V4|V5|all
+#   prereg2_validate.sh V1|V2|V3|V4|V5|bundles|all   (all: every stage, in turn)
 #
 # Environment:
 #   D8_DIR         kindspec/research experiments/D8-identity at d51ce09 (a git
@@ -219,6 +219,9 @@ case "${1:-}" in
   V4)            run_stage V4 v4 || fails=1 ;;
   V5)            run_stage V5 v5 || fails=1 ;;
   bundles)       run_stage bundles bundles || fails=1 ;;
-  *) echo "usage: $0 V1|V2|V2-control|V2-merge|V2-research|V2-cheap|V3|V4|V5|bundles" >&2; exit 64 ;;
+  all)           for s in "V1-V2-control v1v2_control" "V2-merge v2_merge" "V2-research v2_research" \
+                          "V2-cheap-arm v2_cheap" "V3 v3" "V4 v4" "V5 v5" "bundles bundles"; do
+                   set -- $s; run_stage "$1" "$2" || fails=1; done ;;
+  *) echo "usage: $0 V1|V2|V2-control|V2-merge|V2-research|V2-cheap|V3|V4|V5|bundles|all" >&2; exit 64 ;;
 esac
 exit $fails

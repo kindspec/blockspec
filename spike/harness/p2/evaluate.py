@@ -116,7 +116,7 @@ def evaluate(inst):
         kind, first, last = u
         content = Mx.span_text(base, bb, first, last)
         truth, p = O.unit_oracle(base, after, legs, bb, bm, first, last)
-        verdict, note = truth, None
+        verdict = truth
         if truth == "SURVIVED":
             if kind == "region":
                 # A region unit is one block, so the section form over it is
@@ -133,12 +133,10 @@ def evaluate(inst):
                 # neighbouring unit (review A1).
                 h = slug_ctx()
                 k = h["b2u"][first]
+                # If p lies in no unit, t is undefined and repeat_rule takes
+                # T as the twins of k (review H4, LOG §18).
                 t = h["m_b2u"].get(p)
-                if t is None:
-                    # LOG §16: TLLC's target lies before the first heading of
-                    # the after-state, in no §5.2 unit, so the rule has no t.
-                    verdict, note = "UNDECIDABLE-REPEAT", "TLLC's target lies in no §5.2 unit"
-                elif not O.repeat_rule(h["Bc"], h["Mc"], h["target"], k, t):
+                if not O.repeat_rule(h["Bc"], h["Mc"], h["target"], k, t):
                     verdict = "UNDECIDABLE-REPEAT"
                 elif O.split_rule(base, after, legs, O.base_lines_of(base, bb, *h["B"][k]),
                                   h["lines"]):
@@ -157,8 +155,6 @@ def evaluate(inst):
                  unit=Mx.sha256_text(content), oracle=verdict, decided=decided,
                  target=p, hard={"status": "#REF!" if hit is None else "RESOLVED",
                                  "hit": hit, "cls": cls})
-        if note:
-            r["note"] = note
         if cls == "WRONG":
             r["reference"] = name
             r["oracle_target_text"] = bm[p]["content"] if p is not None else None

@@ -78,6 +78,11 @@ class Transcript:
             self.f.write(f"#   not bound: {r}\n")
         self.f.write("\n")
 
+    def mark_executed(self):
+        """§9: this invocation is an execution -- its corpus or input is open."""
+        self.f.write(f"\n# executed: {now()}\n")
+        self.f.flush()
+
     def _signal(self, signum, frame):
         raise SystemExit(128 + signum)
 

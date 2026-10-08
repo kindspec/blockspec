@@ -124,27 +124,29 @@ commit exists.
 # the V steps; each writes results/prereg2/validation/<stage>.txt
 D8_DIR=... CORPORA_V1=... CORPORA=... harness/prereg2_validate.sh V1   # also V2, V3, V4, V5
 harness/prereg2_validate.sh bundles                                     # §6.2 bundle integrity
-python3 -I harness/prereg2_v3.py --d8-dir "$D8_DIR"                    # V3 alone, no corpus
-python3 -I harness/prereg2_v4.py --d8-dir "$D8_DIR"                    # V4, the mutation sweep
+python3 -I -B harness/prereg2_v3.py --d8-dir "$D8_DIR"                    # V3 alone, no corpus
+python3 -I -B harness/prereg2_v4.py --d8-dir "$D8_DIR"                    # V4, the mutation sweep
 
 # §9's order of work, once validated -- the first execution of each binds
-harness/prereg2.py seal --manifest <outside the repo>
-harness/prereg2.py bind --validation-commit V --manifest-sha S     # writes results/prereg2/VALIDATION
-harness/prereg2.py arm0  --d8-dir "$D8_DIR" --arm <arm> --work-dir W
-harness/prereg2.py score --d8-dir "$D8_DIR" --arm <arm> --work-dir W
-harness/prereg2.py export --d8-dir "$D8_DIR" --manifest M
-harness/prereg2.py tier-model                                      # on the start day
-harness/prereg2.py tier-run
-harness/prereg2.py repro --d8-dir "$D8_DIR" --arm <arm> --id <record id> --work-dir W
-harness/prereg2.py aggregate --d8-dir "$D8_DIR" --manifest M
+python3 -I -B harness/prereg2.py seal --manifest <outside the repo>                # writes results/prereg2/VALIDATION
+python3 -I -B harness/prereg2.py arm0  --d8-dir "$D8_DIR" --arm <arm> --work-dir W
+python3 -I -B harness/prereg2.py score --d8-dir "$D8_DIR" --arm <arm> --work-dir W
+python3 -I -B harness/prereg2.py export --d8-dir "$D8_DIR" --manifest M
+python3 -I -B harness/prereg2.py tier-model                                      # on the start day
+python3 -I -B harness/prereg2.py tier-run
+python3 -I -B harness/prereg2.py repro --d8-dir "$D8_DIR" --arm <arm> --id <record id> --work-dir W
+python3 -I -B harness/prereg2.py aggregate --d8-dir "$D8_DIR" --manifest M
 ```
 
 Every invocation writes a transcript under `results/prereg2/transcripts/`,
 opened before its arguments are parsed, so usage errors and aborted runs are
-recorded too. A bound command runs only when `harness/p2/binding.py` passes:
-the harness and frozen documents are byte for byte the validation commit's,
-and nothing under `results/prereg2/` is uncommitted, so each invocation is
-committed before the next one (`LOG.md` §16). `--unbound` and the fixture
+recorded too. The harness refuses to run without `python3 -I` and never reads
+a bytecode cache. A bound command runs only when `harness/p2/binding.py`
+passes: the validation commit, derived as the one commit that added
+`results/prereg2/VALIDATION`, holds the harness byte for byte and no later
+commit touches it, and nothing under `results/prereg2/` is uncommitted, so
+each invocation is committed before the next one (`LOG.md` §16, §18). Each
+§9 step lands on `main` as one squash commit. `--unbound` and the fixture
 flags exist for the V3 tests; such runs write nowhere under
 `results/prereg2/` except their refusals, and carry no verdict.
 

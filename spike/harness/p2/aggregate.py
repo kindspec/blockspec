@@ -171,7 +171,10 @@ def cell(arm, mode, mech, sc, nonce, tiers, repro, void, near, reps):
         tier = T.tier_of(ans)
         if tier == "UNPLACEABLE":
             continue
-        f6 = rep["wf"] and ans["q4"] == "no"
+        # F6 is "every input state is well-formed" and q4 "no". The first
+        # half is a condition of export itself (§7.3, export.eligible), so
+        # every representative here already meets it; only q4 is left.
+        f6 = ans["q4"] == "no"
         f7 = ans["q3"] == "no"
         f8 = tier in ("A", "B")
         if not f6:
