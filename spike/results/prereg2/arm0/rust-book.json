@@ -1,0 +1,169 @@
+{
+ "adjacent_run_rule": "provisional reading (LOG §15): a distinct content (type, content) of 20 characters or more counts as an adjacent-run twin if, in at least one selected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position",
+ "arm": "rust-book",
+ "binding": {
+  "bound": true,
+  "head": "7d87069a260ba49096a6434d0ee2331887654dcb",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "bundle_sha256": "2dc07598fd32b77124e504d6499c6ff0a54dd1056d3cdf412050dca41e4f1384",
+ "passes_bar": true,
+ "pathspec": "src/*.md",
+ "pin": "1500248d8f230566e4ec9f27fcbb8fe9e2898ab1",
+ "rules": {
+  "anywhere": {
+   "by_type": {
+    "code": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 940,
+     "short_lt20": 2,
+     "single_line_twin": 0,
+     "twin_same_file": 3
+    },
+    "heading": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 451,
+     "short_lt20": 75,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "html": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 683,
+     "short_lt20": 442,
+     "single_line_twin": 8,
+     "twin_same_file": 11
+    },
+    "list": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 90,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "prose": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 2983,
+     "short_lt20": 11,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "table": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 13,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    }
+   },
+   "files_read": 112,
+   "nl_distinct_ge20": 3524,
+   "nl_twin_same_file": 0,
+   "passes_bar": true,
+   "unreadable": []
+  },
+  "none": {
+   "by_type": {
+    "code": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 940,
+     "short_lt20": 2,
+     "single_line_twin": 0,
+     "twin_same_file": 3
+    },
+    "heading": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 451,
+     "short_lt20": 75,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "html": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 683,
+     "short_lt20": 442,
+     "single_line_twin": 8,
+     "twin_same_file": 11
+    },
+    "list": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 90,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "prose": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 2983,
+     "short_lt20": 11,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "table": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 13,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    }
+   },
+   "files_read": 112,
+   "nl_distinct_ge20": 3524,
+   "nl_twin_same_file": 0,
+   "passes_bar": true,
+   "unreadable": []
+  },
+  "yaml-fence": {
+   "by_type": {
+    "code": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 940,
+     "short_lt20": 2,
+     "single_line_twin": 0,
+     "twin_same_file": 3
+    },
+    "heading": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 451,
+     "short_lt20": 75,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "html": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 683,
+     "short_lt20": 442,
+     "single_line_twin": 8,
+     "twin_same_file": 11
+    },
+    "list": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 90,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "prose": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 2983,
+     "short_lt20": 11,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "table": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 13,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    }
+   },
+   "files_read": 112,
+   "nl_distinct_ge20": 3524,
+   "nl_twin_same_file": 0,
+   "passes_bar": true,
+   "unreadable": []
+  }
+ }
+}

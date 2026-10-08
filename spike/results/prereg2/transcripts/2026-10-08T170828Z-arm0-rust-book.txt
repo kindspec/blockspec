@@ -1,0 +1,41 @@
+# prereg2 arm0 rust-book
+# argv: prereg2.py arm0 --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --work-dir /home/cam/kindspec-data/prereg2-arm0-work/rust-book
+# start: 2026-10-08T17:08:28Z
+# blockspec HEAD: 7d87069a260ba49096a6434d0ee2331887654dcb
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-08T17:08:29Z
+### rust-book rule=yaml-fence (verdict rule)  files=112 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                   2           940               3            0              0
+   heading               75           451               0            0              0
+   html                 442           683              11            8              0
+   list                   0            90               0            0              0
+   prose                 11          2983               0            0              0
+   table                  0            13               0            0              0
+   natural-language distinct >=20: 3524, with a twin in the same file: 0 (0.00%)  bar 10%: PASS
+### rust-book rule=none (beside, no verdict)  files=112 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                   2           940               3            0              0
+   heading               75           451               0            0              0
+   html                 442           683              11            8              0
+   list                   0            90               0            0              0
+   prose                 11          2983               0            0              0
+   table                  0            13               0            0              0
+   natural-language distinct >=20: 3524, with a twin in the same file: 0 (0.00%)  bar 10%: PASS
+### rust-book rule=anywhere (beside, no verdict)  files=112 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                   2           940               3            0              0
+   heading               75           451               0            0              0
+   html                 442           683              11            8              0
+   list                   0            90               0            0              0
+   prose                 11          2983               0            0              0
+   table                  0            13               0            0              0
+   natural-language distinct >=20: 3524, with a twin in the same file: 0 (0.00%)  bar 10%: PASS
+   * adjacent-run twin, provisional reading (LOG §15), report only: a distinct content (type, content) of 20 characters or more counts as an adjacent-run twin if, in at least one selected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position
+ARM 0 rust-book: passes the bar
+
+# end: 2026-10-08T17:08:29Z
+# exited: exit status 0
