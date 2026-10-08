@@ -1,5 +1,5 @@
 # prereg2_v3.py at a58727b1f40dca39a315109ba3b5ca33a1ac77ff, run against the harness at 281fb4f (before the re-review fixes)
-# each new check seen red against the code it was written for; $OLD is that harness's scratch copy
+# the new V3 run against the code before its fixes; $OLD is that harness's scratch copy
 # what this shows, counted from the lines below: 4 reds -- 1 named check (H4) and 3 sections that crash on
 # interfaces new since 281fb4f (is_late, VALIDATION from seal, execution markers); 250 of 303 checks ran.
 # It is weak red evidence. The per-finding evidence is V4.txt: each finding has a mutant there, killed by a named check.

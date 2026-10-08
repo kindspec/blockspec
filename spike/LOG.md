@@ -1460,3 +1460,17 @@ The re-review gave 8 such reds; counted from the file, they are these 6 and 2.
 
 The new checks for this re-review were run red first against `281fb4f`, and
 their transcript states the same counts.
+
+## 2026-10-08 — §19. What the red-first run against `281fb4f` shows
+
+`results/prereg2/validation/V3-new-checks-against-281fb4f.txt` runs V3 as of
+`a58727b` against the harness at `281fb4f`, from before §18's fixes. It
+prints `250 checks, 4 failed`. Of those four, one is a named check: H4.
+The other three are sections that crash on interfaces new since `281fb4f`:
+`is_late`, a VALIDATION written by `seal`, and the execution markers. So it
+is weak evidence that the new checks are red first.
+
+The evidence per finding is `V4.txt`. Every §18 finding, and every surviving
+mutant from the re-review, is a V4 mutant, and V4 reports
+`158 mutants: 158 killed, 0 survived, 0 BROKEN`. Each kill names the check
+that went red; none is a crash.
