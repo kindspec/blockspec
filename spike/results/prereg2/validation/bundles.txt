@@ -1,6 +1,7 @@
-# harness HEAD ba19ea682d1e528b6936dcb51cc08323989d4ca4  tracked changes under spike/: 0
+# harness HEAD de7cbb5c6be26e63e821b5227eea39f7b6bbbd64  tracked changes under spike/: 7
 # python 3.13.5  git 2.47.3
 # corpus bundles (§6.2): sha256 against harness/p2/bundles.json, and the head each holds
+# bundle dir: /home/cam/kindspec-data/prereg2-bundles
 2dc07598fd32b77124e504d6499c6ff0a54dd1056d3cdf412050dca41e4f1384    58557559  rust-book.bundle  head ['1500248d8f230566e4ec9f27fcbb8fe9e2898ab1']  ok
 008cbe84af65cc7e6dd1974947bfb8a9f27be54a8641bab882bf44546acb109c    78552211  obsidian-help.bundle  head ['327a782e90481268361b5ccccdb0c224b2b13fe6']  ok
 8bf9a1d0f26233998e7c51268dcba596b678d9e479ee9e5cd32f30d8e85dcef6     2934753  cmspec.bundle  head ['3da939428d80f146f270cd1765e4ba462e96bb1b']  ok

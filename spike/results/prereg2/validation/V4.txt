@@ -1,10 +1,10 @@
-# harness HEAD ba19ea682d1e528b6936dcb51cc08323989d4ca4  tracked changes under spike/: 0
+# harness HEAD de7cbb5c6be26e63e821b5227eea39f7b6bbbd64  tracked changes under spike/: 8
 # python 3.13.5  git 2.47.3
 === 0. baseline: unmutated harness, V3
-   170 checks, 0 failed
+   188 checks, 0 failed
    V3: PASS
 
-=== 66 mutations: each must turn V3 red
+=== 74 mutations: each must turn V3 red
 MUTATION  1 repeat: T always empty: KILLED [fdff2a4c1b5d2eaa -> a14b0124642a509e] (5 check(s) red; first: oracle_limitation.py's case comes out UNDECIDABLE-REPEAT under the rule)
 MUTATION  2 repeat: twins of k left out of T: KILLED [fdff2a4c1b5d2eaa -> 65f67342094fccce] (1 check(s) red; first: an edited block whose old wording survives verbatim elsewhere, with twinned neighbours: UNDECIDABLE-REPEAT (T )
 MUTATION  3 repeat: a tie decides: KILLED [fdff2a4c1b5d2eaa -> a72737459f0b21db] (4 check(s) red; first: oracle_limitation.py's case comes out UNDECIDABLE-REPEAT under the rule)
@@ -25,16 +25,16 @@ MUTATION 17 R: a duplicated slug resolves to the first: KILLED [d05af7508fac777c
 MUTATION 18 R: names from blocks of any type: KILLED [d05af7508fac777c -> ae6a388630c8fa43] (1 check(s) red; first: a `#` line inside a code fence is not a name   [['install-the-tools', 'notes', 'real-heading']])
 MUTATION 19 R: section ends at a deeper heading: KILLED [d05af7508fac777c -> 57841bd5fa5f4582] (1 check(s) red; first: a section runs to the next heading of the same or a higher level, subsections included   [[('slug', 0, 0), ('s)
 MUTATION 20 D8 pin: any directory accepted: KILLED [d05af7508fac777c -> c166265e21730716] (2 check(s) red; first: a D8 directory with one edited file is refused)
-MUTATION 21 bundle: an absent pin is not NO VERDICT: KILLED [9b5fb318a74bfe26 -> 290b0a9cac76393d] (0 check(s) red; first: V3: FAIL)
-MUTATION 22 bundle: the sha256 not checked: KILLED [9b5fb318a74bfe26 -> 0e6ae5cb42f9cc33] (1 check(s) red; first: a bundle whose sha256 is not the committed one is refused)
-MUTATION 23 bundle: a work repository reused: KILLED [9b5fb318a74bfe26 -> f122e4b7e71848b3] (0 check(s) red; first: V3: FAIL)
-MUTATION 24 sampler: the arm left out of the salt: KILLED [9b5fb318a74bfe26 -> 767e789c07cd9a9c] (2 check(s) red; first: the rank is sha256('prereg2:' + arm + ':' + key))
-MUTATION 25 sampler: D8's Random(7) shuffle: KILLED [9b5fb318a74bfe26 -> fab4dcae3e948b06] (3 check(s) red; first: removing an item that was not selected leaves the sample byte-identical)
-MUTATION 26 E: adds enter the population: KILLED [9b5fb318a74bfe26 -> 2e37266584dbaaf5] (1 check(s) red; first: E population: the edit is in it, the add is excluded and counted   [{'commits:no_merges': 2, 'population': 2, )
-MUTATION 27 S: equal blobs enter the population: KILLED [9b5fb318a74bfe26 -> ed1679d8425094f7] (1 check(s) red; first: S population: a pair whose two blobs are equal is excluded and counted   [{'paths': 1, 'gap5:pairs': 1, 'gap5:)
-MUTATION 28 M filter: every case kept under every rule: KILLED [9b5fb318a74bfe26 -> 9e52c36d3757ebd1] (2 check(s) red; first: M filter: the fence-generated file is not in the verdict selection   [['yaml-fence', 'none', 'anywhere']])
-MUTATION 29 site-policy: repo-sync stays in the strict set: KILLED [9b5fb318a74bfe26 -> e058be3a8009c0d0] (1 check(s) red; first: 'repo-sync: update': strict=False 25-case=True)
-MUTATION 30 site-policy: matched case-insensitively: KILLED [9b5fb318a74bfe26 -> 8ecb183a22865f05] (2 check(s) red; first: 'Repo-Sync of policies': strict=True 25-case=True)
+MUTATION 21 bundle: an absent pin is not NO VERDICT: KILLED [87d1296681d1155e -> 080394cb2553a5d9] (0 check(s) red; first: V3: FAIL)
+MUTATION 22 bundle: the sha256 not checked: KILLED [87d1296681d1155e -> 66a3990bc23ac22b] (1 check(s) red; first: a bundle whose sha256 is not the committed one is refused)
+MUTATION 23 bundle: a work repository reused: KILLED [87d1296681d1155e -> d3713623601a05fe] (0 check(s) red; first: V3: FAIL)
+MUTATION 24 sampler: the arm left out of the salt: KILLED [87d1296681d1155e -> 152fefb84912adb6] (2 check(s) red; first: the rank is sha256('prereg2:' + arm + ':' + key))
+MUTATION 25 sampler: D8's Random(7) shuffle: KILLED [87d1296681d1155e -> ddb07b3b1b46482f] (3 check(s) red; first: removing an item that was not selected leaves the sample byte-identical)
+MUTATION 26 E: adds enter the population: KILLED [87d1296681d1155e -> 06de4de77a022a63] (1 check(s) red; first: E population: the edit is in it, the add is excluded and counted   [{'commits:no_merges': 2, 'population': 2, )
+MUTATION 27 S: equal blobs enter the population: KILLED [87d1296681d1155e -> ce26cfbbeb264aaf] (1 check(s) red; first: S population: a pair whose two blobs are equal is excluded and counted   [{'paths': 1, 'gap5:pairs': 1, 'gap5:)
+MUTATION 28 M filter: every case kept under every rule: KILLED [87d1296681d1155e -> f8d6ccc3ddd3d77a] (2 check(s) red; first: M filter: the fence-generated file is not in the verdict selection   [['yaml-fence', 'none', 'anywhere']])
+MUTATION 29 site-policy: repo-sync stays in the strict set: KILLED [87d1296681d1155e -> 9fe9e47e05c85a72] (1 check(s) red; first: 'repo-sync: update': strict=False 25-case=True)
+MUTATION 30 site-policy: matched case-insensitively: KILLED [87d1296681d1155e -> 035f666683b0b845] (2 check(s) red; first: 'Repo-Sync of policies': strict=True 25-case=True)
 MUTATION 31 §6.3: yaml-fence reads the whole file: KILLED [5763df2953497510 -> 5bcde66d3ce58645] (2 check(s) red; first: the same key inside an HTML comment does not (yaml-fence))
 MUTATION 32 distinct: a unit keyed by its instance: KILLED [6d4052a8c13fe5b4 -> 823c348dbdf88a63] (4 check(s) red; first: a duplicate is counted once   [{('k8s-en', 'Q', '', 'u1', 'u1|Q|0'): 'decided', ('k8s-en', 'Q', '', 'u1', 'oth)
 MUTATION 33 decided rule: every instance must be decided: KILLED [ab792e5addb2ed71 -> 3ed51f12df0a5569] (1 check(s) red; first: one decided instance plus one undecidable instance counts as decided   [{('k8s-en', 'Q', '', 'u2'): 'undecidab)
@@ -46,10 +46,10 @@ MUTATION 38 aggregate: untiered packets ignored: KILLED [ab792e5addb2ed71 -> 7d1
 MUTATION 39 aggregate: void tiering ignored: KILLED [ab792e5addb2ed71 -> bbd7ccf1516094c5] (1 check(s) red; first: a void tiering makes a cell that exported a packet NO VERDICT)
 MUTATION 40 aggregate: F9 not required: KILLED [ab792e5addb2ed71 -> 859f193af1fa2f29] (1 check(s) red; first: ... a record that does not reproduce (F9) is not FOUND)
 MUTATION 41 aggregate: a missing reproduction tolerated: KILLED [ab792e5addb2ed71 -> 6874688a36eb449a] (0 check(s) red; first: V3: FAIL)
-MUTATION 42 arm0: the bar never stops: KILLED [10ffa5a7abd87421 -> e51fda42c207e8a0] (3 check(s) red; first: M: clean-01 as a real merge is stopped by Arm 0: its verbatim appendix twins the anchored paragraph   [exit 0])
-MUTATION 43 arm0: exactly 10% stops: KILLED [10ffa5a7abd87421 -> 1d2d5b6e5f44e5ef] (1 check(s) red; first: exactly 10% twinned passes   [1/10])
-MUTATION 44 arm0: an empty arm passes: KILLED [10ffa5a7abd87421 -> c21a38689b91c97a] (1 check(s) red; first: empty input does not pass)
-MUTATION 45 score: Arm 0 not consulted: KILLED [209acc62ebd0482a -> 31dbcd783e31b69e] (2 check(s) red; first: M: clean-01 as a real merge is stopped by Arm 0: its verbatim appendix twins the anchored paragraph   [exit 0])
+MUTATION 42 arm0: the bar never stops: KILLED [86893416e78aba5b -> 11fbf32282efd0a0] (3 check(s) red; first: M: clean-01 as a real merge is stopped by Arm 0: its verbatim appendix twins the anchored paragraph   [exit 0])
+MUTATION 43 arm0: exactly 10% stops: KILLED [86893416e78aba5b -> 0bd4ee3e8b5867ed] (1 check(s) red; first: exactly 10% twinned passes   [1/10])
+MUTATION 44 arm0: an empty arm passes: KILLED [86893416e78aba5b -> c0145e964d822581] (1 check(s) red; first: empty input does not pass)
+MUTATION 45 score: Arm 0 not consulted: KILLED [b4db738b33d9a685 -> 5cd0a7d36e1707ca] (2 check(s) red; first: M: clean-01 as a real merge is stopped by Arm 0: its verbatim appendix twins the anchored paragraph   [exit 0])
 MUTATION 46 export: F1 ignored: KILLED [6d4052a8c13fe5b4 -> ad7cf4e3c8ba8b84] (1 check(s) red; first: ... not if selected only under `none` (F1, §6.3))
 MUTATION 47 export: the strict set ignored: KILLED [6d4052a8c13fe5b4 -> 939f9fbeda8e8de9] (1 check(s) red; first: ... not a site-policy M case outside the strict set (F1))
 MUTATION 48 export: F5 ignored: KILLED [6d4052a8c13fe5b4 -> 3126e13dbf2665c1] (1 check(s) red; first: ... not a block of type code (F5))
@@ -65,13 +65,21 @@ MUTATION 57 void: A<->B confusion voids: KILLED [c89c21a6b876a702 -> 3ab6417f237
 MUTATION 58 void: q3 and q4 not checked: KILLED [c89c21a6b876a702 -> 56194936e64dcdb4] (2 check(s) red; first: a plant whose q3 mismatches voids)
 MUTATION 59 void: an untiered plant passes: KILLED [c89c21a6b876a702 -> 8315269631357334] (1 check(s) red; first: an untiered plant voids)
 MUTATION 60 tier: q1 before q2: KILLED [c89c21a6b876a702 -> ee93d259b325233f] (1 check(s) red; first: tier computation: q2 yes -> A, q1 yes -> B, else C, unplaceable -> UNPLACEABLE)
-MUTATION 61 tier-run: the first run does not bind: KILLED [dfaf698cd2cf0aa6 -> c44da283bdb20544] (1 check(s) red; first: a second run after a first that wrote lines is refused (the first binds)   [exit 0])
-MUTATION 62 tier-run: no window: KILLED [dfaf698cd2cf0aa6 -> 2118e48a09d5d6ef] (4 check(s) red; first: a run more than 14 days after the scoring-arm commit needs a reason   [exit 0])
-MUTATION 63 tier-run: runs before the start day: KILLED [dfaf698cd2cf0aa6 -> b27a8be124ae2cd9] (1 check(s) red; first: a run before the start day is refused   [exit 0])
-MUTATION 64 tier-run: an invalid export is sent: KILLED [dfaf698cd2cf0aa6 -> 5003e0c519a910df] (1 check(s) red; first: an export that fails its validator is never sent   [exit 0])
-MUTATION 65 transcript: no exit status written: KILLED [feeaf1360631456c -> 15889b0eae15bc4a] (1 check(s) red; first: ... and the aborted runs still wrote transcripts with their exit status)
-MUTATION 66 repro: any regeneration accepted: KILLED [209acc62ebd0482a -> 4ffeb489083400dd] (1 check(s) red; first: ... and reports DIFFERS, exit non-zero, against an altered record   [['F9 REPRODUCTION: BYTE-IDENTICAL  E:76b0)
+MUTATION 61 tier-run: the first run does not bind: KILLED [0187376b99c0c1fc -> 46c24f3ca8b9526d] (1 check(s) red; first: a second run after a first that wrote lines is refused (the first binds)   [exit 0])
+MUTATION 62 tier-run: no window: KILLED [0187376b99c0c1fc -> 922bae3860936e38] (8 check(s) red; first: a run more than 14 days after the scoring-arm commit needs a reason   [exit 0])
+MUTATION 63 tier-run: runs before the start day: KILLED [0187376b99c0c1fc -> 967c7a23d329fe6d] (1 check(s) red; first: a run before the start day is refused   [exit 0])
+MUTATION 64 tier-run: an invalid export is sent: KILLED [0187376b99c0c1fc -> 5386ca899c742fc4] (1 check(s) red; first: an export that fails its validator is never sent   [exit 0])
+MUTATION 65 undecodable: an M case with a non-UTF-8 input is merged anyway: KILLED [e410f426286e503d -> 201c03efbd20d851] (4 check(s) red; first: M: the arm does not crash (exit 0)   [exit 1])
+MUTATION 66 undecodable: E/S read non-UTF-8 with replacement: KILLED [e410f426286e503d -> 16d626efa87a50d5] (3 check(s) red; first: E: the case with the non-UTF-8 blob is excluded and counted undecodable)
+MUTATION 67 undecodable: find_merge_cases keeps its strict reader: KILLED [e410f426286e503d -> 02d984118242f69f] (4 check(s) red; first: M: the arm does not crash (exit 0)   [exit 1])
+MUTATION 68 undecodable: not counted: KILLED [b4db738b33d9a685 -> b707367b2ab3f227] (4 check(s) red; first: M: the case with the non-UTF-8 blob is excluded and counted undecodable)
+MUTATION 69 arm0: the adjacent-run label dropped: KILLED [86893416e78aba5b -> a115aa86adb0b6f1] (2 check(s) red; first: Arm 0 prints the adjacent-run line labelled 'provisional reading (LOG §15)', with its rule)
+MUTATION 70 sandbox: the host home bound in: KILLED [0187376b99c0c1fc -> 8c91e9c780122389] (2 check(s) red; first: in the sandbox the stub cannot read the canary under /home/cam/repos_kindspec)
+MUTATION 71 sandbox: the agent run outside it: KILLED [0187376b99c0c1fc -> 5384a20f8fc42776] (6 check(s) red; first: a run writes tiers.jsonl as the agent wrote it   [exit 1])
+MUTATION 72 sandbox: the credential file not bound: KILLED [0187376b99c0c1fc -> 5e018f745f0acc43] (1 check(s) red; first: ... can read the export and the one bound credential file)
+MUTATION 73 transcript: no exit status written: KILLED [feeaf1360631456c -> 15889b0eae15bc4a] (1 check(s) red; first: ... and the aborted runs still wrote transcripts with their exit status)
+MUTATION 74 repro: any regeneration accepted: KILLED [b4db738b33d9a685 -> aff6cbec118ab1f2] (1 check(s) red; first: ... and reports DIFFERS, exit non-zero, against an altered record   [['F9 REPRODUCTION: BYTE-IDENTICAL  E:76b0)
 
-66 mutants: 66 killed, 0 survived, 0 BROKEN
+74 mutants: 74 killed, 0 survived, 0 BROKEN
 V4: PASS
 exit=0

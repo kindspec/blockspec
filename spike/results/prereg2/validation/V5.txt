@@ -1,4 +1,4 @@
-# harness HEAD ba19ea682d1e528b6936dcb51cc08323989d4ca4  tracked changes under spike/: 0
+# harness HEAD de7cbb5c6be26e63e821b5227eea39f7b6bbbd64  tracked changes under spike/: 6
 # python 3.13.5  git 2.47.3
 == armed_check.sh
 

@@ -1,4 +1,4 @@
-# harness HEAD ba19ea682d1e528b6936dcb51cc08323989d4ca4  tracked changes under spike/: 0
+# harness HEAD de7cbb5c6be26e63e821b5227eea39f7b6bbbd64  tracked changes under spike/: 5
 # python 3.13.5  git 2.47.3
 
 == D8 pin: the mechanism is kindspec/research d51ce09, or nothing runs
@@ -71,7 +71,7 @@
   ok    E: a repository holding single-leg-01 as one commit scores (exit 0)   [exit 0]
   ok    E: ... and yields that record: anchored block 1, decided, hardened WRONG   [{'cls': 'WRONG', 'hit': 7, 'mechanism_target_text': 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.', 'status': 'EXACT'}]
   ok    E: ... byte-identical to the committed record p2/fixtures/single-leg-01.E.record.json
-  ok    E: every invocation wrote a transcript   [['2026-10-08T000827Z-arm0-fixture.txt', '2026-10-08T000827Z-score-fixture.txt']]
+  ok    E: every invocation wrote a transcript   [['2026-10-08T003049Z-arm0-fixture.txt', '2026-10-08T003049Z-score-fixture.txt']]
   ok    S5: a history base, a, base, a, base, a yields the pair (cs[0], cs[5]) and that record   [S5:0:doc.md]
   ok    an empty repository exits non-zero (score)   [exit 2]
   ok    an empty repository exits non-zero (arm0)   [exit 2]
@@ -86,9 +86,21 @@
   ok    ... and reports DIFFERS, exit non-zero, against an altered record   [['F9 REPRODUCTION: DIFFERS  E:76b0c2815789f97065dbbc4836669c65df182969:doc.md|Q|1']]
   ok    ... and exits non-zero on a record id that is not committed   [exit 2]
 
+== Non-UTF-8 blobs: excluded and counted as undecodable (LOG §15)
+  ok    the supplied find_merge_cases(), reading strictly, raises on such a merge (the defect the rule exists for)
+  ok    M: the arm does not crash (exit 0)   [exit 0]
+  ok    M: the case with the non-UTF-8 blob is excluded and counted undecodable   [1]
+  ok    M: valid cases are still evaluated, the undecodable one is not   [['M:1e64cd6c22c2ac3005f576640d851a8257d7bd93:ok.md']]
+  ok    M: the arm's output and transcript report it
+  ok    E: the arm does not crash (exit 0)   [exit 0]
+  ok    E: the case with the non-UTF-8 blob is excluded and counted undecodable   [1]
+  ok    E: valid cases are still evaluated, the undecodable one is not   [['E:a797850b3531f50509cf91ad826bfd64552d7639:doc.md', 'E:a797850b3531f50509cf91ad826bfd64552d7639:ok.md', 'E:e275ca033e32415960a204c433aa8e04db44c3b4:ok.md']]
+  ok    E: the arm's output and transcript report it
+
 == Corpora as bundles (§6.2)
   ok    every arm's bundle has a committed sha256, and its recorded head is the arm's pin
   ok    the seven arms and their pins are §6.2's
+  ok    bundle storage is recorded: the release tag and the durable local copy, which is the harness's default bundle directory   [/home/cam/kindspec-data/prereg2-bundles]
   ok    a corpus is fetched fresh from its bundle and checked out at the pin
   ok    an earlier pin in the bundle's history is reachable
   ok    a pin absent from its bundle is NO VERDICT   [fx: pin 1111111111111111111111111111111111111111 is absent from its bundle]
@@ -155,16 +167,19 @@
   ok    blocks under 20 characters are counted as skipped
   ok    empty input does not pass
   ok    the CLI: the arm reports NO VERDICT (oracle reach) and does not run   [exit 3]
+  ok    Arm 0 prints the adjacent-run line labelled 'provisional reading (LOG §15)', with its rule
+  ok    ... and its JSON carries the label
+  ok    no aggregate or verdict path imports arm0 or reads the adjacent-run count
 
 == Export, its validator, and the sealed manifest (§7.3)
   ok    seal draws a 32-byte nonce
   ok    seal refuses to overwrite a sealed manifest
   ok    a manifest whose sha256 is not the committed one is refused
-  ok    an export of no real record holds the three plants   [['286c1e69023d2c20', '81f168da8cce08be', '9f49fcb4c3567563']]
+  ok    an export of no real record holds the three plants   [['05adb5ecb9d20650', 'bfd53404245e5bfe', 'e33e5d4d815c4f20']]
   ok    packet names are sha256(nonce + ':' + key)[:16], computed independently here
   ok    a clean export passes the validator
-  ok    the validator rejects a packet that carries a count   [["286c1e69023d2c20: fields outside the allow-list: ['count']"]]
-  ok    ... and a string field outside the allow-list   [["286c1e69023d2c20: fields outside the allow-list: ['total']"]]
+  ok    the validator rejects a packet that carries a count   [["05adb5ecb9d20650: fields outside the allow-list: ['count']"]]
+  ok    ... and a string field outside the allow-list   [["05adb5ecb9d20650: fields outside the allow-list: ['total']"]]
   ok    ... and a number in an allowed field
   ok    ... and a file outside the allow-list
   ok    ... and LOG.md at the export root
@@ -174,10 +189,15 @@
   ok    validate-export exits non-zero on it   [exit 1]
 
 == Tiering-run wrapper (§7.3), with a stub agent
+  ok    without the sandbox, the stub CAN read the canary under /home/cam/repos_kindspec and ~/.claude/projects (so the probes can fail)   [['PROBE CAN-READ canary under /home/cam/repos_kindspec', 'PROBE CAN-READ ~/.claude/projects', 'PROBE CAN-READ ~/.claude', "PROBE CAN-READ the export's PROMPT.md", 'PROBE CANNOT-READ the bound credential file']]
   ok    a run more than 14 days after the scoring-arm commit needs a reason   [exit 2]
   ok    a listing not fetched on the start day is refused   [exit 2]
   ok    a run writes tiers.jsonl as the agent wrote it   [exit 0]
   ok    ... the agent saw only PROMPT.md and packets/
+  ok    in the sandbox the stub cannot read the canary under /home/cam/repos_kindspec
+  ok    ... cannot read ~/.claude/projects, nor ~/.claude itself
+  ok    ... can read the export and the one bound credential file
+  ok    ... and the transcript records the bwrap invocation
   ok    ... with the pinned model, since the start day's listing serves it
   ok    ... and the transcript logs the late reason and Appendix A as sent
   ok    a second run after a first that wrote lines is refused (the first binds)   [exit 2]
@@ -219,6 +239,6 @@
   ok    Q in one only: INCONCLUSIVE
   ok    any FOUND cell: FOUND
 
-170 checks, 0 failed
+188 checks, 0 failed
 V3: PASS
 exit=0
