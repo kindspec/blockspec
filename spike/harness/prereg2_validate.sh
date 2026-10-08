@@ -172,9 +172,10 @@ v5() {
 }
 
 bundles() {
-  : "${BUNDLE_DIR:?set BUNDLE_DIR to the directory holding the six corpus bundles}"
+  BUNDLE_DIR="${BUNDLE_DIR:-${PREREG2_BUNDLE_DIR:-/home/cam/kindspec-data/prereg2-bundles}}"
   stamp
   echo "# corpus bundles (§6.2): sha256 against harness/p2/bundles.json, and the head each holds"
+  echo "# bundle dir: $BUNDLE_DIR"
   python3 -I - "$HERE/p2/bundles.json" "$BUNDLE_DIR" <<'PY'
 import hashlib, json, os, subprocess, sys
 meta, d = json.load(open(sys.argv[1])), sys.argv[2]

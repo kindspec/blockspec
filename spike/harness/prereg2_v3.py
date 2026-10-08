@@ -518,6 +518,13 @@ def t_bundles(a, tmp):
               ("k8s-l10n", "6b27baef1e44", "content/*.md :(exclude)content/en/"),
               ("cncf-toc", "144c2e321588", "*.md :(exclude).github/"),
               ("site-policy", "b9578b546d25", "*.md :(exclude).github/")])
+    st = b["_storage"]
+    check("bundle storage is recorded: the release tag and the durable local copy, which is "
+          "the harness's default bundle directory",
+          "prereg2-bundles-v1" in st["release"] and "internal" not in json.dumps(b)
+          and (os.environ.get("PREREG2_BUNDLE_DIR") or K.DEFAULT_BUNDLE_DIR).rstrip("/")
+          == (os.environ.get("PREREG2_BUNDLE_DIR") or st["local_copy"]).rstrip("/")
+          and "scratch" not in K.DEFAULT_BUNDLE_DIR, K.DEFAULT_BUNDLE_DIR)
     src = os.path.join(tmp, "b-src")
     pin, g = fixture_repo(src, [("one", {"a.md": "# A\n\nText of the first commit.\n"}),
                                 ("two", {"a.md": "# A\n\nText of the second commit.\n"})])
@@ -560,6 +567,70 @@ def t_bundles(a, tmp):
     except FileNotFoundError:
         refused = True
     check("a missing bundle is refused", refused)
+
+
+def undecodable_repo(root):
+    """doc.md: leg A writes a Latin-1 byte into it, leg C edits another
+    paragraph, and stock git merges the two cleanly. ok.md: both legs edit
+    valid UTF-8 on both sides."""
+    para = ["# Doc", "Cafe opens at nine every weekday morning.", "The terrace closes in winter months.",
+            "Orders over twenty units need a deposit."]
+    ok = ["# Ok", "The first shared paragraph of the okay file.", "The second shared paragraph here.",
+          "The third shared paragraph of the okay file."]
+    env = dict(os.environ, **GIT_ENV)
+
+    def g(*a):
+        return subprocess.run(["git", "-C", root, *a], check=True, capture_output=True, env=env).stdout.decode().strip()
+
+    def w(name, blocks, raw=None):
+        with open(os.path.join(root, name), "wb") as f:
+            f.write(raw if raw is not None else ("\n\n".join(blocks) + "\n").encode())
+    os.makedirs(root)
+    g("init", "-q", "-b", "main")
+    w("doc.md", para)
+    w("ok.md", ok)
+    g("add", "-A")
+    g("commit", "-q", "-m", "base")
+    g("checkout", "-q", "-b", "leg-a")
+    latin = ("\n\n".join(para) + "\n").replace("Cafe", "Caf\u00e9").encode("latin-1")
+    w("doc.md", None, raw=latin)
+    w("ok.md", [ok[0], ok[1].replace("first", "1st"), ok[2], ok[3]])
+    g("commit", "-q", "-am", "leg a")
+    g("checkout", "-q", "main")
+    w("doc.md", [para[0], para[1], para[2], para[3].replace("twenty", "fifty")])
+    w("ok.md", [ok[0], ok[1], ok[2], ok[3].replace("third", "3rd")])
+    g("commit", "-q", "-am", "leg c")
+    g("merge", "-q", "--no-edit", "leg-a")
+    return g("rev-parse", "HEAD"), g("rev-parse", "leg-a")
+
+
+def t_undecodable(a, tmp):
+    section("Non-UTF-8 blobs: excluded and counted as undecodable (LOG §15)")
+    P = Mx.P
+    repo = os.path.join(tmp, "u-repo")
+    pin, leg_a = undecodable_repo(repo)
+    try:
+        P.find_merge_cases(repo, "")
+        crashed = False
+    except UnicodeDecodeError:
+        crashed = True
+    check("the supplied find_merge_cases(), reading strictly, raises on such a merge "
+          "(the defect the rule exists for)", crashed)
+    for mode in ("M", "E"):
+        rc, out, sdir, tdir = score(tmp, f"u-{mode}", repo, pin, mode)
+        st = json.load(open(os.path.join(sdir, "status.json"))) if os.path.isdir(sdir) else {}
+        c = st.get("counts", {}).get(mode, {})
+        check(f"{mode}: the arm does not crash (exit 0)", rc == 0, f"exit {rc}")
+        check(f"{mode}: the case with the non-UTF-8 blob is excluded and counted undecodable",
+              c.get("undecodable") == 1, c.get("undecodable"))
+        ev = [json.loads(x) for x in open(os.path.join(sdir, "instances.jsonl"))] if rc == 0 else []
+        bad = (lambda i: i["path"] == "doc.md") if mode == "M" else \
+            (lambda i: i["id"] == f"E:{leg_a}:doc.md")
+        check(f"{mode}: valid cases are still evaluated, the undecodable one is not",
+              any(i["path"] == "ok.md" for i in ev) and not any(bad(i) for i in ev),
+              [i["id"] for i in ev])
+        tr = "".join(open(os.path.join(tdir, f)).read() for f in os.listdir(tdir) if "score" in f)
+        check(f"{mode}: the arm's output and transcript report it", "undecodable 1" in out and "undecodable 1" in tr)
 
 
 def t_repro(a, tmp):
@@ -745,6 +816,29 @@ def t_arm0(a, tmp):
     rc, out, _, _ = score(tmp, "a0", repo, pin, "E", sample=10)
     check("the CLI: the arm reports NO VERDICT (oracle reach) and does not run",
           rc == 3 and "does not run" in out, f"exit {rc}")
+    t = os.path.join(tmp, "a0-transcripts")
+    a0out = "".join(open(os.path.join(t, f)).read() for f in sorted(os.listdir(t)) if "arm0" in f)
+    check("Arm 0 prints the adjacent-run line labelled 'provisional reading (LOG §15)', with its rule",
+          "adjacent-run twin, provisional reading (LOG §15), report only: " + A0.ADJACENT_RUN_RULE in a0out)
+    j = json.load(open(os.path.join(tmp, "a0", "arm0", "fixture.json")))
+    check("... and its JSON carries the label", j["adjacent_run_rule"].startswith("provisional reading (LOG §15): "))
+    import ast
+    leaks = []
+    for f in ("p2/aggregate.py", "p2/tiers.py", "p2/export.py"):
+        src = open(os.path.join(HERE, f), encoding="utf-8").read()
+        tree = ast.parse(src)
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.Import, ast.ImportFrom)):
+                names = [n.name for n in node.names] + [getattr(node, "module", None) or ""]
+                if any("arm0" in (x or "") for x in names):
+                    leaks.append(f"{f} imports arm0")
+        if "adjacent" in src.lower():
+            leaks.append(f"{f} mentions adjacent")
+    agg = open(os.path.join(HERE, "prereg2.py"), encoding="utf-8").read()
+    body = agg[agg.index("def cmd_aggregate"):agg.index("def main")]
+    if "adjacent" in body.lower() or "arm0 as" in body:
+        leaks.append("prereg2.py cmd_aggregate reads it")
+    check("no aggregate or verdict path imports arm0 or reads the adjacent-run count", not leaks, leaks)
 
 
 def t_export(a, tmp):
@@ -802,31 +896,67 @@ def t_export(a, tmp):
     check("validate-export exits non-zero on it", rc != 0, f"exit {rc}")
 
 
-STUB = """#!/usr/bin/env python3
+STUB = """#!/usr/bin/python3
 import json, os, sys
 mode = %r
+probes = %r
 print("stub agent, model", sys.argv[1], "cwd holds", sorted(os.listdir(".")))
+for label, path in probes:
+    try:
+        if os.path.isdir(path):
+            os.listdir(path)
+        else:
+            open(path, "rb").read(1)
+        print("PROBE CAN-READ", label)
+    except OSError:
+        print("PROBE CANNOT-READ", label)
 if mode != "silent":
     with open("tiers.jsonl", "w") as f:
         for n in sorted(os.listdir("packets")):
             f.write(json.dumps({"packet": n, "q1": "yes", "q2": "no", "q3": "no", "q4": "no",
                                 "unplaceable": False, "why": "stub"}) + "\\n")
 """
+CANARY_DIR = os.environ.get("PREREG2_CANARY_DIR", "/home/cam/repos_kindspec")
 
 
 def t_tier_run(a, tmp):
     section("Tiering-run wrapper (§7.3), with a stub agent")
     from p2 import export as X
     from p2 import tierrun as TRN
+    canary = os.path.join(CANARY_DIR, f".prereg2-v3-canary-{os.getpid()}")
+    open(canary, "w").write("a file outside the export\n")
+    creds = os.path.join(tmp, "fake-credentials.json")
+    open(creds, "w").write("{}\n")
+    home_claude = os.path.expanduser("~/.claude")
+    probes = [("canary under " + CANARY_DIR, canary),
+              ("~/.claude/projects", os.path.join(home_claude, "projects")),
+              ("~/.claude", home_claude),
+              ("the export's PROMPT.md", "PROMPT.md"),
+              ("the bound credential file", "/home/tierer/.claude/.credentials.json")]
+    stubs = {}
+    for mode in ("answers", "silent"):
+        stubs[mode] = os.path.join(tmp, f"stub-{mode}.py")
+        open(stubs[mode], "w").write(STUB % (mode, probes))
+        os.chmod(stubs[mode], 0o755)
+    try:
+        _t_tier_run(a, tmp, X, TRN, stubs, creds, canary)
+    finally:
+        os.remove(canary)
+
+
+def _t_tier_run(a, tmp, X, TRN, stubs, creds, canary):
     mp = os.path.join(tmp, "tr-manifest.json")
     X.seal(mp)
     exp = os.path.join(tmp, "tr-export")
     X.export(exp, X.load_manifest(mp), [], {})
-    stubs = {}
-    for mode in ("answers", "silent"):
-        stubs[mode] = os.path.join(tmp, f"stub-{mode}.py")
-        open(stubs[mode], "w").write(STUB % mode)
-        os.chmod(stubs[mode], 0o755)
+    # red first: the same stub, run without the sandbox, sees the host
+    plain = os.path.join(tmp, "tr-plain")
+    shutil.copytree(exp, plain)
+    r = subprocess.run([stubs["silent"], "m", "p"], cwd=plain, capture_output=True, text=True)
+    check("without the sandbox, the stub CAN read the canary under " + CANARY_DIR
+          + " and ~/.claude/projects (so the probes can fail)",
+          "PROBE CAN-READ canary" in r.stdout and "PROBE CAN-READ ~/.claude/projects" in r.stdout,
+          [ln for ln in r.stdout.splitlines() if "PROBE" in ln])
     old_repo = os.path.join(tmp, "tr-old")
     old, _ = fixture_repo(old_repo, [("scoring-arm commit", {"x.md": "x\n"})])
     listing = os.path.join(tmp, "models.json")
@@ -837,7 +967,8 @@ def t_tier_run(a, tmp):
         return cli("tier-run", "--export", exp, "--out", os.path.join(tmp, state, "tiers.jsonl"),
                    "--state-dir", os.path.join(tmp, state), "--repo", repo, "--scoring-commit", commit,
                    "--models-listing", listing, "--listing-day", day, "--agent-cmd", stubs[stub],
-                   "--transcript-dir", os.path.join(tmp, state + "-t"), "--unbound", *extra)
+                   "--transcript-dir", os.path.join(tmp, state + "-t"), "--credentials", creds,
+                   "--unbound", *extra)
     rc, out = tr("s1")
     check("a run more than 14 days after the scoring-arm commit needs a reason", rc == 2 and "late" in out, f"exit {rc}")
     rc, out = tr("s1", "--late-reason", "V3 fixture", day="2001-01-05")
@@ -846,6 +977,13 @@ def t_tier_run(a, tmp):
     lines = open(os.path.join(tmp, "s1", "tiers.jsonl")).read().splitlines() if rc == 0 else []
     check("a run writes tiers.jsonl as the agent wrote it", rc == 0 and len(lines) == 3, f"exit {rc}")
     check("... the agent saw only PROMPT.md and packets/", "cwd holds ['PROMPT.md', 'packets']" in out)
+    check("in the sandbox the stub cannot read the canary under " + CANARY_DIR,
+          "PROBE CANNOT-READ canary" in out and "PROBE CAN-READ canary" not in out)
+    check("... cannot read ~/.claude/projects, nor ~/.claude itself",
+          "PROBE CANNOT-READ ~/.claude/projects" in out and "PROBE CANNOT-READ ~/.claude\n" in out + "\n")
+    check("... can read the export and the one bound credential file",
+          "PROBE CAN-READ the export's PROMPT.md" in out and "PROBE CAN-READ the bound credential file" in out)
+    check("... and the transcript records the bwrap invocation", "sandboxed agent: bwrap " in out)
     check("... with the pinned model, since the start day's listing serves it",
           json.load(open(os.path.join(tmp, "s1", "tier-model.json")))["model"] == "claude-opus-5-5")
     check("... and the transcript logs the late reason and Appendix A as sent",
@@ -877,7 +1015,8 @@ def t_tier_run(a, tmp):
     rc, out = cli("tier-run", "--export", bad, "--out", os.path.join(tmp, "s4", "tiers.jsonl"),
                   "--state-dir", os.path.join(tmp, "s4"), "--repo", old_repo, "--scoring-commit", old,
                   "--models-listing", listing, "--listing-day", "2001-01-02", "--late-reason", "x",
-                  "--agent-cmd", stubs["answers"], "--transcript-dir", os.path.join(tmp, "s4-t"), "--unbound")
+                  "--agent-cmd", stubs["answers"], "--transcript-dir", os.path.join(tmp, "s4-t"),
+                  "--credentials", creds, "--unbound")
     check("an export that fails its validator is never sent", rc == 2 and "validator" in out, f"exit {rc}")
 
 
@@ -1025,6 +1164,7 @@ def main():
         t_plants(a, tmp)
         t_enumerators(a, tmp)
         t_repro(a, tmp)
+        t_undecodable(a, tmp)
         t_bundles(a, tmp)
         t_m_arm(a, tmp)
         t_mfilter(a, tmp)

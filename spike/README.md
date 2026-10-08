@@ -123,17 +123,17 @@ commit exists.
 ```sh
 # the V steps; each writes results/prereg2/validation/<stage>.txt
 D8_DIR=... CORPORA_V1=... CORPORA=... harness/prereg2_validate.sh V1   # also V2, V3, V4, V5
-BUNDLE_DIR=... harness/prereg2_validate.sh bundles                      # §6.2 bundle integrity
+harness/prereg2_validate.sh bundles                                     # §6.2 bundle integrity
 python3 -I harness/prereg2_v3.py --d8-dir "$D8_DIR"                    # V3 alone, no corpus
 python3 -I harness/prereg2_v4.py --d8-dir "$D8_DIR"                    # V4, the mutation sweep
 
 # §9's order of work, once validated -- the first execution of each binds
 harness/prereg2.py seal --manifest <outside the repo>
-harness/prereg2.py arm0  --d8-dir "$D8_DIR" --arm <arm> --bundle-dir B --work-dir W
-harness/prereg2.py score --d8-dir "$D8_DIR" --arm <arm> --bundle-dir B --work-dir W
+harness/prereg2.py arm0  --d8-dir "$D8_DIR" --arm <arm> --work-dir W
+harness/prereg2.py score --d8-dir "$D8_DIR" --arm <arm> --work-dir W
 harness/prereg2.py export --d8-dir "$D8_DIR" --manifest M --manifest-sha S
 harness/prereg2.py tier-run --scoring-commit C --models-listing L --listing-day D
-harness/prereg2.py repro --d8-dir "$D8_DIR" --arm <arm> --id <record id> --bundle-dir B --work-dir W
+harness/prereg2.py repro --d8-dir "$D8_DIR" --arm <arm> --id <record id> --work-dir W
 harness/prereg2.py aggregate --d8-dir "$D8_DIR" --manifest M --manifest-sha S
 ```
 
@@ -141,5 +141,8 @@ Every invocation of `arm0`, `score`, `export`, `tier-run`, `repro` and
 `aggregate` writes a transcript under `results/prereg2/transcripts/`, aborted
 ones included. A run from a harness that differs from its commit refuses, or
 with `--unbound` is marked unbound, and `aggregate` refuses unbound input.
-The corpus bundles are not in this repository; `harness/p2/bundles.json`
-records each one's sha256, size and head.
+The corpus bundles are not in this repository. `harness/p2/bundles.json`
+records each one's sha256, size and head, and where they are kept (`LOG.md`
+§15). The harness reads them from `--bundle-dir`, else `$PREREG2_BUNDLE_DIR`,
+else the local copy recorded there. The tierer runs only inside the bubblewrap
+sandbox `harness/p2/tierrun.py` builds.

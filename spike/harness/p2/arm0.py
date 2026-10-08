@@ -14,9 +14,11 @@ THE BAR. If more than 10% of an arm's distinct natural-language contents of
 20 characters or more have a twin in the same file, the arm reports NO
 VERDICT (oracle reach) and does not run.
 
-GAP, NOT DECIDED HERE. §6.5 does not define "adjacent-run twin". The count
-below uses a provisional reading, ADJACENT_RUN_RULE, and is labelled with it.
-No verdict reads it: the bar uses only "has a twin in the same file".
+"Adjacent-run twin" is not defined by §6.5. The owner accepted one labelled
+reading on 2026-10-08, recorded in LOG.md §15 before Arm 0, for this
+report-only line: ADJACENT_RUN_RULE below. No verdict reads it -- the bar uses
+only "has a twin in the same file" -- and V3 checks that no aggregate or
+verdict path refers to it.
 """
 import os
 from collections import defaultdict
@@ -25,9 +27,12 @@ from . import mech as Mx
 
 MINLEN = 20
 BAR = 0.10
-ADJACENT_RUN_RULE = ("provisional: a twinned content one of whose within-file "
-                     "instances is immediately followed or preceded, as a "
-                     "block, by another instance of the same content")
+ADJACENT_RUN_LABEL = "provisional reading (LOG §15)"
+ADJACENT_RUN_RULE = (
+    "a distinct content (type, content) of 20 characters or more counts as an "
+    "adjacent-run twin if, in at least one selected file, two of its instances "
+    "are consecutive blocks of that file -- positions i and i+1 in D8's "
+    "blocks() sequence, where blocks of every length count toward the position")
 
 
 def census_texts(texts):

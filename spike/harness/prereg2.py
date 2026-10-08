@@ -3,11 +3,14 @@
 """PRE-REGISTRATION-2.md, the harness. blockspec#2.
 
     prereg2.py seal       --manifest PATH
-    prereg2.py arm0       --arm ARM --bundle-dir D --work-dir W
-    prereg2.py score      --arm ARM --bundle-dir D --work-dir W [--modes E,S5,S25,M]
+    prereg2.py arm0       --arm ARM --work-dir W [--bundle-dir D]
+    prereg2.py score      --arm ARM --work-dir W [--bundle-dir D] [--modes E,S5,S25,M]
     prereg2.py export     --manifest PATH --manifest-sha SHA
     prereg2.py validate-export DIR
-    prereg2.py repro      --arm ARM --id INSTANCE|MECH|UNIT --bundle-dir D --work-dir W
+    prereg2.py repro      --arm ARM --id INSTANCE|MECH|UNIT --work-dir W [--bundle-dir D]
+
+The bundles are read from --bundle-dir, else $PREREG2_BUNDLE_DIR, else the
+durable local copy recorded in p2/bundles.json (LOG.md §15).
     prereg2.py tier-run   --scoring-commit SHA --models-listing FILE --listing-day DAY
     prereg2.py aggregate  --manifest PATH --manifest-sha SHA --tiers FILE
 
@@ -123,8 +126,8 @@ def cmd_arm0(a, tr):
               f"file: {c['nl_twin_same_file']}"
               + (f" ({100 * share:.2f}%)" if share is not None else "")
               + f"  bar 10%: {'PASS' if c['passes_bar'] else 'STOP'}")
-    print(f"   * adjacent-run twin: {A0.ADJACENT_RUN_RULE}")
-    out["adjacent_run_rule"] = A0.ADJACENT_RUN_RULE
+    print(f"   * adjacent-run twin, {A0.ADJACENT_RUN_LABEL}, report only: {A0.ADJACENT_RUN_RULE}")
+    out["adjacent_run_rule"] = A0.ADJACENT_RUN_LABEL + ": " + A0.ADJACENT_RUN_RULE
     out["passes_bar"] = out["rules"][K.VERDICT_RULE]["passes_bar"]
     if not out["passes_bar"]:
         out["no_verdict"] = "oracle reach"
@@ -167,7 +170,7 @@ def cmd_score(a, tr):
     s_cache = {}
     try:
         for mode in modes:
-            n = skipped = 0
+            n = skipped = undecodable = 0
             if mode == "E":
                 gen, counts = AR.build_e(a.arm, repo, pin, sel, a.sample_e)
             elif mode in ("S5", "S25"):
@@ -179,15 +182,19 @@ def cmd_score(a, tr):
                 def gen_m():
                     for c in kept:
                         inst, res = AR.inst_m(a.arm, c)
-                        if inst is None:
-                            merges["not_clean"] += 1
-                        else:
-                            merges["clean"] += 1
+                        if res is not None:
+                            merges["clean" if res["clean"] and res["merged"] is not None
+                                   else "not_clean"] += 1
                         yield c["id"], inst
                 gen = gen_m()
             else:
                 raise SystemExit(f"unknown mode {mode!r}")
             for key, inst in gen:
+                if inst is AR.UNDECODABLE:
+                    # LOG §15: a case whose base, any leg, or after-state is
+                    # not valid UTF-8 is excluded and counted.
+                    undecodable += 1
+                    continue
                 if inst is None:
                     skipped += 1
                     continue
@@ -197,9 +204,11 @@ def cmd_score(a, tr):
                 counts["merges"] = merges
             counts["evaluated_instances"] = n
             counts["not_evaluated"] = skipped
+            counts["undecodable"] = undecodable
             status["counts"][mode] = counts
             status["modes"].append(mode)
-            print(f"### {a.arm} {mode}: evaluated {n} instances, {skipped} not evaluated")
+            print(f"### {a.arm} {mode}: evaluated {n} instances, {skipped} not evaluated, "
+                  f"undecodable {undecodable} (excluded, LOG §15)")
             print("   " + json.dumps(counts, sort_keys=True))
     finally:
         w.close()
@@ -348,7 +357,7 @@ def cmd_tier_run(a, tr):
     bound_or_refuse(a, tr)
     try:
         rc, n = TRN.run(a.export, a.out, a.state_dir, a.repo, a.scoring_commit, a.models_listing,
-                        a.listing_day, a.late_reason, a.agent_cmd)
+                        a.listing_day, a.late_reason, a.agent_cmd, credentials=a.credentials)
     except TRN.TierRefused as e:
         print(f"refusing: {e}", file=sys.stderr)
         return 2
@@ -366,7 +375,8 @@ def main(argv=None):
         p.add_argument("--unbound", action="store_true")
         if corpus:
             p.add_argument("--arm", required=True)
-            p.add_argument("--bundle-dir")
+            p.add_argument("--bundle-dir", default=None,
+                           help="default: $PREREG2_BUNDLE_DIR, else the local copy bundles.json records")
             p.add_argument("--work-dir")
             p.add_argument("--fixture-repo")
             p.add_argument("--fixture-pin")
@@ -416,6 +426,9 @@ def main(argv=None):
     p.add_argument("--listing-day", required=True, help="the UTC day the listing was fetched")
     p.add_argument("--late-reason")
     p.add_argument("--agent-cmd", default="claude")
+    p.add_argument("--credentials", default=None,
+                   help="the one credential file bound into the sandbox "
+                        "(default ~/.claude/.credentials.json)")
     p = sub.add_parser("aggregate")
     common(p, corpus=False)
     p.add_argument("--arm0-dir", default=os.path.join(RESULTS, "arm0"))
@@ -430,8 +443,12 @@ def main(argv=None):
     if getattr(a, "fixture_repo", None) and not (getattr(a, "fixture_pin", None)
                                                   and getattr(a, "fixture_pathspec", None)):
         ap.error("--fixture-repo needs --fixture-pin and --fixture-pathspec")
-    if a.cmd in ("arm0", "score", "repro") and not a.fixture_repo and not (a.bundle_dir and a.work_dir):
-        ap.error("--bundle-dir and --work-dir are required")
+    if a.cmd in ("arm0", "score", "repro") and not a.fixture_repo:
+        if not a.work_dir:
+            ap.error("--work-dir is required")
+        if not a.bundle_dir:
+            from p2 import corpus as K
+            a.bundle_dir = K.DEFAULT_BUNDLE_DIR
 
     tr = TR.Transcript(a.cmd, getattr(a, "arm", None), [os.path.basename(sys.argv[0])] + argv,
                        a.transcript_dir)

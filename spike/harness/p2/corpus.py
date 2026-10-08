@@ -47,6 +47,11 @@ SITE_POLICY_25 = ("automated-sync",)
 SITE_POLICY_EXPECTED_STRICT = 21                 # first registration §5.1
 
 
+# Where the bundles are read from (LOG.md §15): $PREREG2_BUNDLE_DIR, else the
+# durable local copy of the release recorded in bundles.json.
+DEFAULT_BUNDLE_DIR = os.environ.get("PREREG2_BUNDLE_DIR", "/home/cam/kindspec-data/prereg2-bundles")
+
+
 class NoVerdict(Exception):
     """An arm that cannot be run: it reports NO VERDICT with this reason."""
 

@@ -1,5 +1,10 @@
 {
- "_note": "PRE-REGISTRATION-2.md \u00a76.2: each corpus archived as a git bundle whose only ref, HEAD, is the pin; `git bundle list-heads` shows it. The sha256 binds at the validation commit. Where the bundles are stored is an open owner decision; they are not in this repository.",
+ "_note": "PRE-REGISTRATION-2.md \u00a76.2: each corpus is archived as a git bundle whose only ref, HEAD, is the pin (`git bundle list-heads` shows it). The sha256 of each binds at the validation commit.",
+ "_storage": {
+  "release": "a private release owned by the kindspec org owner, tag prereg2-bundles-v1, holding the six bundles and SHA256SUMS (owner decision 2026-10-08, LOG.md \u00a715)",
+  "local_copy": "/home/cam/kindspec-data/prereg2-bundles/",
+  "harness_default": "prereg2.py reads bundles from $PREREG2_BUNDLE_DIR, or --bundle-dir, and otherwise from local_copy"
+ },
  "_made_by": "git -C <clone at the pin> bundle create <name>.bundle HEAD",
  "rust-book": {
   "sha256": "2dc07598fd32b77124e504d6499c6ff0a54dd1056d3cdf412050dca41e4f1384",

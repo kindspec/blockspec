@@ -1117,3 +1117,94 @@ Open before the validation commit, for the owner:
 4. The tierer's working directory holds only the export. Other paths on the
    host are still readable to it, so the filesystem barrier is weaker than
    org contract §2.1 describes.
+
+## 2026-10-08 — §15. Owner rulings on §14's open items, before Arm 0
+
+No arm has run. This entry records the owner's rulings of 2026-10-08 on the
+items §14 left open, as the harness implements them. Each is fixed here
+before Arm 0, as §9 requires of a reading the harness depends on.
+
+**Bundle storage (§6.2).** The six bundles and their `SHA256SUMS` are held
+in a private release owned by the kindspec org owner, tag
+`prereg2-bundles-v1`. The owner verified a download round trip. A durable
+local copy is at `/home/cam/kindspec-data/prereg2-bundles/`.
+`harness/p2/bundles.json` records both locations. The harness reads bundles
+from `--bundle-dir`, else `$PREREG2_BUNDLE_DIR`, else that local copy.
+
+**"Adjacent-run twin" (§6.5): a labelled reading for a report-only line.**
+§6.5 does not define the term. Arm 0 prints this line labelled
+"provisional reading (LOG §15)", and the reading is:
+
+> A distinct content (type, content) of 20 characters or more counts as an
+> adjacent-run twin if, in at least one selected file, two of its instances
+> are consecutive blocks of that file — positions *i* and *i*+1 in D8's
+> `blocks()` sequence, where blocks of every length count toward the
+> position.
+
+No verdict reads this line. The bar uses only "has a twin in the same file".
+V3 checks that Arm 0 prints the label. It also checks that no aggregate or
+verdict path imports Arm 0 or reads this count.
+
+**Blobs that are not valid UTF-8.** This rule applies to E, S and M. A case is
+excluded if any of these is not valid UTF-8:
+
+- its base;
+- any of its legs;
+- its after-state or merged text.
+
+Each excluded case is counted as `undecodable`, per arm and per mode, and
+the count is printed in the arm's output and its transcript.
+
+`find_merge_cases()` stays the supplied enumeration, called unchanged. For
+that call only, its git reader is replaced by one that decodes with
+`surrogateescape` instead of raising. Text that is valid UTF-8 reads exactly
+as before. Under the strict reader, one non-UTF-8 blob on a both-sides path
+aborted the whole census. V3 builds a fixture merge with such a blob and
+checks three things:
+
+- the supplied reader raises on it;
+- the arm completes;
+- the arm excludes that case and counts it.
+
+This rule replaces §14's open item 2. No probe of the corpora was run.
+
+**The tierer's isolation (§7.3).** The tierer runs under bubblewrap. The
+sandbox gives it read-only views of these and nothing else:
+
+- `/usr`, with its usual links;
+- `/etc/ssl`, `/etc/resolv.conf`, `/etc/hosts` and `/etc/nsswitch.conf`;
+- the agent's own binary.
+
+Inside the sandbox, `HOME` is a fresh tmpfs. The only file in it is the one
+credential file the CLI reads, `~/.claude/.credentials.json`, mounted
+read-only.
+
+The working directory, `/work`, is an empty host directory that the agent
+can write `tiers.jsonl` into. The export's `PROMPT.md` and `packets/` are
+mounted read-only inside it. Every namespace is unshared except the
+network, which stays on. As §7.3 says, the network barrier is honoured, not
+enforced.
+
+V3 runs a stub agent through this wrapper. Inside the sandbox the stub
+cannot read a planted file under `/home/cam/repos_kindspec`, and cannot read
+`~/.claude` or `~/.claude/projects`. It can read the export and the one
+bound credential file. The same stub, run without the sandbox, can read
+both of the host paths. This replaces §14's open item 4.
+
+**V2 reproductions that need a documented condition.** §10 lets the V-list
+be corrected on a fact before Arm 0. These conditions are recorded here, and
+no result is changed:
+
+- `results/merge-arm.txt` ends with the line `wrote 85 candidate records
+  ... -> spike/results/merge-arm-candidates.jsonl`. So it regenerates
+  byte-identically only when `--records` is spelled
+  `spike/results/merge-arm-candidates.jsonl`, run from the repository root
+  or a directory laid out like it. `spike/README.md`'s command, run from
+  `spike/` with `results/...`, differs in that last line alone.
+- `results/control-arm.txt` embeds, on its second line, the D8 directory
+  `/home/cam/repos_kindspec/research/experiments/D8-identity` and research
+  HEAD `f088cd76`. So it regenerates byte-identically only with a research
+  checkout at `f088cd76` at that path. `harness/prereg2_validate.sh` takes
+  that path as `CONTROL_D8_DIR`. The V1 transcripts so far got there by
+  bind-mounting a `f088cd76` clone over that path, in a private mount
+  namespace.

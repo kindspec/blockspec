@@ -9,11 +9,12 @@
   sha256 in tier-model.json, and it holds however late tiering runs.
 - Window. Tiering runs within 14 days of the scoring-arm commit. A later run
   needs a stated reason, which is logged, and changes nothing else.
-- Isolation. The agent runs in a fresh directory that holds only the export
-  (PROMPT.md and packets/), with no blockspec checkout in it. The network
-  barrier depends on the agent following its prompt, and is honoured, not
-  enforced. NOTE: the working directory is the only barrier this wrapper
-  builds; absolute paths elsewhere on the host stay readable to the agent.
+- Isolation. The agent runs inside a bubblewrap sandbox (`sandbox_argv`)
+  whose only view of the host is read-only system files, its own binary,
+  one credential file under a fresh tmpfs HOME, and the export. No
+  blockspec checkout, no other repository and no ~/.claude history is
+  visible. The network stays on, and that barrier is honoured, not
+  enforced (§7.3).
 - Runs. The first run's tiers.jsonl binds and is committed as written. At
   most one rerun, and only if the first run wrote zero lines.
 - Every run writes a transcript (the caller's), including the agent's own
@@ -75,18 +76,71 @@ def count_lines(path):
     return sum(1 for ln in open(path, encoding="utf-8") if ln.strip())
 
 
+def agent_binary(agent_cmd):
+    """The real file the agent runs from, so the sandbox can bind just it."""
+    path = shutil.which(agent_cmd) if os.sep not in agent_cmd else agent_cmd
+    if not path:
+        raise TierRefused(f"agent command not found: {agent_cmd}")
+    return os.path.realpath(path)
+
+
 def agent_argv(agent_cmd, model, prompt):
     """The default agent: a fresh Claude Code session in print mode, no saved
-    session, file tools only."""
+    session, file tools only. Any other --agent-cmd is a stub taking
+    (model, prompt), used by V3."""
+    binary = agent_binary(agent_cmd)
     if agent_cmd != "claude":
-        return [agent_cmd, model, prompt]
-    return ["claude", "-p", "--model", model, "--no-session-persistence",
+        return [binary, model, prompt]
+    return [binary, "-p", "--model", model, "--no-session-persistence",
             "--output-format", "stream-json", "--verbose", "--permission-mode", "acceptEdits",
             "--tools", "Read", "Write", "Edit", "Glob", "Grep", "--", prompt]
 
 
+SANDBOX_HOME = "/home/tierer"
+DEFAULT_CREDENTIALS = os.path.expanduser("~/.claude/.credentials.json")
+
+
+def sandbox_argv(work, export_dir, argv, credentials):
+    """The tierer's bubblewrap sandbox (owner ruling 2026-10-08, LOG.md §15).
+
+    Visible inside, and nothing else:
+    - /usr read-only, with /bin, /lib, /lib64 and /sbin as its usual links;
+    - /etc/ssl, /etc/resolv.conf (its target), /etc/hosts and
+      /etc/nsswitch.conf read-only, for TLS and name resolution;
+    - the agent's own binary, read-only, at its own path;
+    - a fresh tmpfs HOME at /home/tierer, holding only the one credential
+      file, read-only, at ~/.claude/.credentials.json;
+    - /work, the working directory: an empty host directory, writable so
+      the agent can write tiers.jsonl there as Appendix A asks, with the
+      export's PROMPT.md and packets/ bound read-only inside it;
+    - fresh /tmp, /proc and /dev.
+    Every namespace is unshared except the network, which stays on: the
+    network barrier is honoured, not enforced (§7.3). The environment is
+    cleared except HOME, PATH and LANG."""
+    resolv = os.path.realpath("/etc/resolv.conf")
+    a = ["bwrap", "--die-with-parent", "--new-session", "--unshare-all", "--share-net",
+         "--clearenv", "--setenv", "HOME", SANDBOX_HOME, "--setenv", "PATH", "/usr/bin:/bin",
+         "--setenv", "LANG", "C.UTF-8",
+         "--ro-bind", "/usr", "/usr"]
+    for link, target in (("/bin", "usr/bin"), ("/lib", "usr/lib"), ("/lib64", "usr/lib64"),
+                         ("/sbin", "usr/sbin")):
+        a += ["--symlink", target, link]
+    a += ["--ro-bind", "/etc/ssl", "/etc/ssl", "--ro-bind", resolv, "/etc/resolv.conf",
+          "--ro-bind-try", "/etc/hosts", "/etc/hosts",
+          "--ro-bind-try", "/etc/nsswitch.conf", "/etc/nsswitch.conf",
+          "--proc", "/proc", "--dev", "/dev", "--tmpfs", "/tmp",
+          "--tmpfs", "/home", "--dir", SANDBOX_HOME, "--dir", SANDBOX_HOME + "/.claude",
+          "--ro-bind", credentials, SANDBOX_HOME + "/.claude/.credentials.json",
+          "--ro-bind", argv[0], argv[0],
+          "--bind", work, "/work",
+          "--ro-bind", os.path.join(export_dir, "PROMPT.md"), "/work/PROMPT.md",
+          "--ro-bind", os.path.join(export_dir, "packets"), "/work/packets",
+          "--chdir", "/work", "--"]
+    return a + argv
+
+
 def run(export_dir, out_tiers, state_dir, repo, scoring_commit, listing, listing_day,
-        late_reason, agent_cmd, today=None, log=print):
+        late_reason, agent_cmd, today=None, log=print, credentials=None):
     from . import export as X
     bad = X.validate(export_dir)
     if bad:
@@ -125,22 +179,26 @@ def run(export_dir, out_tiers, state_dir, repo, scoring_commit, listing, listing
         log("RERUN: the first run wrote zero lines")
     elif existing is not None:
         raise TierRefused(f"{out_tiers} exists before any recorded run")
+    credentials = credentials or DEFAULT_CREDENTIALS
+    if not os.path.isfile(credentials):
+        raise TierRefused(f"credential file not found: {credentials}")
+    if not shutil.which("bwrap"):
+        raise TierRefused("bwrap is not installed; the tierer runs only inside its sandbox")
     work = tempfile.mkdtemp(prefix="tiering.")
     try:
-        shutil.copy(os.path.join(export_dir, "PROMPT.md"), work)
-        shutil.copytree(os.path.join(export_dir, "packets"), os.path.join(work, "packets"))
-        assert sorted(os.listdir(work)) == ["PROMPT.md", "packets"]
-        prompt = open(os.path.join(work, "PROMPT.md"), encoding="utf-8").read()
-        n_packets = len(os.listdir(os.path.join(work, "packets")))
-        log(f"working directory: a fresh directory holding only PROMPT.md and {n_packets} packets")
+        export_dir = os.path.realpath(export_dir)
+        prompt = open(os.path.join(export_dir, "PROMPT.md"), encoding="utf-8").read()
+        n_packets = len(os.listdir(os.path.join(export_dir, "packets")))
+        log(f"working directory: /work in a bwrap sandbox, holding only PROMPT.md and "
+            f"{n_packets} packets, read-only")
         log(f"Appendix A as sent, sha256 {hashlib.sha256(prompt.encode()).hexdigest()}:")
         for ln in prompt.splitlines():
             log("  | " + ln)
-        argv = agent_argv(agent_cmd, choice["model"], prompt)
-        log("agent: " + " ".join(argv[:-1]) + " <PROMPT.md>")
+        argv = sandbox_argv(work, export_dir, agent_argv(agent_cmd, choice["model"], prompt),
+                            credentials)
+        log("sandboxed agent: " + " ".join(argv[:-1]) + " <PROMPT.md>")
         log("---- agent output ----")
-        p = subprocess.Popen(argv, cwd=work, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                             text=True)
+        p = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         for line in p.stdout:
             log(line.rstrip("\n"))
         rc = p.wait()
