@@ -1675,3 +1675,47 @@ The README's review step is now `harness/prereg2_reverify.sh`, committed
 with the harness, so the validation commit binds it. It prints PASS or FAIL
 for each check, and exits 1 if any failed. V3 runs it on fixture
 repositories, and V4 mutates it.
+
+## 2026-10-08 — §23. The validation commit
+
+No arm has run. This entry belongs to the validation pull request, §9's
+first commit. That PR's squash commit, the one commit that adds
+`results/prereg2/VALIDATION`, is the validation commit.
+
+### The merged harness
+
+blockspec#16 merged as `0dd32dde58ed0dbea6c3575876e51ef24ff5a29e`. That is
+the harness this validation binds. Its subject line ends "(do not merge)".
+That is the pull request's stale title, carried into the squash; the
+history is published and is not rewritten. The pull request's title has
+since been corrected.
+
+§9 records the harness's sha here. The validation commit's own sha exists
+only once this PR is squash-merged, so it is recorded in the next entry.
+The harness it binds is unchanged from `0dd32dd`, and the validation commit
+must not change it (`p2/binding.py`, `harness/prereg2_reverify.sh`):
+
+| path | git tree or blob sha at `0dd32dd` |
+|---|---|
+| `spike/harness` | `cf57ca84e353810fa4c8f34f1c50ac43d10d2f54` |
+| `spike/PRE-REGISTRATION-2.md` | `24496a7385ca2748f899f5db7eaea20b9082ec21` |
+| `spike/ORACLE.md` | `4a72c84cefbd0a91cd15573caf11a6c3dff2ffe6` |
+
+### The sealed manifest
+
+`prereg2.py seal` drew the nonce and wrote the sealed manifest outside the
+repository, at `/home/cam/kindspec-data/prereg2-seal/sealed-manifest.json`,
+in a directory of mode 700. Its sha256 is
+`11e509133bc2603a3ff3cc64fcfabd5310b7cfe0285ea725bc937a895e299bdb`, and
+`results/prereg2/VALIDATION` holds it. §7.3 commits the manifest itself
+after `tiers.jsonl`.
+
+The PR also commits two transcripts of `seal`. The first is
+`seal --help`, run to check the command's arguments. Every invocation
+writes a transcript, so it is kept.
+
+### V steps
+
+V1 to V5 and the bundle check were re-run with this PR's VALIDATION in
+place. Their transcripts are in `results/prereg2/validation/`, committed in
+this PR, as §9 requires.

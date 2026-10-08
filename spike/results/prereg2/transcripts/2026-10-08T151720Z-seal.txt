@@ -1,0 +1,19 @@
+# prereg2 seal
+# argv: prereg2.py seal --help
+# start: 2026-10-08T15:17:20Z
+# blockspec HEAD: 0dd32dde58ed0dbea6c3575876e51ef24ff5a29e
+# python 3.13.5
+usage: prereg2.py seal [-h] [--transcript-dir TRANSCRIPT_DIR] [--unbound]
+                       --manifest MANIFEST
+
+options:
+  -h, --help            show this help message and exit
+  --transcript-dir TRANSCRIPT_DIR
+  --unbound
+  --manifest MANIFEST
+# harness bound: False
+#   not bound: usage error
+
+
+# end: 2026-10-08T15:17:20Z
+# exited: exit status 0
