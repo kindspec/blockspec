@@ -1,0 +1,20 @@
+# prereg2 score rust-book
+# argv: prereg2.py score --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --work-dir /home/cam/kindspec-data/prereg2-score-work/rust-book
+# start: 2026-10-08T17:13:09Z
+# blockspec HEAD: 59df348b5be4c8f8fbb91146f45f93b9efcaec17
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-08T17:13:11Z
+### rust-book E: evaluated 1000 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"commits:no_merges": 4968, "excluded:add": 182, "excluded:delete": 70, "excluded:other_status": 0, "excluded:rename": 199, "path_not_selected": 20074, "population": 3443, "sample": 1000}, "evaluated_instances": 1000, "none": {"commits:no_merges": 4968, "excluded:add": 182, "excluded:delete": 70, "excluded:other_status": 0, "excluded:rename": 199, "path_not_selected": 20074, "population": 3443, "sample": 1000}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"commits:no_merges": 4968, "excluded:add": 182, "excluded:delete": 70, "excluded:other_status": 0, "excluded:rename": 199, "path_not_selected": 20074, "population": 3443, "sample": 1000}}
+### rust-book S5: evaluated 500 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap5:excluded:blob_missing": 109, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 3255, "gap5:population": 3146, "paths": 112, "sample": 500}, "evaluated_instances": 500, "none": {"gap5:excluded:blob_missing": 109, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 3255, "gap5:population": 3146, "paths": 112, "sample": 500}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap5:excluded:blob_missing": 109, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 3255, "gap5:population": 3146, "paths": 112, "sample": 500}}
+### rust-book S25: evaluated 500 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap25:excluded:blob_missing": 46, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 1592, "gap25:population": 1546, "paths": 112, "sample": 500}, "evaluated_instances": 500, "none": {"gap25:excluded:blob_missing": 46, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 1592, "gap25:population": 1546, "paths": 112, "sample": 500}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap25:excluded:blob_missing": 46, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 1592, "gap25:population": 1546, "paths": 112, "sample": 500}}
+### rust-book M: evaluated 118 instances, 23 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"evaluated_instances": 118, "filter": {"cases_in": 179, "dropped:not_selected": 38, "kept": 141, "kept:anywhere": 141, "kept:none": 141, "kept:yaml-fence": 141}, "find_merge_cases": {"drop:convergent": 3, "drop:delete_modify": 8, "drop:multi_base": 3, "drop:octopus": 2, "merges:two_parent": 1317, "paths:both_sides": 190, "paths:one_side": 16496}, "merges": {"clean": 118, "not_clean": 23}, "not_evaluated": 23, "undecodable": 0}
+
+# end: 2026-10-08T18:02:58Z
+# exited: exit status 0
