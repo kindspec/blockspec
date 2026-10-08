@@ -1,4 +1,4 @@
-# harness HEAD de7cbb5c6be26e63e821b5227eea39f7b6bbbd64  tracked changes under spike/: 5
+# harness HEAD af7e224042929e78821ce9ffe64b2a497c365ee5  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
 # python 3.13.5  git 2.47.3
 # V1 + V2(control-arm.txt): harness/run_control.sh at harness/corpora.json's pins
 # D8 dir: /home/cam/repos_kindspec/research/experiments/D8-identity @ f088cd76fd138c8244fa1315332468e8771e7040
