@@ -1,0 +1,34 @@
+{
+ "_note": "PRE-REGISTRATION-2.md \u00a76.2: each corpus archived as a git bundle whose only ref, HEAD, is the pin; `git bundle list-heads` shows it. The sha256 binds at the validation commit. Where the bundles are stored is an open owner decision; they are not in this repository.",
+ "_made_by": "git -C <clone at the pin> bundle create <name>.bundle HEAD",
+ "rust-book": {
+  "sha256": "2dc07598fd32b77124e504d6499c6ff0a54dd1056d3cdf412050dca41e4f1384",
+  "bytes": 58557559,
+  "head": "1500248d8f230566e4ec9f27fcbb8fe9e2898ab1"
+ },
+ "obsidian-help": {
+  "sha256": "008cbe84af65cc7e6dd1974947bfb8a9f27be54a8641bab882bf44546acb109c",
+  "bytes": 78552211,
+  "head": "327a782e90481268361b5ccccdb0c224b2b13fe6"
+ },
+ "cmspec": {
+  "sha256": "8bf9a1d0f26233998e7c51268dcba596b678d9e479ee9e5cd32f30d8e85dcef6",
+  "bytes": 2934753,
+  "head": "3da939428d80f146f270cd1765e4ba462e96bb1b"
+ },
+ "kubernetes-website": {
+  "sha256": "86096a651f3f9c5a594f33104f02fa36fcea9b1ff06ad8de4caba9680cfef0ed",
+  "bytes": 541034446,
+  "head": "6b27baef1e44275fd4368e14375296e1dfe5af11"
+ },
+ "cncf-toc": {
+  "sha256": "63515ba0df9e4f78544ec3d7b3fda67f1d66ad565739b3044ecd93a21fcf8a2f",
+  "bytes": 25992485,
+  "head": "144c2e3215884e498e744cc51e6b7cef82d654f1"
+ },
+ "site-policy": {
+  "sha256": "bc8d34cb1e7182002fc2b00cc6a360f18b4a2246c1affb17af35aeea271731fb",
+  "bytes": 2117354,
+  "head": "b9578b546d2506febda1da2cd7431644d58e512c"
+ }
+}
