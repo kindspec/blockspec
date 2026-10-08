@@ -1,0 +1,34 @@
+# round-5 reviewer script scripts/attacks.py, run at 470b80a331e9072c7a22ecd359809a07edc1c605 with "-I -S -B" in place of "-I -B" (the harness now requires -S); otherwise unchanged
+baseline: True 2cffcefab96d == VC 2cffcefab96d []
+defended     H2 graft: FLOOR=1 commit after VC, then `git replace --graft HEAD` (parentless)  | before graft bound=False; after: bound=False vc=None (real VC 2cffcefab96d) ['replace refs rewrite this history: refs/replace/78401f1fd0d21212904800c3810662b77cfa568a']
+      (same repo with GIT_NO_REPLACE_OBJECTS=1: bound=False)
+defended     H2 shallow clone (--depth 1) of a history with a post-VC harness edit  | bound=False vc=None reasons=['the repository is shallow; the validation commit cannot be derived from a cut history']
+ATTACK WORKS  H2 orphan branch holding an edited harness and VALIDATION  | bound=True vc=46bd4f37e6c3
+defended     H2 VALIDATION added by two commits, merged so the edited side is first parent  | commits adding VALIDATION with --full-history: 2; bound=False vc=None (q=96d12f0c76da, real=2cffcefab96d) ["2 commits in HEAD's history add results/prereg2/VALIDATION; the validation commit is the one that adds it"]
+defended     H2 VALIDATION added only in a merge commit  | bound=False vc=None ["0 commits in HEAD's history add results/prereg2/VALIDATION; the validation commit is the one that adds it"]
+defended     H2 VALIDATION renamed away and back  | bound=False ["2 commits in HEAD's history add results/prereg2/VALIDATION; the validation commit is the one that adds it"]
+defended     H2 GIT_DIR/GIT_WORK_TREE in the environment pointing at a forged repo  | bound=False vc=2cffcefab96d ['harness/p2/aggregate.py: work-tree bytes differ from the validation commit', 'uncommitted or ignored files under the harness or the frozen documents:  M spike/harness/p2/aggregate.py']
+      config log.follow=true on a clean repo: bound=True []
+defended     H1 --arm=E form, repeated with =  | rc=2 refusing: --arm given more than once (re-review H1)
+defended     H1 mixed --arm X and --arm=Y  | rc=2 refusing: --arm given more than once (re-review H1)
+defended     H1 subcommand abbreviation 'arm'  | rc=2 prereg2.py: error: argument cmd: invalid choice: 'arm' (choose from seal, arm0, score, export, validate-export, repro, tier-model, tier-run, aggregate)
+defended     H1 --fixture-repo= (empty)  | rc=2 refusing: the options parse differently from how they read (H1)
+defended     H1 --unbound after --  | rc=2 prereg2.py: error: unrecognized arguments: -- --unbound
+defended     H1 --fixture-repo after --  | rc=2 prereg2.py: error: unrecognized arguments: -- --fixture-repo $SCRATCH/proto/r5/atk-
+defended     H1 single-dash -fixture-repo  | rc=2 prereg2.py: error: unrecognized arguments: -fixture-repo $SCRATCH/proto/r5/atk-root
+defended     H1 --sample-e=10 with =  | rc=2 refusing: a bound run takes no --sample-e (§9, review C3)
+defended     H1 --unbound=1  | rc=2 prereg2.py arm0: error: argument --unbound: ignored explicit argument '1'
+defended     H1 prefix '+' / fromfile '@args'  | rc=2 prereg2.py arm0: error: the following arguments are required: --d8-dir, --arm
+defended     H1 option value that looks like --fixture-repo=  | rc=2 prereg2.py arm0: error: argument --work-dir: expected one argument
+      after the H1 attempts (transcripts committed), cmspec still bound-able: True
+defended     M3 marker committed on a PR branch, then the branch is deleted (abandoned PR)  | on branch: bound=False; back on main with branch: bound=False; branch deleted: bound=False
+      (`git log --all --reflog` would still find it: True)
+      (after reflog expire + gc, --reflog finds it: False)
+defended     M3 marker stashed (refs/stash)  | bound=False ['arm0 cmspec has already executed (results/prereg2/executed/arm0-cmspec.json); the first execution binds']
+defended     H3 uncommitted marker simply deleted (rm) before any commit  | bound=False
+defended     M1 .pth in the interpreter's (venv) site-packages, run as `python3 -I -B`  | rc=1 ['REJECT: $SCRATCH/proto/r5/atk-root/nothing: not a directory', 'EXPORT VALIDATOR: FAIL']
+      PYTHONHOME/PYTHONPATH/PYTHONSTARTUP set under -I: rc=1 (ignored if rc==0)
+defended     M1 stdlib module (string.py) planted in --d8-dir runs inside the harness  | rc=0 d8 files verified by sha, extra file unchecked
+defended     M1 untracked p2/binding/ package shadows binding.py (with FLOOR=1 in aggregate.py)  | rc=2 transcript: ['# harness bound: False']
+
+1 of 24 attacks work

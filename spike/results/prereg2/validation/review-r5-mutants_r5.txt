@@ -1,0 +1,37 @@
+# round-5 reviewer script scripts/mutants_r5.py, run at 470b80a331e9072c7a22ecd359809a07edc1c605 with "-I -S -B" in place of "-I -B" (the harness now requires -S); otherwise unchanged
+baseline: ['356 checks, 0 failed', 'V3: PASS'] rc 0
+KILLED   N1 derive: VALIDATION added twice accepted [4dc2549673167336 -> 18ed20f62cbb60e1] 2 red; first: H2: VALIDATION added by two commits is refused   [['results/prereg2/VALIDATION has changed since the validation commit added it']]
+KILLED   N2 derive: a changed VALIDATION accepted [4dc2549673167336 -> d114f2df7022ff1e] 1 red; first: H2: a VALIDATION changed since the validation commit added it is refused
+KILLED   N3 derive: VALIDATION may carry extra fields [4dc2549673167336 -> 56d055112e43fea2] 1 red; first: N3: a VALIDATION with any field besides manifest_sha256 is refused
+KILLED   N4 derive: sha need not be 64 hex [4dc2549673167336 -> baf3e6a3c422cef8] 1 red; first: H2: a VALIDATION whose sha256 is not 64 hex characters is refused
+KILLED   N5 check: later-commit range reversed [4dc2549673167336 -> 5c55a9897ad86585] 2 red; first: H2: a commit after the validation commit that edits the harness is not bound, though the work tree matches HEAD   [['harness/p2/aggregate.py
+KILLED   N6 check: ORACLE.md not a bound path [4dc2549673167336 -> ef014c3491ee7468] 1 red; first: N6: an edited ORACLE.md is not bound
+KILLED   N7 check: a symlinked harness file accepted [4dc2549673167336 -> f4d24fde2154aa6c] 1 red; first: N7: a harness file replaced by a symlink to identical bytes, hidden with --assume-unchanged, is not bound
+KILLED   N8 check: --ignored dropped from the harness status [4dc2549673167336 -> a08f46f7e3dbd799] 1 red; first: C1: an ignored file under the harness (a stray .pyc) is not bound, by both the ls-tree walk and `git status --ignored`   [['harness/__pycach
+BROKEN   N9 executed: only HEAD's history, not --all: pattern found 0 times, file unchanged (4dc2549673167336)
+KILLED   N10 executed: work-tree marker ignored [4dc2549673167336 -> c0fac61a95ebea30] 1 red; first: N10: an uncommitted work-tree marker (with no git-dir copy) blocks the arm   [['uncommitted under results/prereg2: ?? spike/results/prereg2/
+KILLED   N11 check: score not guarded by its marker [4dc2549673167336 -> 57e0839fce4ac352] 1 red; first: N11: a second score rust-book is refused by its marker   [refusing: /var/tmp/cam/prereg2-v3.4m5u77fb/bf/spike/results/prereg2/score/rust-boo
+KILLED   N12 check: every uncommitted transcript exempt [4dc2549673167336 -> c87eb1cd11a7db6c] 1 red; first: C3: an uncommitted transcript under results/prereg2/ blocks every bound run
+KILLED   N13 transcript_tag: a .n suffix not stripped [4dc2549673167336 -> a3255f8ed9dfafc9] 1 red; first: N13: a transcript's .<n> suffix is not part of its tag
+KILLED   N14 marker written before the corpus opens (arm0) [3e2da407462a5d39 -> 5f1b2116ace15a24] 6 red; first: N14: an arm0 whose bundle cannot be opened writes no marker, in the work tree or the git dir   [ine 103, in open_corpus
+KILLED   N15 export: no marker written [3e2da407462a5d39 -> a3b680f4e5a0d665] 2 red; first: N15: export runs bound and writes its marker   [exported 3 packets to /var/tmp/cam/prereg2-v3.d30f4cow/bf/spike/results/prereg2/export
+KILLED   N16 repeated: --opt=value forms not compared [3e2da407462a5d39 -> 11df41e36579e0fa] 1 red; first: N16: a repeated --opt=value is refused   [", line 103, in open_corpus
+KILLED   N17 prescan/parse disagreement not refused [3e2da407462a5d39 -> 3463e2e9619b1682] 1 red; first: N17: an option that reads unbound but parses bound (--fixture-repo=) is refused   [refusing: a bound run takes no --fixture-repo (§9, review
+KILLED   N18 bound run may pass --agent-cmd [3e2da407462a5d39 -> 5e4c93bde8ab115f] 1 red; first: N18: a bound tier-run that names --agent-cmd is refused   [b25e2b10e41aa00974b5a8bacb0347535e6705b: committer day 2001-01-01 UTC; start day 
+KILLED   N19 bound run may pass --fixture-pin [3e2da407462a5d39 -> a1cac093726ef7ec] 1 red; first: N19: a bound run that names --fixture-pin is refused   [", line 103, in open_corpus
+KILLED   N20 subparsers allow abbreviations [3e2da407462a5d39 -> 6ab112ecfb0f353c] 2 red; first: H1: abbreviated --fixture-r/--fixture-pi/--fixture-pa are not accepted   [refusing: the options parse differently from how they read (H1)
+KILLED   N21 input pin/bundle: a no_verdict input skips the pin check [3e2da407462a5d39 -> 179bef7432822f48] 1 red; first: N21: a no-verdict input that names a wrong pin is refused
+KILLED   N22 input vc not compared with this run's [3e2da407462a5d39 -> 1c9824c72e5083f7] 1 red; first: N22: a bound input from another validation commit is refused
+BROKEN   N23 repro from another validation commit accepted: pattern found 0 times, file unchanged (3e2da407462a5d39)
+BROKEN   N24 score: Arm 0 result of another vc accepted: pattern found 0 times, file unchanged (3e2da407462a5d39)
+KILLED   N25 load_scores: modes_requested not checked [3e2da407462a5d39 -> 20ad6a9814370341] 1 red; first: N25: a score that did not request all four modes is refused   [FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/cam/prereg2
+KILLED   N26 preflight: an unbound executed transcript counts as bound [3e2da407462a5d39 -> 3c47ae00e6e6e0a1] 1 red; first: N26: an arm whose only executed arm0 transcript is unbound is refused
+KILLED   N27 H4: a twin of k in M's first unit not seen [d42d42979b44a5f3 -> 2d6d54e923e0f42e] 1 red; first: N27: with t undefined, a twin of k in M's first unit makes the verdict undecidable
+KILLED   N28 H4: p in no unit falls to the first unit [322b75b6d96f613d -> 32e89c568acaf567] 1 red; first: N28: p in no unit is not taken as the first unit: with a twin of that unit elsewhere, still decided   [('UNDECIDABLE-REPEAT', 0)]
+KILLED   N29 H4: T is twins of t's content instead (k's twins via Mc[0]) [d42d42979b44a5f3 -> 6e5e9ff9c4ac6c24] 3 red; first: H4: p in no §5.2 unit with a twin of k among the units: UNDECIDABLE-REPEAT   [('SURVIVED', 0, None)]
+KILLED   N30 PLANT_EXPECT: P-A tier B [5edf9dba3f517643 -> 51637921866b2236] 1 red; first: V4: PLANT_EXPECT is Appendix B's, answer for answer, as parsed from PRE-REGISTRATION-2.md   [{'P-A': {'q1': 'yes', 'q2': 'yes', 'q3': 'no', 
+KILLED   N31 PLANT_EXPECT: P-B q4 yes [5edf9dba3f517643 -> b03add2772c24416] 1 red; first: V4: PLANT_EXPECT is Appendix B's, answer for answer, as parsed from PRE-REGISTRATION-2.md   [{'P-A': {'q1': 'yes', 'q2': 'yes', 'q3': 'no', 
+KILLED   N32 scoring commit: two adding commits accepted (first taken) [ddb2624660ff2cff -> 1d1b6c1e602d91bf] 1 red; first: C6: ... and two such commits are refused
+KILLED   N33 tier-run: tier-model.json of another scoring commit accepted [ddb2624660ff2cff -> bcf36e529875451f] 1 red; first: N33: tier-run refuses a tier-model.json chosen for another scoring-arm commit
+KILLED   N34 seal: refused only for a VALIDATION in the work tree [3e2da407462a5d39 -> 2d2dddba909a1750] 1 red; first: C4: with VALIDATION gone from the tree but in the history, seal is still refused   [t3.json
+34 mutants: 31 killed, 0 survived, 3 BROKEN
