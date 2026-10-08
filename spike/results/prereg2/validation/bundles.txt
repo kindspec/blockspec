@@ -1,4 +1,4 @@
-# harness HEAD af7e224042929e78821ce9ffe64b2a497c365ee5  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
+# harness HEAD a58727b1f40dca39a315109ba3b5ca33a1ac77ff  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
 # python 3.13.5  git 2.47.3
 # corpus bundles (§6.2): sha256 against harness/p2/bundles.json, and the head each holds
 # bundle dir: /home/cam/kindspec-data/prereg2-bundles
