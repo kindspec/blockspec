@@ -1,0 +1,44 @@
+# prereg2 arm0 site-policy
+# argv: prereg2.py arm0 --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm site-policy --work-dir /home/cam/kindspec-data/prereg2-arm0-work/site-policy
+# start: 2026-10-08T17:08:56Z
+# blockspec HEAD: 48c7e572357ea5a966ccead936ec724c16905b8b
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-08T17:08:56Z
+### site-policy rule=yaml-fence (verdict rule)  files=61 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                   0             3               0            0              0
+   frontmatter            0            57               0            0              0
+   heading              163           478               0            0              0
+   html                   0             3               0            0              0
+   list                   4           252               0            0              0
+   prose                 19          1380               4            4              0
+   table                  0             5               0            0              0
+   natural-language distinct >=20: 2110, with a twin in the same file: 4 (0.19%)  bar 10%: PASS
+### site-policy rule=none (beside, no verdict)  files=61 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                   0             3               0            0              0
+   frontmatter            0            57               0            0              0
+   heading              163           478               0            0              0
+   html                   0             3               0            0              0
+   list                   4           252               0            0              0
+   prose                 19          1380               4            4              0
+   table                  0             5               0            0              0
+   natural-language distinct >=20: 2110, with a twin in the same file: 4 (0.19%)  bar 10%: PASS
+### site-policy rule=anywhere (beside, no verdict)  files=61 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                   0             3               0            0              0
+   frontmatter            0            57               0            0              0
+   heading              163           478               0            0              0
+   html                   0             3               0            0              0
+   list                   4           252               0            0              0
+   prose                 19          1380               4            4              0
+   table                  0             5               0            0              0
+   natural-language distinct >=20: 2110, with a twin in the same file: 4 (0.19%)  bar 10%: PASS
+   * adjacent-run twin, provisional reading (LOG §15), report only: a distinct content (type, content) of 20 characters or more counts as an adjacent-run twin if, in at least one selected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position
+ARM 0 site-policy: passes the bar
+
+# end: 2026-10-08T17:08:56Z
+# exited: exit status 0
