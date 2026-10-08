@@ -1,0 +1,17 @@
+# harness HEAD 03801bd4dffeb31d7fcf78daacc6888680a2957d  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
+# python 3.13.5  git 2.47.3
+== armed_check.sh
+
+ARMED-CHECK: PASS -- every mutation turned the gate red
+exit=0
+== prose_merge.py --selftest-selection
+SELECTION-GUARD SELFTEST: PASS
+exit=0
+== selection_guard_red.sh
+SELECTION-GUARD DEMONSTRATION: PASS -- green as committed (exit 0),
+exit=0
+== oracle_limitation.py
+DEMONSTRATION: reproduces
+exit=0
+V5: PASS
+exit=0

@@ -1081,3 +1081,597 @@ pre-registration before blockspec#2 runs, which settles the question §11
 recorded as open. The draft is `PRE-REGISTRATION-2.md`. It is not binding
 until the owner approves it and it merges. `PRE-REGISTRATION.md` and
 `ORACLE.md` are unchanged. No arm has run under the draft.
+
+## 2026-10-07 — §14. The harness for `PRE-REGISTRATION-2.md`, before validation
+
+No arm has run. Arm 0, E, S, M, R, the exporter and the tierer have not been
+executed against any corpus, and no sealed manifest exists. This entry
+records a harness that is **not yet validated**: under §9 the harness at the
+validation commit is the implementation, and that commit has not been made.
+It waits on an independent review and on the owner decisions below.
+
+- **Built:** `harness/prereg2.py`, `harness/p2/`, `harness/prereg2_v3.py`
+  (V3), `harness/prereg2_v4.py` (V4) and `harness/prereg2_validate.sh`
+  (V1-V5 and a bundle check).
+- **V transcripts, from the harness commit they name:**
+  `results/prereg2/validation/`. V1, V2, V3, V4 and V5 each end in `PASS`.
+  These are pre-review runs. The V steps run again at the validation commit.
+- **Bundles (§6.2):** made, not committed. Each one's sha256, size and head
+  are in `harness/p2/bundles.json`, and `results/prereg2/validation/bundles.txt`
+  checks them. Where the bundles are stored is open.
+
+Open before the validation commit, for the owner:
+
+1. §6.5 does not define "adjacent-run twin". Arm 0 counts it under a
+   provisional reading, `p2/arm0.py` `ADJACENT_RUN_RULE`. No verdict reads it.
+2. `find_merge_cases()` decodes git output strictly. kubernetes/website's
+   history holds `.md` blobs that are not UTF-8, three of them on paths
+   under `content/`. If any of these is on a both-sides path of a merge, the
+   `k8s-l10n` M arm aborts. That has not been checked, because checking it
+   means enumerating merges.
+3. V2's `merge-arm.txt` regenerates byte-identically only with `--records`
+   spelled `spike/results/...`, which is how the committed file was made. It
+   does not regenerate from `spike/README.md`'s command as written.
+   `control-arm.txt` embeds its D8 path and research commit, so it
+   regenerates only with research at `f088cd76` at that path.
+4. The tierer's working directory holds only the export. Other paths on the
+   host are still readable to it, so the filesystem barrier is weaker than
+   org contract §2.1 describes.
+
+## 2026-10-08 — §15. Owner rulings on §14's open items, before Arm 0
+
+No arm has run. This entry records the owner's rulings of 2026-10-08 on the
+items §14 left open, as the harness implements them. Each is fixed here
+before Arm 0, as §9 requires of a reading the harness depends on.
+
+**Bundle storage (§6.2).** The six bundles and their `SHA256SUMS` are held
+in a private release owned by the kindspec org owner, tag
+`prereg2-bundles-v1`. The owner verified a download round trip. A durable
+local copy is at `/home/cam/kindspec-data/prereg2-bundles/`.
+`harness/p2/bundles.json` records both locations. The harness reads bundles
+from `--bundle-dir`, else `$PREREG2_BUNDLE_DIR`, else that local copy.
+
+**"Adjacent-run twin" (§6.5): a labelled reading for a report-only line.**
+§6.5 does not define the term. Arm 0 prints this line labelled
+"provisional reading (LOG §15)", and the reading is:
+
+> A distinct content (type, content) of 20 characters or more counts as an
+> adjacent-run twin if, in at least one selected file, two of its instances
+> are consecutive blocks of that file — positions *i* and *i*+1 in D8's
+> `blocks()` sequence, where blocks of every length count toward the
+> position.
+
+No verdict reads this line. The bar uses only "has a twin in the same file".
+V3 checks that Arm 0 prints the label. It also checks that no aggregate or
+verdict path imports Arm 0 or reads this count.
+
+**Blobs that are not valid UTF-8.** This rule applies to E, S and M. A case is
+excluded if any of these is not valid UTF-8:
+
+- its base;
+- any of its legs;
+- its after-state or merged text.
+
+Each excluded case is counted as `undecodable`, per arm and per mode, and
+the count is printed in the arm's output and its transcript.
+
+`find_merge_cases()` stays the supplied enumeration, called unchanged. For
+that call only, its git reader is replaced by one that decodes with
+`surrogateescape` instead of raising. Text that is valid UTF-8 reads exactly
+as before. Under the strict reader, one non-UTF-8 blob on a both-sides path
+aborted the whole census. V3 builds a fixture merge with such a blob and
+checks three things:
+
+- the supplied reader raises on it;
+- the arm completes;
+- the arm excludes that case and counts it.
+
+This rule replaces §14's open item 2. No probe of the corpora was run.
+
+**The tierer's isolation (§7.3).** The tierer runs under bubblewrap. The
+sandbox gives it read-only views of these and nothing else:
+
+- `/usr`, with its usual links;
+- `/etc/ssl`, `/etc/resolv.conf`, `/etc/hosts` and `/etc/nsswitch.conf`;
+- the agent's own binary.
+
+Inside the sandbox, `HOME` is a fresh tmpfs. The only file in it is the one
+credential file the CLI reads, `~/.claude/.credentials.json`, mounted
+read-only.
+
+The working directory, `/work`, is an empty host directory that the agent
+can write `tiers.jsonl` into. The export's `PROMPT.md` and `packets/` are
+mounted read-only inside it. Every namespace is unshared except the
+network, which stays on. As §7.3 says, the network barrier is honoured, not
+enforced.
+
+V3 runs a stub agent through this wrapper. Inside the sandbox the stub
+cannot read a planted file under `/home/cam/repos_kindspec`, and cannot read
+`~/.claude` or `~/.claude/projects`. It can read the export and the one
+bound credential file. The same stub, run without the sandbox, can read
+both of the host paths. This replaces §14's open item 4.
+
+**V2 reproductions that need a documented condition.** §10 lets the V-list
+be corrected on a fact before Arm 0. These conditions are recorded here, and
+no result is changed:
+
+- `results/merge-arm.txt` ends with the line `wrote 85 candidate records
+  ... -> spike/results/merge-arm-candidates.jsonl`. So it regenerates
+  byte-identically only when `--records` is spelled
+  `spike/results/merge-arm-candidates.jsonl`, run from the repository root
+  or a directory laid out like it. `spike/README.md`'s command, run from
+  `spike/` with `results/...`, differs in that last line alone.
+- `results/control-arm.txt` embeds, on its second line, the D8 directory
+  `/home/cam/repos_kindspec/research/experiments/D8-identity` and research
+  HEAD `f088cd76`. So it regenerates byte-identically only with a research
+  checkout at `f088cd76` at that path. `harness/prereg2_validate.sh` takes
+  that path as `CONTROL_D8_DIR`. The V1 transcripts so far got there by
+  bind-mounting a `f088cd76` clone over that path, in a private mount
+  namespace.
+
+## 2026-10-08 — §16. Independent review of the harness: the binding is enforced, and the readings are logged
+
+No arm has run. Three independent reviews looked at blockspec#16 at `312b415`:
+fidelity to the document, checks that pass silently, and binding mechanics.
+This entry records how the harness now answers them, before validation.
+
+### The binding, enforced by the harness (`harness/p2/binding.py`)
+
+`results/prereg2/VALIDATION` names the validation commit and the sealed
+manifest's sha256. `prereg2.py bind` writes it after checking it, and the
+first Arm 0 commit adds it.
+
+Every bound command checks four things before it runs:
+
+- the validation commit is an ancestor of HEAD;
+- `git diff --quiet` from that commit to HEAD over `harness/`,
+  `PRE-REGISTRATION-2.md` and `ORACLE.md`;
+- every one of those files, hashed with `git hash-object`, against the
+  commit's `git ls-tree`. This means `--assume-unchanged` cannot hide an edit.
+  No untracked or ignored file may sit under the harness;
+- nothing under `results/prereg2/` is uncommitted except the command's own
+  transcript. VALIDATION is also exempt, until an Arm 0 result is committed.
+
+For arm0, score and export there is one more check: no earlier transcript of
+the same command and arm may exist.
+
+A bound command takes every path from its fixed place and accepts no
+override of any path, mode, sample size, manifest sha or agent. The
+manifest's sha256 comes from VALIDATION. A transcript opens before the
+arguments are parsed, so a usage error is recorded too. An unbound or
+fixture run must name all its outputs outside `results/prereg2/`.
+
+`aggregate` checks three more things before it gives a verdict:
+
+- every input is bound by the same validation commit;
+- every score run used §6.5's sample sizes;
+- the transcripts show exactly one bound arm0 and one bound score per arm,
+  one export, and at most two tiering runs. If there are two, the first
+  wrote zero lines.
+
+**What this does to §9's commit order.** Before each bound run, everything
+under `results/prereg2/` must be committed. So each invocation's transcript
+and output are committed before the next one starts. The reading taken here
+has three parts:
+
+- Each §9 step lands on `main` as one commit, from its own pull request:
+  validation, Arm 0, scoring and export, tiers, verdict. The repository
+  allows squash merges only.
+- The commits made within that pull request are squashed into it.
+- The validation commit is `main`'s squash commit for the validation pull
+  request. The scoring-arm commit is the one commit in HEAD's history that
+  added `results/prereg2/score/`.
+
+`tier-run` refuses if more than one commit added it. Both §9's grouping and
+the ruleset interact here, so this is put to the owner rather than decided
+silently.
+
+### Tiering (`harness/p2/tierrun.py`)
+
+- `tier-model` runs on the start day. It fetches the Models API listing
+  itself and takes the day from the response's `Date` header. It writes
+  `models-listing.json` and `tier-model.json`, which are committed.
+- `tier-run` writes "started" to `tier-runs.txt` before the agent starts.
+  Its working directory, `tier-work-<n>/`, is never deleted. The first
+  started run binds whether or not it completed.
+- `tiers.jsonl` is read without following a symlink.
+
+### Readings, each fixed here before Arm 0
+
+1. **§5.2 R slug units.** These are the heading spans and nothing else.
+   Blocks before the first heading lie in no unit. In step 1, `t` is the
+   unit holding the plurality block `p` of the §3 section's TLLC verdict
+   under check. The targets of the neighbouring units come from TLLC over
+   each neighbouring unit. If `p` lies in no unit, the rule has no `t` and
+   the record is UNDECIDABLE-REPEAT, with the note "TLLC's target lies in no
+   §5.2 unit".
+2. **SPLIT** counts every mapped line of `k` under each leg that proposed a
+   target. A mapped line in no unit is not counted.
+3. **An unplaceable plant (§7.3's void list).** UNPLACEABLE "is not a
+   finding" (§7.2), so it lies on the non-qualifying side of the B/C line.
+   An unplaceable P-A or P-B therefore voids the tiering. An unplaceable P-C
+   whose q3 and q4 answers are as expected does not.
+4. **Arm 0's bar** stops an arm only above 10%. An arm with no
+   natural-language content, 0 of 0, passes the bar, and its cells then fail
+   §6.6's floor.
+5. **The packet representative.** It is the record with the smallest id over
+   every mode of its arm. F6 and F9 are judged on that one record, for every
+   cell that exported the packet. The packet key holds no mode.
+6. **F9.** A record reproduces only if its reproduction result is bound by
+   the same validation commit and the committed and regenerated sha256s are
+   equal. A record that does not reproduce is named in its cell's reason.
+7. **Reported beside each verdict, with no verdict of their own:**
+   - every cell computed under `none` and `anywhere`;
+   - site-policy M's 25-case set;
+   - the strict set's count against the first registration's 21, with the
+     difference;
+   - each FOUND's count of finds that rest on an oracle-DELETED target,
+     labelled `WRONG_on_deleted`, weaker, `ORACLE.md` §4.
+8. **R resolution.** If any region marker carries the name, the region
+   count decides and slugs are not consulted. A region's target is the D8
+   block that holds its first line. Slugs come from blocks `btype()` types
+   `heading`, as §3 names it.
+9. **E.** Renames are counted in a separate `-M` pass, and that count
+   overlaps the add and delete counts. Blobs are read as text, with
+   universal newlines, as D8 and `find_merge_cases()` read them. An
+   undecodable case (§15) is not replaced in the sample.
+10. **The selection rules.** E and S draw one sample per rule. The union is
+    evaluated, and each record is tagged with its rules. Only `yaml-fence`
+    carries a verdict.
+11. **Arm 0's distinct contents** are keyed by (type, content), summed over
+    the natural-language types. A file at the pin that is not UTF-8 is
+    counted and excluded.
+12. **Floors** count decided units whatever F3 says.
+13. **R has no naive policy**, so near miss (iii) is Q only. Near miss (i)
+    needs F9.
+14. **Packets.**
+    - The nonce enters the name as its 32 raw bytes.
+    - `PROMPT.md` is Appendix A with its `> ` quoting removed.
+    - A DELETED target is a fixed sentence.
+15. **Tiering.** The first well-formed line for a packet binds, and a
+    malformed line leaves its packet untiered.
+16. **§6.7.** The R condition accepts a NOT FOUND cell in any mode,
+    including M. The Q condition names E, S5 and S25 only.
+
+### A V-list fact (§10)
+
+V3's REPEAT item says `oracle_limitation.py`'s case "comes out
+UNDECIDABLE-REPEAT". Its NOTE blocks are 16 characters long. That is under
+the mechanism's 20-character quote floor, so Q skips them and never grades
+them.
+
+V3 therefore checks two things. The §5.2 rule returns UNDECIDABLE-REPEAT on
+that exact case. And the whole evaluation path returns the same once the
+NOTE is lengthened past 20 characters.
+
+§10 lets the V-list be corrected on a fact, "logged below" in the
+document's own table. The document cannot change by a byte: its sha256 is
+pinned in `harness/p2/export.py`, because packets are cut from it. So the
+correction is logged here, and whether to amend the table itself is put to
+the owner.
+
+## 2026-10-08 — §17. PRE-REGISTRATION-2.md is binding
+
+`PRE-REGISTRATION-2.md` still opens with "Status: DRAFT, for owner approval",
+and §13 above says it is "not binding until the owner approves it and it
+merges". Both conditions now hold:
+
+- the owner approved it on 2026-10-07;
+- blockspec#15 merged it to `main` at 2026-10-07T23:28:22Z, as `f59c109`.
+
+Run from the repository root:
+
+```
+$ gh pr view 15 --repo kindspec/blockspec --json mergedAt,mergeCommit -q '.mergedAt+" "+.mergeCommit.oid'
+2026-10-07T23:28:22Z f59c109f96b38c888368ab4b6fcbf6ac58628099
+```
+
+It is binding, and it supersedes `PRE-REGISTRATION.md` for blockspec#2. The
+document is frozen, so its status line is not edited. This entry is the
+record.
+
+## 2026-10-08 — §18. Re-review of the harness: findings applied
+
+No arm has run.
+
+### The owner's rulings
+
+The owner ruled on the two questions §16 left open:
+
+- **The commit-order reading is accepted.** Each §9 step lands on `main` as
+  one squash commit from its own pull request, and that squash commit is the
+  binding §9 commit.
+- **The frozen document is not amended for the V-list fact.** §16's
+  "A V-list fact" is the record.
+
+### What the re-review found, and the change for each
+
+The re-review looked at blockspec#16 at `281fb4f`.
+
+- **H1, options.** No option may be abbreviated, on the parser or on any
+  subcommand, and no option may be given twice. Every check runs on the
+  parsed arguments. `aggregate` also checks each Arm 0 and score input's
+  pin and bundle sha256 against `ARMS` and `bundles.json`.
+- **H2, the validation commit.** It is now derived, not named. `seal` writes
+  `results/prereg2/VALIDATION`, which holds only the sealed manifest's
+  sha256 and is committed in the validation commit itself (§7.3). The
+  validation commit is the one commit in HEAD's history that added
+  VALIDATION. A bound run is refused in any of these cases:
+  - VALIDATION has changed since that commit, or was added more than once;
+  - its sha256 is not 64 hex characters;
+  - any later commit touches the harness, `PRE-REGISTRATION-2.md` or
+    `ORACLE.md`.
+
+  `bind` is removed. §16's account of VALIDATION naming the validation
+  commit, and of `bind`, is superseded.
+- **H3, first execution.** "First execution" is now marked by
+  `results/prereg2/executed/<cmd>[-<arm>].json`. That file is written only
+  once the corpus is opened (for export, once its scored input is), and the
+  transcript gains an "# executed:" line at the same moment. So a refused or
+  mistyped run leaves its transcript but does not use up the arm.
+  `aggregate` counts executed transcripts and their markers.
+- **M3, the marker's history.** The marker is looked for in the history of
+  every ref as well as in the work tree, so deleting it does not re-enable
+  an arm.
+- **M1, isolation.** The harness refuses to run without `python3 -I`; its
+  shebang is `env -S python3 -I -B`. It never reads a bytecode cache, because
+  `sys.pycache_prefix` points at a directory that does not exist. So a
+  forged `.pyc` beside a verified D8 source is not loaded.
+- **M2, real bundles.** An unbound run never opens a real bundle. Only a
+  fixture run reaches a corpus.
+
+**Reading 1 of §16 is amended (H4).** This entry replaces §16's clause
+saying "If `p` lies in no unit, the rule has no `t` and the record is
+UNDECIDABLE-REPEAT". The amended reading follows §5.2 step 1:
+
+- when `p` lies in no §5.2 unit, `t` is undefined and T is the units that
+  are twins of `k`;
+- if T is empty, the verdict is decided;
+- otherwise step 4's "ctx(t) ≥ 1" cannot hold, and the verdict is
+  UNDECIDABLE-REPEAT.
+
+The re-review's case (`scripts/a4case.py`) now comes out decided and WRONG.
+
+**F6's first half.** F6 is "every input state is well-formed" and q4 "no".
+The first half is already a condition of export: §7.3 exports only records
+with well-formed input states. So it holds for every representative the
+aggregator sees, and `aggregate` checks only q4. The code says so.
+
+**If `tier-model` is not run on the start day,** the tierer's model cannot
+be chosen, because the listing must carry the start day's `Date`. Then
+`tier-run` refuses, no packet is tiered, and the untiered plants void the
+tiering (§7.3). Every cell that exported a packet becomes NO VERDICT.
+
+### A correction to §16 and to the pull request's description
+
+Both say that each review fix was shown red first by
+`results/prereg2/validation/V3-new-checks-against-312b415.txt`, "20 checks
+red". That overstates it:
+
+- 6 of those 20 reds are sections that crashed (`grep -c "^  FAIL  section
+  raised"` on that file);
+- 2 more are red only because the old aggregator takes a different
+  reproduction-result format, not because of the behaviour the check names;
+- so 12 are named checks red on their own behaviour;
+- only 201 of the 271 checks ran, because the crashed sections' later checks
+  never ran.
+
+The re-review gave 8 such reds; counted from the file, they are these 6 and 2.
+
+The new checks for this re-review were run red first against `281fb4f`, and
+their transcript states the same counts.
+
+## 2026-10-08 — §19. What the red-first run against `281fb4f` shows
+
+`results/prereg2/validation/V3-new-checks-against-281fb4f.txt` runs V3 as of
+`a58727b` against the harness at `281fb4f`, from before §18's fixes. It
+prints `250 checks, 4 failed`. Of those four, one is a named check: H4.
+The other three are sections that crash on interfaces new since `281fb4f`:
+`is_late`, a VALIDATION written by `seal`, and the execution markers. So it
+is weak evidence that the new checks are red first.
+
+The evidence per finding is `V4.txt`. Every §18 finding, and every surviving
+mutant from the re-review, is a V4 mutant, and V4 reports
+`158 mutants: 158 killed, 0 survived, 0 BROKEN`. Each kill names the check
+that went red; none is a crash.
+
+## 2026-10-08 — §20. Round-5 review of the harness: findings applied
+
+No arm has run. The round-5 review looked at blockspec#16 at `4de5c56`.
+
+### What the harness checks, and what it does not
+
+The binding is checked by the harness. It is not guaranteed by it. Anyone
+who runs the harness can run other code: an edited `binding.py`, or a
+program of their own. A forged history also derives a validation commit of
+its own, for example an orphan branch carrying its own harness and
+VALIDATION.
+
+So the checks stop mistakes and casual shortcuts. The guarantee is a review
+step, now in `spike/README.md`: each §9 pull request's review re-derives the
+validation commit in a fresh clone, and compares it with every output's
+`binding.validation_commit`.
+
+### Corrections to §18 and §19
+
+- **§18, H3.** §18 says "a refused or mistyped run leaves its transcript but
+  does not use up the arm". That was not true of every failure.
+
+  `score` created `score/<arm>/` before it opened the corpus. A run whose
+  bundle could not be opened (missing, wrong sha256, or an existing work
+  repository) therefore left an empty directory, and the next run refused
+  on it: "exists; the first execution binds".
+
+  Now `arm0` and `score` create their output only after the execution
+  marker is written. The first-execution refusal is keyed on the marker, or
+  on a result file, never on a directory. `export` and `tier-run` already
+  created their output only after their checks.
+- **§19.** §19 says that in V4, "none is a crash". That was false. V4's
+  mutant 115 (R1) was killed only by a section crash, which V4 counted as a
+  red check.
+
+  Now V4 counts a mutant that only crashes a V3 section, with no named
+  check red, as surviving. V3's `one()` turns an evaluation that raises into
+  a red named check.
+
+### What changed
+
+- **M-a, the marker.** The execution marker gets a second copy in the
+  common git directory, `$(git rev-parse --git-common-dir)/prereg2/executed/`.
+  It is looked for in three places:
+  - the work tree;
+  - that directory;
+  - `git log --all --reflog --full-history`.
+
+  So deleting a branch, `rm` or `git clean` of an uncommitted marker, and a
+  second worktree each leave the arm refused. A marker reaches only the
+  repository it was written in: a fresh clone has no git-directory copy and
+  no reflog. That gap is closed by the review step above, not by the
+  harness.
+- **M-c, the derivation's history.** Every history walk in the derivation
+  uses `--full-history`. A shallow repository is refused, as is a history
+  rewritten by replace refs or `info/grafts`. Binding git calls run without
+  the caller's `GIT_*` variables, without user or system config, and with
+  `GIT_NO_REPLACE_OBJECTS=1`.
+- **M-d, module loading.** The harness requires `python3 -I -S`, and its
+  shebang is `env -S python3 -I -S -B`. It loads the three D8 files by
+  explicit path, and takes `--d8-dir` back off `sys.path` once they have
+  run. It checks that every harness module's `__file__` is the tracked file
+  it names.
+- **M-e, §9's gap rule.** This implements the document's rule; it is not a
+  reading.
+  - A gap is declared in `results/prereg2/gaps.json`. Its red test lives
+    under `results/prereg2/gaps/`, outside the harness. Each entry names its
+    LOG entry and its cells.
+  - An entry is dated by the first commit that carries it.
+  - An entry dated at or before the Arm 0 commit is refused: §9 says such a
+    gap stops the work.
+  - An entry strictly between the Arm 0 commit and the scoring-arm commit
+    makes its cells NO VERDICT, and the reason names the gap.
+  - An entry at or after the scoring-arm commit alters no cell, and is
+    listed.
+  - Two choices are this harness's own, not the document's: an entry may
+    never be edited or withdrawn once committed, and its LOG entry and red
+    test must be committed with it.
+- **LOW.**
+  - `seal`'s "outside the repository" check now uses the repository's top
+    level.
+  - Of the 33 round-4 mutants, F6a was dropped on purpose: §18 removed the
+    unread well-formedness half of F6 that it mutated.
+
+## 2026-10-08 — §21. Round-6 review: the gap rule's edges, and the validation commit
+
+No arm has run. The round-6 review looked at blockspec#16 at `e563655`. It
+found no HIGH and three MEDIUMs. This entry records the changes, and one
+correction to §20.
+
+### Gaps after the scoring-arm commit never block a verdict
+
+Before this change, `load_gaps` held every version of `gaps.json` to the
+rule. A later version broke it in three ways the review reproduced:
+
+- a typo in a LOG section;
+- a reworded `why`;
+- JSON that does not parse.
+
+Any of these made the bound `aggregate` refuse for good. Nothing could
+repair it, because gaps are immutable and the ruleset forbids rewriting
+history. That contradicts §9: "After the scoring-arm commit … no gap claim
+… alters any cell."
+
+Now a version of `gaps.json` at or after the scoring-arm commit is never a
+reason to refuse. It is listed, whatever it says, malformed included.
+
+The rule is also checked before the end:
+
+- `arm0`, `score`, `export`, `tier-model` and `tier-run` check it in their
+  bound preflight, so a breach inside the window shows up while it can
+  still be dealt with;
+- a gap declared before Arm 0 now stops `arm0` and `score`, not only
+  `aggregate`, as §9's "stops the work" says.
+
+### The validation commit adds VALIDATION only
+
+A bound run refuses when the validation commit's diff against its parent
+touches `spike/harness`, `PRE-REGISTRATION-2.md` or `ORACLE.md`. The review
+showed the case this closes: a validation pull request that also set
+`FLOOR = 1` produced a bound NOT FOUND.
+
+The README's fresh-clone review step now:
+
+- runs the same diff;
+- re-derives the Arm 0 commit and the scoring-arm commit;
+- checks the scoring-arm commit against the one `tier-model.json`
+  recorded, so a rebase that backdates a gap is caught.
+
+### A correction to §20: the gap rule has readings
+
+§20 says the gap rule "implements the document's rule; it is not a reading".
+The rule is the document's. Where its edges fall, the document does not say,
+so these are readings:
+
+- **In the Arm 0 commit itself.** A gap declared there counts as declared
+  before Arm 0, so it stops the work.
+- **In the scoring-arm commit itself.** A gap declared there counts as
+  after scoring, so it alters no cell.
+- **Outside the scoring-arm commit's history.** A gap on a side branch
+  that is merged only after the scoring-arm commit counts as after, so it
+  alters no cell.
+
+### What the gap check does not do
+
+It checks that a gap's red test is committed under
+`results/prereg2/gaps/` by the gap's own commit. It does not run the test,
+so it does not show the test is red. Running an arbitrary test inside the
+harness would make that test part of the harness, which the validation
+commit binds. The red state is for the gap's reviewers to confirm.
+
+## 2026-10-08 — §22. Round-7 review: a gap chosen after seeing results
+
+No arm has run. The round-7 review looked at blockspec#16 at `5655248`. It
+found one gap in the gap rule, and checks that were missing. This entry
+records the changes.
+
+### A gap counts only if every score run saw it
+
+The review's scenario: the scoring arms run on their branch, so their
+results are known. A separate gap pull request is then squash-merged to
+`main`, and only then the score pull request. The gap's commit lies before
+the scoring-arm commit and in its history, so under §21 it made a cell NO
+VERDICT. It was chosen with the results in view.
+
+Each score output records `binding.head`, the commit its run executed at.
+A gap now counts only if its commit is an ancestor of every score output's
+`binding.head`, as well as strictly between the Arm 0 commit and the
+scoring-arm commit. Any other gap is listed as "declared after scoring
+ran" and alters no cell. A `binding.head` that is missing, or that is not
+in the repository, is refused rather than read either way; fetching the
+score pull request's head resolves it.
+
+This is a reading. §9 dates a gap by the scoring-arm commit: "Between the
+Arm 0 commit and the scoring-arm commit". Under one squash commit per §9
+step, that commit lands after the runs it records, so the letter admits a
+gap chosen after the results were seen. The reading implements §9's intent,
+that no gap claim made with the results in view alters a cell. It is
+stricter than the letter: it can only take a gap away, never add one.
+
+It also implies §21's boundary for a gap in the scoring-arm commit itself.
+That commit records each run's `binding.head`, so it cannot be an ancestor
+of any of them. The separate test for that boundary was removed: no input
+could reach it, and V4's mutant of it survived as an equivalent mutant.
+
+### Checks added
+
+- `score` and `export` each refuse a malformed `gaps.json` in their bound
+  preflight, and `tier-model` is not blocked by one after the scoring-arm
+  commit (its preflight reads the scoring-arm commit, as `aggregate` does).
+- The validation-diff refusal is tested for `ORACLE.md` and
+  `PRE-REGISTRATION-2.md`, not only the harness, and for a validation
+  commit with no parent.
+
+### The fresh-clone review step is a script
+
+The README's review step is now `harness/prereg2_reverify.sh`, committed
+with the harness, so the validation commit binds it. It prints PASS or FAIL
+for each check, and exits 1 if any failed. V3 runs it on fixture
+repositories, and V4 mutates it.

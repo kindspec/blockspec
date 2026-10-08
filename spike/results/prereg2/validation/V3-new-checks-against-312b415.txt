@@ -1,0 +1,416 @@
+# prereg2_v3.py at af7e224042929e78821ce9ffe64b2a497c365ee5, run against the harness at 312b415 (before the review fixes)
+# shows each new check red against the code it was written for; $OLD is that harness's scratch copy
+
+== D8 pin: the mechanism is kindspec/research d51ce09, or nothing runs
+  ok    the --d8-dir in use matches d51ce09 file for file
+  ok    a D8 directory with one edited file is refused
+  ok    an empty D8 directory is refused
+
+== R: the copied slugs() and regions() match d51ce09 byte for byte
+  ok    three copied blocks are marked
+  ok    e9_headings.py lines 8-13 == the copy in p2/mech.py   [199 vs 199 bytes]
+  ok    e6_transclude.py lines 14-14 == the copy in p2/mech.py   [66 vs 66 bytes]
+  ok    e6_transclude.py lines 17-31 == the copy in p2/mech.py   [584 vs 584 bytes]
+
+== REPEAT (§5.2)
+  ok    oracle_limitation.py's case: TLLC alone says SURVIVED, target 3   [('SURVIVED', 3)]
+  ok    oracle_limitation.py's case comes out UNDECIDABLE-REPEAT under the rule
+  ok    ... and through evaluate(), with the NOTE lengthened past 20 characters   [UNDECIDABLE-REPEAT]
+  ok    the original 16-character NOTE is skipped as short, never graded
+  ok    two identical multi-line paragraphs, one edited: decided   [SURVIVED]
+  ok    ... and WRONG under the hardened policy   [{'status': 'EXACT', 'hit': 7, 'cls': 'WRONG', 'mechanism_target_text': 'The deploy job waits for the canary to report healthy,\nthen promotes the build to every region.'}]
+  ok    an edited block whose old wording survives verbatim elsewhere, with twinned neighbours: UNDECIDABLE-REPEAT (T holds a twin of k, not of t)   [(2, 'UNDECIDABLE-REPEAT')]
+  ok    empty input: no record, nothing decided
+
+== REPEAT and SPLIT leave known cases alone
+  ok    wrong-01 stays decided with its committed verdicts   [('SURVIVED', 'WRONG', 'WRONG')]
+  ok    single-leg-01 stays decided with its committed verdicts   [('SURVIVED', 'WRONG', 'WRONG')]
+  ok    clean-01 stays decided with its committed verdicts   [('SURVIVED', 'correct', 'correct')]
+
+== SPLIT (§5.2)
+  ok    a paragraph split in two comes out UNDECIDABLE-SPLIT   [UNDECIDABLE-SPLIT]
+  ok    the same paragraph edited in place stays decided   [SURVIVED]
+
+== F3: every input state and the result are well-formed
+  ok    well-formed before and after: wf
+  ok    an ill-formed before-state: not wf
+  ok    an ill-formed after-state: not wf
+  ok    an ill-formed leg A: not wf
+  ok    an ill-formed leg C: not wf
+  ok    an after-state of one block: not wf (blocks() must find 2)
+
+== R units: REPEAT and SPLIT over §5.2's R units
+  ok    R slug REPEAT: a section copied directly after itself is UNDECIDABLE-REPEAT   [UNDECIDABLE-REPEAT]
+  ok    ... and its name, now duplicated, gives #REF!
+  ok    R region REPEAT: the region's block copied directly after itself is UNDECIDABLE-REPEAT   [UNDECIDABLE-REPEAT]
+  ok    ... and a copy elsewhere, where context tells them apart, stays decided   [SURVIVED]
+  ok    R slug SPLIT: a section whose lines now fall under two headings is UNDECIDABLE-SPLIT   [UNDECIDABLE-SPLIT]
+  ok    ... and the same section edited in place stays decided   [('SURVIVED', {'status': 'RESOLVED', 'hit': [1, 2], 'cls': 'correct'})]
+
+== R slug REPEAT: t is the unit holding the §3 section's plurality block (review A1)
+  FAIL  A1: `## Alpha` -> `##  Alpha` (same slug, no twin anywhere) is decided, not UNDECIDABLE-REPEAT   [('UNDECIDABLE-REPEAT', 'heading-span has no TLLC target')]
+  FAIL  A1: a section whose intro is rewritten, with no twin anywhere, is decided   [('UNDECIDABLE-REPEAT', 'heading-span has no TLLC target')]
+  FAIL  A4: blocks before the first heading lie in no §5.2 R unit (the text names heading spans only)
+
+== R: the resolver
+  ok    a heading renamed onto another section's name: decided   [SURVIVED]
+  ok    ... and WRONG   [{'status': 'RESOLVED', 'hit': [3, 4], 'cls': 'WRONG', 'mechanism_target_text': '## Alpha\n\nBeta owns the search service.'}]
+  ok    a name that disappears gives #REF!
+  ok    ... and is LOUD, not WRONG   [{'status': '#REF!', 'hit': None, 'cls': 'LOUD'}]
+  ok    a duplicated name gives #REF!
+  ok    a `#` line inside a code fence is not a name   [['notes', 'real-heading']]
+  ok    a section runs to the next heading of the same or a higher level, subsections included   [[('slug', 0, 6), ('slug', 1, 4), ('slug', 3, 4)]]
+  ok    a region declared twice gives #REF!
+  ok    region markers are tried before slugs   [('region', 1, 1)]
+  ok    empty input: no name, #REF!
+
+== Plants: harness/prereg2_plants.py
+  ok    prereg2_plants.py prints PLANTS: PASS and exits 0   [['PLANTS: PASS']]
+  ok    the P-C mutation (§7.3: base with only the window sentence edited) applies
+  ok    ... and prereg2_plants.py goes red on it   [['PLANTS: FAIL']]
+  ok    P-A: the harness's own records agree with Appendix B (TLLC 1, hardened 6)
+  ok    P-B: the harness's own records agree with Appendix B (TLLC 2, hardened 5)
+  ok    P-C: the harness's own records agree with Appendix B (TLLC 2, hardened 4)
+
+== E and S enumerators, and the scoring CLI
+  ok    E: a repository holding single-leg-01 as one commit scores (exit 0)   [exit 0]
+  ok    E: ... and yields that record: anchored block 1, decided, hardened WRONG   [{'cls': 'WRONG', 'hit': 7, 'mechanism_target_text': 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.', 'status': 'EXACT'}]
+  ok    E: ... byte-identical to the committed record p2/fixtures/single-leg-01.E.record.json
+  ok    E: every invocation wrote a transcript   [['2026-10-08T021133Z-arm0-fixture.txt', '2026-10-08T021133Z-score-fixture.txt']]
+  ok    S5: a history base, a, base, a, base, a yields the pair (cs[0], cs[5]) and that record   [S5:0:doc.md]
+  ok    an empty repository exits non-zero (score)   [exit 2]
+  ok    an empty repository exits non-zero (arm0)   [exit 2]
+  ok    ... and the aborted runs still wrote transcripts with their exit status
+  ok    a repository with no selected .md exits non-zero   [exit 2]
+  ok    E population: the edit is in it, the add is excluded and counted   [{'commits:no_merges': 2, 'population': 1, 'excluded:add': 1, 'excluded:delete': 0, 'excluded:rename': 0, 'excluded:other_status': 0, 'path_not_selected': 0}]
+  ok    S population: a pair whose two blobs are equal is excluded and counted   [{'paths': 1, 'gap5:pairs': 1, 'gap5:excluded:blob_missing': 0, 'gap5:excluded:blobs_equal': 1, 'gap5:population': 0, 'gap25:pairs': 0, 'gap25:excluded:blob_missing': 0, 'gap25:excluded:blobs_equal': 0, 'gap25:population': 0}]
+  ok    S population: the pair whose blobs differ is in it   [{'paths': 1, 'gap5:pairs': 1, 'gap5:excluded:blob_missing': 0, 'gap5:excluded:blobs_equal': 0, 'gap5:population': 1, 'gap25:pairs': 0, 'gap25:excluded:blob_missing': 0, 'gap25:excluded:blobs_equal': 0, 'gap25:population': 0}]
+
+== Reproduction script (F9)
+  ok    repro regenerates single-leg-01's record byte for byte   [['F9 REPRODUCTION: BYTE-IDENTICAL  E:76b0c2815789f97065dbbc4836669c65df182969:doc.md|Q|1']]
+  ok    ... and reports DIFFERS, exit non-zero, against an altered record   [['F9 REPRODUCTION: DIFFERS  E:76b0c2815789f97065dbbc4836669c65df182969:doc.md|Q|1']]
+  ok    ... and exits non-zero on a record id that is not committed   [exit 2]
+
+== Non-UTF-8 blobs: excluded and counted as undecodable (LOG §15)
+  ok    the supplied find_merge_cases(), reading strictly, raises on such a merge (the defect the rule exists for)
+  ok    M: the arm does not crash (exit 0)   [exit 0]
+  ok    M: the case with the non-UTF-8 blob is excluded and counted undecodable   [1]
+  ok    M: valid cases are still evaluated, the undecodable one is not   [['M:1e64cd6c22c2ac3005f576640d851a8257d7bd93:ok.md']]
+  ok    M: the arm's output and transcript report it
+  ok    E: the arm does not crash (exit 0)   [exit 0]
+  ok    E: the case with the non-UTF-8 blob is excluded and counted undecodable   [1]
+  ok    E: valid cases are still evaluated, the undecodable one is not   [['E:a797850b3531f50509cf91ad826bfd64552d7639:doc.md', 'E:a797850b3531f50509cf91ad826bfd64552d7639:ok.md', 'E:e275ca033e32415960a204c433aa8e04db44c3b4:ok.md']]
+  ok    E: the arm's output and transcript report it
+
+== Corpora as bundles (§6.2)
+  ok    every arm's bundle has a committed sha256, and its recorded head is the arm's pinTraceback (most recent call last):
+  File "$OLD/spike/harness/prereg2_v3.py", line 1773, in main
+    fn()
+    ~~^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1760, in <lambda>
+    lambda: t_export(a, tmp),
+            ~~~~~~~~^^^^^^^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 926, in t_export
+    rc, outp = cli("validate-export", empty, "--transcript-dir", os.path.join(tmp, "ve-t"), "--unbound")
+               ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 97, in cli
+    rc = prereg2.main([str(a) for a in args])
+  File "$OLD/spike/harness/prereg2.py", line 442, in main
+    a = ap.parse_args(argv)
+  File "/usr/lib/python3.13/argparse.py", line 1916, in parse_args
+    self.error(msg)
+    ~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 2672, in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 2659, in exit
+    _sys.exit(status)
+    ~~~~~~~~~^^^^^^^^
+SystemExit: 2
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/argparse.py", line 1951, in _parse_known_args2
+    namespace, args = self._parse_known_args(args, namespace, intermixed)
+                      ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 2183, in _parse_known_args
+    positionals_end_index = consume_positionals(start_index)
+  File "/usr/lib/python3.13/argparse.py", line 2158, in consume_positionals
+    take_action(action, args)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 2012, in take_action
+    argument_values = self._get_values(action, argument_strings)
+  File "/usr/lib/python3.13/argparse.py", line 2542, in _get_values
+    self._check_value(action, value[0])
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 2592, in _check_value
+    raise ArgumentError(action, msg % args)
+argparse.ArgumentError: argument cmd: invalid choice: 'tier-model' (choose from seal, arm0, score, export, validate-export, repro, tier-run, aggregate)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "$OLD/spike/harness/prereg2_v3.py", line 1773, in main
+    fn()
+    ~~^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1761, in <lambda>
+    lambda: t_tier_run(a, tmp),
+            ~~~~~~~~~~^^^^^^^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 973, in t_tier_run
+    _t_tier_run(a, tmp, X, TRN, stubs, creds, canary)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1064, in _t_tier_run
+    rc, out = tm("m0", key=None)
+              ~~^^^^^^^^^^^^^^^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1055, in tm
+    return cli("tier-model", "--state-dir", os.path.join(tmp, state), "--repo", old_repo,
+               "--scoring-commit", old, "--models-url", servers[srv].url,
+               "--transcript-dir", os.path.join(tmp, state + "-t"), "--unbound")
+  File "$OLD/spike/harness/prereg2_v3.py", line 97, in cli
+    rc = prereg2.main([str(a) for a in args])
+  File "$OLD/spike/harness/prereg2.py", line 442, in main
+    a = ap.parse_args(argv)
+  File "/usr/lib/python3.13/argparse.py", line 1912, in parse_args
+    args, argv = self.parse_known_args(args, namespace)
+                 ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 1922, in parse_known_args
+    return self._parse_known_args2(args, namespace, intermixed=False)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 1953, in _parse_known_args2
+    self.error(str(err))
+    ~~~~~~~~~~^^^^^^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 2672, in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 2659, in exit
+    _sys.exit(status)
+    ~~~~~~~~~^^^^^^^^
+SystemExit: 2
+
+  ok    the seven arms and their pins are §6.2's
+  ok    bundle storage is recorded: the release tag and the durable local copy, which is the harness's default bundle directory   [/home/cam/kindspec-data/prereg2-bundles]
+  ok    a corpus is fetched fresh from its bundle and checked out at the pin
+  ok    an earlier pin in the bundle's history is reachable
+  ok    a pin absent from its bundle is NO VERDICT (the guard itself raises NoVerdict)   [NoVerdict: fx: pin 1111111111111111111111111111111111111111 is absent from its bundle]
+  ok    a bundle whose sha256 is not the committed one is refused by the sha256 guard   [RuntimeError: fx: bundle sha256 f6d67198422a538a2a1d20b70af280ef454334611cfdaf463da2671bc055ab24 != committed 0000000000000000000000000000000000000000000000000000000000000000]
+  ok    an existing work repository is never reused (the reuse guard itself refuses)   [RuntimeError: fx: $TMP/b-w1/fx exists; corpora are always fetched fresh]
+  ok    a missing bundle is refused   [FileNotFoundError: fx: bundle not found: $TMP/nowhere/fx.bundle]
+
+== M: the scoring CLI on a real merge
+  ok    M: a repository holding wrong-01 as a real merge scores (exit 0)   [exit 0]
+  ok    M: ... and yields its record: decided, WRONG under both policies, F2 clean   [('M:7d8b6e3e42caf400bd1b83607f6e5d48d4f90ecd:doc.md', 'WRONG')]
+  ok    M: repro regenerates it byte for byte   [['F9 REPRODUCTION: BYTE-IDENTICAL  M:7d8b6e3e42caf400bd1b83607f6e5d48d4f90ecd:doc.md|Q|1']]
+  ok    M: clean-01 as a real merge is stopped by Arm 0: its verbatim appendix twins the anchored paragraph   [exit 3]
+
+== Export CLI on scored fixtures
+  ok    export: wrong-01's merge record plus the three plants make four packets   [exit 0, 4 packets; status bound=False]
+  ok    export: the merge packet carries base, both legs and the after-file   [[['after', 'before'], ['after', 'before'], ['after', 'before'], ['after', 'base', 'leg_a', 'leg_c']]]
+  ok    export: it passes its validator
+  ok    export: the invocation wrote a transcript
+  ok    export: a second export over the first is refused   [exit 1]
+
+== M filter and the §6.3 rule
+  ok    a generated key in the file's own fence excludes it (yaml-fence)
+  ok    the same key inside an HTML comment does not (yaml-fence)
+  ok    ... where the `anywhere` rule would exclude it
+  ok    M filter: the fence-generated file is not in the verdict selection   [['none']]
+  ok    M filter: the HTML-comment file is   [['yaml-fence', 'none']]
+  ok    M filter: a path outside the pathspec is dropped and counted   [{'cases_in': 4, 'dropped:not_selected': 1, 'kept': 3, 'kept:yaml-fence': 2, 'kept:none': 3, 'kept:anywhere': 1}]
+  ok    empty input: no case in, none kept
+
+== site-policy subject rule (§6.2)
+  ok    'Merge pull request #1 from x/automated-sync': strict=False 25-case=False
+  ok    'repo-sync: update': strict=False 25-case=True
+  ok    'Update the privacy statement': strict=True 25-case=True
+  ok    'Repo-Sync of policies': strict=True 25-case=True
+  ok    'AUTOMATED-SYNC': strict=True 25-case=True
+  ok    m_filter reads the subject with git log -1 --format=%s and drops it from the strict set   [{'cases_in': 1, 'dropped:not_selected': 0, 'kept': 1, 'kept:yaml-fence': 1, 'kept:none': 1, 'kept:anywhere': 1, 'strict': 0, 'set25': 0}]
+  FAIL  A3/§6.2: the strict-set count is logged against the first registration's 21, with its difference   [{'cases_in': 1, 'dropped:not_selected': 0, 'kept': 1, 'kept:yaml-fence': 1, 'kept:none': 1, 'kept:anywhere': 1, 'strict': 0, 'set25': 0}]
+
+== Sampler (§6.3)
+  ok    removing an item that was not selected leaves the sample byte-identical
+  ok    ... and removing 2,000 unselected items does too
+  ok    removing a selected item does change it (the check can fail)
+  ok    the rank is sha256('prereg2:' + arm + ':' + key)
+  ok    another arm ranks differently (the salt includes the arm)
+  ok    empty input: an empty sample
+
+== Distinct count, decided rule, floor (§5.2, §6.6)
+  ok    a duplicate is counted once   [{('k8s-en', 'Q', '', 'u1'): 'decided'}]
+  ok    one decided instance plus one undecidable instance counts as decided   [{('k8s-en', 'Q', '', 'u2'): 'decided'}]
+  ok    undecidable plus UNKNOWN, none decided, is undecidable
+  ok    every instance UNKNOWN is UNKNOWN
+  ok    floor: 299 gives NO VERDICT
+  ok    floor: 300 gives NOT FOUND
+  ok    floor: undecidable over 10% gives NO VERDICT
+  ok    floor: undecidable at 10% passes
+  ok    aggregate: 299 distinct decided units gives NO VERDICT   [{'distinct': {'decided': 299, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 299, 'undecidable': 0, 'UNKNOWN': 0}, 'exported_packets': 0, 'qualifying_distinct': 0, 'verdict': 'NO VERDICT', 'reason': '299 distinct decided natural-language units < 300'}]
+  ok    aggregate: 300 distinct decided units gives NOT FOUND   [{'distinct': {'decided': 300, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 300, 'undecidable': 0, 'UNKNOWN': 0}, 'exported_packets': 0, 'qualifying_distinct': 0, 'verdict': 'NOT FOUND', 'reason': 'n=300, bound 3/n = 0.01000 at 95%'}]
+  ok    aggregate: 300 units over 350 instances counts 300
+  ok    an empty cell gives NO VERDICT, never zero   [{'distinct': {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'exported_packets': 0, 'qualifying_distinct': 0, 'verdict': 'NO VERDICT', 'reason': '0 distinct decided natural-language units < 300'}]
+  ok    an arm with no Arm 0 result gives NO VERDICT   [{'verdict': 'NO VERDICT', 'reason': 'no Arm 0 result'}]
+
+== Arm 0 bar (§6.5)
+  ok    a planted corpus over 10% stops its arm   [1/5]
+  ok    exactly 10% twinned passes   [1/10]
+  ok    blocks under 20 characters are counted as skipped
+  FAIL  A4: an arm with no natural-language content passes the bar -- §6.5 stops an arm only above 10%
+  ok    the CLI: the arm reports NO VERDICT (oracle reach) and does not run   [exit 3]
+  ok    B5/21: the bar is read off the yaml-fence rule: the generated file's twins stop `none`, and do not stop the arm   [(False, True)]
+  ok    Arm 0 prints the adjacent-run line labelled 'provisional reading (LOG §15)', with its rule
+  ok    ... and its JSON carries the label
+  ok    no aggregate or verdict path imports arm0 or reads the adjacent-run count
+
+== Export, its validator, and the sealed manifest (§7.3)
+  ok    seal draws a 32-byte nonce
+  ok    seal refuses to overwrite a sealed manifest, and the manifest is unchanged   [ExportError: $TMP/manifest.json exists; a manifest is sealed once]
+  ok    a manifest whose sha256 is not the committed one is refused   [ExportError: manifest sha256 847bd9057f9ff9186739f5b36d902e0a3783c096fd0bd33d49e5d32e360fd5c5 != committed 0000000000000000000000000000000000000000000000000000000000000000]
+  ok    an export of no real record holds the three plants   [['451d4032a6fe50ad', '98b45be11006896a', 'aab082478e108c81']]
+  ok    packet names are sha256(nonce + ':' + key)[:16], computed independently here
+  ok    a clean export passes the validator
+  ok    the validator rejects a packet that carries a count   [["451d4032a6fe50ad: fields outside the allow-list: ['count']"]]
+  ok    ... and a string field outside the allow-list   [["451d4032a6fe50ad: fields outside the allow-list: ['total']"]]
+  ok    ... and a number in an allowed field
+  ok    ... and a file outside the allow-list
+  ok    ... and LOG.md at the export root
+  ok    ... and passes again once restored
+  ok    an export with PROMPT.md and no packet fails   [['no packets']]
+  ok    empty input: an empty export directory fails
+  FAIL  section raised: SystemExit: 2
+
+== Tiering-run wrapper (§7.3), with a stub agent
+  ok    without the sandbox, the stub CAN read the canary under /home/cam/repos_kindspec and ~/.claude/projects (so the probes can fail)   [['PROBE CAN-READ canary under /home/cam/repos_kindspec', 'PROBE CAN-READ ~/.claude/projects', 'PROBE CAN-READ ~/.claude', "PROBE CAN-READ the export's PROMPT.md", 'PROBE CANNOT-READ the bound credential file']]
+  FAIL  section raised: SystemExit: 2
+
+== Review C4: the manifest cannot carry its own expectationsTraceback (most recent call last):
+  File "$OLD/spike/harness/prereg2_v3.py", line 1773, in main
+    fn()
+    ~~^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1765, in <lambda>
+    lambda: t_review_a5_b1_a3(a),
+            ~~~~~~~~~~~~~~~~~^^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1431, in t_review_a5_b1_a3
+    res = AG.aggregate(arm0, sc, m, t, {e["id"]: rp})
+  File "$OLD/spike/harness/p2/aggregate.py", line 98, in aggregate
+    cells[cid] = cell(arm, mode, mech, sc, nonce, tiers, repro, void, near)
+                 ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "$OLD/spike/harness/p2/aggregate.py", line 135, in cell
+    raise MissingRepro(f"{rep['id']}: meets F1-F6 with no reproduction result")
+p2.aggregate.MissingRepro: S5:0:doc.md|Q|0: meets F1-F6 with no reproduction result
+Traceback (most recent call last):
+  File "$OLD/spike/harness/prereg2_v3.py", line 1773, in main
+    fn()
+    ~~^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1766, in <lambda>
+    lambda: t_binding(a, tmp),
+            ~~~~~~~~~^^^^^^^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1496, in t_binding
+    from p2 import binding as BD
+ImportError: cannot import name 'binding' from 'p2' ($OLD/spike/harness/p2/__init__.py)
+Traceback (most recent call last):
+  File "$OLD/spike/harness/prereg2_v3.py", line 1773, in main
+    fn()
+    ~~^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1767, in <lambda>
+    lambda: t_preflight(a, tmp),
+            ~~~~~~~~~~~^^^^^^^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1653, in t_preflight
+    prereg2.transcript_preflight(sp, ["k8s-en"], ["k8s-en"]) == [])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'prereg2' has no attribute 'transcript_preflight'
+Traceback (most recent call last):
+  File "$OLD/spike/harness/prereg2_v3.py", line 1773, in main
+    fn()
+    ~~^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1768, in <lambda>
+    lambda: t_aggregator(a, tmp),
+            ~~~~~~~~~~~~^^^^^^^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 1692, in t_aggregator
+    rc, out = cli("aggregate", "--d8-dir", a.d8_dir, "--transcript-dir", os.path.join(tmp, "agg-t"),
+              ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  "--arm0-dir", os.path.join(tmp, "agg-a0"), "--score-dir", os.path.join(tmp, "agg-sc"),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  "--manifest", mp, "--manifest-sha", sha, "--state-dir", os.path.join(tmp, "agg-st"),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  "--repro-dir", os.path.join(tmp, "agg-rp"), "--out", os.path.join(tmp, "v.json"),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  "--fixture-ok", "--unbound")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "$OLD/spike/harness/prereg2_v3.py", line 97, in cli
+    rc = prereg2.main([str(a) for a in args])
+  File "$OLD/spike/harness/prereg2.py", line 442, in main
+    a = ap.parse_args(argv)
+  File "/usr/lib/python3.13/argparse.py", line 1916, in parse_args
+    self.error(msg)
+    ~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 2672, in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/argparse.py", line 2659, in exit
+    _sys.exit(status)
+    ~~~~~~~~~^^^^^^^^
+SystemExit: 2
+
+  FAIL  C4: a manifest whose plant expectations differ from Appendix B is refused, even with its own sha
+  FAIL  C4: a manifest whose plant keys are not plant:P-x is refused
+  FAIL  C4: void_reasons reads Appendix B's expectations, never the manifest's   [['P-A: q3=no, expected yes', 'P-B: q3=no, expected yes']]
+  FAIL  B2: an empty expected manifest sha256 is refused, not skipped (on an honest manifest)
+  FAIL  B2: a missing expected manifest sha256 is refused
+
+== Void rule (§7.3)
+  ok    correct plant answers: not void
+  ok    a plant crossing the B/C line (P-C answered B) voids
+  ok    a plant crossing the B/C line (P-B answered C) voids
+  ok    a plant whose q3 mismatches voids
+  ok    a plant whose q4 mismatches voids
+  ok    an untiered plant voids
+  ok    A<->B confusion (P-A answered B) does not void
+  ok    A<->B confusion (P-B answered A) does not void
+  ok    tier computation: q2 yes -> A, q1 yes -> B, else C, unplaceable -> UNPLACEABLE
+  ok    export eligibility: a decided hardened WRONG meeting F1-F5 is exported
+  ok    ... not if selected only under `none` (F1, §6.3)
+  ok    ... not a site-policy M case outside the strict set (F1)
+  ok    ... not a block of type code (F5)
+  ok    ... not one whose input states are ill-formed (F3)
+  ok    ... not an undecidable one
+  ok    a truncated tiers.jsonl makes the cell of an untiered real packet NO VERDICT   [1 exported packet(s) untiered]
+  FAIL  ... and with it tiered B and reproduced, the cell is FOUND
+  ok    ... a record that does not reproduce (F9) is not FOUND
+  ok    ... and with no reproduction result the aggregator refuses with MissingRepro   [MissingRepro: w1|Q|0: meets F1-F6 with no reproduction result]
+  ok    a void tiering makes a cell that exported a packet NO VERDICT
+  ok    ... and leaves a cell that exported none alone   [{'distinct': {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'exported_packets': 0, 'qualifying_distinct': 0, 'verdict': 'NO VERDICT', 'reason': '0 distinct decided natural-language units < 300'}]
+
+== Review B5: named checks for gates whose mutants survived
+  ok    B5/1: a unit selected only under `none` does not count toward the floor (299 -> NO VERDICT)   [{'decided': 299, 'undecidable': 0, 'UNKNOWN': 0}]
+  ok    B5/2: a non-natural-language unit does not count toward the floor   [{'decided': 299, 'undecidable': 0, 'UNKNOWN': 0}]
+  ok    B5/3: q4 yes (F6 fails) is not FOUND   [n=401, bound 3/n = 0.00748 at 95%]
+  ok    B5/4: q3 yes (F7 fails) is not FOUND   [n=401, bound 3/n = 0.00748 at 95%]
+  FAIL  B5/4: ... and counts as near miss (i)   [{'i': 0, 'ii': 0, 'iii': 0}]
+  ok    B5/25: an unplaceable real packet is not FOUND   [n=401, bound 3/n = 0.00748 at 95%]
+  ok    B5/25: ... and is not a near miss (i) either   [{'i': 0, 'ii': 0, 'iii': 0}]
+  ok    B5/6: Q NOT FOUND only in M cells does not satisfy §6.7's Q condition
+  ok    B5/9: list-item twins over 10% stop the arm   [1/3]
+  ok    B5/24: an arm that failed the Arm 0 bar is NO VERDICT (oracle reach), whatever its counts   [{'verdict': 'NO VERDICT', 'reason': 'oracle reach (Arm 0 bar)'}]
+  ok    B5/10: the first line for a packet binds, a later one is not a revision   [['line 2: p1 already answered; first line binds', 'line 3: malformed']]
+  ok    B5/11: `unplaceable` must be a boolean; "no" is malformed   [['line 2: p1 already answered; first line binds', 'line 3: malformed']]
+  ok    B5/12: an unplaceable P-A (expected A) is on the non-qualifying side of B/C: void   [['P-A: unplaceable, so its side of the B/C line cannot be checked']]
+  FAIL  A4: an unplaceable P-C (expected C), q3 and q4 as expected, does not void: UNPLACEABLE is not a finding, so it sits on C's side   [['P-C: unplaceable, so its side of the B/C line cannot be checked']]
+  ok    B5/15: a block TLLC calls UNKNOWN is not decided and has no class   [UNKNOWN]
+
+== Review A5, B1, A3: one representative per packet, F9 bound, beside-reporting
+  ok    A5: the two records share one packet
+  FAIL  A5: F9 is checked on the packet's one representative (smallest id across modes) for every cell that exported it   [MissingRepro: S5:0:doc.md|Q|0: meets F1-F6 with no reproduction result]
+  FAIL  section raised: MissingRepro: S5:0:doc.md|Q|0: meets F1-F6 with no reproduction result
+
+== Review C1, B6, C3, B3, B10, A7: the binding is enforced by the harness
+  FAIL  section raised: ImportError: cannot import name 'binding' from 'p2' ($OLD/spike/harness/p2/__init__.py)
+
+== Review C3: aggregate's transcript preflight
+  FAIL  section raised: AttributeError: module 'prereg2' has no attribute 'transcript_preflight'
+
+== Aggregator: empty input
+  ok    empty input raises, no verdict
+  FAIL  section raised: SystemExit: 2
+  ok    V3 itself wrote nothing under this repository's results/prereg2/
+
+201 checks, 20 failed
+V3: FAIL
+exit=1

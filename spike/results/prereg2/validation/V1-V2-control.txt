@@ -1,0 +1,11 @@
+# harness HEAD a58727b1f40dca39a315109ba3b5ca33a1ac77ff  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
+# python 3.13.5  git 2.47.3
+# V1 + V2(control-arm.txt): harness/run_control.sh at harness/corpora.json's pins
+# D8 dir: /home/cam/repos_kindspec/research/experiments/D8-identity @ f088cd76fd138c8244fa1315332468e8771e7040
+run_control.sh exit=0
+CONTROL GATE: PASS -- zero prose-typed silent-wrongs under the hardened policy in every measuring arm
+19e0a9ec325dcf8d506bc3e4faf74bc395d3e5cdd40f8b534d921c9112b20aee  regenerated  results/control-arm.txt
+19e0a9ec325dcf8d506bc3e4faf74bc395d3e5cdd40f8b534d921c9112b20aee  committed    results/control-arm.txt
+BYTE-IDENTICAL: results/control-arm.txt
+V1+V2-control: PASS
+exit=0

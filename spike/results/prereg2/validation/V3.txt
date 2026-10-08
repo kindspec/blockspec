@@ -1,0 +1,606 @@
+# harness HEAD 03801bd4dffeb31d7fcf78daacc6888680a2957d  uncommitted or ignored files under spike/harness, PRE-REGISTRATION-2.md, ORACLE.md: 0
+# python 3.13.5  git 2.47.3
+
+== D8 pin: the mechanism is kindspec/research d51ce09, or nothing runs
+  ok    the --d8-dir in use matches d51ce09 file for file
+  ok    a D8 directory with one edited file is refused
+  ok    an empty D8 directory is refused
+
+== R: the copied slugs() and regions() match d51ce09 byte for byte
+  ok    three copied blocks are marked
+  ok    e9_headings.py lines 8-13 == the copy in p2/mech.py   [199 vs 199 bytes]
+  ok    e6_transclude.py lines 14-14 == the copy in p2/mech.py   [66 vs 66 bytes]
+  ok    e6_transclude.py lines 17-31 == the copy in p2/mech.py   [584 vs 584 bytes]
+
+== REPEAT (§5.2)
+  ok    oracle_limitation.py's case: TLLC alone says SURVIVED, target 3   [('SURVIVED', 3)]
+  ok    oracle_limitation.py's case comes out UNDECIDABLE-REPEAT under the rule
+  ok    ... and through evaluate(), with the NOTE lengthened past 20 characters   [UNDECIDABLE-REPEAT]
+  ok    the original 16-character NOTE is skipped as short, never graded
+  ok    two identical multi-line paragraphs, one edited: decided   [SURVIVED]
+  ok    ... and WRONG under the hardened policy   [{'status': 'EXACT', 'hit': 7, 'cls': 'WRONG', 'mechanism_target_text': 'The deploy job waits for the canary to report healthy,\nthen promotes the build to every region.'}]
+  ok    an edited block whose old wording survives verbatim elsewhere, with twinned neighbours: UNDECIDABLE-REPEAT (T holds a twin of k, not of t)   [(2, 'UNDECIDABLE-REPEAT')]
+  ok    empty input: no record, nothing decided
+
+== REPEAT and SPLIT leave known cases alone
+  ok    wrong-01 stays decided with its committed verdicts   [('SURVIVED', 'WRONG', 'WRONG')]
+  ok    single-leg-01 stays decided with its committed verdicts   [('SURVIVED', 'WRONG', 'WRONG')]
+  ok    clean-01 stays decided with its committed verdicts   [('SURVIVED', 'correct', 'correct')]
+
+== SPLIT (§5.2)
+  ok    a paragraph split in two comes out UNDECIDABLE-SPLIT   [UNDECIDABLE-SPLIT]
+  ok    the same paragraph edited in place stays decided   [SURVIVED]
+
+== F3: every input state and the result are well-formed
+  ok    well-formed before and after: wf
+  ok    an ill-formed before-state: not wf
+  ok    an ill-formed after-state: not wf
+  ok    an ill-formed leg A: not wf
+  ok    an ill-formed leg C: not wf
+  ok    an after-state of one block: not wf (blocks() must find 2)
+
+== R units: REPEAT and SPLIT over §5.2's R units
+  ok    R slug REPEAT: a section copied directly after itself is UNDECIDABLE-REPEAT   [UNDECIDABLE-REPEAT]
+  ok    ... and its name, now duplicated, gives #REF!
+  ok    R region REPEAT: the region's block copied directly after itself is UNDECIDABLE-REPEAT   [UNDECIDABLE-REPEAT]
+  ok    ... and a copy elsewhere, where context tells them apart, stays decided   [SURVIVED]
+  ok    R slug SPLIT: a section whose lines now fall under two headings is UNDECIDABLE-SPLIT   [UNDECIDABLE-SPLIT]
+  ok    ... and the same section edited in place stays decided   [('SURVIVED', {'status': 'RESOLVED', 'hit': [1, 2], 'cls': 'correct'})]
+
+== R slug REPEAT: t is the unit holding the §3 section's plurality block (review A1)
+  ok    A1: `## Alpha` -> `##  Alpha` (same slug, no twin anywhere) is decided, not UNDECIDABLE-REPEAT   [('SURVIVED', None)]
+  ok    A1: a section whose intro is rewritten, with no twin anywhere, is decided   [('SURVIVED', None)]
+  ok    A4: blocks before the first heading lie in no §5.2 R unit (the text names heading spans only)
+
+== Re-review: H4 and the survivors R1, R5, R6, P1, D1-D3, C6a-c, V4
+  ok    H4: p in no §5.2 unit, no twin of k: t is undefined, T is empty, so the verdict is decided (the re-review's a4case) -- and WRONG   [('SURVIVED', 'WRONG', None)]
+  ok    H4: p in no §5.2 unit with a twin of k among the units: UNDECIDABLE-REPEAT   [('UNDECIDABLE-REPEAT', 0, None)]
+  ok    R1: unit indices shifted by an inserted section: t is p's unit, and context decides   [('SURVIVED', 2)]
+  ok    R5/R6: the left neighbour's target has a twin in M, so it gives no context; t's own twin is in T: UNDECIDABLE-REPEAT   [(3, 'UNDECIDABLE-REPEAT')]
+  ok    P1: p is the section's last block, and R resolving to that section is correct   [(3, {'status': 'RESOLVED', 'hit': [1, 3], 'cls': 'correct'})]
+  ok    D1: a DELETED instance counts as decided   [{('k8s-en', 'Q', '', 'dl'): 'decided'}]
+  ok    D2: an R section deleted outright is DELETED, decided, and its #REF! is correct   [('DELETED', True, {'status': '#REF!', 'hit': None, 'cls': 'correct'})]
+  ok    D3: a Q resolution onto an oracle-DELETED target is WRONG, a refusal correct
+  ok    C6a: the committer day is the UTC day, also for a non-Z offset
+  ok    C6b: the window is 14 days from the commit's day: day 14 is in time, day 15 is late
+  ok    C6c: 'most recent' is by created_at, not by id   [claude-opus-5-9]
+  ok    V4: PLANT_EXPECT is Appendix B's, answer for answer, as parsed from PRE-REGISTRATION-2.md   [{'P-A': {'q1': 'yes', 'q2': 'yes', 'q3': 'no', 'q4': 'no', 'tier': 'A'}, 'P-B': {'q1': 'yes', 'q2': 'no', 'q3': 'no', 'q4': 'no', 'tier': 'B'}, 'P-C': {'q1': 'no', 'q2': 'no', 'q3': 'no', 'q4': 'no', 'tier': 'C'}}]
+
+== R: the resolver
+  ok    a heading renamed onto another section's name: decided   [SURVIVED]
+  ok    ... and WRONG   [{'status': 'RESOLVED', 'hit': [3, 4], 'cls': 'WRONG', 'mechanism_target_text': '## Alpha\n\nBeta owns the search service.'}]
+  ok    a name that disappears gives #REF!
+  ok    ... and is LOUD, not WRONG   [{'status': '#REF!', 'hit': None, 'cls': 'LOUD'}]
+  ok    a duplicated name gives #REF!
+  ok    a `#` line inside a code fence is not a name   [['notes', 'real-heading']]
+  ok    a section runs to the next heading of the same or a higher level, subsections included   [[('slug', 0, 6), ('slug', 1, 4), ('slug', 3, 4)]]
+  ok    a region declared twice gives #REF!
+  ok    region markers are tried before slugs   [('region', 1, 1)]
+  ok    empty input: no name, #REF!
+
+== Plants: harness/prereg2_plants.py
+  ok    prereg2_plants.py prints PLANTS: PASS and exits 0   [['PLANTS: PASS']]
+  ok    the P-C mutation (§7.3: base with only the window sentence edited) applies
+  ok    ... and prereg2_plants.py goes red on it   [['PLANTS: FAIL']]
+  ok    P-A: the harness's own records agree with Appendix B (TLLC 1, hardened 6)
+  ok    P-B: the harness's own records agree with Appendix B (TLLC 2, hardened 5)
+  ok    P-C: the harness's own records agree with Appendix B (TLLC 2, hardened 4)
+
+== E and S enumerators, and the scoring CLI
+  ok    E: a repository holding single-leg-01 as one commit scores (exit 0)   [exit 0]
+  ok    E: ... and yields that record: anchored block 1, decided, hardened WRONG   [{'cls': 'WRONG', 'hit': 7, 'mechanism_target_text': 'Before any release, confirm that the staging cluster has fully drained,\nthat no long-running import jobs remain queued on the primary worker pool,\nand that the nightly reconciliation has reported green.', 'status': 'EXACT'}]
+  ok    E: ... byte-identical to the committed record p2/fixtures/single-leg-01.E.record.json
+  ok    E: every invocation wrote a transcript   [['2026-10-08T132952Z-arm0-fixture.txt', '2026-10-08T132952Z-score-fixture.txt']]
+  ok    S5: a history base, a, base, a, base, a yields the pair (cs[0], cs[5]) and that record   [S5:0:doc.md]
+  ok    an empty repository exits non-zero (score)   [exit 2]
+  ok    an empty repository exits non-zero (arm0)   [exit 2]
+  ok    ... and the aborted runs still wrote transcripts with their exit status
+  ok    a repository with no selected .md exits non-zero   [exit 2]
+  ok    E population: the edit is in it, the add is excluded and counted   [{'commits:no_merges': 2, 'population': 1, 'excluded:add': 1, 'excluded:delete': 0, 'excluded:rename': 0, 'excluded:other_status': 0, 'path_not_selected': 0}]
+  ok    S population: a pair whose two blobs are equal is excluded and counted   [{'paths': 1, 'gap5:pairs': 1, 'gap5:excluded:blob_missing': 0, 'gap5:excluded:blobs_equal': 1, 'gap5:population': 0, 'gap25:pairs': 0, 'gap25:excluded:blob_missing': 0, 'gap25:excluded:blobs_equal': 0, 'gap25:population': 0}]
+  ok    S population: the pair whose blobs differ is in it   [{'paths': 1, 'gap5:pairs': 1, 'gap5:excluded:blob_missing': 0, 'gap5:excluded:blobs_equal': 0, 'gap5:population': 1, 'gap25:pairs': 0, 'gap25:excluded:blob_missing': 0, 'gap25:excluded:blobs_equal': 0, 'gap25:population': 0}]
+
+== Reproduction script (F9)
+  ok    repro regenerates single-leg-01's record byte for byte   [['F9 REPRODUCTION: BYTE-IDENTICAL  E:76b0c2815789f97065dbbc4836669c65df182969:doc.md|Q|1']]
+  ok    ... and reports DIFFERS, exit non-zero, against an altered record   [['F9 REPRODUCTION: DIFFERS  E:76b0c2815789f97065dbbc4836669c65df182969:doc.md|Q|1']]
+  ok    ... and exits non-zero on a record id that is not committed   [exit 2]
+
+== Non-UTF-8 blobs: excluded and counted as undecodable (LOG §15)
+  ok    the supplied find_merge_cases(), reading strictly, raises on such a merge (the defect the rule exists for)
+  ok    M: the arm does not crash (exit 0)   [exit 0]
+  ok    M: the case with the non-UTF-8 blob is excluded and counted undecodable   [1]
+  ok    M: valid cases are still evaluated, the undecodable one is not   [['M:1e64cd6c22c2ac3005f576640d851a8257d7bd93:ok.md']]
+  ok    M: the arm's output and transcript report it
+  ok    E: the arm does not crash (exit 0)   [exit 0]
+  ok    E: the case with the non-UTF-8 blob is excluded and counted undecodable   [1]
+  ok    E: valid cases are still evaluated, the undecodable one is not   [['E:a797850b3531f50509cf91ad826bfd64552d7639:doc.md', 'E:a797850b3531f50509cf91ad826bfd64552d7639:ok.md', 'E:e275ca033e32415960a204c433aa8e04db44c3b4:ok.md']]
+  ok    E: the arm's output and transcript report it
+
+== Corpora as bundles (§6.2)
+  ok    every arm's bundle has a committed sha256, and its recorded head is the arm's pin
+  ok    the seven arms and their pins are §6.2's
+  ok    bundle storage is recorded: the release tag and the durable local copy, which is the harness's default bundle directory   [/home/cam/kindspec-data/prereg2-bundles]
+  ok    a corpus is fetched fresh from its bundle and checked out at the pin
+  ok    an earlier pin in the bundle's history is reachable
+  ok    a pin absent from its bundle is NO VERDICT (the guard itself raises NoVerdict)   [NoVerdict: fx: pin 1111111111111111111111111111111111111111 is absent from its bundle]
+  ok    a bundle whose sha256 is not the committed one is refused by the sha256 guard   [RuntimeError: fx: bundle sha256 f6d67198422a538a2a1d20b70af280ef454334611cfdaf463da2671bc055ab24 != committed 0000000000000000000000000000000000000000000000000000000000000000]
+  ok    an existing work repository is never reused (the reuse guard itself refuses)   [RuntimeError: fx: /var/tmp/cam/prereg2-v3.vq7y4wtp/b-w1/fx exists; corpora are always fetched fresh]
+  ok    a missing bundle is refused   [FileNotFoundError: fx: bundle not found: /var/tmp/cam/prereg2-v3.vq7y4wtp/nowhere/fx.bundle]
+
+== M: the scoring CLI on a real merge
+  ok    M: a repository holding wrong-01 as a real merge scores (exit 0)   [exit 0]
+  ok    M: ... and yields its record: decided, WRONG under both policies, F2 clean   [('M:7d8b6e3e42caf400bd1b83607f6e5d48d4f90ecd:doc.md', 'WRONG')]
+  ok    M: repro regenerates it byte for byte   [['F9 REPRODUCTION: BYTE-IDENTICAL  M:7d8b6e3e42caf400bd1b83607f6e5d48d4f90ecd:doc.md|Q|1']]
+  ok    M: clean-01 as a real merge is stopped by Arm 0: its verbatim appendix twins the anchored paragraph   [exit 3]
+
+== Export CLI on scored fixtures
+  ok    export: wrong-01's merge record plus the three plants make four packets   [exit 0, 4 packets; status bound=False]
+  ok    export: the merge packet carries base, both legs and the after-file   [[['after', 'base', 'leg_a', 'leg_c'], ['after', 'before'], ['after', 'before'], ['after', 'before']]]
+  ok    export: it passes its validator
+  ok    export: the invocation wrote a transcript
+  ok    export: a second export over the first is refused   [exit 1]
+
+== M filter and the §6.3 rule
+  ok    a generated key in the file's own fence excludes it (yaml-fence)
+  ok    the same key inside an HTML comment does not (yaml-fence)
+  ok    ... where the `anywhere` rule would exclude it
+  ok    M filter: the fence-generated file is not in the verdict selection   [['none']]
+  ok    M filter: the HTML-comment file is   [['yaml-fence', 'none']]
+  ok    M filter: a path outside the pathspec is dropped and counted   [{'cases_in': 4, 'dropped:not_selected': 1, 'kept': 3, 'kept:yaml-fence': 2, 'kept:none': 3, 'kept:anywhere': 1}]
+  ok    empty input: no case in, none kept
+
+== site-policy subject rule (§6.2)
+  ok    'Merge pull request #1 from x/automated-sync': strict=False 25-case=False
+  ok    'repo-sync: update': strict=False 25-case=True
+  ok    'Update the privacy statement': strict=True 25-case=True
+  ok    'Repo-Sync of policies': strict=True 25-case=True
+  ok    'AUTOMATED-SYNC': strict=True 25-case=True
+  ok    m_filter reads the subject with git log -1 --format=%s and drops it from the strict set   [{'cases_in': 1, 'dropped:not_selected': 0, 'kept': 1, 'kept:yaml-fence': 1, 'kept:none': 1, 'kept:anywhere': 1, 'strict': 0, 'set25': 0, 'strict_expected': 21, 'strict_difference': -21}]
+  ok    A3/§6.2: the strict-set count is logged against the first registration's 21, with its difference   [{'cases_in': 1, 'dropped:not_selected': 0, 'kept': 1, 'kept:yaml-fence': 1, 'kept:none': 1, 'kept:anywhere': 1, 'strict': 0, 'set25': 0, 'strict_expected': 21, 'strict_difference': -21}]
+
+== Sampler (§6.3)
+  ok    removing an item that was not selected leaves the sample byte-identical
+  ok    ... and removing 2,000 unselected items does too
+  ok    removing a selected item does change it (the check can fail)
+  ok    the rank is sha256('prereg2:' + arm + ':' + key)
+  ok    another arm ranks differently (the salt includes the arm)
+  ok    empty input: an empty sample
+
+== Distinct count, decided rule, floor (§5.2, §6.6)
+  ok    a duplicate is counted once   [{('k8s-en', 'Q', '', 'u1'): 'decided'}]
+  ok    one decided instance plus one undecidable instance counts as decided   [{('k8s-en', 'Q', '', 'u2'): 'decided'}]
+  ok    undecidable plus UNKNOWN, none decided, is undecidable
+  ok    every instance UNKNOWN is UNKNOWN
+  ok    floor: 299 gives NO VERDICT
+  ok    floor: 300 gives NOT FOUND
+  ok    floor: undecidable over 10% gives NO VERDICT
+  ok    floor: undecidable at 10% passes
+  ok    aggregate: 299 distinct decided units gives NO VERDICT   [{'distinct': {'decided': 299, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 299, 'undecidable': 0, 'UNKNOWN': 0}, 'beside': {'none': {'distinct': {'decided': 299, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 299, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}, 'anywhere': {'distinct': {'decided': 299, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 299, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}}, 'exported_packets': 0, 'qualifying_distinct': 0, 'wrong_on_deleted': 0, 'verdict': 'NO VERDICT', 'reason': '299 distinct decided natural-language units < 300'}]
+  ok    aggregate: 300 distinct decided units gives NOT FOUND   [{'distinct': {'decided': 300, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 300, 'undecidable': 0, 'UNKNOWN': 0}, 'beside': {'none': {'distinct': {'decided': 300, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 300, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}, 'anywhere': {'distinct': {'decided': 300, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 300, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}}, 'exported_packets': 0, 'qualifying_distinct': 0, 'wrong_on_deleted': 0, 'verdict': 'NOT FOUND', 'reason': 'n=300, bound 3/n = 0.01000 at 95%'}]
+  ok    aggregate: 300 units over 350 instances counts 300
+  ok    an empty cell gives NO VERDICT, never zero   [{'distinct': {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'beside': {'none': {'distinct': {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}, 'anywhere': {'distinct': {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}}, 'exported_packets': 0, 'qualifying_distinct': 0, 'wrong_on_deleted': 0, 'verdict': 'NO VERDICT', 'reason': '0 distinct decided natural-language units < 300'}]
+  ok    an arm with no Arm 0 result gives NO VERDICT   [{'verdict': 'NO VERDICT', 'reason': 'no Arm 0 result'}]
+
+== Arm 0 bar (§6.5)
+  ok    a planted corpus over 10% stops its arm   [1/5]
+  ok    exactly 10% twinned passes   [1/10]
+  ok    blocks under 20 characters are counted as skipped
+  ok    A4: an arm with no natural-language content passes the bar -- §6.5 stops an arm only above 10%
+  ok    the CLI: the arm reports NO VERDICT (oracle reach) and does not run   [exit 3]
+  ok    B5/21: the bar is read off the yaml-fence rule: the generated file's twins stop `none`, and do not stop the arm   [(False, True)]
+  ok    Arm 0 prints the adjacent-run line labelled 'provisional reading (LOG §15)', with its rule
+  ok    ... and its JSON carries the label
+  ok    no aggregate or verdict path imports arm0 or reads the adjacent-run count
+
+== Export, its validator, and the sealed manifest (§7.3)
+  ok    seal draws a 32-byte nonce
+  ok    seal refuses to overwrite a sealed manifest, and the manifest is unchanged   [ExportError: /var/tmp/cam/prereg2-v3.vq7y4wtp/manifest.json exists; a manifest is sealed once]
+  ok    a manifest whose sha256 is not the committed one is refused   [ExportError: manifest sha256 1ebe8253ba8bd2194616e42c50b82bb50d13ccfab24ff66f70a33414c61626e5 != committed 0000000000000000000000000000000000000000000000000000000000000000]
+  ok    an export of no real record holds the three plants   [['44cbe7695356ef54', '711edf71892067fb', 'a66d4dde1f189dc4']]
+  ok    packet names are sha256(nonce + ':' + key)[:16], computed independently here
+  ok    a clean export passes the validator
+  ok    the validator rejects a packet that carries a count   [["44cbe7695356ef54: fields outside the allow-list: ['count']"]]
+  ok    ... and a string field outside the allow-list   [["44cbe7695356ef54: fields outside the allow-list: ['total']"]]
+  ok    ... and a number in an allowed field
+  ok    ... and a file outside the allow-list
+  ok    ... and LOG.md at the export root
+  ok    ... and passes again once restored
+  ok    an export with PROMPT.md and no packet fails   [['no packets']]
+  ok    empty input: an empty export directory fails
+  ok    validate-export exits non-zero on it   [exit 1]
+
+== Tiering-run wrapper (§7.3), with a stub agent
+  ok    without the sandbox, the stub CAN read the canary under /home/cam/repos_kindspec and ~/.claude/projects (so the probes can fail)   [['PROBE CAN-READ canary under /home/cam/repos_kindspec', 'PROBE CAN-READ ~/.claude/projects', 'PROBE CAN-READ ~/.claude', "PROBE CAN-READ the export's PROMPT.md", 'PROBE CANNOT-READ the bound credential file']]
+  ok    C6: tier-model refuses without an API key   [exit 2]
+  ok    C6: a listing whose Date is not the start day is refused   [exit 2]
+  ok    C6: tier-model fetches the listing itself and fixes the pinned model, recording the Date   [{'listing_date_header': 'Tue, 02 Jan 2001 12:00:00 GMT', 'listing_day': '2001-01-02', 'listing_sha256': 'e2f81ce0ce6b270577970f833128bb50e9f461809f41142293b76b5ea0e4bacc', 'model': 'claude-opus-5-5', 'scoring_commit': 'af2a293dd4a1c4812830a27508efd22c4349f97e', 'start_day': '2001-01-02', 'why': 'the pinned model is listed on the start day'}]
+  ok    C6: the model is chosen once   [exit 2]
+  ok    unlisted pinned model: the most recent claude-opus-* is chosen
+  ok    a run more than 14 days after the scoring-arm commit needs a reason   [exit 2]
+  ok    C6: tier-run refuses without a committed tier-model.json   [exit 2]
+  ok    a run keeps tiers.jsonl as the agent wrote it, in tier-work-1/   [exit 0]
+  ok    C2: the ledger records the run as started, then completed   [[{'at': '2026-10-08T13:29:53.164106+00:00', 'event': 'started', 'model': 'claude-opus-5-5', 'n': 1, 'work': 'tier-work-1'}, {'agent_exit': 0, 'event': 'completed', 'lines': 3, 'n': 1, 'sha256': '58ff421539d5e278e7ee4568688a6d36de238fdd6697a83883c65c51bec9518e'}]]
+  ok    ... the agent saw only PROMPT.md and packets/
+  ok    in the sandbox the stub cannot read the canary under /home/cam/repos_kindspec
+  ok    ... cannot read ~/.claude/projects, nor ~/.claude itself
+  ok    ... can read the export and the one bound credential file
+  ok    ... and the transcript records the bwrap invocation
+  ok    ... and the transcript logs the late reason and Appendix A as sent
+  ok    a second run after a first that wrote lines is refused (the first binds)   [exit 2]
+  ok    B5/20: a tiers.jsonl that exists before any recorded run is refused   [exit 2]
+  ok    C2: a run stopped by SIGTERM is in the ledger as started before the agent ran   [[{'at': '2026-10-08T13:29:53.387301+00:00', 'event': 'started', 'model': 'claude-opus-5-5', 'n': 1, 'work': 'tier-work-1'}, {'agent_exit': None, 'event': 'aborted', 'lines': 1, 'n': 1, 'sha256': 'a6cd58b6d7f38b486bb0c5b8914ada033fc137ec586f8b601c6393eac29759c1'}]]
+  ok    C2: ... its output is kept in tier-work-1/, not deleted
+  ok    C2: ... and, having written a line, it binds: a second run is refused (SIGTERM)   [exit 2]
+  ok    C2: a run stopped by SIGKILL is in the ledger as started before the agent ran   [[{'at': '2026-10-08T13:29:54.608144+00:00', 'event': 'started', 'model': 'claude-opus-5-5', 'n': 1, 'work': 'tier-work-1'}]]
+  ok    C2: ... its output is kept in tier-work-1/, not deleted
+  ok    C2: ... and, having written a line, it binds: a second run is refused (SIGKILL)   [exit 2]
+  ok    C2: a first run killed with zero lines allows one rerun, and no third   [0 2]
+  ok    B7: a symlink the agent leaves at tiers.jsonl is refused, and nothing is copied through it   [exit 2]
+  ok    a run before the start day is refused   [exit 2]
+  ok    an export that fails its validator is never sent   [exit 2]
+  ok    C6: the scoring-arm commit is the one commit that added results/prereg2/score/
+  ok    C6: ... and two such commits are refused   [TierRefused: 2 commits add results/prereg2/score in HEAD's history; the scoring-arm results must land as one commit]
+
+== Review C4: the manifest cannot carry its own expectations
+  ok    C4: a manifest whose plant expectations differ from Appendix B is refused, even with its own sha   [ExportError: the manifest's plants are not Appendix B's]
+  ok    C4: a manifest whose plant keys are not plant:P-x is refused   [ExportError: the manifest's plants are not Appendix B's]
+  ok    C4: void_reasons reads Appendix B's expectations, never the manifest's   [['P-C: tier B is on the wrong side of the B/C line (expected C)', 'P-C: q3=yes, expected no']]
+  ok    B2: an empty expected manifest sha256 is refused, not skipped (on an honest manifest)   [ExportError: the manifest's expected sha256 is required]
+  ok    B2: a missing expected manifest sha256 is refused   [ExportError: the manifest's expected sha256 is required]
+
+== Void rule (§7.3)
+  ok    correct plant answers: not void
+  ok    a plant crossing the B/C line (P-C answered B) voids
+  ok    a plant crossing the B/C line (P-B answered C) voids
+  ok    a plant whose q3 mismatches voids
+  ok    a plant whose q4 mismatches voids
+  ok    an untiered plant voids
+  ok    A<->B confusion (P-A answered B) does not void
+  ok    A<->B confusion (P-B answered A) does not void
+  ok    tier computation: q2 yes -> A, q1 yes -> B, else C, unplaceable -> UNPLACEABLE
+  ok    export eligibility: a decided hardened WRONG meeting F1-F5 is exported
+  ok    ... not if selected only under `none` (F1, §6.3)
+  ok    ... not a site-policy M case outside the strict set (F1)
+  ok    ... not a block of type code (F5)
+  ok    ... not one whose input states are ill-formed (F3)
+  ok    ... not an undecidable one
+  ok    a truncated tiers.jsonl makes the cell of an untiered real packet NO VERDICT   [1 exported packet(s) untiered]
+  ok    ... and with it tiered B and reproduced, the cell is FOUND
+  ok    ... a record that does not reproduce (F9) is not FOUND
+  ok    ... and with no reproduction result the aggregator refuses with MissingRepro   [MissingRepro: w1|Q|0: meets F1-F6 with no reproduction result]
+  ok    a void tiering makes a cell that exported a packet NO VERDICT
+  ok    ... and leaves a cell that exported none alone   [{'distinct': {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'beside': {'none': {'distinct': {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}, 'anywhere': {'distinct': {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 0, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}}, 'exported_packets': 0, 'qualifying_distinct': 0, 'wrong_on_deleted': 0, 'verdict': 'NO VERDICT', 'reason': '0 distinct decided natural-language units < 300'}]
+
+== Review B5: named checks for gates whose mutants survived
+  ok    B5/1: a unit selected only under `none` does not count toward the floor (299 -> NO VERDICT)   [{'decided': 299, 'undecidable': 0, 'UNKNOWN': 0}]
+  ok    B5/2: a non-natural-language unit does not count toward the floor   [{'decided': 299, 'undecidable': 0, 'UNKNOWN': 0}]
+  ok    B5/3: q4 yes (F6 fails) is not FOUND   [n=401, bound 3/n = 0.00748 at 95%]
+  ok    B5/4: q3 yes (F7 fails) is not FOUND   [n=401, bound 3/n = 0.00748 at 95%]
+  ok    B5/4: ... and counts as near miss (i)   [{'i': 1, 'ii': 0, 'iii': 0}]
+  ok    B5/25: an unplaceable real packet is not FOUND   [n=401, bound 3/n = 0.00748 at 95%]
+  ok    B5/25: ... and is not a near miss (i) either   [{'i': 0, 'ii': 0, 'iii': 0}]
+  ok    B5/6: Q NOT FOUND only in M cells does not satisfy §6.7's Q condition
+  ok    B5/9: list-item twins over 10% stop the arm   [1/3]
+  ok    B5/24: an arm that failed the Arm 0 bar is NO VERDICT (oracle reach), whatever its counts   [{'verdict': 'NO VERDICT', 'reason': 'oracle reach (Arm 0 bar)'}]
+  ok    B5/10: the first line for a packet binds, a later one is not a revision   [['line 2: p1 already answered; first line binds', 'line 3: malformed']]
+  ok    B5/11: `unplaceable` must be a boolean; "no" is malformed   [['line 2: p1 already answered; first line binds', 'line 3: malformed']]
+  ok    B5/12: an unplaceable P-A (expected A) is on the non-qualifying side of B/C: void   [['P-A: tier UNPLACEABLE is on the wrong side of the B/C line (expected A)']]
+  ok    A4: an unplaceable P-C (expected C), q3 and q4 as expected, does not void: UNPLACEABLE is not a finding, so it sits on C's side
+  ok    B5/15: a block TLLC calls UNKNOWN is not decided and has no class   [UNKNOWN]
+
+== Review A5, B1, A3: one representative per packet, F9 bound, beside-reporting
+  ok    A5: the two records share one packet
+  ok    A5: F9 is checked on the packet's one representative (smallest id across modes) for every cell that exported it
+  ok    A5: ... so both cells that hold it are FOUND
+  ok    B1: a reproduction result marked unbound is not F9   [n=401, bound 3/n = 0.00748 at 95%; F9: 1 record(s) do not reproduce: E:c1:doc.md|Q|0]
+  ok    B1: a reproduction whose two sha256s differ is not F9   [n=401, bound 3/n = 0.00748 at 95%; F9: 1 record(s) do not reproduce: E:c1:doc.md|Q|0]
+  ok    B1/B8: ... and the cell's reason names the record that does not reproduce   [n=401, bound 3/n = 0.00748 at 95%; F9: 1 record(s) do not reproduce: E:c1:doc.md|Q|0]
+  ok    B1: a reproduction that says ok but carries no hashes is not F9   [n=401, bound 3/n = 0.00748 at 95%; F9: 1 record(s) do not reproduce: E:c1:doc.md|Q|0]
+  ok    A3/F4: a find resting on an oracle DELETED target is reported as WRONG_on_deleted, labelled weaker   [{'distinct': {'decided': 401, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 401, 'undecidable': 0, 'UNKNOWN': 0}, 'beside': {'none': {'distinct': {'decided': 401, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 401, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 1}, 'anywhere': {'distinct': {'decided': 401, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 401, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 1}}, 'exported_packets': 1, 'qualifying_distinct': 1, 'wrong_on_deleted': 1, 'verdict': 'FOUND', 'reason': '1 qualifying distinct unit(s), of which 1 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4'}]
+  ok    A3/§6.3: the cell is also computed under `none` and `anywhere`, beside and with no verdict   [{'none': {'distinct': {'decided': 301, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 301, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}, 'anywhere': {'distinct': {'decided': 300, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 300, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}}]
+  ok    A3/§6.2: site-policy M reports the 25-case set beside the strict set, with no verdict   [{'none': {'distinct': {'decided': 5, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 5, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}, 'anywhere': {'distinct': {'decided': 5, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 5, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}, 'set25': {'distinct': {'decided': 10, 'undecidable': 0, 'UNKNOWN': 0}, 'instances': {'evaluated': 10, 'undecidable': 0, 'UNKNOWN': 0}, 'decided_hardened_misresolutions': 0}}]
+
+== Binding (C1, B6, C3, B3, B10, A7; re-review H1, H2, H3, M1, M2, M3)
+  ok    H2: seal writes VALIDATION holding the sealed manifest's sha256, to go in the validation commit   [st.json
+sha256: b677a613caa39d6c16840b57e163e1e141b808875142db52aec59cdfbfc6eea1, written to results/prereg2/VALIDATION
+commit VALIDATION in the validation commit; that commit is the one that adds it
+]
+  ok    H2: the validation commit is derived: the one commit that added VALIDATION   [('52e86499f661fe91697b72fbdc348bdec8de7e9b', 'b677a613caa39d6c16840b57e163e1e141b808875142db52aec59cdfbfc6eea1', [])]
+  ok    C1: a clean tree at the validation commit is bound
+  ok    C4: once VALIDATION exists, a second seal is refused   [refusing: results/prereg2/VALIDATION exists; the manifest is sealed once, before validation (review C4)
+]
+  ok    C1/B5-22: an edited harness file is not bound   [['harness/p2/aggregate.py: work-tree bytes differ from the validation commit', 'uncommitted or ignored files under the harness or the frozen documents:  M spike/harness/p2/aggregate.py']]
+  ok    B6: hidden with --assume-unchanged (git status shows nothing), the edit is still caught by hash-object   [('', ['harness/p2/aggregate.py: work-tree bytes differ from the validation commit'])]
+  ok    C1: an ignored file under the harness (a stray .pyc) is not bound, by both the ls-tree walk and `git status --ignored`   [['harness/__pycache__/x.cpython-313.pyc: not in the validation commit (untracked or ignored)', 'uncommitted or ignored files under the harness or the frozen documents: !! spike/harness/__pycache__/x.cpython-313.pyc']]
+  ok    C1: an untracked file under the harness is not bound   [['harness/extra.py: not in the validation commit (untracked or ignored)', 'uncommitted or ignored files under the harness or the frozen documents: ?? spike/harness/extra.py']]
+  ok    C1: ... and restored, it is bound again (the checks can pass)
+  ok    H2: a commit after the validation commit that edits the harness is not bound, though the work tree matches HEAD   [['a commit after the validation commit 52e86499f661 changes the harness, PRE-REGISTRATION-2.md or ORACLE.md: c0534e7cf101', 'harness/p2/aggregate.py: work-tree bytes differ from the validation commit']]
+  ok    H2: ... nor after it is reverted: no commit after the validation commit may touch the harness   [['a commit after the validation commit 52e86499f661 changes the harness, PRE-REGISTRATION-2.md or ORACLE.md: 2e8764480bc1']]
+  ok    H2: a VALIDATION changed since the validation commit added it is refused   [['results/prereg2/VALIDATION has changed since the validation commit added it']]
+  ok    H2: VALIDATION added by two commits is refused   [["2 commits in HEAD's history add results/prereg2/VALIDATION; the validation commit is the one that adds it"]]
+  ok    C4: with VALIDATION gone from the tree but in the history, seal is still refused   [refusing: results/prereg2/VALIDATION exists; the manifest is sealed once, before validation (review C4)
+]
+  ok    H2: ... and back on main the tree is bound again
+  ok    H2: a VALIDATION whose sha256 is not 64 hex characters is refused   [['results/prereg2/VALIDATION must hold exactly a 64-hex manifest_sha256']]
+  ok    C3: an uncommitted transcript under results/prereg2/ blocks every bound run   [['uncommitted under results/prereg2: ?? spike/results/prereg2/transcripts/2026-10-09T000000Z-arm0-cmspec.txt']]
+  ok    C3: a bound run that names --transcript-dir is refused, and its transcript is still written where bound transcripts go   [refusing: a bound run takes no --transcript-dir (§9, review C3)
+]
+  ok    H3: a refused arm0 leaves its transcript but does not use up the arm: arm0 rust-book is still allowed
+  ok    H3: once arm0 rust-book has executed (its marker), a second arm0 rust-book is refused   [['arm0 rust-book has already executed (results/prereg2/executed/arm0-rust-book.json); the first execution binds']]
+  ok    H3: ... but not another arm
+  ok    M3: git rm of the marker does not re-enable the arm: the history still has it   [['arm0 rust-book has already executed (results/prereg2/executed/arm0-rust-book.json); the first execution binds']]
+  ok    B4: export, once executed, may not run again   [['export has already executed (results/prereg2/executed/export.json); the first execution binds']]
+  ok    H1: abbreviated --fixture-r/--fixture-pi/--fixture-pa are not accepted   [usage: prereg2.py [-h]
+                  {seal,arm0,score,export,validate-export,repro,tier-model,tier-run,aggregate} ...
+prereg2.py: error: unrecognized arguments: --fixture-r /var/tmp/cam/prereg2-v3.vq7y4wtp/br --fixture-pi 52e86499f661fe91697b72fbdc348bdec8de7e9b --fixture-pa *.md
+]
+  ok    H1: a repeated --arm is refused   [refusing: --arm given more than once (re-review H1)
+]
+  ok    H1: no abbreviation at the top level either: --he is not --help   [usage: prereg2.py [-h]
+                  {seal,arm0,score,export,validate-export,repro,tier-model,tier-run,aggregate} ...
+prereg2.py: error: the following arguments are required: cmd
+]
+  ok    H1: an abbreviated --agent-c does not reach --agent-cmd   [usage: prereg2.py [-h]
+                  {seal,arm0,score,export,validate-export,repro,tier-model,tier-run,aggregate} ...
+prereg2.py: error: unrecognized arguments: --agent-c /bin/true
+]
+  ok    B3/C3: a bound score run that passes --sample-e is refused   [refusing: a bound run takes no --sample-e (§9, review C3)
+]
+  ok    B3/C3: a bound score run that passes --modes is refused   [refusing: a bound run takes no --modes (§9, review C3)
+]
+  ok    B3/C3: a bound score run that passes --out-dir is refused   [refusing: a bound run takes no --out-dir (§9, review C3)
+]
+  ok    B3: a bound aggregate that passes --fixture-ok is refused   [refusing: a bound run takes no --fixture-ok (§9, review C3)
+]
+  ok    M1: run without python3 -I, the harness refuses   [refusing: run the harness as `python3 -I -S -B harness/prereg2.py`: without -I and -S, PYTHONPATH, site packages and .pth files can replace its code (M1, M-d)
+]
+  ok    M1: run through its shebang, it is isolated and runs   [REJECT: /var/tmp/cam/prereg2-v3.vq7y4wtp/nothing: not a directory
+EXPORT VALIDATOR: FAIL
+]
+  ok    M2: --unbound without --fixture-repo never opens a real bundle   [refusing: an unbound run never opens a real bundle; use --fixture-repo (M2)
+]
+  ok    M1: the forged .pyc is loaded by a plain import (so the check can fail)   [FORGED PYC LOADED
+]
+  ok    M1: the harness never reads it: its verified D8 sources are compiled afresh   [elected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position
+ARM 0 x: passes the bar
+]
+  ok    B5-13: aggregate refuses an unbound Arm 0 result (without --fixture-ok)   [refusing: /var/tmp/cam/prereg2-v3.vq7y4wtp/ub-a0/k8s-en.json is not a bound output of this validation commit
+]
+  ok    H1: aggregate refuses an Arm 0 result not run at its arm's pin   [refusing: /var/tmp/cam/prereg2-v3.vq7y4wtp/ub-a0b/k8s-en.json was not run at k8s-en's pin from its committed bundle
+]
+  ok    H1: ... or not from its committed bundle   [refusing: /var/tmp/cam/prereg2-v3.vq7y4wtp/ub-a0b/k8s-en.json was not run at k8s-en's pin from its committed bundle
+]
+  ok    B5-14: aggregate refuses an unbound score result (without --fixture-ok)   [refusing: score/k8s-en is not a bound output of this validation commit
+]
+  ok    B3: aggregate refuses a score run that was not §6.5's (1,000 and 500, all four modes)   [refusing: score/k8s-en did not run §6.5's arms at 1,000 and 500
+]
+  ok    B10: a fixture run may not write under results/prereg2/ (a bound Arm 0 result cannot be overwritten)   [refusing: an unbound run may not write under /var/tmp/cam/prereg2-v3.vq7y4wtp/br/spike/results/prereg2 (--out-dir /var/tmp/cam/prereg2-v3.vq7y4wtp/br/spike/results/prereg2/arm0)
+]
+  ok    B10/A7: an unbound run that names no --transcript-dir is refused, and its transcript is written where bound ones go, to be committed   [refusing: an unbound run must name --transcript-dir outside results/prereg2/
+]
+  ok    the binding check over the copy is still clean at the end (the refusals above were committed)
+
+== Review C3, re-review H3: aggregate's transcript preflight
+  ok    C3/H3: one executed bound transcript per arm0, score and export passes, and a refused run beside it does not count
+  ok    N26: an arm whose only executed arm0 transcript is unbound is refused   [['arm0-k8s-en: 1 executed transcripts, want one bound']]
+  ok    C3: a second executed arm0 transcript for an arm, even unbound, is refused   [['arm0-k8s-en: 2 executed transcripts, want one bound']]
+  ok    C3b: a second executed export transcript is refused   [['export: 2 executed transcripts, want one bound']]
+  ok    C3: a scored arm with no score transcript is refused
+  ok    H3: an executed transcript with no execution marker is refused
+  ok    C3: a started tiering run with no transcript is refused
+  ok    C3: two tiering runs where the first wrote lines are refused   [['two tiering runs, though the first wrote lines']]
+  ok    C3: two tiering runs where the first wrote none pass
+  ok    C2: then the second run's tiers bind   [(2, '/var/tmp/cam/prereg2-v3.vq7y4wtp/pf/spike/results/prereg2/tier-work-2/tiers.jsonl')]
+
+== Round 5: bound runs end to end on a fixture arm (H-1, N11, N14, N15)
+  ok    N14: an arm0 whose bundle cannot be opened writes no marker, in the work tree or the git dir   [ine 103, in open_corpus
+    raise FileNotFoundError(f"{arm}: bundle not found: {bpath}")
+FileNotFoundError: rust-book: bundle not found: /var/tmp/cam/prereg2-v3.vq7y4wtp/bf-nobundles/rust-book.bundle
+]
+  ok    MEDIUM-1: a gap declared before Arm 0 stops arm0 too (§9: it stops the work)   [refusing: gap G1 was declared at fa5e657ae623, not after the Arm 0 commit: §9 says a gap found before Arm 0 stops the work
+]
+  ok    H3: ... so the next arm0 runs, bound, and executes   [type, content) of 20 characters or more counts as an adjacent-run twin if, in at least one selected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position
+ARM 0 rust-book: passes the bar
+]
+  ok    M-a: its marker is in the work tree and in the common git directory
+  ok    H3: a second arm0 rust-book is refused   [lready executed (results/prereg2/executed/arm0-rust-book.json); the first execution binds
+refusing: this run would not be bound; use --fixture-repo or --unbound to run it for testing, with no verdict
+]
+  ok    H-1: a score whose bundle cannot be opened leaves no score/<arm>/ and no marker   [ine 103, in open_corpus
+    raise FileNotFoundError(f"{arm}: bundle not found: {bpath}")
+FileNotFoundError: rust-book: bundle not found: /var/tmp/cam/prereg2-v3.vq7y4wtp/bf-nobundles/rust-book.bundle
+]
+  ok    P2: score's bound preflight refuses a malformed gaps.json before scoring   [refusing: results/prereg2/gaps.json at 6beed02d59cf is not {"gaps": [...]}
+]
+  ok    H-1: ... so the next score runs and executes   [evaluated, undecodable 0 (excluded, LOG §15)
+   {"evaluated_instances": 0, "filter": {"cases_in": 0, "dropped:not_selected": 0, "kept": 0, "kept:anywhere": 0, "kept:none": 0, "kept:yaml-fence": 0}, "find_merge_cases": {}, "merges": {"clean": 0, "not_clean": 0}, "not_evaluated": 0, "undecodable": 0}
+]
+  ok    N11: a second score rust-book is refused by its marker   [ready executed (results/prereg2/executed/score-rust-book.json); the first execution binds
+refusing: this run would not be bound; use --fixture-repo or --unbound to run it for testing, with no verdict
+]
+  ok    MEDIUM-1: score's gap preflight does not take the score PR's per-arm commits for scoring-arm commits   [refusing: no Arm 0 result for cncf-toc at /var/tmp/cam/prereg2-v3.vq7y4wtp/bf/spike/results/prereg2/arm0/cncf-toc.json; Arm 0 runs first
+]
+  ok    P4: export's bound preflight refuses a malformed gaps.json   [refusing: results/prereg2/gaps.json at 5d0b6e201dfc is not {"gaps": [...]}
+]
+  ok    N15: export runs bound and writes its marker   [exported 3 packets to /var/tmp/cam/prereg2-v3.vq7y4wtp/bf/spike/results/prereg2/export
+export manifest (sha256 of each file): /var/tmp/cam/prereg2-v3.vq7y4wtp/bf/spike/results/prereg2/export-manifest.txt
+packet count: 3
+]
+  ok    N15: a second export is refused   [rt has already executed (results/prereg2/executed/export.json); the first execution binds
+refusing: this run would not be bound; use --fixture-repo or --unbound to run it for testing, with no verdict
+]
+  ok    G11: the bound CLI aggregate reads gaps.json: a gap between Arm 0 and scoring makes its cell NO VERDICT   [(0, " 0 result\n  site-policy   S5   R  NO VERDICT  no Arm 0 result\nTIERING VOID: P-A: untiered; P-B: untiered; P-C: untiered\nnear misses (distinct units): {'i': 0, 'ii': 0, 'iii': 0}\nOVERALL: INCONCLUSIVE\n", {'reason': '§9 gap: gap G1 (LOG §21): the enumerator cannot follow renames', 'verdict': 'NO VERDICT', 'without_the_gap': {'reason': '1 distinct decided natural-language units < 300', 'verdict': 'NO VERDICT'}})]
+  ok    MEDIUM-1: a malformed gaps.json after the scoring-arm commit does not stop aggregate; it is listed   [esult
+  site-policy   S25  R  NO VERDICT  no Arm 0 result
+  site-policy   S5   Q  NO VERDICT  no Arm 0 result
+  site-policy   S5   R  NO VERDICT  no Arm 0 result
+TIERING VOID: P-A: untiered; P-B: untiered; P-C: untiered
+near misses (distinct units): {'i': 0, 'ii': 0, 'iii': 0}
+OVERALL: INCONCLUSIVE
+]
+  ok    P5: tier-model's preflight is final: a malformed gaps.json after the scoring-arm commit does not block it (it stops later, at the missing API key)   [results/prereg2/gaps.json at 35f4de332e33 is malformed; it comes at or after the scoring-arm commit, so per §9 it alters no cell
+refusing: ANTHROPIC_API_KEY is not set; the Models API needs it
+]
+  ok    N18: a bound tier-run that names --agent-cmd is refused   [refusing: a bound run takes no --agent-cmd (§9, review C3)
+]
+  ok    N19: a bound run that names --fixture-pin is refused   [refusing: a bound run takes no --fixture-pin (§9, review C3)
+]
+  ok    N16: a repeated --opt=value is refused   [refusing: --arm given more than once (re-review H1)
+]
+  ok    N17: an option that reads unbound but parses bound (--fixture-repo=) is refused   [refusing: the options parse differently from how they read (H1)
+]
+
+== Round 5: a marker survives every escape (M-a)
+  ok    M-a: before any escape test, arm0 cmspec is allowed
+  ok    N10: an uncommitted work-tree marker (with no git-dir copy) blocks the arm   [['uncommitted under results/prereg2: ?? spike/results/prereg2/executed/arm0-cmspec.json', 'arm0 cmspec has already executed (results/prereg2/executed/arm0-cmspec.json); the first execution binds']]
+  ok    N9: a marker committed only on another branch blocks the arm (git log --all)   [['arm0 cncf-toc has already executed (results/prereg2/executed/arm0-cncf-toc.json); the first execution binds']]
+  ok    M-a: ... and still after that branch is deleted (git log --reflog)   [['arm0 cncf-toc has already executed (results/prereg2/executed/arm0-cncf-toc.json); the first execution binds']]
+  ok    M-a: an uncommitted marker removed with rm and git clean still blocks the arm (git-dir copy)   [['arm0 site-policy has already executed (results/prereg2/executed/arm0-site-policy.json); the first execution binds']]
+  ok    M-a: a second git worktree cannot run the arm again   [['arm0 site-policy has already executed (results/prereg2/executed/arm0-site-policy.json); the first execution binds']]
+  ok    M-a: ... though it may run an arm that has not executed
+
+== Round 5: the derivation's history (M-c)
+  ok    M-c: VALIDATION added on both sides of a merge counts twice (--full-history), and is refused   [["2 commits in HEAD's history add results/prereg2/VALIDATION; the validation commit is the one that adds it"]]
+  ok    M-c: a shallow clone is refused   [['the repository is shallow; the validation commit cannot be derived from a cut history']]
+  ok    M-c: a history rewritten by git replace is refused   [['replace refs rewrite this history: refs/replace/15bef0993709290b62930c0fcfb20daf48056d0f']]
+  ok    M-c: a history rewritten by info/grafts is refused   [['info/grafts rewrites this history']]
+  ok    M-c: GIT_DIR and GIT_WORK_TREE in the environment do not redirect the binding check   [({'head': '15bef0993709290b62930c0fcfb20daf48056d0f', 'validation_commit': '8b0c22edd0f1cb3d8e1152206b10b20d42a8dda9', 'manifest_sha256': 'c5385a0dc3632ddc5e8ad567e1dc678f3798ac0082669e2ed501dc9427839e36', 'bound': True, 'reasons': []}, [])]
+
+== Round 5: smaller survivors (N3, N6, N7, N13, N21-N28, N33)
+  ok    N3: a VALIDATION with any field besides manifest_sha256 is refused   [['results/prereg2/VALIDATION must hold exactly a 64-hex manifest_sha256']]
+  ok    N6: an edited ORACLE.md is not bound   [['ORACLE.md: work-tree bytes differ from the validation commit', 'uncommitted or ignored files under the harness or the frozen documents:  M spike/ORACLE.md']]
+  ok    N7: a harness file replaced by a symlink to identical bytes, hidden with --assume-unchanged, is not bound   [['harness/p2/tiers.py: missing or not a regular file']]
+  ok    N13: a transcript's .<n> suffix is not part of its tag
+  ok    N22: a bound input from another validation commit is refused   [SystemExit: refusing: x is not a bound output of this validation commit]
+  ok    N23: a reproduction from another validation commit is not bound
+  ok    N24: score refuses an Arm 0 result of another validation commit
+  ok    N21: a no-verdict input that names a wrong pin is refused   [SystemExit: refusing: x was not run at k8s-en's pin from its committed bundle]
+  ok    N27: with t undefined, a twin of k in M's first unit makes the verdict undecidable
+  ok    N28: p in no unit is not taken as the first unit: with a twin of that unit elsewhere, still decided   [('SURVIVED', 0)]
+  ok    N33: tier-run refuses a tier-model.json chosen for another scoring-arm commit   [TierRefused: tier-model.json was chosen for another scoring-arm commit]
+  ok    N25: a score that did not request all four modes is refused   [SystemExit: refusing: score/k8s-en did not run §6.5's arms at 1,000 and 500]
+
+== Round 5: module loading (M-d)
+  ok    M-d: after loading --d8-dir, a module planted there does not shadow the standard library   [('/usr/lib/python3.13/colorsys.py\n', '')]
+  ok    M-d: an untracked p2/binding/ package that shadows binding.py is refused   [refusing: p2.binding was loaded from /var/tmp/cam/prereg2-v3.vq7y4wtp/shadow/spike/harness/p2/binding/__init__.py, not p2/binding.py (M-d)
+]
+  ok    M-d: run without -S (so a .pth file could run), the harness refuses   [refusing: run the harness as `python3 -I -S -B harness/prereg2.py`: without -I and -S, PYTHONPATH, site packages and .pth files can replace its code (M1, M-d)
+]
+
+== §9's gap rule, implemented (M-e)
+  ok    M-e: a declared gap makes its cell NO VERDICT, whatever it would have been, and names the gap   [{'verdict': 'NO VERDICT', 'reason': '§9 gap: gap G1 (LOG §21): the E enumerator cannot follow renames', 'without_the_gap': {'verdict': 'NO VERDICT', 'reason': '1 exported packet(s) untiered'}}]
+  ok    M-e: ... and leaves other cells alone
+  ok    M-e: a gap declared between the Arm 0 commit and the scoring-arm commit makes its cells NO VERDICT   [{('k8s-en', 'E', 'Q'): 'gap G1 (LOG §21): the enumerator cannot follow renames'}]
+  ok    M-e: a gap declared before the Arm 0 commit is refused: per §9 it stops the work   [GapError: gap G1 was declared at b465baf21048, not after the Arm 0 commit: §9 says a gap found before Arm 0 stops the work]
+  ok    M-e: a gap declared after the scoring-arm commit alters no cell, and is listed   [(None, {}, ['gap G1 (LOG §21) as it reads at a9f7a0e0f9a0, at or after the scoring-arm commit: per §9 it alters no cell'])]
+  ok    M-e: a declared gap may not be edited afterwards   [GapError: gap G1 changed at 7efc6277979c; a declared gap is never edited]
+  ok    M-e: a gap with no LOG entry is refused   [GapError: gap G1: LOG.md at cfb92c1f5baf has no entry §99]
+  ok    M-e: a gap whose red test lies outside results/prereg2/gaps/ is refused   [GapError: gap G1: red_test must lie under results/prereg2/gaps/]
+  ok    M-e: a gap that names no real cell is refused   [GapError: gap G1: ['k8s-en', 'X', 'Q'] is not a cell [arm, E|S5|S25|M, Q|R]]
+  ok    M-e: a gap with an extra key is refused   [GapError: a gap entry must have exactly the keys ['cells', 'id', 'log', 'red_test', 'why']: {'id': 'G1', 'log': '§21', 'red_test': 'results/prereg2/gaps/G1/red.txt', 'cells': [['k8s-en', 'E', 'Q']], 'why': 'the enumerator cannot follow renames', 'extra': 1}]
+  ok    M-e: a gap whose red test is not committed is refused   [GapError: gap G1: its red test results/prereg2/gaps/G1/red.txt is not committed at 64f25a4a5dcf]
+  ok    M-e: no gaps.json, no gap
+
+== Round 6: §9's gap rule at its boundaries (G1-G12, MEDIUM-1)
+  ok    G1: a gap declared in the Arm 0 commit itself is before Arm 0, and stops the work   [GapError: gap G1 was declared at 7a045ef93abd, not after the Arm 0 commit: §9 says a gap found before Arm 0 stops the work]
+  ok    G2: a gap declared in the scoring-arm commit itself alters no cell, and is listed   [(None, {}, ['gap G1 (LOG §21) as it reads at 286f99c2832c was declared after scoring ran: it alters no cell'])]
+  ok    G3: a gap on a side branch merged after the scoring-arm commit is outside its history: alters no cell, listed, never refused   [(None, {}, ['gap G1 (LOG §21) as it reads at 2a370f92056e, at or after the scoring-arm commit: per §9 it alters no cell'])]
+  ok    G4: a gap withdrawn before scoring is refused   [GapError: gap(s) ['G1'] removed at 1287cb5e7cf5; a declared gap is never withdrawn]
+  ok    G10: a gaps.json deleted before scoring is a withdrawal, and is refused   [GapError: gap(s) ['G1'] removed at 44fc47e3af98; a declared gap is never withdrawn]
+  ok    G5: two gaps with one id are refused   [GapError: gap G1 declared twice at b4a7c990e9d5]
+  ok    G6: a red test committed only after the gap is refused: it is checked at the gap's commit   [GapError: gap G1: its red test results/prereg2/gaps/G1/red.txt is not committed at 99e488c4183f]
+  ok    G7: a LOG entry written only after the gap is refused: it is checked at the gap's commit   [GapError: gap G1: LOG.md at bd7a33b9320e has no entry §21]
+  ok    G8: a red test path that climbs out with .. is refused   [GapError: gap G1: red_test must lie under results/prereg2/gaps/]
+  ok    G12: a gap whose why changes before scoring is refused (every field is fixed)   [GapError: gap G1 changed at 83dd8cf61584; a declared gap is never edited]
+  ok    G9: an identical gap first committed on a branch before Arm 0 is found (--full-history), and stops the work   [GapError: gap G1 was declared at d214d758b209, not after the Arm 0 commit: §9 says a gap found before Arm 0 stops the work]
+  ok    MEDIUM-1: after the scoring-arm commit, an edit, a missing LOG entry and malformed JSON are listed, never refused, and the gap declared before scoring still holds   [(None, {('k8s-en', 'E', 'Q'): 'gap G1 (LOG §21): the enumerator cannot follow renames'}, ['gap G1 (LOG §21) as it reads at 711f505f1a57, at or after the scoring-arm commit: per §9 it alters no cell', 'gap G2 (LOG §99) as it reads at ce3a835939a9, at or after the scoring-arm commit: per §9 it alters no cell', 'results/prereg2/gaps.json at d9c74cbbaf98 is malformed; it comes at or after the scoring-arm commit, so per §9 it alters no cell'])]
+  ok    MEDIUM-1: the bound preflight (arm0, score, export, tier-run) refuses a gap declared before Arm 0   [SystemExit: refusing: gap G1 was declared at a04d67774592, not after the Arm 0 commit: §9 says a gap found before Arm 0 stops the work]
+  ok    MEDIUM-1: ... and passes one declared after Arm 0, before any scoring commit exists
+  ok    MEDIUM-1: an unbound run reads no gaps
+
+== Round 6: the validation commit adds VALIDATION only (MEDIUM-3), and K4, H2, H3, D3
+  ok    MEDIUM-3: a validation commit that also changes the harness is refused   [['the validation commit e3456af8a64e itself changes the harness, PRE-REGISTRATION-2.md or ORACLE.md; it may add VALIDATION only']]
+  ok    K4: an existing marker is never overwritten   [FileExistsError: [Errno 17] File exists: '/var/tmp/cam/prereg2-v3.vq7y4wtp/k4repo/spike/results/prereg2/executed/arm0-cmspec.json']
+  ok    H2/H3: binding git runs with no user or system config and no replace objects   [/dev/null]
+  ok    H4: score/ added on both sides of a merge is two scoring commits (--full-history), refused   [TierRefused: 2 commits add results/prereg2/score in HEAD's history; the scoring-arm results must land as one commit]
+  ok    H5: the scoring-arm commit is not derived from a history rewritten by git replace   [TierRefused: replace refs rewrite this history: refs/replace/531c741700b489065a055ff683b285187c735fe0]
+  ok    H6: a harness edit on a merged side branch, reverted there, is still a later commit that touches the harness (--full-history)   [['a commit after the validation commit d5fdb83d97e1 changes the harness, PRE-REGISTRATION-2.md or ORACLE.md: 8c2f4be35260']]
+  ok    D3: an untracked prereg2_plants/ package that shadows prereg2_plants.py is refused   [refusing: prereg2_plants was loaded from /var/tmp/cam/prereg2-v3.vq7y4wtp/plantshadow/spike/harness/prereg2_plants/__init__.py, not prereg2_plants.py (M-d)
+]
+
+== Round 7: a gap chosen after seeing results (LOG §22)
+  ok    gap_pr_after_score_run: a gap merged after the score runs, before the scoring-arm commit, alters no cell and is listed as declared after scoring ran   [(None, {}, ['gap G1 (LOG §21) as it reads at 40086a768254 was declared after scoring ran: it alters no cell'])]
+  ok    ... and a malformed gaps.json merged then is listed, never refused   [(None, {}, ['results/prereg2/gaps.json at 7acc2b6b9eba is malformed; it was declared after scoring ran, so it alters no cell'])]
+  ok    ... while a gap in the history of every score run's head still makes its cell NO VERDICT   [(None, {('k8s-en', 'E', 'Q'): 'gap G1 (LOG §21): the enumerator cannot follow renames'}, [])]
+  ok    ... and one that only some score runs saw alters no cell (every head must descend from it)   [(None, {}, ['gap G1 (LOG §21) as it reads at 84fa7ef4a8a6 was declared after scoring ran: it alters no cell'])]
+  ok    a gap every score run saw, but outside the scoring-arm commit's history, still alters no cell   [(None, {}, ['gap G1 (LOG §21) as it reads at 2a370f92056e, at or after the scoring-arm commit: per §9 it alters no cell'])]
+  ok    a score run's binding.head that is not in the repository is refused, not read as either side   [GapError: cannot date results/prereg2/gaps.json at 393cb6218aad against the score runs: their binding.head ffffffffffff is not in this repository; fetch the score PR's head]
+  ok    a score output with no binding.head is refused   [GapError: score/k8s-en/status.json at cc5adfe237e3 has no binding.head]
+
+== Round 7: the validation commit adds VALIDATION only, whatever it touches
+  ok    a validation commit that also changes ORACLE.md is refused   [['the validation commit a71233ccc979 itself changes the harness, PRE-REGISTRATION-2.md or ORACLE.md; it may add VALIDATION only']]
+  ok    prereg2_reverify.sh fails a validation commit that changes ORACLE.md   [ON never changed
+PASS  every output that names a validation commit names a71233ccc979778b2f5329cab633d107c0d721dd
+PASS  no Arm 0 commit yet
+PASS  no scoring-arm commit yet
+PASS  no tier-model.json yet
+gaps.json versions (commit, committer date), to read against the commits above:
+reverify: 1 failed
+]
+  ok    a validation commit that also changes PRE-REGISTRATION-2.md is refused   [['the validation commit 900f6497f45b itself changes the harness, PRE-REGISTRATION-2.md or ORACLE.md; it may add VALIDATION only']]
+  ok    prereg2_reverify.sh fails a validation commit that changes PRE-REGISTRATION-2.md   [ON never changed
+PASS  every output that names a validation commit names 900f6497f45b3e554503c2738e6c884eaae80ff9
+PASS  no Arm 0 commit yet
+PASS  no scoring-arm commit yet
+PASS  no tier-model.json yet
+gaps.json versions (commit, committer date), to read against the commits above:
+reverify: 1 failed
+]
+  ok    a root validation commit (no parent) is refused   [['the validation commit cd97a51fb896 itself changes the harness, PRE-REGISTRATION-2.md or ORACLE.md; it may add VALIDATION only']]
+  ok    prereg2_reverify.sh fails a root validation commit   [ON never changed
+PASS  every output that names a validation commit names cd97a51fb89631505b5e28fc4abe9d418630f214
+PASS  no Arm 0 commit yet
+PASS  no scoring-arm commit yet
+PASS  no tier-model.json yet
+gaps.json versions (commit, committer date), to read against the commits above:
+reverify: 1 failed
+]
+
+== Round 7: the fresh-clone review step is a committed script
+  ok    README's review step runs harness/prereg2_reverify.sh
+  ok    prereg2_reverify.sh passes a sound validation commit   [DATION never changed
+PASS  every output that names a validation commit names cff528bf4bd5fe8ed047281a3e2ed7aed1641eea
+PASS  no Arm 0 commit yet
+PASS  no scoring-arm commit yet
+PASS  no tier-model.json yet
+gaps.json versions (commit, committer date), to read against the commits above:
+reverify: PASS
+]
+  ok    prereg2_reverify.sh passes a tier-model.json that recorded the scoring-arm commit   [5fe8ed047281a3e2ed7aed1641eea
+PASS  Arm 0 commit c4fa92a2a95321bca4a44eba55a5c353792b0298
+PASS  scoring-arm commit a4bb38de4655d08508ce5312073dba7d065ca438
+PASS  tier-model recorded the scoring-arm commit
+gaps.json versions (commit, committer date), to read against the commits above:
+reverify: PASS
+]
+  ok    prereg2_reverify.sh fails a tier-model.json that recorded another commit   [2a2a95321bca4a44eba55a5c353792b0298
+PASS  scoring-arm commit a4bb38de4655d08508ce5312073dba7d065ca438
+FAIL  tier-model recorded eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, not the one scoring-arm commit
+gaps.json versions (commit, committer date), to read against the commits above:
+reverify: 1 failed
+]
+
+== Aggregator: empty input
+  ok    empty input raises, no verdict
+  ok    the aggregate CLI on empty input exits non-zero with no verdict, for that reason   [exit 2]
+
+== Overall verdict (§6.7)
+  ok    Q in both and R in one: NOT FOUND
+  ok    Q in both, no R: NOT FOUND (Q only)
+  ok    Q in one only: INCONCLUSIVE
+  ok    any FOUND cell: FOUND
+  ok    V3 itself wrote nothing under this repository's results/prereg2/
+
+402 checks, 0 failed
+V3: PASS
+exit=0

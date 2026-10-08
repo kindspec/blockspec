@@ -1,0 +1,33 @@
+# round-6 reviewer script scripts/mutants_r6.py, run at a11f965cbeb9cbae1f70bfda1461a39c2b04d5be with "-I -S -B" in place of "-I -B"; otherwise unchanged. gapflow's "want 0" is its generic expectation: the BAD lines under pre_arm0, between_nocell and val_touches_harness are the intended refusals (§9 stops the work; a malformed gap inside the window; MEDIUM-3)
+baseline: ['382 checks, 0 failed', 'V3: PASS'] rc 0
+KILLED   G1 gap in the Arm 0 commit itself treated as between [cd6c6bf1dbea8643 -> 63e2216fce5bde81] 1 red; first: G1: a gap declared in the Arm 0 commit itself is before Arm 0, and stops the work
+BROKEN   G2 gap in the scoring-arm commit itself alters cells: pattern found 0 times, file unchanged (cd6c6bf1dbea8643)
+BROKEN   G3 side-branch gap (neither before nor after) applied: pattern found 0 times, file unchanged (cd6c6bf1dbea8643)
+KILLED   G4 a gap may be withdrawn [cd6c6bf1dbea8643 -> 1f38b0ab43d9fd5d] 2 red; first: G4: a gap withdrawn before scoring is refused
+KILLED   G5 duplicate gap ids accepted [cd6c6bf1dbea8643 -> 5b0d1958f942d2cb] 1 red; first: G5: two gaps with one id are refused   [GapError: gap G1 changed at b4a7c990e9d5; a declared gap is never edited]
+KILLED   G6 red test checked at HEAD, not at C [cd6c6bf1dbea8643 -> 068cfefd70804e44] 1 red; first: G6: a red test committed only after the gap is refused: it is checked at the gap's commit
+KILLED   G7 LOG entry checked at HEAD, not at C [cd6c6bf1dbea8643 -> caedb4d167acbadf] 1 red; first: G7: a LOG entry written only after the gap is refused: it is checked at the gap's commit
+KILLED   G8 red_test may climb out with .. [cd6c6bf1dbea8643 -> cd1bf0510864b3df] 1 red; first: G8: a red test path that climbs out with .. is refused   [GapError: gap G1: its red test results/prereg2/gaps/../../harness/x.py is not comm
+KILLED   G9 gaps.json versions walked without --full-history [cd6c6bf1dbea8643 -> 8b3c7948eccc95d5] 1 red; first: G9: an identical gap first committed on a branch before Arm 0 is found (--full-history), and stops the work   [GapError: gap G1: LOG.md at f
+KILLED   G10 a deleted gaps.json reads as empty and is not withdrawal [cd6c6bf1dbea8643 -> 60947eb9955ce1c7] 1 red; first: G10: a gaps.json deleted before scoring is a withdrawal, and is refused
+BROKEN   G11 the CLI aggregate never loads gaps: pattern found 0 times, file unchanged (2b63d1056993fd6d)
+KILLED   G12 gap 'why' may change after declaration (compare ids only) [cd6c6bf1dbea8643 -> 6178090f71ce466b] 1 red; first: G12: a gap whose why changes before scoring is refused (every field is fixed)
+KILLED   K1 no common-dir copy written [edf8b74d64847afb -> db5c99c7d15b04d4] 3 red; first: M-a: its marker is in the work tree and in the common git directory
+KILLED   K2 common-dir copy not consulted [edf8b74d64847afb -> 97f68bc8d9b2b6c4] 2 red; first: M-a: an uncommitted marker removed with rm and git clean still blocks the arm (git-dir copy)
+KILLED   K3 marker history walk without --reflog [edf8b74d64847afb -> 91112c17fc4fc401] 1 red; first: M-a: ... and still after that branch is deleted (git log --reflog)
+KILLED   K4 an existing marker is overwritten [edf8b74d64847afb -> 0aa9790852a3b9e5] 1 red; first: K4: an existing marker is never overwritten
+KILLED   K5 common dir taken as the work tree's .git, not --git-common-dir [edf8b74d64847afb -> 3392f4080e50d5e7] 1 red; first: M-a: a second git worktree cannot run the arm again
+KILLED   D1 no module-origin check at start [2b63d1056993fd6d -> 5324d4066f6409e9] 2 red; first: M-d: an untracked p2/binding/ package that shadows binding.py is refused   [REJECT: /var/tmp/cam/prereg2-v3.5hi14_4o/nothing: not a director
+SURVIVED D2 no module-origin check after the D8 load [2b63d1056993fd6d -> 6f582bba67ec9d86] V3 green
+KILLED   D3 prereg2_plants not origin-checked [2b63d1056993fd6d -> c10f15ec21373dc3] 1 red; first: D3: an untracked prereg2_plants/ package that shadows prereg2_plants.py is refused   [REJECT: /var/tmp/cam/prereg2-v3.nph_edo5/nothing: not 
+KILLED   D4 --d8-dir left on sys.path after the D8 load [265b1aa215d541b9 -> 431a7252ff4054e7] 1 red; first: M-d: after loading --d8-dir, a module planted there does not shadow the standard library   [('/var/tmp/cam/prereg2-v3.9p7xd9o6/d8-planted/co
+SURVIVED D5 stdlib not pre-imported before the D8 load [265b1aa215d541b9 -> f8a48657bcfa642d] V3 green
+KILLED   D6 -S not required [2b63d1056993fd6d -> cd40835c5df24aa0] 1 red; first: M-d: run without -S (so a .pth file could run), the harness refuses   [REJECT: /var/tmp/cam/prereg2-v3.9m4c6jxk/nothing: not a directory
+KILLED   H1 caller's GIT_* kept [edf8b74d64847afb -> bd0d7ca389ef1b5e] 1 red; first: M-c: GIT_DIR and GIT_WORK_TREE in the environment do not redirect the binding check   [({'head': 'e835693d2170ddf313b1f3c0349b735f0dc7c840',
+KILLED   H2 GIT_NO_REPLACE_OBJECTS dropped [edf8b74d64847afb -> 6188f0fcb727f731] 1 red; first: H2/H3: binding git runs with no user or system config and no replace objects   [/dev/null]
+KILLED   H3 user config honoured [edf8b74d64847afb -> e0da424cda4f133b] 1 red; first: H2/H3: binding git runs with no user or system config and no replace objects
+KILLED   H4 scoring commit derived without --full-history [ddb2624660ff2cff -> c1d61a7fc1281b51] 1 red; first: H4: score/ added on both sides of a merge is two scoring commits (--full-history), refused
+KILLED   H5 scoring commit derivation ignores replace/shallow [ddb2624660ff2cff -> 35b9a36de8f608e7] 1 red; first: H5: the scoring-arm commit is not derived from a history rewritten by git replace
+KILLED   H6 later-harness-commit walk without --full-history [edf8b74d64847afb -> 5b7cb326b160dfdf] 1 red; first: H6: a harness edit on a merged side branch, reverted there, is still a later commit that touches the harness (--full-history)
+KILLED   H7 validation derivation without --full-history [edf8b74d64847afb -> 1a25a43057bfa9d3] 1 red; first: M-c: VALIDATION added on both sides of a merge counts twice (--full-history), and is refused   [['results/prereg2/VALIDATION has changed sin
+30 mutants: 25 killed, 2 survived, 3 BROKEN
