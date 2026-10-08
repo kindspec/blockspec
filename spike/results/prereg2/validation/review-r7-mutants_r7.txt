@@ -1,0 +1,21 @@
+# round-7 reviewer script scripts/mutants_r7.py, run at 14579b9365076acb4523079014de06ab702a0b74, unchanged (it already passes -I -S -B). gapflow's "want 0" is its generic expectation: the BAD lines under pre_arm0, between_nocell and val_touches_harness are the intended refusals (§9 stops the work; a malformed gap inside the window; a validation commit that changes the harness). mutants_r7's BROKEN mutants patch code that round 7 changed: R1 and R2 patch the README step that is now harness/prereg2_reverify.sh, whose equivalents are V4 mutants; J3 and J4 patch a pattern that now occurs twice, and V4 mutates each copy; J1 patches the boundary test that LOG §22 removes; J2 patches the expression that replaced it, and its adapted form ("scoring_commit is not None and _is_ancestor(...)") was run once against V3 and killed by named checks
+baseline: ['402 checks, 0 failed', 'V3: PASS'] rc 0
+KILLED   P1 no bound gap preflight at all [2b63d1056993fd6d -> 1163121228d89625] 13 red; first: MEDIUM-1: a gap declared before Arm 0 stops arm0 too (§9: it stops the work)   [file, two of its instances are consecutive blocks of that fi
+KILLED   P2 no preflight for score [2b63d1056993fd6d -> bc08141ebd6e4a19] 1 red; first: P2: score's bound preflight refuses a malformed gaps.json before scoring   [ine 103, in open_corpus
+KILLED   P3 no preflight for arm0 [2b63d1056993fd6d -> 7ad11e7cb6c503eb] 12 red; first: MEDIUM-1: a gap declared before Arm 0 stops arm0 too (§9: it stops the work)   [file, two of its instances are consecutive blocks of that fi
+KILLED   P4 no preflight for export [2b63d1056993fd6d -> de41228f020751b4] 4 red; first: P4: export's bound preflight refuses a malformed gaps.json   [o /var/tmp/cam/prereg2-v3.iyoeuq1j/bf/spike/results/prereg2/export
+KILLED   P5 tier-model preflight not final (scoring commit None) [2b63d1056993fd6d -> a8691e4e1dd2eb8e] 1 red; first: P5: tier-model's preflight is final: a malformed gaps.json after the scoring-arm commit does not block it (it stops later, at the missing AP
+KILLED   P6 score preflight treated as final [2b63d1056993fd6d -> cc6dac2c9e31e203] 9 red; first: P2: score's bound preflight refuses a malformed gaps.json before scoring   [refusing: 0 commits add results/prereg2/score in HEAD's history;
+KILLED   P7 aggregate not final: post-scoring versions judged [2b63d1056993fd6d -> 8049ddc87ee9a4b9] 1 red; first: MEDIUM-1: a malformed gaps.json after the scoring-arm commit does not stop aggregate; it is listed   [tiers: no tiering run
+KILLED   P8 bound_gaps runs on unbound runs too (preflight placement) [2b63d1056993fd6d -> fe3a89f105aabb8e] 2 red; first: MEDIUM-1: an unbound run reads no gaps
+BROKEN   J1 a gap in the scoring-arm commit itself is judged (alters cells): pattern found 0 times, file unchanged (fbe5a209c0a439d2)
+BROKEN   J2 preflight (None) never judges: pattern found 0 times, file unchanged (fbe5a209c0a439d2)
+BROKEN   J3 a malformed late gaps.json refuses again: pattern found 2 times, file unchanged (fbe5a209c0a439d2)
+BROKEN   J4 late versions skipped silently (not listed): pattern found 2 times, file unchanged (fbe5a209c0a439d2)
+KILLED   V1 validation-diff refusal removed [edf8b74d64847afb -> dce67d378dc29c31] 4 red; first: MEDIUM-3: a validation commit that also changes the harness is refused
+KILLED   V2 validation diff compares vc with itself [edf8b74d64847afb -> db60090601f01e89] 3 red; first: MEDIUM-3: a validation commit that also changes the harness is refused
+KILLED   V3 validation diff ignores ORACLE.md and the prereg (harness only) [edf8b74d64847afb -> ddc835290a193f9e] 2 red; first: a validation commit that also changes ORACLE.md is refused
+KILLED   V4 a root validation commit (no parent) accepted [edf8b74d64847afb -> 1d3a59a8c3f80cea] 1 red; first: a root validation commit (no parent) is refused
+BROKEN   R1 README step: tier-model comparison dropped: pattern found 0 times, file unchanged (a751f25a64c9acd7)
+BROKEN   R2 README step: validation-diff line dropped: pattern found 0 times, file unchanged (a751f25a64c9acd7)
+18 mutants: 12 killed, 0 survived, 6 BROKEN
