@@ -1719,3 +1719,53 @@ writes a transcript, so it is kept.
 V1 to V5 and the bundle check were re-run with this PR's VALIDATION in
 place. Their transcripts are in `results/prereg2/validation/`, committed in
 this PR, as §9 requires.
+
+## 2026-10-08 — §24. Arm 0
+
+### The validation commit
+
+blockspec#17 merged as `d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301`. It is
+the one commit that adds `results/prereg2/VALIDATION`, so it is the
+validation commit, and every bound run from here on names it. Its harness
+is `0dd32dd`'s, byte for byte (§23). `harness/prereg2_reverify.sh` passed
+on a fresh clone of `main` at that commit.
+
+### Before the runs
+
+- All six bundles in `/home/cam/kindspec-data/prereg2-bundles/` matched
+  `harness/p2/bundles.json` in sha256 and size. `git bundle list-heads`
+  showed each one's only head as its §6.2 pin.
+- The work directories were under `/home/cam/kindspec-data/prereg2-arm0-work/`,
+  outside every repository, one fresh directory per arm. That disk had
+  1.5 TB free.
+- `--d8-dir` was kindspec/research `experiments/D8-identity` at
+  `d51ce09`, which the harness verifies before it loads anything.
+- `arm0 --help` was run once, to check the arguments. It wrote the
+  transcript `2026-10-08T170814Z-arm0.txt`, unbound, and was committed
+  before the first bound run.
+
+### The runs
+
+`prereg2.py arm0` ran under `python3 -I -S -B`, bound, once for each arm in
+§6.2's order: `rust-book`, `obsidian-help`, `cmspec`, `k8s-en`, `k8s-l10n`,
+`cncf-toc` and `site-policy`. Each invocation was committed before the
+next. Each exited 0, and each transcript records the binding as true with
+validation commit `d79bf2e`. No run refused, and none was repeated.
+
+Every arm passes the bar. Under the verdict rule, `yaml-fence`, the share
+of distinct natural-language contents (`prose`, `list` and `heading`, per
+F5) of 20 characters or more with a twin in the same file was:
+
+| arm | with a twin / distinct | share |
+|---|---|---|
+| `rust-book` | 0 / 3,524 | 0.00% |
+| `obsidian-help` | 10 / 3,909 | 0.26% |
+| `cmspec` | 0 / 43 | 0.00% |
+| `k8s-en` | 305 / 48,788 | 0.63% |
+| `k8s-l10n` | 2,220 / 112,397 | 1.98% |
+| `cncf-toc` | 69 / 19,393 | 0.36% |
+| `site-policy` | 4 / 2,110 | 0.19% |
+
+Each figure is from `results/prereg2/arm0/<arm>.json`,
+`rules.yaml-fence`. `none` and `anywhere` are reported there beside it,
+with no verdict.

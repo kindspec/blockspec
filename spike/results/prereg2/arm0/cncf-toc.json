@@ -1,0 +1,190 @@
+{
+ "adjacent_run_rule": "provisional reading (LOG §15): a distinct content (type, content) of 20 characters or more counts as an adjacent-run twin if, in at least one selected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position",
+ "arm": "cncf-toc",
+ "binding": {
+  "bound": true,
+  "head": "00ead364fbfce73a04cf10d1bcb861f050e6cc0f",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "bundle_sha256": "63515ba0df9e4f78544ec3d7b3fda67f1d66ad565739b3044ecd93a21fcf8a2f",
+ "passes_bar": true,
+ "pathspec": "*.md :(exclude).github/",
+ "pin": "144c2e3215884e498e744cc51e6b7cef82d654f1",
+ "rules": {
+  "anywhere": {
+   "by_type": {
+    "code": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 58,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "frontmatter": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 3,
+     "short_lt20": 3,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "heading": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 3300,
+     "short_lt20": 2861,
+     "single_line_twin": 14,
+     "twin_same_file": 14
+    },
+    "html": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 337,
+     "short_lt20": 10,
+     "single_line_twin": 5,
+     "twin_same_file": 7
+    },
+    "list": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 4427,
+     "short_lt20": 44,
+     "single_line_twin": 4,
+     "twin_same_file": 9
+    },
+    "prose": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 11666,
+     "short_lt20": 638,
+     "single_line_twin": 35,
+     "twin_same_file": 46
+    },
+    "table": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 331,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    }
+   },
+   "files_read": 587,
+   "nl_distinct_ge20": 19393,
+   "nl_twin_same_file": 69,
+   "passes_bar": true,
+   "unreadable": []
+  },
+  "none": {
+   "by_type": {
+    "code": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 58,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "frontmatter": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 3,
+     "short_lt20": 3,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "heading": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 3374,
+     "short_lt20": 2877,
+     "single_line_twin": 14,
+     "twin_same_file": 14
+    },
+    "html": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 338,
+     "short_lt20": 10,
+     "single_line_twin": 5,
+     "twin_same_file": 7
+    },
+    "list": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 4434,
+     "short_lt20": 44,
+     "single_line_twin": 4,
+     "twin_same_file": 9
+    },
+    "prose": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 11670,
+     "short_lt20": 638,
+     "single_line_twin": 35,
+     "twin_same_file": 46
+    },
+    "table": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 331,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    }
+   },
+   "files_read": 598,
+   "nl_distinct_ge20": 19478,
+   "nl_twin_same_file": 69,
+   "passes_bar": true,
+   "unreadable": []
+  },
+  "yaml-fence": {
+   "by_type": {
+    "code": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 58,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "frontmatter": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 3,
+     "short_lt20": 3,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "heading": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 3300,
+     "short_lt20": 2861,
+     "single_line_twin": 14,
+     "twin_same_file": 14
+    },
+    "html": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 337,
+     "short_lt20": 10,
+     "single_line_twin": 5,
+     "twin_same_file": 7
+    },
+    "list": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 4427,
+     "short_lt20": 44,
+     "single_line_twin": 4,
+     "twin_same_file": 9
+    },
+    "prose": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 11666,
+     "short_lt20": 638,
+     "single_line_twin": 35,
+     "twin_same_file": 46
+    },
+    "table": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 331,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    }
+   },
+   "files_read": 587,
+   "nl_distinct_ge20": 19393,
+   "nl_twin_same_file": 69,
+   "passes_bar": true,
+   "unreadable": []
+  }
+ }
+}

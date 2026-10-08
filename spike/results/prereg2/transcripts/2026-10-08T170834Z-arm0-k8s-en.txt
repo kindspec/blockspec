@@ -1,0 +1,44 @@
+# prereg2 arm0 k8s-en
+# argv: prereg2.py arm0 --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --work-dir /home/cam/kindspec-data/prereg2-arm0-work/k8s-en
+# start: 2026-10-08T17:08:34Z
+# blockspec HEAD: 27adb176975cd09e844bcb0b0464593b36feda59
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-08T17:08:42Z
+### k8s-en rule=yaml-fence (verdict rule)  files=2208 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                  51          6724             206            0              0
+   frontmatter          138          2941               0            0              0
+   heading             2664          7803              14           13              0
+   html                1252           654               5            3              0
+   list                  48          5807              47           33              0
+   prose               1463         35178             244          194              0
+   table                 43           202               0            0              0
+   natural-language distinct >=20: 48788, with a twin in the same file: 305 (0.63%)  bar 10%: PASS
+### k8s-en rule=none (beside, no verdict)  files=2513 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                  51          6941             206            0              0
+   frontmatter          143          3246               0            0              0
+   heading             4980          8850              17           16              0
+   html                2214          3411             321            3              0
+   list                  54          6040             116          101              0
+   prose               1837         37134             244          194              0
+   table                 43           203               0            0              0
+   natural-language distinct >=20: 52024, with a twin in the same file: 377 (0.72%)  bar 10%: PASS
+### k8s-en rule=anywhere (beside, no verdict)  files=2208 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                  51          6724             206            0              0
+   frontmatter          138          2941               0            0              0
+   heading             2664          7803              14           13              0
+   html                1252           654               5            3              0
+   list                  48          5807              47           33              0
+   prose               1463         35178             244          194              0
+   table                 43           202               0            0              0
+   natural-language distinct >=20: 48788, with a twin in the same file: 305 (0.63%)  bar 10%: PASS
+   * adjacent-run twin, provisional reading (LOG §15), report only: a distinct content (type, content) of 20 characters or more counts as an adjacent-run twin if, in at least one selected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position
+ARM 0 k8s-en: passes the bar
+
+# end: 2026-10-08T17:08:43Z
+# exited: exit status 0

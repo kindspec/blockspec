@@ -1,0 +1,106 @@
+{
+ "adjacent_run_rule": "provisional reading (LOG §15): a distinct content (type, content) of 20 characters or more counts as an adjacent-run twin if, in at least one selected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position",
+ "arm": "cmspec",
+ "binding": {
+  "bound": true,
+  "head": "ec2f0516f8530519e40bdaa1d83f4f73c68d9f7b",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "bundle_sha256": "8bf9a1d0f26233998e7c51268dcba596b678d9e479ee9e5cd32f30d8e85dcef6",
+ "passes_bar": true,
+ "pathspec": "*.md",
+ "pin": "3da939428d80f146f270cd1765e4ba462e96bb1b",
+ "rules": {
+  "anywhere": {
+   "by_type": {
+    "code": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 2,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "list": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 12,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "prose": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 31,
+     "short_lt20": 6,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    }
+   },
+   "files_read": 2,
+   "nl_distinct_ge20": 43,
+   "nl_twin_same_file": 0,
+   "passes_bar": true,
+   "unreadable": []
+  },
+  "none": {
+   "by_type": {
+    "code": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 2,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "list": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 12,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "prose": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 31,
+     "short_lt20": 6,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    }
+   },
+   "files_read": 2,
+   "nl_distinct_ge20": 43,
+   "nl_twin_same_file": 0,
+   "passes_bar": true,
+   "unreadable": []
+  },
+  "yaml-fence": {
+   "by_type": {
+    "code": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 2,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "list": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 12,
+     "short_lt20": 0,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    },
+    "prose": {
+     "adjacent_run_twin": 0,
+     "distinct_ge20": 31,
+     "short_lt20": 6,
+     "single_line_twin": 0,
+     "twin_same_file": 0
+    }
+   },
+   "files_read": 2,
+   "nl_distinct_ge20": 43,
+   "nl_twin_same_file": 0,
+   "passes_bar": true,
+   "unreadable": []
+  }
+ }
+}

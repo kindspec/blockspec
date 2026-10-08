@@ -1,0 +1,32 @@
+# prereg2 arm0
+# argv: prereg2.py arm0 --help
+# start: 2026-10-08T17:08:14Z
+# blockspec HEAD: d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301
+# python 3.13.5
+usage: prereg2.py arm0 [-h] --d8-dir D8_DIR [--transcript-dir TRANSCRIPT_DIR]
+                       [--unbound] --arm ARM [--bundle-dir BUNDLE_DIR]
+                       [--work-dir WORK_DIR] [--fixture-repo FIXTURE_REPO]
+                       [--fixture-pin FIXTURE_PIN]
+                       [--fixture-pathspec FIXTURE_PATHSPEC]
+                       [--out-dir OUT_DIR]
+
+options:
+  -h, --help            show this help message and exit
+  --d8-dir D8_DIR
+  --transcript-dir TRANSCRIPT_DIR
+  --unbound
+  --arm ARM
+  --bundle-dir BUNDLE_DIR
+                        default: $PREREG2_BUNDLE_DIR, else the local copy
+                        bundles.json records
+  --work-dir WORK_DIR
+  --fixture-repo FIXTURE_REPO
+  --fixture-pin FIXTURE_PIN
+  --fixture-pathspec FIXTURE_PATHSPEC
+  --out-dir OUT_DIR
+# harness bound: False
+#   not bound: usage error
+
+
+# end: 2026-10-08T17:08:14Z
+# exited: exit status 0

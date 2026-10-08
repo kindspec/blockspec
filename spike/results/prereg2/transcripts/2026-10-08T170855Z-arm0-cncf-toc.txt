@@ -1,0 +1,44 @@
+# prereg2 arm0 cncf-toc
+# argv: prereg2.py arm0 --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm cncf-toc --work-dir /home/cam/kindspec-data/prereg2-arm0-work/cncf-toc
+# start: 2026-10-08T17:08:55Z
+# blockspec HEAD: 00ead364fbfce73a04cf10d1bcb861f050e6cc0f
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-08T17:08:56Z
+### cncf-toc rule=yaml-fence (verdict rule)  files=587 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                   0            58               0            0              0
+   frontmatter            3             3               0            0              0
+   heading             2861          3300              14           14              0
+   html                  10           337               7            5              0
+   list                  44          4427               9            4              0
+   prose                638         11666              46           35              0
+   table                  0           331               0            0              0
+   natural-language distinct >=20: 19393, with a twin in the same file: 69 (0.36%)  bar 10%: PASS
+### cncf-toc rule=none (beside, no verdict)  files=598 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                   0            58               0            0              0
+   frontmatter            3             3               0            0              0
+   heading             2877          3374              14           14              0
+   html                  10           338               7            5              0
+   list                  44          4434               9            4              0
+   prose                638         11670              46           35              0
+   table                  0           331               0            0              0
+   natural-language distinct >=20: 19478, with a twin in the same file: 69 (0.35%)  bar 10%: PASS
+### cncf-toc rule=anywhere (beside, no verdict)  files=587 unreadable=0
+   type         <20 skipped  distinct>=20  twin same file  single-line  adjacent-run*
+   code                   0            58               0            0              0
+   frontmatter            3             3               0            0              0
+   heading             2861          3300              14           14              0
+   html                  10           337               7            5              0
+   list                  44          4427               9            4              0
+   prose                638         11666              46           35              0
+   table                  0           331               0            0              0
+   natural-language distinct >=20: 19393, with a twin in the same file: 69 (0.36%)  bar 10%: PASS
+   * adjacent-run twin, provisional reading (LOG §15), report only: a distinct content (type, content) of 20 characters or more counts as an adjacent-run twin if, in at least one selected file, two of its instances are consecutive blocks of that file -- positions i and i+1 in D8's blocks() sequence, where blocks of every length count toward the position
+ARM 0 cncf-toc: passes the bar
+
+# end: 2026-10-08T17:08:56Z
+# exited: exit status 0
