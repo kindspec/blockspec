@@ -1,0 +1,152 @@
+{
+ "arm": "cncf-toc",
+ "binding": {
+  "bound": true,
+  "head": "247a41013ef0305a1bf7afd8799580c1670fd799",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "bundle_sha256": "63515ba0df9e4f78544ec3d7b3fda67f1d66ad565739b3044ecd93a21fcf8a2f",
+ "counts": {
+  "E": {
+   "anywhere": {
+    "commits:no_merges": 2440,
+    "excluded:add": 604,
+    "excluded:delete": 11,
+    "excluded:other_status": 0,
+    "excluded:rename": 292,
+    "path_not_selected": 3604,
+    "population": 1018,
+    "sample": 1000
+   },
+   "evaluated_instances": 1120,
+   "none": {
+    "commits:no_merges": 2440,
+    "excluded:add": 615,
+    "excluded:delete": 11,
+    "excluded:other_status": 0,
+    "excluded:rename": 292,
+    "path_not_selected": 3457,
+    "population": 1154,
+    "sample": 1000
+   },
+   "not_evaluated": 0,
+   "undecodable": 0,
+   "yaml-fence": {
+    "commits:no_merges": 2440,
+    "excluded:add": 604,
+    "excluded:delete": 11,
+    "excluded:other_status": 0,
+    "excluded:rename": 292,
+    "path_not_selected": 3604,
+    "population": 1018,
+    "sample": 1000
+   }
+  },
+  "M": {
+   "evaluated_instances": 17,
+   "filter": {
+    "cases_in": 71,
+    "dropped:not_selected": 48,
+    "kept": 23,
+    "kept:anywhere": 23,
+    "kept:none": 23,
+    "kept:yaml-fence": 23
+   },
+   "find_merge_cases": {
+    "drop:add_add": 7,
+    "drop:convergent": 20,
+    "drop:delete_modify": 2,
+    "drop:multi_base": 1,
+    "merges:two_parent": 858,
+    "paths:both_sides": 100,
+    "paths:one_side": 18707
+   },
+   "merges": {
+    "clean": 17,
+    "not_clean": 6
+   },
+   "not_evaluated": 6,
+   "undecodable": 0
+  },
+  "S25": {
+   "anywhere": {
+    "gap25:excluded:blob_missing": 1,
+    "gap25:excluded:blobs_equal": 0,
+    "gap25:pairs": 368,
+    "gap25:population": 367,
+    "paths": 587,
+    "sample": 367
+   },
+   "evaluated_instances": 367,
+   "none": {
+    "gap25:excluded:blob_missing": 1,
+    "gap25:excluded:blobs_equal": 0,
+    "gap25:pairs": 368,
+    "gap25:population": 367,
+    "paths": 598,
+    "sample": 367
+   },
+   "not_evaluated": 0,
+   "undecodable": 0,
+   "yaml-fence": {
+    "gap25:excluded:blob_missing": 1,
+    "gap25:excluded:blobs_equal": 0,
+    "gap25:pairs": 368,
+    "gap25:population": 367,
+    "paths": 587,
+    "sample": 367
+   }
+  },
+  "S5": {
+   "anywhere": {
+    "gap5:excluded:blob_missing": 7,
+    "gap5:excluded:blobs_equal": 0,
+    "gap5:pairs": 672,
+    "gap5:population": 665,
+    "paths": 587,
+    "sample": 500
+   },
+   "evaluated_instances": 571,
+   "none": {
+    "gap5:excluded:blob_missing": 7,
+    "gap5:excluded:blobs_equal": 0,
+    "gap5:pairs": 774,
+    "gap5:population": 767,
+    "paths": 598,
+    "sample": 500
+   },
+   "not_evaluated": 0,
+   "undecodable": 0,
+   "yaml-fence": {
+    "gap5:excluded:blob_missing": 7,
+    "gap5:excluded:blobs_equal": 0,
+    "gap5:pairs": 672,
+    "gap5:population": 665,
+    "paths": 587,
+    "sample": 500
+   }
+  }
+ },
+ "modes": [
+  "E",
+  "S5",
+  "S25",
+  "M"
+ ],
+ "modes_requested": [
+  "E",
+  "S5",
+  "S25",
+  "M"
+ ],
+ "pathspec": "*.md :(exclude).github/",
+ "pin": "144c2e3215884e498e744cc51e6b7cef82d654f1",
+ "sample_e": 1000,
+ "sample_s": 500,
+ "selected": {
+  "anywhere": 587,
+  "none": 598,
+  "yaml-fence": 587
+ }
+}
