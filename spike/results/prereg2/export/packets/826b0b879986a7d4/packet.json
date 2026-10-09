@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "在[审计注解](/zh-cn/docs/reference/labels-annotations-taints/audit-annotations/)页面上查看更多详细信息。",
+ "oracle_target": "See more details on [Audit Annotations](/docs/reference/labels-annotations-taints/audit-annotations/).\n-->\n- [`authorization.k8s.io/decision`](/zh-cn/docs/reference/labels-annotations-taints/audit-annotations/#authorization-k8s-io-decision)\n- [`authorization.k8s.io/reason`](/zh-cn/docs/reference/labels-annotations-taints/audit-annotations/#authorization-k8s-io-reason)\n- [`insecure-sha1.invalid-cert.kubernetes.io/$hostname`](/zh-cn/docs/reference/labels-annotations-taints/audit-annotations/#insecure-sha1-invalid-cert-kubernetes-io-hostname)\n- [`missing-san.invalid-cert.kubernetes.io/$hostname`](/zh-cn/docs/reference/labels-annotations-taints/audit-annotations/#missing-san-invalid-cert-kubernetes-io-hostname)\n- [`pod-security.kubernetes.io/audit-violations`](/zh-cn/docs/reference/labels-annotations-taints/audit-annotations/#pod-security-kubernetes-io-audit-violations)\n- [`pod-security.kubernetes.io/enforce-policy`](/zh-cn/docs/reference/labels-annotations-taints/audit-annotations/#pod-security-kubernetes-io-enforce-policy)\n- [`pod-security.kubernetes.io/exempt`](/zh-cn/docs/reference/labels-annotations-taints/audit-annotations/#pod-security-kubernetes-io-exempt)",
+ "packet": "826b0b879986a7d4",
+ "questions": "QUESTIONS.md",
+ "reference": "See more details on the [Audit Annotations](/docs/reference/labels-annotations-taints/audit-annotations/) page.\n-->",
+ "reference_kind": "quote"
+}

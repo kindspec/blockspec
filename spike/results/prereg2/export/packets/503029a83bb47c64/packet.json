@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Kubernetes 项目建议你转为使用 [Azure Disk](https://github.com/kubernetes-sigs/azuredisk-csi-driver)\n第三方存储驱动插件。",
+ "oracle_target": "### azureDisk (deprecated) {#azuredisk}\n-->",
+ "packet": "503029a83bb47c64",
+ "questions": "QUESTIONS.md",
+ "reference": "For more details, see the [`azureDisk` volume plugin](https://github.com/kubernetes/examples/tree/master/staging/volumes/azure_disk/README.md).\n-->",
+ "reference_kind": "quote"
+}

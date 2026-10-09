@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "`memory` 的限制和请求以字节为单位。你可以使用普通的整数，\n或者带有以下[数量](/zh-cn/docs/reference/kubernetes-api/common-definitions/quantity/)后缀的定点数字来表示内存：\nE、P、T、G、M、k。你也可以使用对应的 2 的幂数：Ei、Pi、Ti、Gi、Mi、Ki。\n例如，以下表达式所代表的是大致相同的值：",
+ "oracle_target": "<!--\nLimits and requests for `ephemeral-storage` are measured in byte quantities.\nYou can express storage as a plain integer or as a fixed-point number using one of these suffixes:\nE, P, T, G, M, k. You can also use the power-of-two equivalents: Ei, Pi, Ti, Gi,\nMi, Ki. For example, the following quantities all represent roughly the same value:\n-->\n`ephemeral-storage` 的请求和限制是按量纲计量的。\n你可以使用一般整数或者定点数字加上下面的后缀来表达存储量：E、P、T、G、M、k。\n你也可以使用对应的 2 的幂级数来表达：Ei、Pi、Ti、Gi、Mi、Ki。\n例如，下面的表达式所表达的大致是同一个值：",
+ "packet": "60f46fc95fc0ed68",
+ "questions": "QUESTIONS.md",
+ "reference": "`ephemeral-storage` 的请求和约束值是按量纲计量的。你可以使用一般整数或者定点数字\n加上下面的后缀来表达存储量：E、P、T、G、M、K。\n你也可以使用对应的 2 的幂级数来表达：Ei、Pi、Ti、Gi、Mi、Ki。\n例如，下面的表达式所表达的大致是同一个值：",
+ "reference_kind": "quote"
+}

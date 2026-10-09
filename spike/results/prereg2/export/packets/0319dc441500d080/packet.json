@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Enabling the `CrossNamespaceVolumeDataSource` feature gate allows you to specify\na namespace in the dataSourceRef field.\n-->\nKubernetes 支持跨名字空间卷数据源。\n要使用跨名字空间卷数据源，你必须为 kube-apiserver、kube-controller 管理器启用\n`AnyVolumeDataSource` 和 `CrossNamespaceVolumeDataSource`\n[特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/)。\n此外，你必须为 csi-provisioner 启用 `CrossNamespaceVolumeDataSource` 特性门控。",
+ "oracle_target": "Volume populators take advantage of a PVC spec field called `dataSourceRef`. Unlike the\n`dataSource` field, which can only contain either a reference to another PersistentVolumeClaim\nor to a VolumeSnapshot, the `dataSourceRef` field can contain a reference to any object in the\nsame namespace, except for core objects other than PVCs. For clusters that have the feature\ngate enabled, use of the `dataSourceRef` is preferred over `dataSource`.\n-->\nKubernetes 支持自定义的卷填充器。要使用自定义的卷填充器，你必须为\nkube-apiserver 和 kube-controller-manager 启用 `AnyVolumeDataSource`\n[特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/)。",
+ "packet": "0319dc441500d080",
+ "questions": "QUESTIONS.md",
+ "reference": "Kubernetes 支持自定义的卷填充器。要使用自定义的卷填充器，你必须为\nkube-apiserver 和 kube-controller-manager 启用 `AnyVolumeDataSource`\n[特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/)。",
+ "reference_kind": "quote"
+}

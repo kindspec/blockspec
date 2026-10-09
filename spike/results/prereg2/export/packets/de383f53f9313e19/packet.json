@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Note: This report is augmented by a [General Technical Review](https://github.com/cncf/toc/projects/kyverno/tech-review/2026-02-02.md%E2%80%8E) that was performed by Dylan Page in early 2026.",
+ "oracle_target": "## Engineering Principles",
+ "packet": "de383f53f9313e19",
+ "questions": "QUESTIONS.md",
+ "reference": "## Engineering Principles\nNote: This report is augmented by a [General Technical Review](https://github.com/cncf/toc/projects/kyverno/tech-review/2026-02-02.md) that was performed by Dylan Page in early 2026.",
+ "reference_kind": "quote"
+}

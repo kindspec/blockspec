@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "请参阅[在名字空间级别实施 Pod 安全性](/zh-cn/docs/concepts/security/pod-security-admission)了解更多信息。",
+ "oracle_target": "请参阅[在名字空间级别实施 Pod 安全性](/zh-cn/docs/concepts/security/pod-security-admission)了解更多信息。",
+ "packet": "4469f8bbb875e0c3",
+ "questions": "QUESTIONS.md",
+ "reference": "请参阅[在名字空间级别实施 Pod 安全性](/zh-cn/docs/concepts/security/pod-security-admission)了解更多信息。",
+ "reference_kind": "quote"
+}

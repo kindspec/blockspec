@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Podのライフタイム\n\n個々のアプリケーションコンテナと同様に、Podは(永続的ではなく)比較的短期間の存在と捉えられます。Podが作成されると、一意のID([UID](/ja/docs/concepts/overview/working-with-objects/names/#uids))が割り当てられ、(再起動ポリシーに従って)終了または削除されるまでNodeで実行されるようにスケジュールされます。  \n{{< glossary_tooltip term_id=\"node\" >}}が停止した場合、そのNodeにスケジュールされたPodは、タイムアウト時間の経過後に[削除](#pod-garbage-collection)されます。\n\nPod自体は、自己修復しません。Podが{{< glossary_tooltip text=\"node\" term_id=\"node\" >}}にスケジュールされ、その後に失敗した場合、Podは削除されます。同様に、リソースの不足またはNodeのメンテナンスによりPodはNodeから立ち退きます。Kubernetesは、比較的使い捨てのPodインスタンスの管理作業を処理する、{{< glossary_tooltip term_id=\"controller\" text=\"controller\" >}}と呼ばれる上位レベルの抽象化を使用します。\n\n特定のPod(UIDで定義)は新しいNodeに\"再スケジュール\"されません。代わりに、必要に応じて同じ名前で、新しいUIDを持つ同一のPodに置き換えることができます。\n\n{{< glossary_tooltip term_id=\"volume\" text=\"volume\" >}}など、Podと同じ存続期間を持つものがあると言われる場合、それは(そのUIDを持つ)Podが存在する限り存在することを意味します。そのPodが何らかの理由で削除された場合、たとえ同じ代替物が作成されたとしても、関連するもの(例えばボリューム)も同様に破壊されて再作成されます。\n\n{{< figure src=\"/images/docs/pod.svg\" title=\"Podの図\" class=\"diagram-medium\" >}}\n\n*file puller(ファイル取得コンテナ)とWebサーバーを含むマルチコンテナのPod。コンテナ間の共有ストレージとして永続ボリュームを使用しています。*",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "caa946e784d40f71",
+ "questions": "QUESTIONS.md",
+ "reference": "podのライフタイム",
+ "reference_kind": "name"
+}

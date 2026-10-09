@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "A saída será semelhante a:",
+ "oracle_target": "A saída será semelhante a:",
+ "packet": "4a081e4d5636ed19",
+ "questions": "QUESTIONS.md",
+ "reference": "A saída será semelhante a:",
+ "reference_kind": "quote"
+}

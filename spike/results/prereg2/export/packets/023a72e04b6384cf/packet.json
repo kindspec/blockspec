@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Pod Selector\n\nYou must set the `.spec.selector` field of a StatefulSet to match the labels of its\n`.spec.template.metadata.labels`. Failing to specify a matching Pod Selector will result in a\nvalidation error during StatefulSet creation.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "023a72e04b6384cf",
+ "questions": "QUESTIONS.md",
+ "reference": "pod-selector",
+ "reference_kind": "name"
+}

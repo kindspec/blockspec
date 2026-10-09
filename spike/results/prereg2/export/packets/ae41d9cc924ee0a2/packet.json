@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## References\n\n1. https://www.nvidia.com/en-us/glossary/disaggregated-serving/\n2. https://bentoml.com/llm/\n3. https://kserve.github.io/website/\n4. https://docs.vllm.ai/\n5. https://llm-d.ai/\n6. https://docs.seldon.io/projects/seldon-core/en/latest/\n7. https://developer.nvidia.com/tensorrt",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "ae41d9cc924ee0a2",
+ "questions": "QUESTIONS.md",
+ "reference": "references",
+ "reference_kind": "name"
+}

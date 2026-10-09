@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Filename: src/main.rs",
+ "oracle_target": "Filename: src/main.rs",
+ "packet": "f5db3ea10a38699a",
+ "questions": "QUESTIONS.md",
+ "reference": "Filename: src/main.rs",
+ "reference_kind": "quote"
+}

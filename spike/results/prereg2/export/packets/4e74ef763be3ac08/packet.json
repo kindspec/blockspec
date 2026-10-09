@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "See [Enforcing Pod Security at the Namespace Level](/docs/concepts/security/pod-security-admission)\nfor more information.",
+ "oracle_target": "See [Enforcing Pod Security at the Namespace Level](/docs/concepts/security/pod-security-admission)\nfor more information.",
+ "packet": "4e74ef763be3ac08",
+ "questions": "QUESTIONS.md",
+ "reference": "See [Enforcing Pod Security at the Namespace Level](/docs/concepts/security/pod-security-admission)\nfor more information.",
+ "reference_kind": "quote"
+}

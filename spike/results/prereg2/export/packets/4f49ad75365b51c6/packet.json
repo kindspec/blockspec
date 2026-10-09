@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "#### 시크릿 파일 퍼미션\n\n단일 시크릿 키에 대한 POSIX 파일 접근 퍼미션 비트를 설정할 수 있다.\n만약 사용자가 퍼미션을 지정하지 않는다면, 기본적으로 `0644` 가 사용된다.\n전체 시크릿 볼륨에 대한 기본 모드를 설정하고 필요한 경우 키별로 오버라이드할 수도 있다.\n\n예를 들어, 다음과 같은 기본 모드를 지정할 수 있다.\n\n```yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: mypod\nspec:\n  containers:\n  - name: mypod\n    image: redis\n    volumeMounts:\n    - name: foo\n      mountPath: \"/etc/foo\"\n  volumes:\n  - name: foo\n    secret:\n      secretName: mysecret\n      defaultMode: 0400\n```\n\n시크릿이 `/etc/foo` 에 마운트되고, \n시크릿 볼륨 마운트로 생성된 모든 파일의 퍼미션은 `0400` 이다.\n\n\n{{< note >}}\nJSON을 사용하여 파드 또는 파드 템플릿을 정의하는 경우, \nJSON 스펙은 8진수 표기법을 지원하지 않음에 유의한다. \n`defaultMode` 값으로 대신 10진수를 사용할 수 있다(예를 들어, 8진수 0400은 10진수로는 256이다). \nYAML로 작성하는 경우, `defaultMode` 값을 8진수로 표기할 수 있다.\n{{< /note >}}",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "4f49ad75365b51c6",
+ "questions": "QUESTIONS.md",
+ "reference": "시크릿-파일-퍼미션",
+ "reference_kind": "name"
+}

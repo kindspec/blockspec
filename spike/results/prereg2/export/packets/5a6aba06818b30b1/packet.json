@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "**Short version:** _We want our users to be informed of important changes to our terms, but some changes aren't that important — we don't want to bother you every time we fix a typo. So while we may modify this agreement at any time, we will notify users of any material changes and give you time to adjust to them._",
+ "oracle_target": "## Q. Changes to These Terms",
+ "packet": "5a6aba06818b30b1",
+ "questions": "QUESTIONS.md",
+ "reference": "## Q. Changes to These Terms\n**Short version:** *We want our users to be informed of important changes to our terms, but some changes aren't that important — we don't want to bother you every time we fix a typo. So while we may modify this agreement at any time, we will notify users of any material changes and give you time to adjust to them.*",
+ "reference_kind": "quote"
+}

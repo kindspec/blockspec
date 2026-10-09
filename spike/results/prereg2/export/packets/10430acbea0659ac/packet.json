@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "<!--\n{{< highlight yaml \"linenos=false,hl_lines=2-5\" >}}\n---",
+ "oracle_target": "#\n      - identity: {} # plain text, in other words NO encryption\n      - aesgcm:\n          keys:\n            - name: key1\n              secret: c2VjcmV0IGlzIHNlY3VyZQ==\n            - name: key2\n              secret: dGhpcyBpcyBwYXNzd29yZA==\n      - aescbc:\n          keys:\n            - name: key1\n              secret: c2VjcmV0IGlzIHNlY3VyZQ==\n            - name: key2\n              secret: dGhpcyBpcyBwYXNzd29yZA==\n      - secretbox:\n          keys:\n            - name: key1\n              secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY=\n  - resources:\n      - events\n    providers:\n      - identity: {} # do not encrypt Events even though *.* is specified below\n  - resources:\n      - '*.apps' # wildcard match requires Kubernetes 1.27 or later\n    providers:\n      - aescbc:\n          keys:\n          - name: key2\n            secret: c2VjcmV0IGlzIHNlY3VyZSwgb3IgaXMgaXQ/Cg==\n  - resources:\n      - '*.*' # wildcard match requires Kubernetes 1.27 or later\n    providers:\n      - aescbc:\n          keys:\n          - name: key3\n            secret: c2VjcmV0IGlzIHNlY3VyZSwgSSB0aGluaw==\n{{< /highlight  >}}\n-->\n{{< highlight yaml \"linenos=false,hl_lines=2-5\" >}}\n---",
+ "packet": "10430acbea0659ac",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< highlight yaml \"linenos=false,hl_lines=2-5\" >}}\n---",
+ "reference_kind": "quote"
+}

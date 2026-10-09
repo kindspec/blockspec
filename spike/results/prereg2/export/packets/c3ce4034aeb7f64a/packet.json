@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "## Update strategies\n\nA StatefulSet's `.spec.updateStrategy` field allows you to configure\nand disable automated rolling updates for containers, labels, resource request/limits, and\nannotations for the Pods in a StatefulSet. There are two possible values:\n\n`OnDelete`\n: When a StatefulSet's `.spec.updateStrategy.type` is set to `OnDelete`,\n  the StatefulSet controller will not automatically update the Pods in a\n  StatefulSet. Users must manually delete Pods to cause the controller to\n  create new Pods that reflect modifications made to a StatefulSet's `.spec.template`.\n\n`RollingUpdate`\n: The `RollingUpdate` update strategy implements automated, rolling update for the Pods in a StatefulSet. This is the default update strategy.",
+ "oracle_target": "The `RollingUpdate` update strategy can be partitioned, by specifying a\n`.spec.updateStrategy.rollingUpdate.partition`. If a partition is specified, all Pods with an\nordinal that is greater than or equal to the partition will be updated when the StatefulSet's\n`.spec.template` is updated. All Pods with an ordinal that is less than the partition will not\nbe updated, and, even if they are deleted, they will be recreated at the previous version. If a\nStatefulSet's `.spec.updateStrategy.rollingUpdate.partition` is greater than its `.spec.replicas`,\nupdates to its `.spec.template` will not be propagated to its Pods.\nIn most cases you will not need to use a partition, but they are useful if you want to stage an\nupdate, roll out a canary, or perform a phased roll out.",
+ "packet": "c3ce4034aeb7f64a",
+ "questions": "QUESTIONS.md",
+ "reference": "update-strategies",
+ "reference_kind": "name"
+}

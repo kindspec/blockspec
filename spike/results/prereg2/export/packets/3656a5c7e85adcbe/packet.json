@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "If Customer is a U.S. government entity or otherwise accessing or using the Service in a government capacity, the [U.S. Federal Government Amendment](/site-policy/site-policy-deprecated/amendment-to-github-terms-of-service-applicable-to-us-federal-government-users) applies, and Customer agrees to its provisions.",
+ "oracle_target": "### 5. U.S. Federal Government Terms",
+ "packet": "3656a5c7e85adcbe",
+ "questions": "QUESTIONS.md",
+ "reference": "### 5. U.S. Federal Government Terms\nIf Customer is a U.S. government entity or otherwise accessing or using the Service in a government capacity, the [U.S. Federal Government Amendment](/articles/amendment-to-github-terms-of-service-applicable-to-us-federal-government-users) applies, and Customer agrees to its provisions.",
+ "reference_kind": "quote"
+}

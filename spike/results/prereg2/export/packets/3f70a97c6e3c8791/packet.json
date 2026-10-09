@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Trusting TLS in a cluster\n\nTrusting the [custom CA](#configuring-your-cluster-to-provide-signing) from an application running as a pod usually requires\nsome extra application configuration. You will need to add the CA certificate\nbundle to the list of CA certificates that the TLS client or server trusts. For\nexample, you would do this with a golang TLS config by parsing the certificate\nchain and adding the parsed certificates to the `RootCAs` field in the\n[`tls.Config`](https://pkg.go.dev/crypto/tls#Config) struct.\n\n{{< note >}}\nEven though the custom CA certificate may be included in the filesystem (in the\nConfigMap `kube-root-ca.crt`),\nyou should not use that certificate authority for any purpose other than to verify internal\nKubernetes endpoints. An example of an internal Kubernetes endpoint is the\nService named `kubernetes` in the default namespace.\n\nIf you want to use a custom certificate authority for your workloads, you should generate\nthat CA separately, and distribute its CA certificate using a \n[ConfigMap](/docs/tasks/configure-pod-container/configure-pod-configmap) that your pods \nhave access to read.\n{{< /note >}}",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "3f70a97c6e3c8791",
+ "questions": "QUESTIONS.md",
+ "reference": "trusting-tls-in-a-cluster",
+ "reference_kind": "name"
+}

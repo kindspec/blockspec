@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "You are responsible for using the Service in compliance with all applicable laws, regulations, and all of our Acceptable Use Policies. These policies may be updated from time to time and are provided below.",
+ "oracle_target": "## 1. Compliance with Laws and Regulations",
+ "packet": "a52212f5128be6b4",
+ "questions": "QUESTIONS.md",
+ "reference": "## 1. Compliance with Laws and Regulations\nYou are responsible for using the Service in compliance with all applicable laws, regulations, and all of our Acceptable Use Policies. These policies may be updated from time to time and are provided below, as well as in our [Terms of Service](/site-policy/github-terms/github-terms-of-service) and [Corporate Terms of Service](/site-policy/github-terms/github-corporate-terms-of-service).",
+ "reference_kind": "quote"
+}

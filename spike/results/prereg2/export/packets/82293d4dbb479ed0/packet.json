@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "[doccargo]: http://doc.crates.io\n[doccratesio]: http://doc.crates.io/crates-io.html",
+ "oracle_target": "[semver]: http://semver.org",
+ "packet": "82293d4dbb479ed0",
+ "questions": "QUESTIONS.md",
+ "reference": "[semver]: http://semver.org\n[cargodoc]: http://doc.crates.io/specifying-dependencies.html",
+ "reference_kind": "quote"
+}

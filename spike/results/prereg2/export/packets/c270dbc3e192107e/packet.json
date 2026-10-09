@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "To access service account tokens (for example) the following path structures are supported within the container:\n-->",
+ "oracle_target": "Applications running inside the container can access volume mounts directly via the volumeMount's\nspecified `mountPath` (just like Linux and non-HostProcess Windows containers).\n-->",
+ "packet": "c270dbc3e192107e",
+ "questions": "QUESTIONS.md",
+ "reference": "To access service account tokens the following path structures are supported within the container:\n-->",
+ "reference_kind": "quote"
+}

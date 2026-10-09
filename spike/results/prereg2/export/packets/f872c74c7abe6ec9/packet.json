@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Instead of using a pre-existing snapshot, you can request that a snapshot to be dynamically\ntaken from a PersistentVolumeClaim. The [VolumeSnapshotClass](/docs/concepts/storage/volume-snapshot-classes/)\nspecifies storage provider-specific parameters to use when taking a snapshot.",
+ "oracle_target": "#### Dynamic",
+ "packet": "f872c74c7abe6ec9",
+ "questions": "QUESTIONS.md",
+ "reference": "#### Dynamic\nInstead of using a pre-existing snapshot, you can request that a snapshot to be dynamically taken from a PersistentVolumeClaim. The [VolumeSnapshotClass](/docs/concepts/storage/volume-snapshot-classes/) specifies storage provider-specific parameters to use when taking a snapshot.",
+ "reference_kind": "quote"
+}

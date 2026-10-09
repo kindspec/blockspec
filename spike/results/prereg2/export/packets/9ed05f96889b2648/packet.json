@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "You must not engage in activity that significantly harms other users.",
+ "oracle_target": "## 11. User Protection",
+ "packet": "9ed05f96889b2648",
+ "questions": "QUESTIONS.md",
+ "reference": "## 11. User Protection\nYou must not engage in activity that significantly harms other users.",
+ "reference_kind": "quote"
+}

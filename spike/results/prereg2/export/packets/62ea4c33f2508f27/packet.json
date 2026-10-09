@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "* `NAME` lists the names of the ReplicaSets in the namespace.\n      * `DESIRED` displays the desired number of _replicas_ of the application, which you define when you create the Deployment. This is the _desired state_.\n      * `CURRENT` displays how many replicas are currently running.\n      * `READY` displays how many replicas of the application are available to your users.\n      * `AGE` displays the amount of time that the application has been running.",
+ "oracle_target": "* `NAME` lists the names of the Deployments in the namespace.\n      * `READY` displays how many replicas of the application are available to your users. It follows the pattern ready/desired.\n      * `UP-TO-DATE` displays the number of replicas that have been updated to achieve the desired state.\n      * `AVAILABLE` displays how many replicas of the application are available to your users.\n      * `AGE` displays the amount of time that the application has been running.",
+ "packet": "62ea4c33f2508f27",
+ "questions": "QUESTIONS.md",
+ "reference": "* `NAME` lists the names of the Deployments in the cluster.\n      * `DESIRED` displays the desired number of _replicas_ of the application, which you define when you create the Deployment. This is the _desired state_.\n      * `CURRENT` displays how many replicas are currently running.\n      * `UP-TO-DATE` displays the number of replicas that have been updated to achieve the desired state.\n      * `AVAILABLE` displays how many replicas of the application are available to your users.\n      * `AGE` displays the amount of time that the application has been running.",
+ "reference_kind": "quote"
+}

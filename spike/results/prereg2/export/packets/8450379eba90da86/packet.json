@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### DNS\n\n[애드온](/docs/concepts/cluster-administration/addons/)을 사용하여 쿠버네티스\n클러스터에 DNS 서비스를 설정할 수 있다(거의 항상 그렇게 해야 한다).\n\nCoreDNS와 같은 클러스터를 인식하는 DNS 서버는 새로운 서비스가 있는지\n쿠버네티스 API를 감시하고, 각각에 대해 DNS 레코드 집합을 생성한다. 클러스터\n전체에서 DNS가 활성화되어 있다면, 모든 파드는 자동으로 서비스를 해당 DNS\n이름으로 확인할 수 있어야 한다.\n\n예를 들어, 쿠버네티스 네임스페이스 `my-ns`에 `my-service`라는 서비스가\n있다면, 컨트롤 플레인과 DNS 서비스가 함께 작동하여 `my-service.my-ns`에\n대한 DNS 레코드를 생성한다. `my-ns` 네임스페이스의 파드는 `my-service`에\n대한 이름 조회를 수행하여 해당 서비스를 찾을 수 있어야 한다\n(`my-service.my-ns`도 마찬가지로 동작한다).\n\n다른 네임스페이스의 파드는 이름을 `my-service.my-ns`로 한정해야 한다.\n이러한 이름은 서비스에 할당된 클러스터 IP로 확인된다.\n\n쿠버네티스는 또한 이름이 지정된 포트에 대해 DNS SRV(서비스) 레코드도\n지원한다. `my-service.my-ns` 서비스에 프로토콜이 `TCP`로 설정된 `http`라는\n이름의 포트가 있다면, `_http._tcp.my-service.my-ns`에 대한 DNS SRV 쿼리를\n수행하여 IP 주소는 물론 `http`의 포트 번호도 발견할 수 있다.\n\n쿠버네티스 DNS 서버는 `ExternalName` 서비스에 접근할 수 있는 유일한 방법이다.\n`ExternalName` 확인에 대한 자세한 내용은\n[서비스 및 파드용 DNS](/docs/concepts/services-networking/dns-pod-service/)에서 찾을 수 있다.\n\n<!-- preserve existing hyperlinks -->\n<a id=\"shortcomings\" />\n<a id=\"the-gory-details-of-virtual-ips\" />\n<a id=\"proxy-modes\" />\n<a id=\"proxy-mode-userspace\" />\n<a id=\"proxy-mode-iptables\" />\n<a id=\"proxy-mode-ipvs\" />\n<a id=\"ips-and-vips\" />",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "8450379eba90da86",
+ "questions": "QUESTIONS.md",
+ "reference": "dns",
+ "reference_kind": "name"
+}

@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "## {{% heading \"prerequisites\" %}}\n\nBefore you follow steps in this page to deploy, manage, back up or restore etcd,\nyou need to understand the typical expectations for operating an etcd cluster.\nRefer to the [etcd documentation](https://etcd.io/docs/) for more context.\n\nKey details include:\n\n* The minimum recommended etcd versions to run in production are `3.4.22+` and `3.5.6+`.\n\n* etcd is a leader-based distributed system. Ensure that the leader\n  periodically send heartbeats on time to all followers to keep the cluster\n  stable.\n\n* You should run etcd as a cluster with an odd number of members.\n\n* Aim to ensure that no resource starvation occurs.\n\n  Performance and stability of the cluster is sensitive to network and disk\n  I/O. Any resource starvation can lead to heartbeat timeout, causing instability\n  of the cluster. An unstable etcd indicates that no leader is elected. Under\n  such circumstances, a cluster cannot make any changes to its current state,\n  which implies no new pods can be scheduled.\n\n### Resource requirements for etcd\n\nOperating etcd with limited resources is suitable only for testing purposes.\nFor deploying in production, advanced hardware configuration is required.\nBefore deploying etcd in production, see\n[resource requirement reference](https://etcd.io/docs/current/op-guide/hardware/#example-hardware-configurations).\n\nKeeping etcd clusters stable is critical to the stability of Kubernetes\nclusters. Therefore, run etcd clusters on dedicated machines or isolated\nenvironments for [guaranteed resource requirements](https://etcd.io/docs/current/op-guide/hardware/).\n\n### Tools\n\nDepending on which specific outcome you're working on, you will need the `etcdctl` tool or the\n`etcdutl` tool (you may need both).\n\n<!-- steps -->",
+ "oracle_target": "- `etcdutl`: This is an administration utility designed to operate directly on etcd data\nfiles, including migrating data between etcd versions, defragmenting the database,\nrestoring snapshots, and validating data consistency. For network operations, `etcdctl`\nshould be used.",
+ "packet": "d469253ed72ceef9",
+ "questions": "QUESTIONS.md",
+ "reference": "heading-prerequisites",
+ "reference_kind": "name"
+}

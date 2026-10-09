@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Upstream contributions\n\nSIG Docs welcomes upstream contributions and corrections to the English source.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "9898082902d831c8",
+ "questions": "QUESTIONS.md",
+ "reference": "upstream-contributions",
+ "reference_kind": "name"
+}

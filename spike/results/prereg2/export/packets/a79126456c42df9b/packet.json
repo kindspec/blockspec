@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "1. Prepare the batter, and pour into springform pan.\n       `{{</* note */>}}Grease the pan for best results.{{</* /note */>}}`",
+ "oracle_target": "1. Prepare the batter, and pour into springform pan.",
+ "packet": "a79126456c42df9b",
+ "questions": "QUESTIONS.md",
+ "reference": "1. Prepare the batter, and pour into springform pan.\n    {{< note >}}**Note:** Grease the pan for best results.{{< /note >}}",
+ "reference_kind": "quote"
+}

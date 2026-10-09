@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Voting\n\nSee the voting policy [here](docs/voting.md).",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "5ba4d52b233a41cf",
+ "questions": "QUESTIONS.md",
+ "reference": "voting",
+ "reference_kind": "name"
+}

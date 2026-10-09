@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### IP address ranges for Service virtual IP addresses {#service-ip-static-sub-range}\n-->",
+ "oracle_target": "<!--\nUsers can create or delete new ServiceCIDR objects to manage the available IP ranges for Services:\n-->\n用户可以创建或删除新的 ServiceCIDR 对象来管理 Service 的可用 IP 范围：",
+ "packet": "cd121f4f32f16858",
+ "questions": "QUESTIONS.md",
+ "reference": "ip-address-ranges-for-service-virtual-ip-addresses-service-ip-static-sub-range",
+ "reference_kind": "name"
+}

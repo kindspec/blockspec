@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "GitHub will provide the Sponsor the ability to create an invoice to add funds to their account balance for the purpose of investing in the Projects it so chooses.",
+ "oracle_target": "### 1.2 Invoice creation.",
+ "packet": "0137438efe5c972f",
+ "questions": "QUESTIONS.md",
+ "reference": "### 1.2 Invoice creation.\nGitHub will provide the Sponsor the ability to create an invoice to add funds to their account balance for the purpose of investing in the Projects it so chooses.",
+ "reference_kind": "quote"
+}

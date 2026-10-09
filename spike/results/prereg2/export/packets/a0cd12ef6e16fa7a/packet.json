@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "クラスターで実行されているアプリケーションのライブ設定に使用されているすべてのKubernetesリソースを表示します。\nこのビューでは、設定オブジェクトの編集と管理が可能で、デフォルトで非表示になっているSecretを表示します。",
+ "oracle_target": "#### ConfigMapとSecret",
+ "packet": "a0cd12ef6e16fa7a",
+ "questions": "QUESTIONS.md",
+ "reference": "#### ConfigMapとSecret\nクラスターで実行されているアプリケーションのライブ設定に使用されているすべてのKubernetesリソースを表示します。このビューでは、設定オブジェクトの編集と管理が可能で、デフォルトで非表示になっているSecretを表示します。",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Communications made through email or GitHub Support's messaging system will not constitute legal notice to GitHub in any situation where notice to GitHub is required by contract or any law or regulation. Legal notice to GitHub must be in writing and [served on GitHub's legal agent](/site-policy/other-site-policies/guidelines-for-legal-requests-of-user-data#submitting-requests).",
+ "oracle_target": "### 2. Legal Notice to GitHub Must Be in Writing",
+ "packet": "e3ad5e0613756b38",
+ "questions": "QUESTIONS.md",
+ "reference": "### 2. Legal Notice to GitHub Must Be in Writing\nCommunications made through email or GitHub Support's messaging system will not constitute legal notice to GitHub in any situation where notice to GitHub is required by contract or any law or regulation. Legal notice to GitHub must be in writing and [served on GitHub's legal agent](/articles/guidelines-for-legal-requests-of-user-data/#submitting-requests).",
+ "reference_kind": "quote"
+}

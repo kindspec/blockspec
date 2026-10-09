@@ -1,0 +1,20 @@
+# prereg2 score obsidian-help
+# argv: prereg2.py score --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm obsidian-help --work-dir /home/cam/kindspec-data/prereg2-score-work/obsidian-help
+# start: 2026-10-08T18:02:58Z
+# blockspec HEAD: d6e6f1c107de626988c6ae411a603be6faba4dec
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-08T18:03:01Z
+### obsidian-help E: evaluated 1000 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"commits:no_merges": 2278, "excluded:add": 186, "excluded:delete": 5, "excluded:other_status": 0, "excluded:rename": 62, "path_not_selected": 29374, "population": 1697, "sample": 1000}, "evaluated_instances": 1000, "none": {"commits:no_merges": 2278, "excluded:add": 186, "excluded:delete": 5, "excluded:other_status": 0, "excluded:rename": 62, "path_not_selected": 29374, "population": 1697, "sample": 1000}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"commits:no_merges": 2278, "excluded:add": 186, "excluded:delete": 5, "excluded:other_status": 0, "excluded:rename": 62, "path_not_selected": 29374, "population": 1697, "sample": 1000}}
+### obsidian-help S5: evaluated 500 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap5:excluded:blob_missing": 3, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 1101, "gap5:population": 1098, "paths": 176, "sample": 500}, "evaluated_instances": 500, "none": {"gap5:excluded:blob_missing": 3, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 1101, "gap5:population": 1098, "paths": 176, "sample": 500}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap5:excluded:blob_missing": 3, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 1101, "gap5:population": 1098, "paths": 176, "sample": 500}}
+### obsidian-help S25: evaluated 148 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 148, "gap25:population": 148, "paths": 176, "sample": 148}, "evaluated_instances": 148, "none": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 148, "gap25:population": 148, "paths": 176, "sample": 148}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 148, "gap25:population": 148, "paths": 176, "sample": 148}}
+### obsidian-help M: evaluated 3 instances, 2 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"evaluated_instances": 3, "filter": {"cases_in": 15, "dropped:not_selected": 10, "kept": 5, "kept:anywhere": 5, "kept:none": 5, "kept:yaml-fence": 5}, "find_merge_cases": {"drop:add_add": 7, "drop:convergent": 9, "drop:delete_modify": 2, "drop:multi_base": 2, "merges:two_parent": 352, "paths:both_sides": 33, "paths:one_side": 2773}, "merges": {"clean": 3, "not_clean": 2}, "not_evaluated": 2, "undecodable": 0}
+
+# end: 2026-10-08T18:28:28Z
+# exited: exit status 0

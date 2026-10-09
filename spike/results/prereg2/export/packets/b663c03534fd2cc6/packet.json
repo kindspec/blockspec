@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Make sure you've configured a network provider with network policy support. There are a number of network providers that support NetworkPolicy, including:",
+ "oracle_target": "{{% capture prerequisites %}}",
+ "packet": "b663c03534fd2cc6",
+ "questions": "QUESTIONS.md",
+ "reference": "{{% capture prerequisites %}}\nYou'll need to have a Kubernetes cluster in place, with network policy support. There are a number of network providers that support NetworkPolicy, including:",
+ "reference_kind": "quote"
+}

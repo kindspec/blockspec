@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "To configure a validating admission policy for use in a cluster, a binding is required.\nThe following is an example of a ValidatingAdmissionPolicyBinding.:",
+ "oracle_target": "To configure an validating admission policy for use in a cluster, a binding and parameter resource\nare created. The following is an example of a ValidatingAdmissionPolicyBinding \nthat uses a **cluster-wide** param - the same param will be used to validate\nevery resource request that matches the binding:",
+ "packet": "819a71167a246a76",
+ "questions": "QUESTIONS.md",
+ "reference": "To configure an validating admission policy for use in a cluster, a binding and parameter resource\nare created. The following is an example of a ValidatingAdmissionPolicyBinding.",
+ "reference_kind": "quote"
+}

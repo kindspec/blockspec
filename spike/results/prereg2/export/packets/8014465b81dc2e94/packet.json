@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Why not use round-robin DNS?\n\nA question that pops up every now and then is why Kubernetes relies on\nproxying to forward inbound traffic to backends. What about other\napproaches? For example, would it be possible to configure DNS records that\nhave multiple A values (or AAAA for IPv6), and rely on round-robin name\nresolution?\n\nThere are a few reasons for using proxying for Services:\n\n * There is a long history of DNS implementations not respecting record TTLs,\n   and caching the results of name lookups after they should have expired.\n * Some apps do DNS lookups only once and cache the results indefinitely.\n * Even if apps and libraries did proper re-resolution, the low or zero TTLs\n   on the DNS records could impose a high load on DNS that then becomes\n   difficult to manage.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "8014465b81dc2e94",
+ "questions": "QUESTIONS.md",
+ "reference": "why-not-use-round-robin-dns",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Pod lifetime\n\nLike individual application containers, Pods are considered to be relatively\nephemeral (rather than durable) entities. Pods are created, assigned a unique\nID ([UID](/docs/concepts/overview/working-with-objects/names/#uids)), and scheduled\nto nodes where they remain until termination (according to restart policy) or\ndeletion.  \nIf a {{< glossary_tooltip term_id=\"node\" >}} dies, the Pods scheduled to that node\nare [scheduled for deletion](#pod-garbage-collection) after a timeout period.\n\nPods do not, by themselves, self-heal. If a Pod is scheduled to a\n{{< glossary_tooltip text=\"node\" term_id=\"node\" >}} that then fails,\nor if the scheduling operation itself fails, the Pod is deleted; likewise, a Pod won't\nsurvive an eviction due to a lack of resources or Node maintenance. Kubernetes uses a\nhigher-level abstraction, called a\n{{< glossary_tooltip term_id=\"controller\" text=\"controller\" >}}, that handles the work of\nmanaging the relatively disposable Pod instances.\n\nA given Pod (as defined by a UID) is never \"rescheduled\" to a different node; instead,\nthat Pod can be replaced by a new, near-identical Pod, with even the same name if\ndesired, but with a different UID.\n\nWhen something is said to have the same lifetime as a Pod, such as a\n{{< glossary_tooltip term_id=\"volume\" text=\"volume\" >}},\nthat means that the thing exists as long as that specific Pod (with that exact UID)\nexists. If that Pod is deleted for any reason, and even if an identical replacement\nis created, the related thing (a volume, in this example) is also destroyed and\ncreated anew.\n\n{{< figure src=\"/images/docs/pod.svg\" title=\"Pod diagram\" width=\"50%\" >}}\n\n*A multi-container Pod that contains a file puller and a\nweb server that uses a persistent volume for shared storage between the containers.*",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "972357728ce286d6",
+ "questions": "QUESTIONS.md",
+ "reference": "pod-lifetime",
+ "reference_kind": "name"
+}

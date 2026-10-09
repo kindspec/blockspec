@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "<!--\nThe tracking issue for this problem is [here](https://github.com/kubernetes/kubeadm/issues/1027).\n-->\n此问题的跟踪[在这里](https://github.com/kubernetes/kubeadm/issues/1027)。",
+ "oracle_target": "The following error can be seen in kube-proxy Pods:\n-->",
+ "packet": "61fbca3e00f244d0",
+ "questions": "QUESTIONS.md",
+ "reference": "The tracking issue for this problem is [here](https://github.com/kubernetes/kubeadm/issues/1027).\n-->",
+ "reference_kind": "quote"
+}

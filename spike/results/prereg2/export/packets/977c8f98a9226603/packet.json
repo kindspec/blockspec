@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "{{< note >}}\n쿠버네티스 vSphere 클라우드 공급자를 구성해야 한다. 클라우드공급자\n구성에 대해선 [vSphere 시작 가이드](https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/)를 참조한다.\n{{< /note >}}",
+ "oracle_target": "{{< note >}}\n쿠버네티스는 오픈스택 클라우드 공급자로 구성되어야 한다.\n{{< /note >}}",
+ "packet": "977c8f98a9226603",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\n전제 조건: 오픈스택 클라우드 공급자로 구성된 쿠버네티스. 클라우드 공급자\n구성에 대해서는 [오픈스택 클라우드 공급자](/ko/docs/concepts/cluster-administration/cloud-providers/#openstack)를 참조한다.\n{{< /note >}}",
+ "reference_kind": "quote"
+}

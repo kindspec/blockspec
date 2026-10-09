@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Heading levels\n\nThe above heading is an H2. The page title renders as an H1. The following\nsections show H3 - H6.\n-->",
+ "oracle_target": "This is in an H6 section.\n-->\n渲染后的结果为：",
+ "packet": "5afeb07f98306437",
+ "questions": "QUESTIONS.md",
+ "reference": "heading-levels",
+ "reference_kind": "name"
+}

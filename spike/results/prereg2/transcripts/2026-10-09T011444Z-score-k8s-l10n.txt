@@ -1,0 +1,20 @@
+# prereg2 score k8s-l10n
+# argv: prereg2.py score --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --work-dir /home/cam/kindspec-data/prereg2-score-work/k8s-l10n
+# start: 2026-10-09T01:14:44Z
+# blockspec HEAD: 3b9d098c4fba758395bbaa0a30a923f9d9a2bc3a
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-09T01:14:53Z
+### k8s-l10n E: evaluated 1056 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"commits:no_merges": 41393, "excluded:add": 5678, "excluded:delete": 32, "excluded:other_status": 0, "excluded:rename": 1667, "path_not_selected": 162549, "population": 18722, "sample": 1000}, "evaluated_instances": 1056, "none": {"commits:no_merges": 41393, "excluded:add": 5939, "excluded:delete": 32, "excluded:other_status": 0, "excluded:rename": 1723, "path_not_selected": 161136, "population": 19874, "sample": 1000}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"commits:no_merges": 41393, "excluded:add": 5919, "excluded:delete": 32, "excluded:other_status": 0, "excluded:rename": 1716, "path_not_selected": 161205, "population": 19825, "sample": 1000}}
+### k8s-l10n S5: evaluated 525 instances, 0 not evaluated, undecodable 1 (excluded, LOG §15)
+   {"anywhere": {"gap5:excluded:blob_missing": 6, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 8706, "gap5:population": 8700, "paths": 5485, "sample": 500}, "evaluated_instances": 525, "none": {"gap5:excluded:blob_missing": 6, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 9111, "gap5:population": 9105, "paths": 5746, "sample": 500}, "not_evaluated": 0, "undecodable": 1, "yaml-fence": {"gap5:excluded:blob_missing": 6, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 9089, "gap5:population": 9083, "paths": 5727, "sample": 500}}
+### k8s-l10n S25: evaluated 500 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 1022, "gap25:population": 1022, "paths": 5485, "sample": 500}, "evaluated_instances": 500, "none": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 1022, "gap25:population": 1022, "paths": 5746, "sample": 500}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 1022, "gap25:population": 1022, "paths": 5727, "sample": 500}}
+### k8s-l10n M: evaluated 249 instances, 31 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"evaluated_instances": 249, "filter": {"cases_in": 2374, "dropped:not_selected": 2094, "kept": 280, "kept:anywhere": 277, "kept:none": 280, "kept:yaml-fence": 280}, "find_merge_cases": {"drop:add_add": 267, "drop:convergent": 674, "drop:delete_modify": 46, "drop:multi_base": 16, "drop:octopus": 1, "drop:unchanged_side": 19, "merges:two_parent": 23472, "paths:both_sides": 3380, "paths:one_side": 3445106}, "merges": {"clean": 249, "not_clean": 31}, "not_evaluated": 31, "undecodable": 0}
+
+# end: 2026-10-09T10:43:48Z
+# exited: exit status 0

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "下面是一个 `minikube` 节点的 Metrics API 请求示例，通过 `jq` 管道处理以便于阅读：",
+ "oracle_target": "<!--\nHere is an example of the Metrics API request for a `kube-scheduler-minikube` pod contained in the\n`kube-system` namespace and piped through `jq` for easier reading:\n-->\n下面是一个 `kube-system` 命名空间中的 `kube-scheduler-minikube` Pod 的 Metrics API 请求示例，\n通过 `jq` 管道处理以便于阅读：",
+ "packet": "1b4b3ad20a619992",
+ "questions": "QUESTIONS.md",
+ "reference": "下面是一个 `kube-system` 命名空间中的 `kube-scheduler-minikube` Pod 的 Metrics API 请求示例，\n通过 `jq` 管道处理以便于阅读：",
+ "reference_kind": "quote"
+}

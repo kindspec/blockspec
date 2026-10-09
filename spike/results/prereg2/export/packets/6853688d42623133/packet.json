@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "This annotation has been deprecated.",
+ "oracle_target": "This annotation has been deprecated.",
+ "packet": "6853688d42623133",
+ "questions": "QUESTIONS.md",
+ "reference": "This annotation has been deprecated.",
+ "reference_kind": "quote"
+}

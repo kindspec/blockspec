@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## User impersonation\n\n[User impersonation](/docs/reference/access-authn-authz/user-impersonation/) provides\na method that a user can act as another user through impersonation headers",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "e5526ccf9f11edc1",
+ "questions": "QUESTIONS.md",
+ "reference": "user-impersonation",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "**Short version:** _We own the service and all of our content. In order for you to use our content, we give you certain rights to it, but you may only use our content in the way we have allowed._",
+ "oracle_target": "## G. Intellectual Property Notice",
+ "packet": "ef2fbb4be35560f5",
+ "questions": "QUESTIONS.md",
+ "reference": "## G. Intellectual Property Notice\n**Short version:** *We own the service and all of our content. In order for you to use our content, we give you certain rights to it, but you may only use our content in the way we have allowed.*",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "_This proxy mode is only available on Linux nodes._",
+ "oracle_target": "_This proxy mode is only available on Linux nodes._",
+ "packet": "954ea087ec0efb98",
+ "questions": "QUESTIONS.md",
+ "reference": "_This proxy mode is only available on Linux nodes._",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## External images\n\nYou can add images with external URLs, by adding a `!` symbol before an [[#External links|external link]].\n\n```md\n![Engelbart](https://history-computer.com/ModernComputer/Basis/images/Engelbart.jpg)\n```\n\n![Engelbart](https://history-computer.com/ModernComputer/Basis/images/Engelbart.jpg)\n\nYou can change the image dimensions, by adding `|640x480` to the link destination, where 640 is the width and 480 is the height.\n\n```md\n![Engelbart|100x145](https://history-computer.com/ModernComputer/Basis/images/Engelbart.jpg)\n```\n\nIf you only specify the width, the image scales according to its original aspect ratio. For example:\n\n```md\n![Engelbart|100](https://history-computer.com/ModernComputer/Basis/images/Engelbart.jpg)\n```\n\n> [!tip]\n> If you want to add an image from inside your vault, you can also [[Embed files#Embed an image in a note|embed an image in a note]].",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "797e92a79c7af813",
+ "questions": "QUESTIONS.md",
+ "reference": "external-images",
+ "reference_kind": "name"
+}

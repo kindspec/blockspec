@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Kubernetes 项目建议你改为使用 [Azure File](https://github.com/kubernetes-sigs/azurefile-csi-driver)\n第三方存储驱动。",
+ "oracle_target": "### azureFile (deprecated) {#azurefile}\n-->",
+ "packet": "a20138646c261ffb",
+ "questions": "QUESTIONS.md",
+ "reference": "For more details, see the [`azureFile` volume plugin](https://github.com/kubernetes/examples/tree/master/staging/volumes/azure_file/README.md).\n-->",
+ "reference_kind": "quote"
+}

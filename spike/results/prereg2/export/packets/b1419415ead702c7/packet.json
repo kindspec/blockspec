@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "`busybox` 컨테이너를 띄운 터미널에서,\n`<Ctrl> + C`로 부하 발생을 중단시킨다.",
+ "oracle_target": "본 예제를 마무리하기 위해 부하를 중단시킨다.",
+ "packet": "b1419415ead702c7",
+ "questions": "QUESTIONS.md",
+ "reference": "본 예제를 마무리하기 위해 부하를 중단시킨다.\n`busybox` 컨테이너를 띄운 터미널에서, `<Ctrl> + C`로 부하 발생을 중단시킨다. 그런 다음 (몇 분 후에) 결과를 확인한다.",
+ "reference_kind": "quote"
+}

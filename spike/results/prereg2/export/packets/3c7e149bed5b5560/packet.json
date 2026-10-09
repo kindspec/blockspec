@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "The Node controller adds the taint to a Node corresponding to the\n[NodeCondition](/docs/concepts/architecture/nodes/#condition) `Ready` being `Unknown`.\n-->",
+ "oracle_target": "The Node controller detects whether a Node is ready by monitoring its health\nand adds or removes this taint accordingly.\n-->",
+ "packet": "3c7e149bed5b5560",
+ "questions": "QUESTIONS.md",
+ "reference": "The node controller adds the taint to a node corresponding to the [NodeCondition](/docs/concepts/architecture/nodes/#condition) `Ready` being `Unknown`.\n-->",
+ "reference_kind": "quote"
+}

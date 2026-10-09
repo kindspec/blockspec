@@ -1,0 +1,15 @@
+# prereg2 export
+# argv: prereg2.py export --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --manifest /home/cam/kindspec-data/prereg2-seal/sealed-manifest.json
+# start: 2026-10-09T11:24:23Z
+# blockspec HEAD: eeb71f5e1f5c3c1c1e190fade9c2d8a0951fe637
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-09T11:24:30Z
+exported 486 packets to /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/wt-score/spike/results/prereg2/export
+export manifest (sha256 of each file): /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/wt-score/spike/results/prereg2/export-manifest.txt
+packet count: 486
+
+# end: 2026-10-09T11:24:32Z
+# exited: exit status 0

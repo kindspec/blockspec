@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Regional sync servers\n\nObsidian Sync allows you to choose the hosting location for your remote vault. If you're using version 1.4.16 or older of Obsidian, the location will be automatically chosen for you.\n\nIf you're unsure where your current vault's region is, check out [[Obsidian Sync/Security and privacy#Where can I find my current Sync server and where is it hosted?|Where can I find my current Sync server and where is it hosted?]] for guidance.\n\n![[sync-regional-sync-servers.png#interface|300]]\n\nAfter selecting a location, it's crucial to be aware that the data center **cannot** be changed afterward. If you wish to relocate your data, the process involves recreating a remote vault and specifying the desired hosting location during the setup.\n\n![[Obsidian Sync/Security and privacy#^sync-geo-regions]]\n\n### Change your remote vault region\n\nTo change your remote vault's region, you will need to perform the following steps in order.\n\n![[#Disconnect from a remote vault]]\n![[#Create a new remote vault]]\n![[#Connect to a remote vault]]\n\nAdditionally, you can [[#Delete a remote vault|delete your old remote vault]] once you have confirmed transition to your new remote vault and its region.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "2025abea867cf359",
+ "questions": "QUESTIONS.md",
+ "reference": "regional-sync-servers",
+ "reference_kind": "name"
+}

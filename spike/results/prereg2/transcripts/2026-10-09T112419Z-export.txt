@@ -1,0 +1,27 @@
+# prereg2 export
+# argv: prereg2.py export --help
+# start: 2026-10-09T11:24:19Z
+# blockspec HEAD: 78712fb1dd8f2221fbed0b22ffeb3583fe09083c
+# python 3.13.5
+usage: prereg2.py export [-h] --d8-dir D8_DIR
+                         [--transcript-dir TRANSCRIPT_DIR] [--unbound]
+                         [--fixture-repo FIXTURE_REPO] --manifest MANIFEST
+                         [--manifest-sha MANIFEST_SHA] [--score-dir SCORE_DIR]
+                         [--out OUT]
+
+options:
+  -h, --help            show this help message and exit
+  --d8-dir D8_DIR
+  --transcript-dir TRANSCRIPT_DIR
+  --unbound
+  --fixture-repo FIXTURE_REPO
+  --manifest MANIFEST
+  --manifest-sha MANIFEST_SHA
+  --score-dir SCORE_DIR
+  --out OUT
+# harness bound: False
+#   not bound: usage error
+
+
+# end: 2026-10-09T11:24:19Z
+# exited: exit status 0

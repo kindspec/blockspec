@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "#### Types of Inter-pod Affinity and Anti-affinity\n\nInter-pod affinity and anti-affinity take the form \"this\nPod should (or, in the case of anti-affinity, should not) run in an X if that X\nis already running one or more Pods that meet rule Y\", where X is a topology\ndomain like node, rack, cloud provider zone or region, or similar and Y is the\nrule Kubernetes tries to satisfy.\n-->",
+ "oracle_target": "<!--\nSimilar to [node affinity](#node-affinity) are two types of Pod affinity and\nanti-affinity as follows:\n-->\n与[节点亲和性](#node-affinity)类似，Pod 的亲和性与反亲和性也有两种类型：",
+ "packet": "7d4be083838d295f",
+ "questions": "QUESTIONS.md",
+ "reference": "types-of-inter-pod-affinity-and-anti-affinity",
+ "reference_kind": "name"
+}

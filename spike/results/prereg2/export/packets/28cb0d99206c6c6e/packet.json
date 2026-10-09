@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "```\n--allow-label-value <metric_name>,<label_name>='<allow_value1>, <allow_value2>...', <metric_name2>,<label_name>='<allow_value1>, <allow_value2>...', ...\n```",
+ "oracle_target": "The overall format looks like:",
+ "packet": "28cb0d99206c6c6e",
+ "questions": "QUESTIONS.md",
+ "reference": "The overall format looks like:\n`--allow-label-value <metric_name>,<label_name>='<allow_value1>, <allow_value2>...', <metric_name2>,<label_name>='<allow_value1>, <allow_value2>...', ...`.",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## How can you avoid Service ClusterIP conflicts? {#avoid-ClusterIP-conflict}\n\nThe allocation strategy implemented in Kubernetes to allocate ClusterIPs to Services reduces the\nrisk of collision.\n\nThe `ClusterIP` range is divided, based on the formula `min(max(16, cidrSize / 16), 256)`,\ndescribed as _never less than 16 or more than 256 with a graduated step between them_.\n\nDynamic IP assignment uses the upper band by default, once this has been exhausted it will\nuse the lower range. This will allow users to use static allocations on the lower band with a low\nrisk of collision.",
+ "oracle_target": "{{< mermaid >}}\npie showData\n    title 10.96.0.0/24\n    \"Static\" : 16\n    \"Dynamic\" : 238\n{{< /mermaid >}}",
+ "packet": "1d46e111f80656f8",
+ "questions": "QUESTIONS.md",
+ "reference": "how-can-you-avoid-service-clusterip-conflicts-avoid-clusterip-conflict",
+ "reference_kind": "name"
+}

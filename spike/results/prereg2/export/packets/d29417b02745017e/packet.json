@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "All provisions of this Agreement which, by their nature, should survive termination _will_ survive termination — including, without limitation: ownership provisions, warranty disclaimers, indemnity, and limitations of liability.",
+ "oracle_target": "### 4. Survival",
+ "packet": "d29417b02745017e",
+ "questions": "QUESTIONS.md",
+ "reference": "### 4. Survival\nAll provisions of this Agreement which, by their nature, should survive termination *will* survive termination — including, without limitation: ownership provisions, warranty disclaimers, indemnity, and limitations of liability.",
+ "reference_kind": "quote"
+}

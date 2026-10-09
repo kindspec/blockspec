@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "For egress, this means that connections from pods to `Service` IPs that get rewritten to\ncluster-external IPs may or may not be subject to `ipBlock`-based policies.\n-->\n对入站流量而言，这意味着在某些情况下，你可以根据实际的原始源 IP 过滤传入的数据包，\n而在其他情况下，NetworkPolicy 所作用的 `源IP` 则可能是 `LoadBalancer` 或\nPod 的节点等。",
+ "oracle_target": "Cluster ingress and egress mechanisms often require rewriting the source or destination IP\nof packets. In cases where this happens, it is not defined whether this happens before or\nafter NetworkPolicy processing, and the behavior may be different for different\ncombinations of network plugin, cloud provider, `Service` implementation, etc.\n-->\n如有疑问，请使用 `kubectl describe` 查看 Kubernetes 如何解释该策略。",
+ "packet": "ec85ab1474ff619a",
+ "questions": "QUESTIONS.md",
+ "reference": "For egress, this means that connections from pods to `Service` IPs that get rewritten to\ncluster-external IPs may or may not be subject to `ipBlock`-based policies.\n-->\n如有疑问，请使用 `kubectl describe` 查看 Kubernetes 如何解释该策略。",
+ "reference_kind": "quote"
+}

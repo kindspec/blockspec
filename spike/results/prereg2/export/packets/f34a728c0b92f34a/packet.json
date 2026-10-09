@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Lifetime Annotations in Struct Definitions\n\nSo far, we’ve only defined structs to hold owned types. It’s possible for\nstructs to hold references, but in that case we would need to add a lifetime\nannotation on every reference in the struct’s definition. Listing 10-25 has a\nstruct named `ImportantExcerpt` that holds a string slice.\n\n<span class=\"filename\">Filename: src/main.rs</span>\n\n```rust\nstruct ImportantExcerpt<'a> {\n    part: &'a str,\n}\n\nfn main() {\n    let novel = String::from(\"Call me Ishmael. Some years ago...\");\n    let first_sentence = novel.split('.')\n        .next()\n        .expect(\"Could not find a '.'\");\n    let i = ImportantExcerpt { part: first_sentence };\n}\n```\n\n<span class=\"caption\">Listing 10-25: A struct that holds a reference, so its\ndefinition needs a lifetime annotation</span>\n\nThis struct has one field, `part`, that holds a string slice, which is a\nreference. As with generic data types, we declare the name of the generic\nlifetime parameter inside angle brackets after the name of the struct so we can\nuse the lifetime parameter in the body of the struct definition. This\nannotation means an instance of `ImportantExcerpt` can’t outlive the reference\nit holds in its `part` field.\n\nThe `main` function here creates an instance of the `ImportantExcerpt` struct\nthat holds a reference to the first sentence of the `String` owned by the\nvariable `novel`. The data in `novel` exists before the `ImportantExcerpt`\ninstance is created. In addition, `novel` doesn’t go out of scope until after\nthe `ImportantExcerpt` goes out of scope, so the reference in the\n`ImportantExcerpt` instance is valid.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "f34a728c0b92f34a",
+ "questions": "QUESTIONS.md",
+ "reference": "lifetime-annotations-in-struct-definitions",
+ "reference_kind": "name"
+}

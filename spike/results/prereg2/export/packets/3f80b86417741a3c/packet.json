@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "```go-text-template\n{{</* tabs name=\"tab_with_code\" >}}\n{{< tab name=\"Tab 1\" codelang=\"bash\" >}}\necho \"This is tab 1.\"\n{{< /tab >}}\n{{< tab codelang=\"go\" >}}\nprintln \"This is tab 2.\"\n{{< /tab >}}\n{{< /tabs */>}}\n```",
+ "oracle_target": "{{< tabs name=\"tab_with_code\" >}}\n{{< tab name=\"Tab A\" codelang=\"bash\" >}}\necho \"This is tab A.\"\n{{< /tab >}}\n{{< tab codelang=\"go\" >}}\n// If you don't set a tab name, the site supplies one.\nprintln \"This tab has a default name\";\n{{< /tab >}}\n{{< /tabs >}}",
+ "packet": "3f80b86417741a3c",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< tabs name=\"tab_with_code\" >}}\n{{< tab name=\"Tab 1\" codelang=\"bash\" >}}\necho \"This is tab 1.\"\n{{< /tab >}}\n{{< tab name=\"Tab 2\" codelang=\"go\" >}}\nprintln \"This is tab 2.\"\n{{< /tab >}}\n{{< /tabs >}}",
+ "reference_kind": "quote"
+}

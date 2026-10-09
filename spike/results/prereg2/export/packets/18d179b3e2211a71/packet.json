@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "* Text data is exposed as files using the UTF-8 character encoding. For other character encodings, use `binaryData`.",
+ "oracle_target": "{{< /note >}}",
+ "packet": "18d179b3e2211a71",
+ "questions": "QUESTIONS.md",
+ "reference": "* Text data is exposed as files using the UTF-8 character encoding. For other character encodings, use `binaryData`.\n{{< /note >}}",
+ "reference_kind": "quote"
+}

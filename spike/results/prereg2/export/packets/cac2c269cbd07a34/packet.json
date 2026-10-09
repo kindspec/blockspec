@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "**Short version:** _We provide our service as is, and we make no promises or guarantees about this service. Please read this section carefully; you should understand what to expect._",
+ "oracle_target": "## N. Disclaimer of Warranties",
+ "packet": "cac2c269cbd07a34",
+ "questions": "QUESTIONS.md",
+ "reference": "## N. Disclaimer of Warranties\n**Short version:** *We provide our service as is, and we make no promises or guarantees about this service. Please read this section carefully; you should understand what to expect.*",
+ "reference_kind": "quote"
+}

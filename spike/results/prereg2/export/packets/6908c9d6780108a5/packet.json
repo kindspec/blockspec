@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Podのリストと詳細ページは、ダッシュボードに組み込まれたログビューアーにリンクしています。\nこのビューアーでは、単一のPodに属するコンテナからログをドリルダウンすることができます。",
+ "oracle_target": "#### ログビューアー",
+ "packet": "6908c9d6780108a5",
+ "questions": "QUESTIONS.md",
+ "reference": "#### ログビューアー\nPodのリストと詳細ページは、ダッシュボードに組み込まれたログビューアーにリンクしています。このビューアーでは、単一のPodに属するコンテナからログをドリルダウンすることができます。",
+ "reference_kind": "quote"
+}

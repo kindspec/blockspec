@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "出站流量（来自 pod）由策略控制，策略只是丢弃超过配置速率的数据包。\n你为一个 Pod 所设置的限制不会影响其他 Pod 的带宽。\n要限制 Pod 的带宽，请编写对象定义 JSON 文件并使用 `kubernetes.io/egress-bandwidth` 注解指定数据流量速度。\n用于指定出站的速率单位是每秒比特数，\n以[量纲（Quantity）](/zh-cn/docs/reference/kubernetes-api/common-definitions/quantity/)的形式给出。\n例如，`10M` 表示每秒 10 兆比特。",
+ "oracle_target": "<!--\nYou can apply quality-of-service traffic shaping to a pod and effectively limit its available\nbandwidth. Ingress traffic to a Pod is handled by shaping queued packets to effectively\nhandle data. To limit the bandwidth on a Pod, write an object definition JSON file and specify\nthe data traffic speed using `kubernetes.io/ingress-bandwidth` annotation. The unit used for\nspecifying ingress rate is bits per second, as a\n[Quantity](/docs/reference/kubernetes-api/common-definitions/quantity/).\nFor example, `10M` means 10 megabits per second.\n-->\n你可以对 Pod 应用服务质量流量控制并有效限制其可用带宽。\n入站流量（到 Pod）通过控制排队的数据包来处理，以有效地处理数据。\n要限制 Pod 的带宽，请编写对象定义 JSON 文件并使用 `kubernetes.io/ingress-bandwidth`\n注解指定数据流量速度。用于指定入站的速率单位是每秒，\n作为[量纲（Quantity）](/zh-cn/docs/reference/kubernetes-api/common-definitions/quantity/)。\n例如，`10M` 表示每秒 10 兆比特。",
+ "packet": "dc4f973f6a8edcb5",
+ "questions": "QUESTIONS.md",
+ "reference": "你可以对 Pod 应用服务质量流量控制并有效限制其可用带宽。\n入站流量（到 Pod）通过控制排队的数据包来处理，以有效地处理数据。\n要限制 Pod 的带宽，请编写对象定义 JSON 文件并使用 `kubernetes.io/ingress-bandwidth`\n注解指定数据流量速度。用于指定入站的速率单位是每秒，\n作为[量纲（Quantity）](/zh-cn/docs/reference/kubernetes-api/common-definitions/quantity/)。\n例如，`10M` 表示每秒 10 兆比特。",
+ "reference_kind": "quote"
+}

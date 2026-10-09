@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "**Short version:** _You need to follow certain specific terms and conditions for GitHub's various features and products, and you agree to the Supplemental Terms and Conditions when you agree to this Agreement._",
+ "oracle_target": "## I. GitHub Additional Product Terms",
+ "packet": "adff5f789a98c891",
+ "questions": "QUESTIONS.md",
+ "reference": "## I. GitHub Additional Product Terms\n**Short version:** *You need to follow certain specific terms and conditions for GitHub's various features and products, and you agree to the Supplemental Terms and Conditions when you agree to this Agreement.*",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Building for Release\n\nWhen your project is finally ready for release, you can use `cargo build\n--release` to compile your project with optimizations. This will create an\nexecutable in *target/release* instead of *target/debug*. These optimizations\nmake your Rust code run faster, but turning them on makes your program take\nlonger to compile. This is why there are two different profiles: one for\ndevelopment when you want to be able to rebuild quickly and often, and one for\nbuilding the final program you’ll give to a user that won't be rebuilt and\nthat we want to run as fast as possible. If you're benchmarking the running\ntime of your code, be sure to run `cargo build --release` and benchmark with\nthe executable in *target/release*.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "4962aacee145b6e7",
+ "questions": "QUESTIONS.md",
+ "reference": "building-for-release",
+ "reference_kind": "name"
+}

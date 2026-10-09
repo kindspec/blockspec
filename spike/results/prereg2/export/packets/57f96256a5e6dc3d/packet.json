@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "This behavior applies to server-side apply with the `kubectl` field manager.\nAs an exception, you can opt-out of this behavior by specifying a different,\nnon-default field manager, as seen in the following example. The default field\nmanager for kubectl server-side apply is `kubectl`.",
+ "oracle_target": "This behavior applies to Server-Side Apply with the `kubectl` field manager.\nAs an exception, you can opt-out of this behavior by specifying a different,\nnon-default field manager, as seen in the following example. The default field\nmanager for kubectl server-side apply is `kubectl`.",
+ "packet": "57f96256a5e6dc3d",
+ "questions": "QUESTIONS.md",
+ "reference": "This behavior applies to server-side apply with the `kubectl` field manager.\nAs an exception, you can opt-out of this behavior by specifying a different,\nnon-default field manager, as seen in the following example. The default field\nmanager for kubectl server-side apply is `kubectl`.",
+ "reference_kind": "quote"
+}

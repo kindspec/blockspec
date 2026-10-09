@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "* **HTTPRoute：** 定义特定于 HTTP 的规则，用于将流量从 Gateway 监听器映射到后端网络端点的某种呈现。\n  这些端点通常表示为 {{<glossary_tooltip text=\"Service\" term_id=\"service\">}}。",
+ "oracle_target": "<!--\n* __GRPCRoute:__ Defines gRPC-specific rules for mapping traffic from a Gateway listener to a\nrepresentation of backend network endpoints. These endpoints are often represented as a\n  {{<glossary_tooltip text=\"Service\" term_id=\"service\">}}.\n-->\n* **GRPCRoute：** 定义特定于 gRPC 的规则，用于将流量从 Gateway 监听器映射到后端网络端点的某种呈现。\n  这些端点通常表示为 {{<glossary_tooltip text=\"Service\" term_id=\"service\">}}。",
+ "packet": "e462d283207f57e0",
+ "questions": "QUESTIONS.md",
+ "reference": "* **HTTPRoute：** 定义特定于 HTTP 的规则，用于将流量从网关监听器映射到后端网络端点的表示。\n  这些端点通常表示为 {{<glossary_tooltip text=\"Service\" term_id=\"service\">}}。",
+ "reference_kind": "quote"
+}

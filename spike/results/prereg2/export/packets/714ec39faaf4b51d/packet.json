@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "* the kubelet's [checkpoint API](/docs/reference/node/kubelet-checkpoint-api/)\n* the kubelet's [Pods API](/docs/reference/node/kubelet-pods-api/)\n* a list of [Articles on dockershim Removal and on Using CRI-compatible Runtimes](/docs/reference/node/topics-on-dockershim-and-cri-compatible-runtimes/)",
+ "oracle_target": "* kubelet 的[同步循环](/zh-cn/docs/reference/node/kubelet-sync-loop/)\n* kubelet 的 [Checkpoint API](/zh-cn/docs/reference/node/kubelet-checkpoint-api/)\n* kubelet 的 [Pods API](/zh-cn/docs/reference/node/kubelet-pods-api/)\n* 一系列[关于 dockershim 移除和使用兼容 CRI 运行时的文章](/zh-cn/docs/reference/node/topics-on-dockershim-and-cri-compatible-runtimes/)\n* [kubelet 设备管理器 API 版本](/zh-cn/docs/reference/node/device-plugin-api-versions)\n* [由 kubelet 填充的节点标签](/zh-cn/docs/reference/node/node-labels)\n* [由 kubelet 使用的本地文件和路径](/zh-cn/docs/reference/node/kubelet-files)\n* [节点 `.status` 信息](/zh-cn/docs/reference/node/node-status/)\n* [Linux 节点的交换（Swap）行为](/zh-cn/docs/reference/node/swap-behavior/)\n* [Seccomp 信息](/zh-cn/docs/reference/node/seccomp/)\n* [节点重启后会发生什么](/docs/reference/node/what-happens-on-restart/)",
+ "packet": "714ec39faaf4b51d",
+ "questions": "QUESTIONS.md",
+ "reference": "* Kubelet 的 [Checkpoint API](/zh-cn/docs/reference/node/kubelet-checkpoint-api/)\n* 一系列[关于 dockershim 移除和使用兼容 CRI 运行时的文章](/zh-cn/docs/reference/node/topics-on-dockershim-and-cri-compatible-runtimes/)",
+ "reference_kind": "quote"
+}

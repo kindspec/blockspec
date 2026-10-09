@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Framework workflow\n\nThe Scheduling Framework defines a few extension points. Scheduler plugins\nregister to be invoked at one or more extension points. Some of these plugins\ncan change the scheduling decisions and some are informational only.\n\nEach attempt to schedule one Pod is split into two phases, the\n**scheduling cycle** and the **binding cycle**.\n\n### Scheduling cycle & binding cycle\n\nThe scheduling cycle selects a node for the Pod, and the binding cycle applies\nthat decision to the cluster. Together, a scheduling cycle and binding cycle are\nreferred to as a \"scheduling context\".\n\nScheduling cycles are run serially, while binding cycles may run concurrently.\n\nA scheduling or binding cycle can be aborted if the Pod is determined to\nbe unschedulable or if there is an internal error. The Pod will be returned to\nthe queue and retried.",
+ "oracle_target": "```go\ntype Plugin interface {\n    Name() string\n}\n\ntype QueueSortPlugin interface {\n    Plugin\n    Less(*v1.pod, *v1.pod) bool\n}\n\ntype PreFilterPlugin interface {\n    Plugin\n    PreFilter(context.Context, *framework.CycleState, *v1.pod) error\n}\n\n// ...\n```",
+ "packet": "0be7f578286e2546",
+ "questions": "QUESTIONS.md",
+ "reference": "framework-workflow",
+ "reference_kind": "name"
+}

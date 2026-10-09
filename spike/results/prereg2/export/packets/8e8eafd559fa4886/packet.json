@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### コントロールプレーンコンポーネント\n\nクラスター全体の状態を管理します:\n\n[kube-apiserver](/docs/concepts/architecture/#kube-apiserver)\n: Kubernetes HTTP APIを公開するコアコンポーネントサーバーです。\n\n[etcd](/docs/concepts/architecture/#etcd)\n: APIサーバーのすべてのデータを保存する、一貫性と高可用性を兼ね備えたキーバリューストアです。\n\n[kube-scheduler](/docs/concepts/architecture/#kube-scheduler)\n: まだノードにバインドされていないPodを検出し、それぞれのPodを適切なノードに割り当てます。\n\n[kube-controller-manager](/docs/concepts/architecture/#kube-controller-manager)\n: {{< glossary_tooltip text=\"コントローラー\" term_id=\"controller\" >}}を実行して、Kubernetes APIの動作を実装します。\n\n[cloud-controller-manager](/docs/concepts/architecture/#cloud-controller-manager)(オプション)\n: 基盤となるクラウドプロバイダーと統合します。",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "8e8eafd559fa4886",
+ "questions": "QUESTIONS.md",
+ "reference": "コントロールプレーンコンポーネント",
+ "reference_kind": "name"
+}

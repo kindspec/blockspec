@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### 파드에 `imagePullSecrets` 명시\n\n{{< note >}}\n이 방법은 프라이빗 레지스트리의 이미지를 기반으로 컨테이너를 실행하는 데\n권장된다.\n{{< /note >}}\n\n쿠버네티스는 파드에 컨테이너 이미지 레지스트리 키를 명시하는 것을 지원한다.\n모든 `imagePullSecrets`은 파드와 동일한\n{{< glossary_tooltip term_id=\"namespace\" >}}에 존재하는 시크릿이어야 한다.\n이 시크릿의 타입은 `kubernetes.io/dockercfg` 이거나 `kubernetes.io/dockerconfigjson` 이어야 한다.",
+ "oracle_target": "```shell\ncat <<EOF > pod.yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: foo\n  namespace: awesomeapps\nspec:\n  containers:\n    - name: foo\n      image: janedoe/awesomeapp:v1\n  imagePullSecrets:\n    - name: myregistrykey\nEOF\n\ncat <<EOF >> ./kustomization.yaml\nresources:\n- pod.yaml\nEOF\n```",
+ "packet": "ce75dca53c74f083",
+ "questions": "QUESTIONS.md",
+ "reference": "파드에-imagepullsecrets-명시",
+ "reference_kind": "name"
+}

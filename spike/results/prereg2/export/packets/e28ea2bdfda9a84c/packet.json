@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Customer’s use of the Service must comply with [GitHub's Acceptable Use Policies](/site-policy/acceptable-use-policies/github-acceptable-use-policies) and [GitHub’s Community Guidelines](/site-policy/github-terms/github-community-guidelines). Customer must not use the Service in any jurisdiction for unlawful, obscene, offensive or fraudulent Content or activity, such as advocating or causing harm, interfering with or violating the integrity or security of a network or system, evading filters, sending unsolicited, abusive, or deceptive messages, viruses or harmful code, or violating third party rights.",
+ "oracle_target": "### 2. Acceptable Use",
+ "packet": "e28ea2bdfda9a84c",
+ "questions": "QUESTIONS.md",
+ "reference": "### 2. Acceptable Use\nCustomer’s use of the Service must comply with [GitHub's Acceptable Use Policies](/articles/github-acceptable-use-policies) and [GitHub’s Community Guidelines](/articles/github-community-guidelines). Customer must not use the Service in any jurisdiction for unlawful, obscene, offensive or fraudulent Content or activity, such as advocating or causing harm, interfering with or violating the integrity or security of a network or system, evading filters, sending unsolicited, abusive, or deceptive messages, viruses or harmful code, or violating third party rights.",
+ "reference_kind": "quote"
+}

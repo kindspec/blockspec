@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata. \n-->",
+ "oracle_target": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds\n-->\n- **metadata** (<a href=\"{{< ref \"../common-definitions/list-meta#ListMeta\" >}}\">ListMeta</a>)",
+ "packet": "5976992db2cf4b13",
+ "questions": "QUESTIONS.md",
+ "reference": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds \n-->",
+ "reference_kind": "quote"
+}

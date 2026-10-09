@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "<!--\nThe Topology Manager is a Kubelet component that allows resources to be co-ordinated in a Topology\naligned manner. In order to do this, the Device Plugin API was extended to include a\n`TopologyInfo` struct.\n-->\n拓扑管理器是 kubelet 的一个组件，它允许以拓扑对齐方式来调度资源。\n为了做到这一点，设备插件 API 进行了扩展来包括一个 `TopologyInfo` 结构体。",
+ "oracle_target": "### `Get` gRPC endpoint {#grpc-endpoint-get}\n-->",
+ "packet": "700d1c353903bd23",
+ "questions": "QUESTIONS.md",
+ "reference": "The Topology Manager is a Kubelet component that allows resources to be co-ordinated in a Topology aligned manner. In order to do this, the Device Plugin API was extended to include a `TopologyInfo` struct.\n-->",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Pod lists and detail pages link to a logs viewer that is built into Dashboard.\nThe viewer allows for drilling down logs from containers belonging to a single Pod.",
+ "oracle_target": "#### Logs viewer",
+ "packet": "a5720f4011371529",
+ "questions": "QUESTIONS.md",
+ "reference": "#### Logs viewer\nPod lists and detail pages link to a logs viewer that is built into Dashboard. The viewer allows for drilling down logs from containers belonging to a single Pod.",
+ "reference_kind": "quote"
+}

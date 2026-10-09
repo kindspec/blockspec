@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Export your data from Notion\n\nTo prepare your data for import, you will need to export your entire workspace using Notion's HTML export format. We recommend that you do not use Notion's Markdown export as it omits important data. You must have admin access to the Notion workspace to export all workspace content.\n\n1. Go to **Settings** at the top of the Notion sidebar.\n2. Under **Workspace** select **General**.\n3. Find and select **Export all workspace content**.\n4. Under **Export format** select **HTML**.\n5. Choose **Include everything**.\n6. Enable **Create folders for subpages**.\n7. You will receive a `.zip` file via email or directly in the browser.\n\n![[notion-export.png#interface]]\n\n![[notion-export-2.png#interface]]",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "dedda2a6b37cf8a0",
+ "questions": "QUESTIONS.md",
+ "reference": "export-your-data-from-notion",
+ "reference_kind": "name"
+}

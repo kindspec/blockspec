@@ -1,0 +1,20 @@
+# prereg2 score cncf-toc
+# argv: prereg2.py score --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm cncf-toc --work-dir /home/cam/kindspec-data/prereg2-score-work/cncf-toc
+# start: 2026-10-09T10:43:49Z
+# blockspec HEAD: 247a41013ef0305a1bf7afd8799580c1670fd799
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-09T10:43:50Z
+### cncf-toc E: evaluated 1120 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"commits:no_merges": 2440, "excluded:add": 604, "excluded:delete": 11, "excluded:other_status": 0, "excluded:rename": 292, "path_not_selected": 3604, "population": 1018, "sample": 1000}, "evaluated_instances": 1120, "none": {"commits:no_merges": 2440, "excluded:add": 615, "excluded:delete": 11, "excluded:other_status": 0, "excluded:rename": 292, "path_not_selected": 3457, "population": 1154, "sample": 1000}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"commits:no_merges": 2440, "excluded:add": 604, "excluded:delete": 11, "excluded:other_status": 0, "excluded:rename": 292, "path_not_selected": 3604, "population": 1018, "sample": 1000}}
+### cncf-toc S5: evaluated 571 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap5:excluded:blob_missing": 7, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 672, "gap5:population": 665, "paths": 587, "sample": 500}, "evaluated_instances": 571, "none": {"gap5:excluded:blob_missing": 7, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 774, "gap5:population": 767, "paths": 598, "sample": 500}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap5:excluded:blob_missing": 7, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 672, "gap5:population": 665, "paths": 587, "sample": 500}}
+### cncf-toc S25: evaluated 367 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap25:excluded:blob_missing": 1, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 368, "gap25:population": 367, "paths": 587, "sample": 367}, "evaluated_instances": 367, "none": {"gap25:excluded:blob_missing": 1, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 368, "gap25:population": 367, "paths": 598, "sample": 367}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap25:excluded:blob_missing": 1, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 368, "gap25:population": 367, "paths": 587, "sample": 367}}
+### cncf-toc M: evaluated 17 instances, 6 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"evaluated_instances": 17, "filter": {"cases_in": 71, "dropped:not_selected": 48, "kept": 23, "kept:anywhere": 23, "kept:none": 23, "kept:yaml-fence": 23}, "find_merge_cases": {"drop:add_add": 7, "drop:convergent": 20, "drop:delete_modify": 2, "drop:multi_base": 1, "merges:two_parent": 858, "paths:both_sides": 100, "paths:one_side": 18707}, "merges": {"clean": 17, "not_clean": 6}, "not_evaluated": 6, "undecodable": 0}
+
+# end: 2026-10-09T11:05:03Z
+# exited: exit status 0

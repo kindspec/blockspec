@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Other offenses\n\nUsers who commit these offenses will receive a warning. Repeated violations or failure to comply may result in a ban from official Obsidian community channels.\n\nExamples of **Other offenses** include:\n\n- The use of inappropriate images, including in a community member's avatar\n- The use of inappropriate language or profanity, including in a community member's nickname\n\n#### Belligerence\n\nBelligerence is deliberately attempting to make others feel bad, name-calling, singling out others for derision or exclusion. For example, telling someone they’re not a real programmer or that they don’t belong.\n\n#### Being especially unpleasant\n\nFor example, if we’ve received reports from multiple members of annoying or rude behavior.\n\n#### Unsolicited messages to community members\n\nRefrain from unsolicited tagging, \"pinging\", or direct messaging of staff and moderators for general questions, bug reports, and feature requests. Given the size of our community, the team's attention must be prioritised for critical matters.\n\n**Security concerns**: You may directly message Obsidian team members regarding security-related issues.\n\n**Unsolicited contact**: Be considerate when pinging community members. You may only send direct messages if you have received explicit permission to do so publicly. \n\n**Community plugins and themes**: For bug reports and feature requests, it is preferred to open a GitHub issue over pinging the developer in Discord.\n\nInstructions for reporting violations of our code of conduct can be found below in [[#Report violations]]. We appreciate your cooperation in following these guidelines to maintain a positive and respectful environment within the Obsidian community.",
+ "oracle_target": "#### Blatant -isms",
+ "packet": "b77f586c26939db9",
+ "questions": "QUESTIONS.md",
+ "reference": "other-offenses",
+ "reference_kind": "name"
+}

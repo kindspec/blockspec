@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Now, users can use `kubectl describe pod` to determine if a container's crash loop is \ndue to an `Unhealthy` or `Unknown` device status, regardless of whether the hardware was \nprovisioned via traditional plugins or the newer DRA framework. \nThis enhanced visibility allows administrators and automated controllers to \nquickly identify faulty hardware and streamline the recovery of high-performance workloads.",
+ "oracle_target": "This work was done as part of [KEP #4680](https://kep.k8s.io/4680) led by SIG Node.",
+ "packet": "e3999e8b0805e9dc",
+ "questions": "QUESTIONS.md",
+ "reference": "Now, users can use `kubectl describe pod` to determine if a container's crash loop is due to an `Unhealthy` or `Unknown` device status, regardless of whether the hardware was provisioned via traditional plugins or the newer DRA framework. This enhanced visibility allows administrators and automated controllers to quickly identify faulty hardware and streamline the recovery of high-performance workloads.\nThis work was done as part of [KEP #4680](https://kep.k8s.io/4680) led by SIG Node.",
+ "reference_kind": "quote"
+}

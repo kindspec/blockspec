@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Pod specification adding Raw Block Device path in container\n-->",
+ "oracle_target": "### Using a cross-namespace volume data source\n-->",
+ "packet": "117b7f1588d9470f",
+ "questions": "QUESTIONS.md",
+ "reference": "pod-specification-adding-raw-block-device-path-in-container",
+ "reference_kind": "name"
+}

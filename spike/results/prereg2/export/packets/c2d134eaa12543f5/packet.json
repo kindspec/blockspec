@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "You can check that the secret was created like this:",
+ "oracle_target": "You can check that the secret was created like this:",
+ "packet": "c2d134eaa12543f5",
+ "questions": "QUESTIONS.md",
+ "reference": "You can check that the secret was created like this:",
+ "reference_kind": "quote"
+}

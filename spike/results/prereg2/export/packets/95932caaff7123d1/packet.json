@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Storage view shows PersistentVolumeClaim resources which are used by applications for storing data.",
+ "oracle_target": "#### Storage",
+ "packet": "95932caaff7123d1",
+ "questions": "QUESTIONS.md",
+ "reference": "#### Storage\nStorage view shows Persistent Volume Claim resources which are used by applications for storing data.",
+ "reference_kind": "quote"
+}

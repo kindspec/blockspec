@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Alpha 级别\n\n<!--\n- **failedIndexes** (string)\n\n  FailedIndexes holds the failed indexes when spec.backoffLimitPerIndex is set. The indexes are represented in the text format analogous as for the `completedIndexes` field, ie. they are kept as decimal integers separated by commas. The numbers are listed in increasing order. Three or more consecutive numbers are compressed and represented by the first and last element of the series, separated by a hyphen. For example, if the failed indexes are 1, 3, 4, 5 and 7, they are represented as \"1,3-5,7\". The set of failed indexes cannot overlap with the set of completed indexes.\n\n  This field is beta-level. It can be used when the `JobBackoffLimitPerIndex` feature gate is enabled (enabled by default).\n-->\n- **failedIndexes** (string)\n\n  当设置了 `spec.backoffLimitPerIndex` 时，failedIndexes 保存失败的索引。\n  索引以文本格式表示，类似于 `completedIndexes` 字段，即这些索引是使用逗号分隔的十进制整数。\n  这些数字按升序列出。三个或更多连续的数字会被压缩，整个序列表示为第一个数字、连字符和最后一个数字。\n  例如，如果失败的索引是 1、3、4、5 和 7，则表示为 \"1,3-5,7\"。\n  失败索引集不能与完成索引集重叠。\n\n  该字段是 Beta 级别的。当 `JobBackoffLimitPerIndex` 特性门控被启用时（默认被启用），可以使用此字段。\n\n<!--\n- **terminating** (int32)\n\n  The number of pods which are terminating (in phase Pending or Running and have a deletionTimestamp).\n  \n  This field is beta-level. The job controller populates the field when the feature gate JobPodReplacementPolicy is enabled (enabled by default).\n-->\n- **terminating**（int32）\n\n  正在终止的 Pod 数量（处于 Pending 或 Running 阶段且具有 deletionTimestamp）。\n  \n  此字段是 Beta 级别的。当特性门控 JobPodReplacementPolicy 被启用时（默认被启用），\n  Job 控制器会填充该字段。",
+ "oracle_target": "<!--\n      - Ignore: indicates that the counter towards the .backoffLimit is not\n        incremented and a replacement pod is created.\n      - Count: indicates that the pod is handled in the default way - the\n        counter towards the .backoffLimit is incremented.\n      Additional values are considered to be added in the future. Clients should react to an unknown action by skipping the rule.\n      -->",
+ "packet": "ba0fc7ecef1f8bde",
+ "questions": "QUESTIONS.md",
+ "reference": "alpha-级别",
+ "reference_kind": "name"
+}

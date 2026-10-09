@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### ServiceAccount admission controller\n\nThe modification of pods is implemented via a plugin\ncalled an [Admission Controller](/docs/reference/access-authn-authz/admission-controllers/).\nIt is part of the API server.\nThis admission controller acts synchronously to modify pods as they are created.\nWhen this plugin is active (and it is by default on most distributions), then\nit does the following when a Pod is created:\n\n1. If the pod does not have a `.spec.serviceAccountName` set, the admission controller sets the name of the\n   ServiceAccount for this incoming Pod to `default`.\n1. The admission controller ensures that the ServiceAccount referenced by the incoming Pod exists. If there\n   is no ServiceAccount with a matching name, the admission controller rejects the incoming Pod. That check\n   applies even for the `default` ServiceAccount.\n1. Provided that neither the ServiceAccount's `automountServiceAccountToken` field nor the\n   Pod's `automountServiceAccountToken` field is set to `false`:\n   - the admission controller mutates the incoming Pod, adding an extra\n     {{< glossary_tooltip text=\"volume\" term_id=\"volume\" >}} that contains\n     a token for API access.\n   - the admission controller adds a `volumeMount` to each container in the Pod,\n     skipping any containers that already have a volume mount defined for the path\n     `/var/run/secrets/kubernetes.io/serviceaccount`.\n     For Linux containers, that volume is mounted at `/var/run/secrets/kubernetes.io/serviceaccount`;\n     on Windows nodes, the mount is at the equivalent path.\n1. If the spec of the incoming Pod doesn't already contain any `imagePullSecrets`, then the\n   admission controller adds `imagePullSecrets`, copying them from the `ServiceAccount`.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "86ac31e53fceeaba",
+ "questions": "QUESTIONS.md",
+ "reference": "serviceaccount-admission-controller",
+ "reference_kind": "name"
+}

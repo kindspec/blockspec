@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Here are the Prometheus metrics exposed by kube-apiserver:",
+ "oracle_target": "## Metrics",
+ "packet": "30fbb47e91797a4a",
+ "questions": "QUESTIONS.md",
+ "reference": "## Metrics\nYou can look at the following Prometheus metrics exposed by kube-apiserver.",
+ "reference_kind": "quote"
+}

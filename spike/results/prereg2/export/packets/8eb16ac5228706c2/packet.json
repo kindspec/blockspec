@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "_Note: The github.dev service, available by pressing . on a repo or navigating directly to github.dev, is governed by GitHub's Beta Terms of service._",
+ "oracle_target": "## Codespaces",
+ "packet": "8eb16ac5228706c2",
+ "questions": "QUESTIONS.md",
+ "reference": "## Codespaces\n_Note: The github.dev service, available by pressing `.` on a repo or navigating directly to github.dev, is governed by [GitHub's Beta Terms of service](/github/site-policy/github-terms-of-service#j-beta-previews)._",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Although we try to create a safe environment at the Event, we cannot guarantee 100% safety for participants. Please do your part to help reduce your chance of being injured at the Event.",
+ "oracle_target": "### Assumption of risk",
+ "packet": "79adeca8f07c3d43",
+ "questions": "QUESTIONS.md",
+ "reference": "### Assumption of risk\nAlthough we try to create a safe environment at the Event, accidents or other bad things happen, even to good people. We ask that you do your part to help limit the possibility that you might get injured at the Event.",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "`ReadOnlyMany`\n: 卷可以被多个节点以只读方式挂载。",
+ "oracle_target": "`ReadWriteOncePod`\n: {{< feature-state for_k8s_version=\"v1.29\" state=\"stable\" >}}\n  the volume can be mounted as read-write by a single Pod. Use ReadWriteOncePod\n  access mode if you want to ensure that only one pod across the whole cluster can\n  read that PVC or write to it.\n-->\n`ReadWriteMany`\n: 卷可以被多个节点以读写方式挂载。",
+ "packet": "bcbe175959c1a5b0",
+ "questions": "QUESTIONS.md",
+ "reference": "`ReadWriteMany`\n: 卷可以被多个节点以读写方式挂载。",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "더 많은 정보는 [네임스페이스에서 파드 보안 적용](/docs/concepts/security/pod-security-admission)을\n참고한다.",
+ "oracle_target": "더 많은 정보는 [네임스페이스에서 파드 보안 적용](/docs/concepts/security/pod-security-admission)을\n참고한다.",
+ "packet": "906a3bfac4b15908",
+ "questions": "QUESTIONS.md",
+ "reference": "더 많은 정보는 [네임스페이스에서 파드 보안 적용](/docs/concepts/security/pod-security-admission)을\n참고한다.",
+ "reference_kind": "quote"
+}

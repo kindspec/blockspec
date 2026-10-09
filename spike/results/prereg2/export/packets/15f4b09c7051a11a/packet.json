@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Egress traffic\n\nIf you want to enable egress traffic in order to reach off-cluster destinations (eg. the public\nInternet) from a Pod that uses non-publicly routable IPv6 addresses, you need to enable the Pod to\nuse a publicly routed IPv6 address via a mechanism such as transparent proxying or IP\nmasquerading. The [ip-masq-agent](https://github.com/kubernetes-sigs/ip-masq-agent) project\nsupports IP masquerading on dual-stack clusters.\n\n{{< note >}}\nEnsure your {{< glossary_tooltip text=\"CNI\" term_id=\"cni\" >}} provider supports IPv6.\n{{< /note >}}",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "15f4b09c7051a11a",
+ "questions": "QUESTIONS.md",
+ "reference": "egress-traffic",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Kubelet 使用 Go 定义的 `runtime.GOARCH` 填充它。如果你混合使用 ARM 和 X86 节点，这会很方便。",
+ "oracle_target": "<!--",
+ "packet": "db9234984da0f55a",
+ "questions": "QUESTIONS.md",
+ "reference": "Kubelet 使用 Go 定义的 `runtime.GOARCH` 填充它。 如果你混合使用 ARM 和 X86 节点，这会很方便。\n<!--",
+ "reference_kind": "quote"
+}

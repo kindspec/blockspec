@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Projects\n\nSee the process for contributing a project [here](CONTRIBUTING.md).\n\nSee the current CNCF projects [here](https://www.cncf.io/projects/).",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "349f58f268eb4b11",
+ "questions": "QUESTIONS.md",
+ "reference": "projects",
+ "reference_kind": "name"
+}

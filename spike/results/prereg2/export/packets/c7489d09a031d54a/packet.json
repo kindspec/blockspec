@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "The same API limit means that you cannot manually update an Endpoints to have more than 1000 endpoints.\n-->\n请求流量仍会被发送到后端，但任何依赖旧版 Endpoints API 的负载均衡机制最多只能将流量发送到\n1000 个可用的支撑端点。",
+ "oracle_target": "### Application protocol\n-->",
+ "packet": "c7489d09a031d54a",
+ "questions": "QUESTIONS.md",
+ "reference": "### Application protocol\n-->\n流量仍会发送到后端，但任何依赖旧版 Endpoints API 的负载均衡机制最多只能将流量发送到 1000 个可用的后备端点。",
+ "reference_kind": "quote"
+}

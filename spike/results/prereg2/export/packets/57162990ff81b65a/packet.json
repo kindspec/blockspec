@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## cgroup drivers\n\nOn Linux, {{< glossary_tooltip text=\"control groups\" term_id=\"cgroup\" >}}\nare used to constrain resources that are allocated to processes.\n-->",
+ "oracle_target": "<!--\nVerify that `net.ipv4.ip_forward` is set to 1 with:\n-->\n使用以下命令验证 `net.ipv4.ip_forward` 是否设置为 1：",
+ "packet": "57162990ff81b65a",
+ "questions": "QUESTIONS.md",
+ "reference": "cgroup-drivers",
+ "reference_kind": "name"
+}

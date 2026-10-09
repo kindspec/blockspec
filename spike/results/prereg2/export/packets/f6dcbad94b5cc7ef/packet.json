@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "International numbers available [here](https://zoom.us/zoomconference?m=ddKUsXGa2tGOHvCl4ccI0juqU7TZaCov)",
+ "oracle_target": "Meeting ID: 263 858 603",
+ "packet": "f6dcbad94b5cc7ef",
+ "questions": "QUESTIONS.md",
+ "reference": "Meeting ID: 263 858 603\nInternational numbers available: https://zoom.us/zoomconference?m=ddKUsXGa2tGOHvCl4ccI0juqU7TZaCov",
+ "reference_kind": "quote"
+}

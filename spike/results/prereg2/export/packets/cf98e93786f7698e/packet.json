@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### 下一步是什么？   {#whats-next}\n\n随着基于缓存的一致性读特性晋升至 Beta 版，该特性已默认启用，为所有使用受支持 etcd\n版本的 Kubernetes 用户提供了无缝的性能提升。\n\n我们的探索并未止步于此。Kubernetes 社区正积极研究在监视缓存中加入分页支持，\n未来有望带来更多性能优化。\n\n<!--",
+ "oracle_target": "Upgrading to Kubernetes v1.31 and ensuring you are using etcd version 3.4.31+ or\n3.5.13+ is the easiest way to experience the benefits of consistent reads from\ncache.\nIf you have any questions or feedback, don't hesitate to reach out to the Kubernetes community.\n-->",
+ "packet": "cf98e93786f7698e",
+ "questions": "QUESTIONS.md",
+ "reference": "下一步是什么---whats-next",
+ "reference_kind": "name"
+}

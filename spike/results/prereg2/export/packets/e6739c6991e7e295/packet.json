@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Register Obsidian URI\n\nOn Windows and macOS, running the app once should be sufficient to register the Obsidian URI protocol on your computer.\n\nOn Linux, it is a much more involved process:\n\n1. Ensure you create a `obsidian.desktop` file. [See here for details](https://developer.gnome.org/documentation/guidelines/maintainer/integrating.html#desktop-files).\n2. Ensure that your desktop file specifies the `Exec` field as `Exec=executable %u`. The `%u` is used to pass the `obsidian://` URIs to the app.\n3. If you're using the AppImage installer, you may have to unpack it using `Obsidian-x.y.z.AppImage --appimage-extract`. Then make sure the `Exec` directive points to the unpacked executable.\n\n\n[^1]: Vault ID is the random 16-character code assigned to the vault, for example `ef6ca3e3b524d22f`. This ID is unique per folder on your computer. The ID can be found by opening the vault switcher and clicking \"Copy vault ID\" in the context menu for the desired vault.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "e6739c6991e7e295",
+ "questions": "QUESTIONS.md",
+ "reference": "register-obsidian-uri",
+ "reference_kind": "name"
+}

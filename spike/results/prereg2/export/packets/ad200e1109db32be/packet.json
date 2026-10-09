@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "<!--\nTo create the Pod shown above, run the following command:\n-->\n要创建上面显示的 Pod，请运行以下命令：",
+ "oracle_target": "The following is an example of a Pod which consists of a container running the image `nginx:1.14.2`.\n-->",
+ "packet": "ad200e1109db32be",
+ "questions": "QUESTIONS.md",
+ "reference": "To create the Pod shown above, run the following command:\n-->",
+ "reference_kind": "quote"
+}

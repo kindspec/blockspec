@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "파드 목록과 세부사항 페이지들은 대시보드에 구현된 로그 뷰어에 링크된다.\n뷰어는 단일 파드에 있는 컨테이너들의 로그들을 내려가면 볼 수 있도록 한다.",
+ "oracle_target": "#### 로그 뷰어",
+ "packet": "8177c7324d1c3387",
+ "questions": "QUESTIONS.md",
+ "reference": "#### 로그 뷰어\n파드 목록과 세부사항 페이지들은 대시보드에 구현된 로그 뷰어에 링크된다. 뷰어는 단일 파드에 있는 컨테이너들의 로그들을 내려가면 볼 수 있도록 한다.",
+ "reference_kind": "quote"
+}

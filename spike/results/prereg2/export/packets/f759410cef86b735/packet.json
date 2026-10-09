@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "# IV. Annual Review Process\n\nThe TOC is deprecating the current annual review process as of September 2023 in favor of a proposed automated review system.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "f759410cef86b735",
+ "questions": "QUESTIONS.md",
+ "reference": "iv-annual-review-process",
+ "reference_kind": "name"
+}

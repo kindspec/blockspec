@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "The purpose of the Storage Object in Use Protection feature is to ensure that\nPersistentVolumeClaims (PVCs) in active use by a Pod and PersistentVolume (PVs)\nthat are bound to PVCs are not removed from the system, as this may result in data loss.",
+ "oracle_target": "### Storage Object in Use Protection",
+ "packet": "4e0a5d45ec1e48b7",
+ "questions": "QUESTIONS.md",
+ "reference": "### Storage Object in Use Protection\nThe purpose of the Storage Object in Use Protection feature is to ensure that PersistentVolumeClaims (PVCs) in active use by a Pod and PersistentVolume (PVs) that are bound to PVCs are not removed from the system, as this may result in data loss.",
+ "reference_kind": "quote"
+}

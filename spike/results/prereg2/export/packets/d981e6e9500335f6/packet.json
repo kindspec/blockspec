@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "This brief is a community-driven effort by the CNCF TAG Infrastructure, with\nthanks to all who contributed, participated in discussions, and provided\nfeedback.",
+ "oracle_target": "# Acknowledgements",
+ "packet": "d981e6e9500335f6",
+ "questions": "QUESTIONS.md",
+ "reference": "# Acknowledgements\nThis brief is a community-driven effort by the CNCF TAG Infrastructure, with thanks to all who contributed, participated in discussions, and provided feedback.",
+ "reference_kind": "quote"
+}

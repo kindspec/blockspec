@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Container states\n\nAs well as the [phase](#pod-phase) of the Pod overall, Kubernetes tracks the state of\neach container inside a Pod. You can use\n[container lifecycle hooks](/docs/concepts/containers/container-lifecycle-hooks/) to\ntrigger events to run at certain points in a container's lifecycle.\n\nOnce the {{< glossary_tooltip text=\"scheduler\" term_id=\"kube-scheduler\" >}}\nassigns a Pod to a Node, the kubelet starts creating containers for that Pod\nusing a {{< glossary_tooltip text=\"container runtime\" term_id=\"container-runtime\" >}}.\nThere are three possible container states: `Waiting`, `Running`, and `Terminated`.\n\nTo check the state of a Pod's containers, you can use\n`kubectl describe pod <name-of-pod>`. The output shows the state for each container\nwithin that Pod.\n\nEach state has a specific meaning:\n\n### `Waiting` {#container-state-waiting}\n\nIf a container is not in either the `Running` or `Terminated` state, it is `Waiting`.\nA container in the `Waiting` state is still running the operations it requires in\norder to complete start up: for example, pulling the container image from a container\nimage registry, or applying {{< glossary_tooltip text=\"Secret\" term_id=\"secret\" >}}\ndata.\nWhen you use `kubectl` to query a Pod with a container that is `Waiting`, you also see\na Reason field to summarize why the container is in that state.\n\n### `Running` {#container-state-running}\n\nThe `Running` status indicates that a container is executing without issues. If there\nwas a `postStart` hook configured, it has already executed and finished. When you use\n`kubectl` to query a Pod with a container that is `Running`, you also see information\nabout when the container entered the `Running` state.\n\n### `Terminated` {#container-state-terminated}\n\nA container in the `Terminated` state began execution and then either ran to\ncompletion or failed for some reason. When you use `kubectl` to query a Pod with\na container that is `Terminated`, you see a reason, an exit code, and the start and\nfinish time for that container's period of execution.\n\nIf a container has a `preStop` hook configured, that runs before the container enters\nthe `Terminated` state.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "b3754f49ddd6df55",
+ "questions": "QUESTIONS.md",
+ "reference": "container-states",
+ "reference_kind": "name"
+}

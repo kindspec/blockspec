@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "GitHub personnel may only access Customer's Private Repositories in the situations described in our [Privacy Statement](/site-policy/privacy-policies/github-privacy-statement#repository-contents).",
+ "oracle_target": "### 3. Access",
+ "packet": "16fb25d519ba664d",
+ "questions": "QUESTIONS.md",
+ "reference": "### 3. Access\nGitHub personnel may only access Customer's Private Repositories in the situations described in our [Privacy Statement](/github/site-policy/github-privacy-statement#repository-contents).",
+ "reference_kind": "quote"
+}

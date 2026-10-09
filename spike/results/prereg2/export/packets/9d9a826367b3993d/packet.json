@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "Also, in case the Pod fails to start with the status `ImagePullBackOff`, view the Pod events:",
+ "oracle_target": "{{< note >}}\nTo use image pull secrets for a Pod (or a Deployment, or other object that\nhas a pod template that you are using), you need to make sure that the appropriate\nSecret does exist in the right namespace. The namespace to use is the same\nnamespace where you defined the Pod.\n{{< /note >}}",
+ "packet": "9d9a826367b3993d",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\nIn case the Pod fails to start with the status `ImagePullBackOff`, view the Pod events:",
+ "reference_kind": "quote"
+}

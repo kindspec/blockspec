@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "> **Note:** All times in this section are UTC.",
+ "oracle_target": "> **Note:** All times in this section are UTC.",
+ "packet": "faeb90e66b23c6ee",
+ "questions": "QUESTIONS.md",
+ "reference": "> **Note:** All times in this section are UTC.",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Technical Advisory Groups\n\n* [TAG Developer Experience](./tags/tag-developer-experience/)\n* [TAG Infrastructure](./tags/tag-infrastructure/)\n* [TAG Operational Resilience](./tags/tag-operational-resilience/)\n* [TAG Security and Compliance](./tags/tag-security-and-compliance/)\n* [TAG Workloads Foundation](./tags/tag-workloads-foundation/charter.md)",
+ "oracle_target": "* [TAG-Security](https://github.com/cncf/tag-security)\n* [TAG-Storage](https://github.com/cncf/tag-storage) \n* [TAG-App-Delivery](https://github.com/cncf/tag-app-delivery)\n* [TAG-Network](https://github.com/cncf/tag-network)\n* [TAG-Runtime](https://github.com/cncf/tag-runtime)\n* [TAG Contributor Strategy](https://github.com/cncf/tag-contributor-strategy)\n* [TAG Observability](https://github.com/cncf/tag-observability)\n* [TAG Environmental Sustainability](https://github.com/cncf/tag-env-sustainability)",
+ "packet": "2f5ddd230799ec1b",
+ "questions": "QUESTIONS.md",
+ "reference": "technical-advisory-groups",
+ "reference_kind": "name"
+}

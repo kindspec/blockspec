@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "GitHub may amend this Agreement at any time. Should GitHub materially amends this Agreement, it will notify you of such changes at least 30 days prior to the change taking effect by posting a notice on our Website. This Agreement, together with any applicable GitHub Products terms and GitHub's Privacy Statement, and Order Forms represent the complete and exclusive statement of the agreement between you and us and governs your use of the GitHub Products. This Agreement supersedes any proposal or prior agreement oral or written, and any other communications between you and GitHub relating to the subject matter of these terms (including, but not limited to, any prior versions of this Agreement).",
+ "oracle_target": "### 8.7 Changes to the Agreement; Complete Agreement.",
+ "packet": "50ac906b0b7ff3dd",
+ "questions": "QUESTIONS.md",
+ "reference": "### 8.7 Changes to the Agreement; Complete Agreement.\nGitHub may amend this Agreement at any time. Should GitHub materially amends this Agreement,  it will notify you of such changes at least 30 days prior to the change taking effect by posting a notice on our Website. This Agreement, together with any applicable GitHub Products terms and GitHub's Privacy Statement, and Order Forms represent the complete and exclusive statement of the agreement between you and us and governs your use of the GitHub Products. This Agreement supersedes any proposal or prior agreement oral or written, and any other communications between you and GitHub relating to the subject matter of these terms (including, but not limited to, any prior versions of this Agreement).",
+ "reference_kind": "quote"
+}

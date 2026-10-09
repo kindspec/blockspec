@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "#### Mounted Secrets are updated automatically\n\nWhen a volume contains data from a Secret, and that Secret is updated, Kubernetes tracks\nthis and updates the data in the volume, using an eventually-consistent approach.\n\n{{< note >}}\nA container using a Secret as a\n[subPath](/docs/concepts/storage/volumes#using-subpath) volume mount does not receive\nautomated Secret updates.\n{{< /note >}}\n\nThe kubelet keeps a cache of the current keys and values for the Secrets that are used in\nvolumes for pods on that node.\nYou can configure the way that the kubelet detects changes from the cached values. The\n`configMapAndSecretChangeDetectionStrategy` field in the\n[kubelet configuration](/docs/reference/config-api/kubelet-config.v1beta1/) controls\nwhich strategy the kubelet uses. The default strategy is `Watch`.\n\nUpdates to Secrets can be either propagated by an API watch mechanism (the default), based on\na cache with a defined time-to-live, or polled from the cluster API server on each kubelet\nsynchronisation loop.\n\nAs a result, the total delay from the moment when the Secret is updated to the moment\nwhen new keys are projected to the Pod can be as long as the kubelet sync period + cache\npropagation delay, where the cache propagation delay depends on the chosen cache type\n(following the same order listed in the previous paragraph, these are:\nwatch propagation delay, the configured cache TTL, or zero for direct polling).",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "619343df0bd9db22",
+ "questions": "QUESTIONS.md",
+ "reference": "mounted-secrets-are-updated-automatically",
+ "reference_kind": "name"
+}

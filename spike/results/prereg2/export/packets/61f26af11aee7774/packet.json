@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "<!--\ntabs name=\"recovery_methods\"\n-->\n{{< tabs name=\"恢复方法\" >}}",
+ "oracle_target": "<!--\ntab name=\"Manually with Cluster Administrator access\"\n-->\n{{% tab name=\"集群管理员手动处理\" %}}",
+ "packet": "61f26af11aee7774",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< tabs name=\"recovery_methods\" >}}\n{{% tab name=\"集群管理员手动处理\" %}}",
+ "reference_kind": "quote"
+}

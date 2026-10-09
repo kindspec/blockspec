@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Configuring nodes to authenticate to a private registry\n\nSpecific instructions for setting credentials depends on the container runtime and registry you chose to use. You should refer to your solution's documentation for the most accurate information.\n\nFor an example of configuring a private container image registry, see the\n[Pull an Image from a Private Registry](/docs/tasks/configure-pod-container/pull-image-private-registry)\ntask. That example uses a private registry in Docker Hub.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "379284256e1cd4ce",
+ "questions": "QUESTIONS.md",
+ "reference": "configuring-nodes-to-authenticate-to-a-private-registry",
+ "reference_kind": "name"
+}

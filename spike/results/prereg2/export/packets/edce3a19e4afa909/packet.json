@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## References\n\n1. [Apache Parquet - Columnar Storage Format](https://parquet.apache.org/)\n2. [TensorFlow TFRecord Format and Examples](https://www.tensorflow.org/tutorials/load_data/tfrecord)\n3. [WebDataset - Efficient Data Loading for ML](https://github.com/webdataset/webdataset)\n4. [PyTorch Data Loading and Processing](https://pytorch.org/tutorials/beginner/data_loading_tutorial.html)\n5. [TensorFlow Data Performance Guide](https://www.tensorflow.org/guide/data_performance)\n6. [DeepSpeed Training Optimization](https://www.deepspeed.ai/training/)\n7. [Horovod Distributed Deep Learning Framework](https://horovod.readthedocs.io/en/stable/)\n8. [DVC - Data Version Control for ML](https://dvc.org/doc/use-cases/versioning-data-and-model-files)\n9. [Kubeflow Trainer](https://www.kubeflow.org/docs/components/trainer/)\n10. [Ray Data - Distributed Data Processing](https://docs.ray.io/en/latest/data/data.html)",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "edce3a19e4afa909",
+ "questions": "QUESTIONS.md",
+ "reference": "references",
+ "reference_kind": "name"
+}

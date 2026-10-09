@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Use case: dotfiles in a secret volume\n\nYou can make your data \"hidden\" by defining a key that begins with a dot.\nThis key represents a dotfile or \"hidden\" file. For example, when the following Secret\nis mounted into a volume, `secret-volume`, the volume will contain a single file,\ncalled `.secret-file`, and the `dotfile-test-container` will have this file\npresent at the path `/etc/secret-volume/.secret-file`.\n\n{{< note >}}\nFiles beginning with dot characters are hidden from the output of `ls -l`;\nyou must use `ls -la` to see them when listing directory contents.\n{{< /note >}}\n\n{{% code language=\"yaml\" file=\"secret/dotfile-secret.yaml\" %}}",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "d99e40b5d7226d05",
+ "questions": "QUESTIONS.md",
+ "reference": "use-case-dotfiles-in-a-secret-volume",
+ "reference_kind": "name"
+}

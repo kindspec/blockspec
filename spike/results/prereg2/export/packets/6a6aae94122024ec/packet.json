@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "#### Secret files permissions\n\nYou can set the POSIX file access permission bits for a single Secret key.\nIf you don't specify any permissions, `0644` is used by default.\nYou can also set a default mode for the entire Secret volume and override per key if needed.\n\nFor example, you can specify a default mode like this:\n\n```yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: mypod\nspec:\n  containers:\n  - name: mypod\n    image: redis\n    volumeMounts:\n    - name: foo\n      mountPath: \"/etc/foo\"\n  volumes:\n  - name: foo\n    secret:\n      secretName: mysecret\n      defaultMode: 0400\n```\n\nThe secret is mounted on `/etc/foo`; all the files created by the\nsecret volume mount have permission `0400`.\n\n{{< note >}}\nIf you're defining a Pod or a Pod template using JSON, beware that the JSON\nspecification doesn't support octal notation. You can use the decimal value\nfor the `defaultMode` (for example, 0400 in octal is 256 in decimal) instead.\nIf you're writing YAML, you can write the `defaultMode` in octal.\n{{< /note >}}",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "6a6aae94122024ec",
+ "questions": "QUESTIONS.md",
+ "reference": "secret-files-permissions",
+ "reference_kind": "name"
+}

@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "- Using PowerShell to automate the verification using the `-eq` operator to get a `True` or `False` result:",
+ "oracle_target": "- Using PowerShell to automate the verification using the `-eq` operator to get a `True` or `False` result:",
+ "packet": "600b2ea3bd084cec",
+ "questions": "QUESTIONS.md",
+ "reference": "- Using PowerShell to automate the verification using the `-eq` operator to get a `True` or `False` result:",
+ "reference_kind": "quote"
+}

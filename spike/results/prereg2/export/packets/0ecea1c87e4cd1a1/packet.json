@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## API server aggregation\n\nUsually, each resource in the Kubernetes API requires code that handles REST requests and manages persistent storage of objects. The main Kubernetes API server handles built-in resources like *pods* and *services*, and can also generically handle custom resources through [CRDs](#customresourcedefinitions).\n\nThe [aggregation layer](/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/) allows you to provide specialized\nimplementations for your custom resources by writing and deploying your own standalone API server.\nThe main API server delegates requests to you for the custom resources that you handle,\nmaking them available to all of its clients.",
+ "oracle_target": "| Feature | What it does |\n| ------- | ------------ |\n| CRUD | The new endpoints support CRUD basic operations via HTTP and `kubectl` |\n| Watch | The new endpoints support Kubernetes Watch operations via HTTP |\n| Discovery | Clients like `kubectl` and dashboard automatically offer list, display, and field edit operations on your resources |\n| json-patch | The new endpoints support PATCH with `Content-Type: application/json-patch+json` |\n| merge-patch | The new endpoints support PATCH with `Content-Type: application/merge-patch+json` |\n| HTTPS | The new endpoints uses HTTPS |\n| Built-in Authentication | Access to the extension uses the core API server (aggregation layer) for authentication |\n| Built-in Authorization | Access to the extension can reuse the authorization used by the core API server; for example, RBAC. |\n| Finalizers | Block deletion of extension resources until external cleanup happens. |\n| Admission Webhooks | Set default values and validate extension resources during any create/update/delete operation. |\n| UI/CLI Display | Kubectl, dashboard can display extension resources. |\n| Unset versus Empty | Clients can distinguish unset fields from zero-valued fields. |\n| Client Libraries Generation | Kubernetes provides generic client libraries, as well as tools to generate type-specific client libraries. |\n| Labels and annotations | Common metadata across objects that tools know how to edit for core and custom resources. |",
+ "packet": "0ecea1c87e4cd1a1",
+ "questions": "QUESTIONS.md",
+ "reference": "api-server-aggregation",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### CRI-O\n\n이 섹션은 CRI-O를 컨테이너 런타임으로 설치하는 필수적인 단계를 담고 있다.\n\nCRI-O를 설치하려면, [CRI-O 설치 방법](https://github.com/cri-o/cri-o/blob/main/install.md#readme)을 따른다.\n\n#### cgroup 드라이버\n\nCRI-O는 기본적으로 systemd cgroup 드라이버를 사용하며, 이는 대부분의 경우에 잘 동작할 것이다. \n`cgroupfs` cgroup 드라이버로 전환하려면, `/etc/crio/crio.conf` 를 수정하거나 \n`/etc/crio/crio.conf.d/02-cgroup-manager.conf` 에 드롭-인(drop-in) 구성을 배치한다. \n예를 들면 다음과 같다.\n\n```toml\n[crio.runtime]\nconmon_cgroup = \"pod\"\ncgroup_manager = \"cgroupfs\"\n```\n\n또한 `cgroupfs` 와 함께 CRI-O를 사용할 때 `pod` 값으로 설정해야 하는\n변경된 `conmon_cgroup` 에 유의해야 한다. 일반적으로 kubelet(일반적으로 kubeadm을 통해 수행됨)과\nCRI-O의 cgroup 드라이버 구성을 동기화 상태로\n유지해야 한다.\n\nCRI-O의 경우, CRI 소켓은 기본적으로 `/var/run/crio/crio.sock`이다.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "fc0b534ead952f9b",
+ "questions": "QUESTIONS.md",
+ "reference": "cri-o",
+ "reference_kind": "name"
+}

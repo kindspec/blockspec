@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "{{< note >}}\n<!--\nThe kubelet tracks `tmpfs` emptyDir volumes as container memory use, rather\nthan as local ephemeral storage.\n-->\nkubelet 会将 `tmpfs` emptyDir 卷的用量当作容器内存用量，而不是本地临时性存储来统计。\n{{< /note >}}",
+ "oracle_target": "{{< note >}}\n<!--\nThe kubelet will only track the root filesystem for ephemeral storage. OS layouts that mount a separate disk to `/var/lib/kubelet` or `/var/lib/containers` will not report ephemeral storage correctly.\n-->\nkubelet 将仅跟踪临时存储的根文件系统。\n如果你挂载另一个磁盘到 `/var/lib/kubelet` 或 `/var/lib/containers` 目录下，\n形成新的操作系统层面布局，kubelet 将无法正确报告临时存储用量。\n{{< /note >}}",
+ "packet": "ec3049b2e296719d",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\nkubelet 会将 `tmpfs` emptyDir 卷的用量当作容器内存用量，而不是本地临时性存储来统计。\n{{< /note >}}",
+ "reference_kind": "quote"
+}

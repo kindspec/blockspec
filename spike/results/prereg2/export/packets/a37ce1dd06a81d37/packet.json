@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## kubeadm\n\n<!--\n### kubeadm.alpha.kubernetes.io/cri-socket (deprecated) {#kubeadm-alpha-kubernetes-io-cri-socket}\n-->",
+ "oracle_target": "<!--\nThis optional label is applied to a node when you want to mark a node role. \nThe node role (text following `/` in the label key) can be set, as long as the overall key follows the\n[syntax](/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set) rules for\nobject labels.\n-->\n当你希望标记节点角色时，可以为 Node 添加此可选标签。\n只要标签的整体键名符合对象标签的[语法和字符集规则](/zh-cn/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set)，\n就可以用此标签设置节点的角色（标签键 `/` 后面的文本为节点角色名）。",
+ "packet": "a37ce1dd06a81d37",
+ "questions": "QUESTIONS.md",
+ "reference": "kubeadm",
+ "reference_kind": "name"
+}

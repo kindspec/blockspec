@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "#### Refactoring Using Functions",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "bd11b732ddb1a2df",
+ "questions": "QUESTIONS.md",
+ "reference": "refactoring-using-functions",
+ "reference_kind": "name"
+}

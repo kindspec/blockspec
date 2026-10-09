@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "To use the `systemd` cgroup driver in `/etc/containerd/config.toml` with `runc`,\nset the following config based on your Containerd version",
+ "oracle_target": "Containerd versions 1.x:\n-->",
+ "packet": "38f5c0ad18f226ff",
+ "questions": "QUESTIONS.md",
+ "reference": "To use the `systemd` cgroup driver in `/etc/containerd/config.toml` with `runc`, set\n-->",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "### Path Types\n\nEach path in an Ingress is required to have a corresponding path type. Paths\nthat do not include an explicit `pathType` will fail validation. There are three\nsupported path types:\n\n* `ImplementationSpecific`: With this path type, matching is up to the\n  IngressClass. Implementations can treat this as a separate `pathType` or treat\n  it identically to `Prefix` or `Exact` path types.\n\n* `Exact`: Matches the URL path exactly and with case sensitivity.\n\n* `Prefix`: Matches based on a URL path prefix split by `/`. Matching is case\n  sensitive and done on a path element by element basis. A path element refers\n  to the list of labels in the path split by the `/` separator. A request is a\n  match for path _p_ if every _p_ is an element-wise prefix of _p_ of the\n  request path.\n\n  {{< note >}} If the last element of the path is a substring of the last\n  element in request path, it is not a match (for example: `/foo/bar`\n  matches`/foo/bar/baz`, but does not match `/foo/barbaz`). {{< /note >}}",
+ "oracle_target": "#### Multiple Matches\nIn some cases, multiple paths within an Ingress will match a request. In those\ncases precedence will be given first to the longest matching path. If two paths\nare still equally matched, precedence will be given to paths with an exact path\ntype over prefix path type.",
+ "packet": "7e0d1db9ff30c559",
+ "questions": "QUESTIONS.md",
+ "reference": "path-types",
+ "reference_kind": "name"
+}

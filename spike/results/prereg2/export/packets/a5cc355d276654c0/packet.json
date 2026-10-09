@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Uses for ephemeral containers\n\nEphemeral containers are useful for interactive troubleshooting when `kubectl\nexec` is insufficient because a container has crashed or a container image\ndoesn't include debugging utilities.\n\nIn particular, [distroless images](https://github.com/GoogleContainerTools/distroless)\nenable you to deploy minimal container images that reduce attack surface\nand exposure to bugs and vulnerabilities. Since distroless images do not include a\nshell or any debugging utilities, it's difficult to troubleshoot distroless\nimages using `kubectl exec` alone.\n\nWhen using ephemeral containers, it's helpful to enable [process namespace\nsharing](/docs/tasks/configure-pod-container/share-process-namespace/) so\nyou can view processes in other containers.\n\nSee [Debugging with Ephemeral Debug Container](\n/docs/tasks/debug-application-cluster/debug-running-pod/#debugging-with-ephemeral-debug-container)\nfor examples of troubleshooting using ephemeral containers.",
+ "oracle_target": "```json\n{\n   \"kind\":\"EphemeralContainers\",\n   \"apiVersion\":\"v1\",\n   \"metadata\":{\n      \"name\":\"example-pod\",\n      \"namespace\":\"default\",\n      \"selfLink\":\"/api/v1/namespaces/default/pods/example-pod/ephemeralcontainers\",\n      \"uid\":\"a14a6d9b-62f2-4119-9d8e-e2ed6bc3a47c\",\n      \"resourceVersion\":\"15886\",\n      \"creationTimestamp\":\"2019-08-29T06:41:42Z\"\n   },\n   \"ephemeralContainers\":[\n      {\n         \"name\":\"debugger\",\n         \"image\":\"busybox\",\n         \"command\":[\n            \"sh\"\n         ],\n         \"resources\":{\n\n         },\n         \"terminationMessagePolicy\":\"File\",\n         \"imagePullPolicy\":\"IfNotPresent\",\n         \"stdin\":true,\n         \"tty\":true\n      }\n   ]\n}\n```",
+ "packet": "a5cc355d276654c0",
+ "questions": "QUESTIONS.md",
+ "reference": "uses-for-ephemeral-containers",
+ "reference_kind": "name"
+}

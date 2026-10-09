@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Questions about the Terms of Service? Contact us through the [GitHub Support portal](https://support.github.com/).",
+ "oracle_target": "### 6. Questions",
+ "packet": "fab4d02480dcb3fb",
+ "questions": "QUESTIONS.md",
+ "reference": "### 6. Questions\nQuestions about the Terms of Service? [Contact us](https://support.github.com/contact?tags=docs-policy).",
+ "reference_kind": "quote"
+}

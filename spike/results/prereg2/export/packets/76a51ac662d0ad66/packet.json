@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "GitHub is not obligated to provide any technical or other support to Qualified Users unless specifically set forth in an Order Form. GitHub shall have no liability to you or any Qualified Users for loss or damages arising from or relating to use and access of the Services.",
+ "oracle_target": "### 3.2 GitHub Product Support.",
+ "packet": "76a51ac662d0ad66",
+ "questions": "QUESTIONS.md",
+ "reference": "### 3.2 GitHub Product Support.\nGitHub’s obligation to provide technical or other support to Qualified Users is limited to that described in the [GitHub Customer Agreement](https://github.com/customer-terms) or as set forth in an Order Form. GitHub shall have no liability to you or any Qualified Users for loss or damages arising from or relating to use and access of the Services.",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "#### Portworx CSI 迁移\n\n{{< feature-state for_k8s_version=\"v1.25\" state=\"beta\" >}}\n\n<!--\nBy default, Kubernetes {{% skew currentVersion %}} attempts to migrate legacy\nPortworx volumes to use CSI. (CSI migration for Portworx has been available since\nKubernetes v1.23, but was only turned on by default since the v1.31 release).\nIf you want to disable automatic migration, you can set the `CSIMigrationPortworx`\n[feature gate](/docs/reference/command-line-tools-reference/feature-gates/)\nto `false`; you need to make that change for the kube-controller-manager **and** on\nevery relevant kubelet.\n\nIt redirects all plugin operations from the existing in-tree plugin to the\n`pxd.portworx.com` Container Storage Interface (CSI) Driver.\n[Portworx CSI Driver](https://docs.portworx.com/portworx-enterprise/operations/operate-kubernetes/storage-operations/csi)\nmust be installed on the cluster.\n-->\n默认情况下，Kubernetes {{% skew currentVersion %}} 尝试将传统的 Portworx 卷迁移为使用 CSI。\n（Portworx 的 CSI 迁移自 Kubernetes v1.23 版本以来一直可用，但从 v1.31 版本开始才默认启用）。\n如果你想禁用自动迁移，可以将 `CSIMigrationPortworx`\n[特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/) 设置为 `false`；\n你需要在 kube-controller-manager **和** 每个相关的 kubelet 上进行此更改。\n\n它将所有插件操作不再指向树内插件（In-Tree Plugin），转而指向\n`pxd.portworx.com` 容器存储接口（Container Storage Interface，CSI）驱动。\n[Portworx CSI 驱动程序](https://docs.portworx.com/portworx-enterprise/operations/operate-kubernetes/storage-operations/csi)必须安装在集群上。\n\n<!--",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "aa6fedbf29ebc8d9",
+ "questions": "QUESTIONS.md",
+ "reference": "portworx-csi-迁移",
+ "reference_kind": "name"
+}

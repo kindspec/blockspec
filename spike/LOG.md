@@ -1769,3 +1769,108 @@ F5) of 20 characters or more with a twin in the same file was:
 Each figure is from `results/prereg2/arm0/<arm>.json`,
 `rules.yaml-fence`. `none` and `anywhere` are reported there beside it,
 with no verdict.
+
+## 2026-10-09 — §25. The scoring arms
+
+This entry belongs to §9's third commit, the scoring-arm results. Once the
+pull request is squash-merged, its squash commit is the scoring-arm commit:
+the one commit that adds `results/prereg2/score/`. blockspec#18 merged as
+`c5ddbe6`, the Arm 0 commit, and every arm passed Arm 0's bar (§24).
+
+### The runs
+
+`prereg2.py score` ran under `python3 -I -S -B`, bound by validation commit
+`d79bf2e`. It ran once for each arm, in §6.2's order, with the default
+modes E, S5, S25 and M and §6.5's sample sizes. Each invocation was
+committed before the next.
+
+- An unbound `score --help` was run first, to check the arguments, and
+  committed.
+- The work directories were under `/home/cam/kindspec-data/prereg2-score-work/`.
+- The runs went from 2026-10-08T17:13Z to 2026-10-09T11:20Z. Every run
+  exited 0. No run refused, and none was repeated.
+
+Per arm, under the verdict rule: instances evaluated / not evaluated /
+undecodable (LOG §15). For E and S the sample is from the population given.
+Each figure is from `results/prereg2/score/<arm>/status.json`, `counts`.
+
+| arm | E (population) | S5 (population) | S25 | M (kept cases) |
+|---|---|---|---|---|
+| `rust-book` | 1000/0/0 (3,443) | 500/0/0 (3,146) | 500/0/0 | 118/23/0 (141) |
+| `obsidian-help` | 1000/0/0 (1,697) | 500/0/0 (1,098) | 148/0/0 | 3/2/0 (5) |
+| `cmspec` | 92/0/0 (92) | 85/0/0 (85) | 62/0/0 | 1/0/0 (1) |
+| `k8s-en` | 1097/0/0 (14,082) | 538/0/0 (11,668) | 518/0/0 | 1232/110/0 (1,342) |
+| `k8s-l10n` | 1056/0/0 (19,825) | 525/0/1 (9,083) | 500/0/0 | 249/31/0 (280) |
+| `cncf-toc` | 1120/0/0 (1,018) | 571/0/0 (665) | 367/0/0 | 17/6/0 (23) |
+| `site-policy` | 1000/0/0 (1,578) | 216/0/0 (216) | 2/0/0 | 33/14/0 (47) |
+
+An evaluated count above the sample size is expected. Each rule (`yaml-fence`,
+`none`, `anywhere`) draws its own sample of 1,000 or 500, and the union is
+evaluated, each instance tagged with the rules whose sample holds it.
+
+### The strict `site-policy` set is empty
+
+§6.2 sets the strict set's rule: exclude an accepted merge whose subject line
+contains `automated-sync` or `repo-sync`. It also says: "The first
+registration's §5.1 expects 21 cases to remain. If the rule leaves a
+different number, the rule's count stands and the difference is logged."
+
+The rule leaves **0**. The difference is −21. The 25-case set, which
+excludes `automated-sync` only, also has 0.
+
+Of the 78 merge cases `find_merge_cases()` found, 31 touch a path that is
+not selected at the pin. The 25-case count of 0 means each of the 47 that
+remain has `automated-sync` in its subject. The 33 that were evaluated
+record their subjects in `results/prereg2/score/site-policy/instances.jsonl`,
+`meta.subject`, and each has the form
+`Merge branch 'main' into automated-sync-<n>`.
+
+This is the rule's count, and it stands. `site-policy` M therefore has no
+unit in its verdict cell. The first registration's 21 were counted over all
+78 cases, before any path selection. That the 21 fell among the 31 cases
+dropped by path selection is a reading of these counts; it was not checked.
+
+## 2026-10-09 — §26. The export
+
+§9's third commit is "scoring-arm results and the export", so the export is
+committed in the same pull request as the scoring arms (§25), and both land
+in the one squash commit.
+
+`prereg2.py export` ran once, bound by validation commit `d79bf2e`, under
+`python3 -I -S -B`. It read the sealed manifest at
+`/home/cam/kindspec-data/prereg2-seal/` and exited 0. An unbound
+`export --help` was run first, to check the arguments, and committed.
+
+The export is `results/prereg2/export/`. It holds `PROMPT.md` and 486
+packets, three of them Appendix B's plants. Each packet is named by the
+first 16 hex characters of `sha256(nonce + ":" + key)`. Each packet holds:
+
+- `packet.json`, with only the fields `packet`, `reference_kind`,
+  `reference`, `mechanism_target`, `oracle_target`, `files` and
+  `questions`;
+- `QUESTIONS.md`;
+- either `before.md` and `after.md` (436 packets), or `base.md`,
+  `leg-a.md`, `leg-c.md` and `after.md` (50 packets).
+
+`results/prereg2/export-manifest.txt`, outside the export, lists the
+sha256 of each file.
+
+Checks on the export after the run:
+
+- `p2/export.validate` reports it clean.
+- It holds no `.git` and no symlinks, and every packet name is 16 hex
+  characters.
+- The nonce does not appear anywhere under `results/prereg2/`, whether in
+  full, as its first 16 hex characters, or as raw bytes.
+- No arm name, corpus or bundle name, plant name, or oracle or resolver
+  field appears in `PROMPT.md`, `QUESTIONS.md` or the metadata fields of any
+  `packet.json`.
+- The corpus texts themselves name their own projects in places, for
+  example a `site-policy` link or a `cncf-toc` mailing list. That is the
+  file content §7.3 requires.
+
+**Who tiers.** §7.3 says "Whoever ran an arm may not tier." A recorded
+owner decision reads this as follows: a fresh agent with no access to the
+authoring conversation counts as independent, and the barrier is the export
+directory, with no `.git`. The sandboxed tierer sees only the export, so it
+meets §7.3.

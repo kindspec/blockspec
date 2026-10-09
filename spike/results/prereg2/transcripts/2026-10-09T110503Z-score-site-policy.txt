@@ -1,0 +1,21 @@
+# prereg2 score site-policy
+# argv: prereg2.py score --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm site-policy --work-dir /home/cam/kindspec-data/prereg2-score-work/site-policy
+# start: 2026-10-09T11:05:03Z
+# blockspec HEAD: 0281e165e1e5892cf76811a6f6c4a45de79098bb
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+
+# executed: 2026-10-09T11:05:04Z
+### site-policy E: evaluated 1000 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"commits:no_merges": 572, "excluded:add": 72, "excluded:delete": 0, "excluded:other_status": 0, "excluded:rename": 43, "path_not_selected": 1054, "population": 1578, "sample": 1000}, "evaluated_instances": 1000, "none": {"commits:no_merges": 572, "excluded:add": 72, "excluded:delete": 0, "excluded:other_status": 0, "excluded:rename": 43, "path_not_selected": 1054, "population": 1578, "sample": 1000}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"commits:no_merges": 572, "excluded:add": 72, "excluded:delete": 0, "excluded:other_status": 0, "excluded:rename": 43, "path_not_selected": 1054, "population": 1578, "sample": 1000}}
+### site-policy S5: evaluated 216 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap5:excluded:blob_missing": 0, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 216, "gap5:population": 216, "paths": 61, "sample": 216}, "evaluated_instances": 216, "none": {"gap5:excluded:blob_missing": 0, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 216, "gap5:population": 216, "paths": 61, "sample": 216}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap5:excluded:blob_missing": 0, "gap5:excluded:blobs_equal": 0, "gap5:pairs": 216, "gap5:population": 216, "paths": 61, "sample": 216}}
+### site-policy S25: evaluated 2 instances, 0 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"anywhere": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 2, "gap25:population": 2, "paths": 61, "sample": 2}, "evaluated_instances": 2, "none": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 2, "gap25:population": 2, "paths": 61, "sample": 2}, "not_evaluated": 0, "undecodable": 0, "yaml-fence": {"gap25:excluded:blob_missing": 0, "gap25:excluded:blobs_equal": 0, "gap25:pairs": 2, "gap25:population": 2, "paths": 61, "sample": 2}}
+   site-policy strict set: 0 cases; the first registration's §5.1 expected 21; difference -21 (the rule's count stands, §6.2). 25-case set, beside, no verdict: 0
+### site-policy M: evaluated 33 instances, 14 not evaluated, undecodable 0 (excluded, LOG §15)
+   {"evaluated_instances": 33, "filter": {"cases_in": 78, "dropped:not_selected": 31, "kept": 47, "kept:anywhere": 47, "kept:none": 47, "kept:yaml-fence": 47, "set25": 0, "strict": 0, "strict_difference": -21, "strict_expected": 21}, "find_merge_cases": {"drop:add_add": 23, "drop:convergent": 1193, "drop:delete_modify": 27, "merges:two_parent": 332, "paths:both_sides": 1321, "paths:one_side": 1706}, "merges": {"clean": 33, "not_clean": 14}, "not_evaluated": 14, "undecodable": 0}
+
+# end: 2026-10-09T11:20:34Z
+# exited: exit status 0

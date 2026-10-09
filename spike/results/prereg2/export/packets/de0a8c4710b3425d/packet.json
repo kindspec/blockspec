@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Avoiding collisions\n\nOne of the primary philosophies of Kubernetes is that you should not be\nexposed to situations that could cause your actions to fail through no fault\nof your own. For the design of the Service resource, this means not making\nyou choose your own IP address if that choice might collide with\nsomeone else's choice. That is an isolation failure.\n\nIn order to allow you to choose an IP address for your Services, we must\nensure that no two Services can collide. Kubernetes does that by allocating each\nService its own IP address from within the `service-cluster-ip-range`\nCIDR range that is configured for the {{< glossary_tooltip term_id=\"kube-apiserver\" text=\"API Server\" >}}.",
+ "oracle_target": "```shell\ncat <<'EOF' | kubectl apply -f -\napiVersion: networking.k8s.io/v1\nkind: ServiceCIDR\nmetadata:\n  name: newservicecidr\nspec:\n  cidrs:\n  - 10.96.0.0/24\nEOF\n```",
+ "packet": "de0a8c4710b3425d",
+ "questions": "QUESTIONS.md",
+ "reference": "avoiding-collisions",
+ "reference_kind": "name"
+}

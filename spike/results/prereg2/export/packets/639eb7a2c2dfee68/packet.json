@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "For nodes, the kubelet populates this with `runtime.GOOS` as defined by Go. This can be handy if you are\nmixing operating systems in your cluster (for example: mixing Linux and Windows nodes).",
+ "oracle_target": "When the `kubernetes.io/os` label value for a Pod does not match the label value on a Node,\nthe kubelet on the node will not admit the Pod. However, this is not taken into account by\nthe kube-scheduler. Alternatively, the kubelet refuses to run a Pod where you have specified a Pod OS, if\nthis isn't the same as the operating system for the node where that kubelet is running. Just\nlook for [Pods OS](/docs/concepts/workloads/pods/#pod-os) for more details.\n-->",
+ "packet": "639eb7a2c2dfee68",
+ "questions": "QUESTIONS.md",
+ "reference": "The Kubelet populates this with `runtime.GOOS` as defined by Go. This can be handy if you are mixing operating systems in your cluster (for example: mixing Linux and Windows nodes).\n-->",
+ "reference_kind": "quote"
+}
