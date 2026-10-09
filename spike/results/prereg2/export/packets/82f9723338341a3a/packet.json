@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "401: Unauthorized\n-->",
+ "oracle_target": "401: Unauthorized\n-->\n200 (<a href=\"{{< ref \"../workload-resources/cron-job-v1#CronJob\" >}}\">CronJob</a>): OK",
+ "packet": "82f9723338341a3a",
+ "questions": "QUESTIONS.md",
+ "reference": "401: Unauthorized\n-->",
+ "reference_kind": "quote"
+}

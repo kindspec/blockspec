@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "**Short version:** _You may close your Account at any time. If you do, we'll treat your information responsibly._",
+ "oracle_target": "## L. Cancellation and Termination",
+ "packet": "d2f2b33d8cbd22f6",
+ "questions": "QUESTIONS.md",
+ "reference": "## L. Cancellation and Termination\n**Short version:** *You may close your Account at any time. If you do, we'll treat your information responsibly.*",
+ "reference_kind": "quote"
+}

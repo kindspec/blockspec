@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## 无头服务（Headless Services）  {#headless-services}\n\n有时不需要或不想要负载均衡，以及单独的 Service IP。\n遇到这种情况，可以通过显式指定 Cluster IP（`spec.clusterIP`）的值为 `\"None\"`\n来创建 `Headless` Service。\n\n你可以使用一个无头 Service 与其他服务发现机制进行接口，而不必与 Kubernetes 的实现捆绑在一起。\n\n无头 `Services` 不会获得 Cluster IP，kube-proxy 不会处理这类服务，\n而且平台也不会为它们提供负载均衡或路由。\nDNS 如何实现自动配置，依赖于 Service 是否定义了选择算符。\n\n<!--\n### With selectors\n\nFor headless Services that define selectors, the Kubernetes control plane creates\nEndpointSlice objects in the Kubernetes API, and modifies the DNS configuration to return\nA or AAAA records (IPv4 or IPv6 addresses) that point directly to the Pods backing\nthe Service.\n-->\n### 带选择算符的服务 {#with-selectors}\n\n对定义了选择算符的无头服务，Kubernetes 控制平面在 Kubernetes API 中创建 EndpointSlice 对象，\n并且修改 DNS 配置返回 A 或 AAAA 条记录（IPv4 或 IPv6 地址），这些记录直接指向 `Service` 的后端 Pod 集合。\n\n<!--\n### Without selectors\n\nFor headless Services that do not define selectors, the control plane does\nnot create EndpointSlice objects. However, the DNS system looks for and configures\neither:\n\n* DNS CNAME records for [`type: ExternalName`](#externalname) Services.\n* DNS A / AAAA records for all IP addresses of the Service's ready endpoints,\n  for all Service types other than `ExternalName`.\n  * For IPv4 endpoints, the DNS system creates A records.\n  * For IPv6 endpoints, the DNS system creates AAAA records.\n\nWhen you define a headless Service without a selector, the `port` must\nmatch the `targetPort`.\n-->\n### 无选择算符的服务  {#without-selectors}\n\n对没有定义选择算符的无头服务，控制平面不会创建 EndpointSlice 对象。\n然而 DNS 系统会查找和配置以下之一：\n\n* 对于 [`type: ExternalName`](#externalname) 服务，查找和配置其 CNAME 记录\n* 对所有其他类型的服务，针对 Service 的就绪端点的所有 IP 地址，查找和配置 DNS A / AAAA 条记录\n  * 对于 IPv4 端点，DNS 系统创建 A 条记录。\n  * 对于 IPv6 端点，DNS 系统创建 AAAA 条记录。\n\n当你定义无选择算符的无头服务时，`port` 必须与 `targetPort` 匹配。\n\n<!--",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "cf0b552688b86033",
+ "questions": "QUESTIONS.md",
+ "reference": "无头服务headless-services--headless-services",
+ "reference_kind": "name"
+}

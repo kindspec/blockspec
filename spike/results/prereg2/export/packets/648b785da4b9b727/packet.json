@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "After the Agreement Effective Date, Qualified Users shall have free access to Subscription Licenses on the Service or the Software for each Organization listed on completed Order Forms submitted by the Designated Admin to the GitHub Program Manager. Access to and use of the Service and Software are subject to the terms of the [GitHub Customer Agreement](https://github.com/customer-terms).",
+ "oracle_target": "#### 2.1.1 GitHub Product Benefits.",
+ "packet": "648b785da4b9b727",
+ "questions": "QUESTIONS.md",
+ "reference": "#### 2.1.1 GitHub Product Benefits.\nAfter the Agreement Effective Date, Qualified Users shall have free access to Subscription Licenses on the Service or the Software for each Organization  listed on completed Order Forms submitted by the Designated Admin to the GitHub Program Manager. Access to and use of the Service and Software are subject to the terms of the [GitHub Customer Agreement](https://github.com/customer-terms).",
+ "reference_kind": "quote"
+}

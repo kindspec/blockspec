@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### TLS Secret\n\n`kubernetes.io/tls` Secret 类型用来存放 TLS 场合通常要使用的证书及其相关密钥。\n\nTLS Secret 的一种典型用法是为 [Ingress](/zh-cn/docs/concepts/services-networking/ingress/)\n资源配置传输过程中的数据加密，不过也可以用于其他资源或者直接在负载中使用。\n当使用此类型的 Secret 时，Secret 配置中的 `data` （或 `stringData`）字段必须包含\n`tls.key` 和 `tls.crt` 主键，尽管 API 服务器实际上并不会对每个键的取值作进一步的合法性检查。\n\n作为使用 `stringData` 的替代方法，你可以使用 `data` 字段来指定 base64 编码的证书和私钥。\n有关详细信息，请参阅 [Secret 名称和数据的限制](#restriction-names-data)。\n\n下面的 YAML 包含一个 TLS Secret 的配置示例：\n\n{{% code language=\"yaml\" file=\"secret/tls-auth-secret.yaml\" %}}\n\n<!--\nThe TLS Secret type is provided only for convenience.\nYou can create an `Opaque` type for credentials used for TLS authentication.\nHowever, using the defined and public Secret type (`kubernetes.io/tls`)\nhelps ensure the consistency of Secret format in your project. The API server\nverifies if the required keys are set for a Secret of this type.\n\nTo create a TLS Secret using `kubectl`, use the `tls` subcommand:\n-->\n提供 TLS 类型的 Secret 仅仅是出于方便性考虑。\n你可以创建 `Opaque` 类型的 Secret 来保存用于 TLS 身份认证的凭据。\n不过，使用已定义和公开的 Secret 类型（`kubernetes.io/tls`）有助于确保你自己项目中的 Secret 格式的一致性。\nAPI 服务器会验证这种类型的 Secret 是否设定了所需的主键。\n\n要使用 `kubectl` 创建 TLS Secret，你可以使用 `tls` 子命令：\n\n```shell\nkubectl create secret tls my-tls-secret \\\n  --cert=path/to/cert/file \\\n  --key=path/to/key/file\n```\n\n<!--\nThe public/private key pair must exist before hand. The public key certificate for `--cert` must be .PEM encoded\nand must match the given private key for `--key`.\n-->\n公钥/私钥对必须事先存在，`--cert` 的公钥证书必须采用 .PEM 编码，\n并且必须与 `--key` 的给定私钥匹配。\n\n<!--",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "3976dba699723b2e",
+ "questions": "QUESTIONS.md",
+ "reference": "tls-secret",
+ "reference_kind": "name"
+}

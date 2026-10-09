@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Failed jobs are retried three times\nbefore an alert is raised.",
+ "oracle_target": "Failed jobs are retried five times\nbefore an alert is raised.",
+ "packet": "3decb1c5e6a1ae62",
+ "questions": "QUESTIONS.md",
+ "reference": "Failed jobs are retried three times\nbefore an alert is raised.",
+ "reference_kind": "quote"
+}

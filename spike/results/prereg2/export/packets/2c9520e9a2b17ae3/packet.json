@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "#### Be welcoming\n\nMake a conscious effort to be welcoming in your interactions. If someone is new, express sincere interest in what brought them to the group. Check in with existing contributors to ensure they continue to feel welcome. Create space for new contributors and existing contributors to be curious and engaged with the work that we do in cloud native by building on common interests and outcomes.",
+ "oracle_target": "#### Provide feedback and appreciation appropriately\nProvide praise, gratitude, appreciation and encouragement in public. Look for opportunities to say “thank you” and recognize people when they are being helpful or making contributions. Be specific in what was done and describe the impact it had or continues to have.",
+ "packet": "2c9520e9a2b17ae3",
+ "questions": "QUESTIONS.md",
+ "reference": "be-welcoming",
+ "reference_kind": "name"
+}

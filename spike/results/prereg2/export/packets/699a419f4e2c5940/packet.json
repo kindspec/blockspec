@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Why do I need them?\n\nSeveral important features of Kubernetes require an admission controller to be enabled in order\nto properly support the feature. As a result, a Kubernetes API server that is not properly\nconfigured with the right set of admission controllers is an incomplete server and will not\nsupport all the features you expect.\n-->",
+ "oracle_target": "<!--\nThe ordering of these calls can be seen below.\n-->\n这些调用的顺序如下所示。",
+ "packet": "699a419f4e2c5940",
+ "questions": "QUESTIONS.md",
+ "reference": "why-do-i-need-them",
+ "reference_kind": "name"
+}

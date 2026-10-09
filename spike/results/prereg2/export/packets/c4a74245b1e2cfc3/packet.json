@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "레이블 또는 셀렉터는 다른 컨트롤러(다른 디플로이먼트와 스테이트풀셋(StatefulSet) 포함)와 겹치지 않아야 한다. 쿠버네티스는 겹치는 것을 막지 않으며, 만약 다중 컨트롤러가 겹치는 셀렉터를 가지는 경우 해당 컨트롤러의 충돌 또는 예기치 않은 동작을 야기할 수 있다.\n{{< /note >}}",
+ "oracle_target": "{{< note >}}\n  `.spec.selector.matchLabels` 필드는 {key,value}의 쌍으로 매핑되어 있다. `matchLabels` 에 매핑된\n  단일 {key,value}은 `matchExpressions` 의 요소에 해당하며, `key` 필드는 \"key\"에 그리고 `operator`는 \"In\"에 대응되며\n  `value` 배열은 \"value\"만 포함한다.\n  매칭을 위해서는 `matchLabels` 와 `matchExpressions` 의 모든 요건이 충족되어야 한다.\n  {{< /note >}}",
+ "packet": "c4a74245b1e2cfc3",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\n  디플로이먼트에는 파드 템플릿 레이블과 적절한 셀렉터를 반드시 명시해야 한다(이 예시에서는 `app: nginx`).\n  레이블 또는 셀렉터는 다른 컨트롤러(다른 디플로이먼트와 스테이트풀 셋 포함)와 겹치지 않아야 한다. 쿠버네티스는 겹치는 것을 막지 않으며, 만약 다중 컨트롤러가 겹치는 셀렉터를 가지는 경우 해당 컨트롤러의 충돌 또는 예기치 않은 동작을 야기할 수 있다.\n  {{< /note >}}",
+ "reference_kind": "quote"
+}

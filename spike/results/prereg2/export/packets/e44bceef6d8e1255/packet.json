@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Product & Operations\n\n- Silver ([Erica Xu](https://ericaxu.com))<span class='flair mod-pop'>Team Little Silvers</span>\n- kepano ([Steph Ango](https://stephanango.com/))\n- Sigrunixia ([Rebbecca Bishop](https://tenebrousdragon.com/home))<span class='flair mod-pop'>Support Dragon</span> <span class='flair mod-pop'>TTRPG Enthusiast</span>",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "e44bceef6d8e1255",
+ "questions": "QUESTIONS.md",
+ "reference": "product--operations",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "The control plane adds this label to an Endpoints object when the owning Service is headless.\nTo learn more, read [Headless Services](/docs/concepts/services-networking/service/#headless-services).\n-->",
+ "oracle_target": "See [Topology Aware Routing](/docs/concepts/services-networking/topology-aware-routing/)\nfor more details.\n-->\n类别：注解",
+ "packet": "aa707058ab72ffb1",
+ "questions": "QUESTIONS.md",
+ "reference": "The control plane adds this label to an Endpoints object when the owning Service is headless.\n-->",
+ "reference_kind": "quote"
+}

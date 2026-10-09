@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Addons\n\nAddons use Kubernetes resources ({{< glossary_tooltip term_id=\"daemonset\" >}},\n{{< glossary_tooltip term_id=\"deployment\" >}}, etc)\nto implement cluster features. Because these are providing cluster-level features, namespaced resources\nfor addons belong within the `kube-system` namespace.\n\nSelected addons are described below; for an extended list of available addons, please\nsee [Addons](/docs/concepts/cluster-administration/addons/).\n\n### DNS\n\nWhile the other addons are not strictly required, all Kubernetes clusters should have [cluster DNS](/docs/concepts/services-networking/dns-pod-service/), as many examples rely on it.\n\nCluster DNS is a DNS server, in addition to the other DNS server(s) in your environment, which serves DNS records for Kubernetes services.\n\nContainers started by Kubernetes automatically include this DNS server in their DNS searches.\n\n### Web UI (Dashboard)\n\n[Dashboard](/docs/tasks/access-application-cluster/web-ui-dashboard/) is a general purpose, web-based UI for Kubernetes clusters. It allows users to manage and troubleshoot applications running in the cluster, as well as the cluster itself.\n\n### Container Resource Monitoring\n\n[Container Resource Monitoring](/docs/tasks/debug/debug-cluster/resource-usage-monitoring/) records generic time-series metrics\nabout containers in a central database, and provides a UI for browsing that data.\n\n### Cluster-level Logging\n\nA [cluster-level logging](/docs/concepts/cluster-administration/logging/) mechanism is responsible for\nsaving container logs to a central log store with search/browsing interface.",
+ "oracle_target": "* Learn about [Nodes](/docs/concepts/architecture/nodes/)\n* Learn about [Controllers](/docs/concepts/architecture/controller/)\n* Learn about [kube-scheduler](/docs/concepts/scheduling-eviction/kube-scheduler/)\n* Read etcd's official [documentation](https://etcd.io/docs/)",
+ "packet": "797787221f7c1a6f",
+ "questions": "QUESTIONS.md",
+ "reference": "addons",
+ "reference_kind": "name"
+}

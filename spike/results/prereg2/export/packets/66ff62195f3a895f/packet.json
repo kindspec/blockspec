@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "* [Client authentication API (v1beta1)](/docs/reference/config-api/client-authentication.v1beta1/)",
+ "oracle_target": "* [kubelet configuration (v1beta1)](/docs/reference/config-api/kubelet-config.v1beta1/)\n* [kube-scheduler configuration (v1beta1)](/docs/reference/config-api/kube-scheduler-config.v1beta1/)\n* [kube-proxy configuration (v1alpha1)](/docs/reference/config-api/kube-proxy-config.v1alpha1/)\n* [`audit.k8s.io/v1` API](/docs/reference/config-api/apiserver-audit.v1/)",
+ "packet": "66ff62195f3a895f",
+ "questions": "QUESTIONS.md",
+ "reference": "* [kube-proxy configuration (v1alpha1)](/docs/reference/config-api/kube-proxy-config.v1alpha1/)",
+ "reference_kind": "quote"
+}

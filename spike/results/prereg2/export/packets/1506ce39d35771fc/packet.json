@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "详情请参见 [Pod 开销](/zh-cn/docs/concepts/scheduling-eviction/pod-overhead/)。",
+ "oracle_target": "See also [Pod Overhead](/docs/concepts/scheduling-eviction/pod-overhead/)\nfor more information.\n-->\n如果你所定义的 RuntimeClass 包含 [Pod 开销](/zh-cn/docs/concepts/scheduling-eviction/pod-overhead/)，\n这个准入控制器会检查新的 Pod。\n被启用后，此准入控制器会拒绝所有已经设置了 overhead 字段的 Pod 创建请求。\n对于配置了 RuntimeClass 并在其 `.spec` 中选定 RuntimeClass 的 Pod，\n此准入控制器会根据相应 RuntimeClass 中定义的值为 Pod 设置 `.spec.overhead`。",
+ "packet": "1506ce39d35771fc",
+ "questions": "QUESTIONS.md",
+ "reference": "See also [Pod Overhead](/docs/concepts/scheduling-eviction/pod-overhead/)\nfor more information.\n-->",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Custom resources\n\nA *resource* is an endpoint in the [Kubernetes API](/docs/concepts/overview/kubernetes-api/) that stores a collection of\n[API objects](/docs/concepts/overview/working-with-objects/kubernetes-objects/) of a certain kind; for example, the built-in *pods* resource contains a collection of Pod objects.\n\nA *custom resource* is an extension of the Kubernetes API that is not necessarily available in a default\nKubernetes installation. It represents a customization of a particular Kubernetes installation. However,\nmany core Kubernetes functions are now built using custom resources, making Kubernetes more modular.\n\nCustom resources can appear and disappear in a running cluster through dynamic registration,\nand cluster admins can update custom resources independently of the cluster itself.\nOnce a custom resource is installed, users can create and access its objects using\n[kubectl](/docs/reference/kubectl/overview/), just as they do for built-in resources like\n*Pods*.",
+ "oracle_target": "| Consider API aggregation if: | Prefer a stand-alone API if: |\n| ---------------------------- | ---------------------------- |\n| Your API is [Declarative](#declarative-apis). | Your API does not fit the [Declarative](#declarative-apis) model. |\n| You want your new types to be readable and writable using `kubectl`.| `kubectl` support is not required |\n| You want to view your new types in a Kubernetes UI, such as dashboard, alongside built-in types. | Kubernetes UI support is not required. |\n| You are developing a new API. | You already have a program that serves your API and works well. |\n| You are willing to accept the format restriction that Kubernetes puts on REST resource paths, such as API Groups and Namespaces. (See the [API Overview](/docs/concepts/overview/kubernetes-api/).) | You need to have specific REST paths to be compatible with an already defined REST API. |\n| Your resources are naturally scoped to a cluster or namespaces of a cluster. | Cluster or namespace scoped resources are a poor fit; you need control over the specifics of resource paths. |\n| You want to reuse [Kubernetes API support features](#common-features).  | You don't need those features. |",
+ "packet": "ee84f130ecd09542",
+ "questions": "QUESTIONS.md",
+ "reference": "custom-resources",
+ "reference_kind": "name"
+}

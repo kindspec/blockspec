@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "* `spec.containers[].resources.limits.ephemeral-storage`\n* `spec.containers[].resources.requests.ephemeral-storage`",
+ "oracle_target": "* `spec.containers[].resources.limits.ephemeral-storage`\n* `spec.containers[].resources.requests.ephemeral-storage`\n-->",
+ "packet": "ed0132ca9601ba17",
+ "questions": "QUESTIONS.md",
+ "reference": "* `spec.containers[].resources.limits.ephemeral-storage`\n* `spec.containers[].resources.requests.ephemeral-storage`",
+ "reference_kind": "quote"
+}

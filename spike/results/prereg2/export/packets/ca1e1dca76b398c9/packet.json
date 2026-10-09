@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "A KRM Function **should not** modify this annotation on input objects unless it is modifying the\nreferenced files. A KRM Function **may** include this annotation on objects it generates.",
+ "oracle_target": "A KRM Function **should not** modify this annotation on input objects unless it is modifying the\nreferenced files. A KRM Function **may** include this annotation on objects it generates.",
+ "packet": "ca1e1dca76b398c9",
+ "questions": "QUESTIONS.md",
+ "reference": "A KRM Function **should not** modify this annotation on input objects unless it is modifying the\nreferenced files. A KRM Function **may** include this annotation on objects it generates.",
+ "reference_kind": "quote"
+}

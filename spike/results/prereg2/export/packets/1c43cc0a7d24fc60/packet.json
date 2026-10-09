@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "You can create an immutable Secret by setting the `immutable` field to `true`. For example,\n-->",
+ "oracle_target": "You can edit an existing Secret unless it is [immutable](#secret-immutable). To\nedit a Secret, use one of the following methods:\n-->",
+ "packet": "1c43cc0a7d24fc60",
+ "questions": "QUESTIONS.md",
+ "reference": "You can edit an existing Secret using kubectl:\n-->",
+ "reference_kind": "quote"
+}

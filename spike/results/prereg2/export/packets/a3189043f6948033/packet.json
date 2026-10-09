@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "You agree: (i) not to resell the GitHub Products, or to charge any service or other fee to Qualified Users in connection with their use of the GitHub Products under this Agreement; (ii) that you are responsible and liable for Qualified Users' use of the GitHub Products; and (iii) to cooperate with GitHub to enforce the terms of this Agreement in connection with Qualified Users' use of the GitHub Products, including, without limitation, sending appropriate notices to and terminating access to the GitHub Products for Qualified Users who misuse the GitHub Products in any way (iv) to support Qualified Users in the administration and maintenance of their accounts,; and (v) only your Designated Admin shall communicate with GitHub directly about program membership and administration of the Products and Services. You shall immediately terminate access to GitHub Products and Services for any Qualified User who no longer qualifies as such under this Agreement.",
+ "oracle_target": "### 3.1 General Restrictions.",
+ "packet": "a3189043f6948033",
+ "questions": "QUESTIONS.md",
+ "reference": "### 3.1 General Restrictions.\nYou agree: (i) not to resell the GitHub Products, or to charge any service or other fee to Qualified Users in connection with their use of the GitHub Products under this Agreement; (ii) that you are responsible and liable  for Qualified Users' use of the GitHub Products; and (iii) to cooperate with GitHub to enforce the terms of this Agreement in connection with Qualified Users' use of the GitHub Products, including, without limitation, sending appropriate notices to and terminating access to the GitHub Products for Qualified Users who misuse the GitHub Products in any way (iv) to support Qualified Users in the administration and maintenance of their accounts,; and (v) only your Designated Admin shall communicate with GitHub directly about program membership and administration of the Products and Services. You shall immediately terminate access to GitHub Products and Services for any Qualified User who no longer qualifies as such under this Agreement.",
+ "reference_kind": "quote"
+}

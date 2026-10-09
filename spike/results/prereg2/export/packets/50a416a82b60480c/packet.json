@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "- [Smart Pointers](ch15-00-smart-pointers.md)",
+ "oracle_target": "- [More about Cargo and Crates.io](ch14-00-more-about-cargo.md)\n    - [Release Profiles](ch14-01-release-profiles.md)\n    - [Publishing a Crate to Crates.io](ch14-02-publishing-to-crates-io.md)\n    - [Cargo Workspaces](ch14-03-cargo-workspaces.md)\n    - [Installing Binaries from Crates.io with `cargo install`](ch14-04-installing-binaries.md)\n    - [Extending Cargo with Custom Commands](ch14-05-extending-cargo.md)",
+ "packet": "50a416a82b60480c",
+ "questions": "QUESTIONS.md",
+ "reference": "- [More about Cargo and Crates.io](ch14-00-more-about-cargo.md)",
+ "reference_kind": "quote"
+}

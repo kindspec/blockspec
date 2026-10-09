@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "選択した名前空間で実行されているすべてのアプリケーションを表示します。\nこのビューでは、アプリケーションがワークロードの種類(例：Deployment、ReplicaSet、StatefulSetなど)ごとに一覧表示され、各ワークロードの種類を個別に表示することができます。\nリストには、ReplicaSetの準備ができたPodの数やPodの現在のメモリ使用量など、ワークロードに関する実用的な情報がまとめられています。",
+ "oracle_target": "#### ワークロード",
+ "packet": "a4d881345aa1665e",
+ "questions": "QUESTIONS.md",
+ "reference": "#### ワークロード\n選択した名前空間で実行されているすべてのアプリケーションを表示します。このビューでは、アプリケーションがワークロードの種類(例：Deployment、ReplicaSet、StatefulSetなど)ごとに一覧表示され、各ワークロードの種類を個別に表示することができます。リストには、ReplicaSetの準備ができたPodの数やPodの現在のメモリ使用量など、ワークロードに関する実用的な情報がまとめられています。",
+ "reference_kind": "quote"
+}

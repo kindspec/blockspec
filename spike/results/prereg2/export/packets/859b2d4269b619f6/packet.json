@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "{{< tabs name=\"container_runtime\" >}}\n{{% tab name=\"Linux\" %}}",
+ "oracle_target": "{{< tabs name=\"operating_system_version_check\" >}}\n{{% tab name=\"Linux\" %}}",
+ "packet": "859b2d4269b619f6",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< tabs name=\"container_runtime\" >}}\n{{% tab name=\"Linux\" %}}",
+ "reference_kind": "quote"
+}

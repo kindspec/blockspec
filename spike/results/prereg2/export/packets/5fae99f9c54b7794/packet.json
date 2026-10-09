@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "* The kubeadm project supports LTS kernels. See [List of LTS kernels](https://www.kernel.org/category/releases.html).\n* You can get the kernel version using the command `uname -r`",
+ "oracle_target": "* The kubeadm project supports recent kernel versions. For a list of recent kernels, see [Windows Server Release Information](https://learn.microsoft.com/en-us/windows/release-health/windows-server-release-info).\n* You can get the kernel version (also called the OS version) using the command `systeminfo`",
+ "packet": "5fae99f9c54b7794",
+ "questions": "QUESTIONS.md",
+ "reference": "* The Windows kernel version must be 10.0.14393 or newer.\n* You can get the kernel version (also called the OS version) using the command `systeminfo`",
+ "reference_kind": "quote"
+}

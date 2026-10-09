@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Traffic policies\n\nYou can set the `.spec.internalTrafficPolicy` and `.spec.externalTrafficPolicy` fields\nto control how Kubernetes routes traffic to healthy (“ready”) backends.\n\nSee [Traffic Policies](/docs/reference/networking/virtual-ips/#traffic-policies) for more details.\n-->",
+ "oracle_target": "<!--\nRead [avoiding collisions](#avoiding-collisions)\nto learn how Kubernetes helps reduce the risk and impact of two different Services\nboth trying to use the same IP address.\n-->\n阅读[避免冲突](#avoiding-collisions)，了解 Kubernetes\n如何协助降低两种不同服务试图使用相同 IP 地址的风险和影响。",
+ "packet": "0a0e5a440ea5ac5c",
+ "questions": "QUESTIONS.md",
+ "reference": "traffic-policies",
+ "reference_kind": "name"
+}

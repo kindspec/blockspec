@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "By default, all unspecified fields for a custom resource, across all versions, are pruned. It is possible though to\nopt-out of that for specific sub-trees of fields by adding `x-kubernetes-preserve-unknown-fields: true` in the\n[structural OpenAPI v3 validation schema](#specifying-a-structural-schema).",
+ "oracle_target": "For example:\n-->",
+ "packet": "a4a35fc7c0ab6e92",
+ "questions": "QUESTIONS.md",
+ "reference": "By default, all unspecified fields for a custom resource, across all versions, are pruned. It is possible though to opt-out of that for specific sub-trees of fields by adding `x-kubernetes-preserve-unknown-fields: true` in the [structural OpenAPI v3 validation schema](#specifying-a-structural-schema).\nFor example:\n-->",
+ "reference_kind": "quote"
+}

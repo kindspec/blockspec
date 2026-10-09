@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "The response should be similar to this:",
+ "oracle_target": "The response should be similar to this:",
+ "packet": "d92edfad3ba98c58",
+ "questions": "QUESTIONS.md",
+ "reference": "The response should be similar to this:",
+ "reference_kind": "quote"
+}

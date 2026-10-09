@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "See the [current CNCF projects](https://www.cncf.io/projects/) and a description of project maturity levels (Sandbox, Incubating, Graduated).",
+ "oracle_target": "## Projects",
+ "packet": "a2cde08e9826f8ba",
+ "questions": "QUESTIONS.md",
+ "reference": "## Projects\nSee the current CNCF projects and a description of project maturity levels (Sandbox, Incubating, Graduated) [here](https://www.cncf.io/projects/).",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "View detailed information about the Pod:",
+ "oracle_target": "View detailed information about the Pod:",
+ "packet": "7102ac88ab0e35c4",
+ "questions": "QUESTIONS.md",
+ "reference": "View detailed information about the Pod:",
+ "reference_kind": "quote"
+}

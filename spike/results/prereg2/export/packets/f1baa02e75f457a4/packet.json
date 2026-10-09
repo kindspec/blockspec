@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "If Customer is a copyright owner and believes that Content on the Service violates Customer’s copyright, Customer may notify GitHub in accordance with GitHub's [Digital Millennium Copyright Act Policy](/site-policy/content-removal-policies/dmca-takedown-policy) via the [DMCA form](https://github.com/contact/dmca) or by emailing copyright@github.com.",
+ "oracle_target": "### 4. Copyright Infringement and DMCA Policy",
+ "packet": "f1baa02e75f457a4",
+ "questions": "QUESTIONS.md",
+ "reference": "### 4. Copyright Infringement and DMCA Policy\nIf Customer is a copyright owner and believes that Content on the Service violates Customer’s copyright, Customer may notify GitHub in accordance with GitHub's [Digital Millennium Copyright Act Policy](/articles/dmca-takedown-policy/) via the [DMCA form](https://github.com/contact/dmca) or by emailing copyright@github.com.",
+ "reference_kind": "quote"
+}

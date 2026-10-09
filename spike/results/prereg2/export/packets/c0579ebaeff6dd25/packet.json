@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Binaries\n-->",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "c0579ebaeff6dd25",
+ "questions": "QUESTIONS.md",
+ "reference": "binaries",
+ "reference_kind": "name"
+}

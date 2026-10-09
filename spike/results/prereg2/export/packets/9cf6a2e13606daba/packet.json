@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "`kube-system`\n: The namespace for objects created by the Kubernetes system.\n-->\n`kube-public`\n: **所有**的客户端（包括未经身份验证的客户端）都可以读取该名字空间。\n  该名字空间主要预留为集群使用，以便某些资源需要在整个集群中可见可读。\n  该名字空间的公共属性只是一种约定而非要求。",
+ "oracle_target": "`kube-node-lease`\n: This namespace holds [Lease](/docs/concepts/architecture/leases/) objects associated with each node. Node leases allow the kubelet to send [heartbeats](/docs/concepts/architecture/nodes/#node-heartbeats) so that the control plane can detect node failure.\n-->\nKubernetes 启动时会创建四个初始名字空间：",
+ "packet": "9cf6a2e13606daba",
+ "questions": "QUESTIONS.md",
+ "reference": "`kube-system`\n: The namespace for objects created by the Kubernetes system.\n-->\nKubernetes 启动时会创建四个初始名字空间：",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "{{< note >}}\n<!--\nStarting in v1.18, this annotation is deprecated in favor of `spec.ingressClassName`.\n-->\n从 v1.18 开始，此注解被弃用，改为鼓励使用 `spec.ingressClassName`。\n{{</note>}}",
+ "oracle_target": "Used on: Ingress\n-->",
+ "packet": "9657d6f18fafb5c7",
+ "questions": "QUESTIONS.md",
+ "reference": "Starting in v1.18, this annotation is deprecated in favor of `spec.ingressClassName`.\n-->",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Status: this proposal was approved by TOC vote on 2026-03-04.",
+ "oracle_target": "Status: this proposal was approved by TOC vote on 2026-03-04.",
+ "packet": "8212abaaff479559",
+ "questions": "QUESTIONS.md",
+ "reference": "Status: this proposal was approved by TOC vote on 2026-03-04.",
+ "reference_kind": "quote"
+}

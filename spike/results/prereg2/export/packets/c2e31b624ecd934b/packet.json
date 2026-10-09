@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "**Short version:** _You are responsible for your use of the service. If you harm someone else or get into a dispute with someone else, we will not be involved._",
+ "oracle_target": "## P. Release and Indemnification",
+ "packet": "c2e31b624ecd934b",
+ "questions": "QUESTIONS.md",
+ "reference": "## P. Release and Indemnification\n**Short version:** *You are responsible for your use of the service. If you harm someone else or get into a dispute with someone else, we will not be involved.*",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Hugo [Shortcodes](https://gohugo.io/content-management/shortcodes) help create different rhetorical appeal levels. Our documentation supports three different shortcodes in this category: **Note** `{{</* note */>}}`, **Caution** `{{</* caution */>}}`, and **Warning** `{{</* warning */>}}`.",
+ "oracle_target": "## Shortcodes",
+ "packet": "f6fec76c6f28879f",
+ "questions": "QUESTIONS.md",
+ "reference": "## Shortcodes\nHugo [Shortcodes](https://gohugo.io/content-management/shortcodes) help create different rhetorical appeal levels. Our documentation supports three different shortcodes in this category: **Note:** {{</* note */>}}, **Caution:** {{</* caution */>}}, and **Warning:** {{</* warning */>}}.",
+ "reference_kind": "quote"
+}

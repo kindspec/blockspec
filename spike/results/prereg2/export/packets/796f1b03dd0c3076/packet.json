@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Enabling native histograms is a two-step process: enable the feature gate on\nKubernetes components, and configure Prometheus to scrape native histograms.",
+ "oracle_target": "The `NativeHistograms` feature gate is enabled by default in Kubernetes v1.37.\nIf you are using Kubernetes v1.36, or if you have explicitly disabled the feature,\nenable the `NativeHistograms` feature gate on the Kubernetes components\nyou want to expose native histograms from:",
+ "packet": "796f1b03dd0c3076",
+ "questions": "QUESTIONS.md",
+ "reference": "Enable the `NativeHistograms` feature gate on the Kubernetes components\nyou want to expose native histograms from:",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "It is your responsibility to properly cancel your Account with GitHub. You can [cancel your Account at any time](/billing/managing-the-plan-for-your-github-account/downgrading-your-accounts-plan) by going into your Settings in the global navigation bar at the top of the screen. The Account screen provides a simple, no questions asked cancellation link. We are not able to cancel Accounts in response to an email or phone request.",
+ "oracle_target": "### 1. Account Cancellation",
+ "packet": "32758d2ab3ae2194",
+ "questions": "QUESTIONS.md",
+ "reference": "### 1. Account Cancellation\nIt is your responsibility to properly cancel your Account with GitHub. You can [cancel your Account at any time](/billing/managing-billing-for-your-github-account/downgrading-your-github-subscription) by going into your Settings in the global navigation bar at the top of the screen. The Account screen provides a simple, no questions asked cancellation link. We are not able to cancel Accounts in response to an email or phone request.",
+ "reference_kind": "quote"
+}

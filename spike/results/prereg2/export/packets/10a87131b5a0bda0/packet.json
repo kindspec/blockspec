@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "{{< note >}}\nIn releases older than Debian 12 and Ubuntu 22.04, folder `/etc/apt/keyrings` does not exist by default, and it should be created before the curl command.\n{{< /note >}}",
+ "oracle_target": "{{< note >}}\nTo upgrade kubectl to another minor release, you'll need to bump the version in `/etc/yum.repos.d/kubernetes.repo` before running `yum update`. This procedure is described in more detail in [Changing The Kubernetes Package Repository](/docs/tasks/administer-cluster/kubeadm/change-package-repository/).\n{{< /note >}}",
+ "packet": "10a87131b5a0bda0",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\nIn releases older than Debian 12 and Ubuntu 22.04, `/etc/apt/keyrings` does not exist by default.\nYou can create this directory if you need to, making it world-readable but writeable only by admins.\n{{< /note >}}",
+ "reference_kind": "quote"
+}

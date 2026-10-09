@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Export your data from Evernote\n\nObsidian uses Evernote's export format `.enex` files.\n\nYou can find Evernote's instructions for exporting your data [on Evernote's website](https://help.evernote.com/hc/en-us/articles/209005557-Export-notes-and-notebooks-as-ENEX-or-HTML). This method lets you export entire notebooks in the desktop client.\n\n1. Go to the Notebooks screen.\n2. Click on **More actions** ( `•••` ) and choose **Export Notebook...**\n3. Select **ENEX** as the file format.\n3. Choose a location for your exported `.enex` file.",
+ "oracle_target": "```\nParentTag\n    ChildTag\n```",
+ "packet": "0195cdac0ea7ed2c",
+ "questions": "QUESTIONS.md",
+ "reference": "export-your-data-from-evernote",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "{{< note >}}\n   Asegúrese que el PATH `/usr/local/bin` forme parte de las variables de entorno.\n   {{< /note >}}",
+ "oracle_target": "{{< note >}}\n   Asegúrate que el PATH `/usr/local/bin` forme parte de las variables de entorno.\n   {{< /note >}}",
+ "packet": "437e27e2606e0f8b",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\n   Asegúrese que el PATH `/usr/local/bin` forme parte de las variables de entorno.\n   {{< /note >}}",
+ "reference_kind": "quote"
+}

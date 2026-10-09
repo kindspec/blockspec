@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Job tracking with finalizers\n\n{{< feature-state for_k8s_version=\"v1.26\" state=\"stable\" >}}\n\n{{< note >}}\nThe control plane doesn't track Jobs using finalizers, if the Jobs were created\nwhen the feature gate `JobTrackingWithFinalizers` was disabled, even after you\nupgrade the control plane to 1.26.\n{{< /note >}}\n\nThe control plane keeps track of the Pods that belong to any Job and notices if\nany such Pod is removed from the API server. To do that, the Job controller\ncreates Pods with the finalizer `batch.kubernetes.io/job-tracking`. The\ncontroller removes the finalizer only after the Pod has been accounted for in\nthe Job status, allowing the Pod to be removed by other controllers or users.\n\nJobs created before upgrading to Kubernetes 1.26 or before the feature gate\n`JobTrackingWithFinalizers` is enabled are tracked without the use of Pod\nfinalizers.\nThe Job {{< glossary_tooltip term_id=\"controller\" text=\"controller\" >}} updates\nthe status counters for `succeeded` and `failed` Pods based only on the Pods\nthat exist in the cluster. The contol plane can lose track of the progress of\nthe Job if Pods are deleted from the cluster.\n\nYou can determine if the control plane is tracking a Job using Pod finalizers by\nchecking if the Job has the annotation\n`batch.kubernetes.io/job-tracking`. You should **not** manually add or remove\nthis annotation from Jobs. Instead, you can recreate the Jobs to ensure they\nare tracked using Pod finalizers.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "57f8030ceec69bf1",
+ "questions": "QUESTIONS.md",
+ "reference": "job-tracking-with-finalizers",
+ "reference_kind": "name"
+}

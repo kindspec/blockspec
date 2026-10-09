@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "{{< note >}}\nYou must be using a {{< glossary_tooltip text=\"CNI\" term_id=\"cni\" >}} plugin that supports SCTP protocol NetworkPolicies.\n{{< /note >}}",
+ "oracle_target": "{{< note >}}\nYour cluster must be using a {{< glossary_tooltip text=\"CNI\" term_id=\"cni\" >}} plugin that\nsupports the `endPort` field in NetworkPolicy specifications.\nIf your [network plugin](/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/) \ndoes not support the `endPort` field and you specify a NetworkPolicy with that,\nthe policy will be applied only for the single `port` field.\n{{< /note >}}",
+ "packet": "ef9472250e1191d3",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\nYour cluster must be using a {{< glossary_tooltip text=\"CNI\" term_id=\"cni\" >}} plugin that\nsupports the `endPort` field in NetworkPolicy specifications.\n{{< /note >}}",
+ "reference_kind": "quote"
+}

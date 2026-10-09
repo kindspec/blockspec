@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "{{< note >}}\n`zone` and `zones` parameters are deprecated and replaced with\n[allowedTopologies](#allowed-topologies)\n{{< /note >}}",
+ "oracle_target": "{{< note >}}\n`zone` and `zones` parameters are deprecated and replaced with\n[allowedTopologies](#allowed-topologies). When\n[GCE CSI Migration](/docs/concepts/storage/volumes/#gce-csi-migration) is\nenabled, a GCE PD volume can be provisioned in a topology that does not match\nany nodes, but any pod trying to use that volume will fail to schedule. With\nlegacy pre-migration GCE PD, in this case an error will be produced\ninstead at provisioning time. GCE CSI Migration is enabled by default beginning\nfrom the Kubernetes 1.23 release.\n{{< /note >}}",
+ "packet": "6546bdd4829110c9",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\n`zone` and `zones` parameters are deprecated and replaced with\n[allowedTopologies](#allowed-topologies)\n{{< /note >}}",
+ "reference_kind": "quote"
+}

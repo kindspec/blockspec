@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "## Anonymous requests\n\nWhen enabled, requests that are not rejected by other configured authentication methods are\ntreated as anonymous requests, and given a username of `system:anonymous` and a group of\n`system:unauthenticated`.\n\nFor example, on a server with token authentication configured, and anonymous access enabled,\na request providing an invalid bearer token would receive a `401 Unauthorized` error.\nA request providing no bearer token would be treated as an anonymous request.\n\nAnonymous access is enabled by default if an\n[authorization mode](/docs/reference/access-authn-authz/authorization/#authorization-modules)\nother than `AlwaysAllow` is used; you can disable it by passing the `--anonymous-auth=false`\ncommand line option to the API server.\nThe built-in ABAC and RBAC authorizers require explicit authorization of the\n`system:anonymous` user or the `system:unauthenticated` group; if you have legacy policy rules\n(from Kubernetes version 1.5 or earlier), those legacy rules\nthat grant access to the `*` user or `*` group do not automatically allow access to anonymous users.\n\n### Anonymous authenticator configuration\n\n{{< feature-state feature_gate_name=\"AnonymousAuthConfigurableEndpoints\" >}}\n\nThe `AuthenticationConfiguration` can be used to configure the anonymous\nauthenticator. If you set the anonymous field in the `AuthenticationConfiguration`\nfile then you cannot set the `--anonymous-auth` command line option.\n\nThe main advantage of configuring anonymous authenticator using the authentication\nconfiguration file is that in addition to enabling and disabling anonymous authentication\nyou can also configure which endpoints support anonymous authentication.\n\nA sample authentication configuration file is below:\n\n{{< highlight yaml \"linenos=false,hl_lines=2-5\" >}}\n---\n#",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "af7d72d49788c013",
+ "questions": "QUESTIONS.md",
+ "reference": "anonymous-requests",
+ "reference_kind": "name"
+}

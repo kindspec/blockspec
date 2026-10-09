@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "The generated ConfigMap is:",
+ "oracle_target": "The generated ConfigMap is:",
+ "packet": "5fb58c8ebea923a2",
+ "questions": "QUESTIONS.md",
+ "reference": "The generated ConfigMap is:",
+ "reference_kind": "quote"
+}

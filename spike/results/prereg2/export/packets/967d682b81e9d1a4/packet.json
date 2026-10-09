@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "`PodNodeSelector` uses the annotation key `scheduler.alpha.kubernetes.io/node-selector` to assign\nnode selectors to namespaces.",
+ "oracle_target": "#### Configuration Annotation Format",
+ "packet": "967d682b81e9d1a4",
+ "questions": "QUESTIONS.md",
+ "reference": "#### Configuration Annotation Format\n`PodNodeSelector` uses the annotation key `scheduler.alpha.kubernetes.io/node-selector` to assign node selectors to namespaces.",
+ "reference_kind": "quote"
+}

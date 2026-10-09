@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### ノードコンポーネント\n\nすべてのノードで実行され、実行中のPodを維持し、Kubernetesランタイム環境を提供します。\n\n[kubelet](/docs/concepts/architecture/#kubelet)\n: コンテナを含むPodが稼働していることを保証します。\n\n[kube-proxy](/docs/concepts/architecture/#kube-proxy)(オプション)\n: ノード上のネットワークルールを維持し、{{< glossary_tooltip text=\"Service\" term_id=\"service\" >}}を実装します。\n\n[コンテナランタイム](/docs/concepts/architecture/#container-runtime)\n: コンテナを実行する役割を持つソフトウェアです。\n  詳細は[コンテナランタイム](/docs/setup/production-environment/container-runtimes/)を参照してください。\n\n{{% thirdparty-content single=\"true\" %}}\n\nクラスターによっては、各ノードに追加のソフトウェアが必要になる場合があります。\n例えば、Linuxノード上で[systemd](https://systemd.io/)を実行してローカルコンポーネントを監督することもあります。",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "41a5f7075ad0176b",
+ "questions": "QUESTIONS.md",
+ "reference": "ノードコンポーネント",
+ "reference_kind": "name"
+}

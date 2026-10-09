@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "此注解需要启用\n[PodTolerationRestriction](/zh-cn/docs/reference/access-authn-authz/admission-controllers/#podtolerationrestriction)\n准入控制器。此注解键允许为某个命名空间分配容忍度，在这个命名空间中创建的所有新 Pod 都会被添加这些容忍度。",
+ "oracle_target": "<!--\nThis annotation is only useful when the (Alpha)\n[PodTolerationRestriction](/docs/reference/access-authn-authz/admission-controllers/#podtolerationrestriction)\nadmission controller is enabled. The annotation value is a JSON document that defines a list of\nallowed tolerations for the namespace it annotates. When you create a Pod or modify its\ntolerations, the API server checks the tolerations to see if they are mentioned in the allow list.\nThe pod is admitted only if the check succeeds.\n-->\n此注解只有在启用（Alpha）\n[PodTolerationRestriction](/zh-cn/docs/reference/access-authn-authz/admission-controllers/#podtolerationrestriction)\n控制器时才生效。注解值是一个 JSON 文档，它为它所注解的命名空间定义了一个允许容忍的列表。\n当你创建一个 Pod 或修改其容忍度时，API 服务器将检查容忍度，以查看它们是否在允许列表中。\n只有在检查成功的情况下，Pod 才被允操作。",
+ "packet": "3adf1f27ed706345",
+ "questions": "QUESTIONS.md",
+ "reference": "此注解只有在启用（Alpha）\n[PodTolerationRestriction](/zh-cn/docs/reference/access-authn-authz/admission-controllers/#podtolerationrestriction)\n控制器时才生效。注解值是一个 JSON 文档，它为它所注解的命名空间定义了一个允许容忍的列表。\n当你创建一个 Pod 或修改其容忍度时，API 服务器将检查容忍度，以查看它们是否在允许列表中。\n只有在检查成功的情况下，Pod 才被允操作。",
+ "reference_kind": "quote"
+}

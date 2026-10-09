@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "The kube-scheduler identifies the resource [requests and limits](/docs/concepts/configuration/manage-resources-containers/)\nconfigured for each Pod; when either a request or limit is non-zero, the kube-scheduler reports a\nmetrics timeseries. The time series is labelled by:",
+ "oracle_target": "- namespace\n- pod name\n- the node where the pod is scheduled or an empty string if not yet scheduled\n- priority\n- the assigned scheduler for that pod\n- the name of the resource (for example, `cpu`)\n- the unit of the resource if known (for example, `cores`)",
+ "packet": "a86519948ec418fb",
+ "questions": "QUESTIONS.md",
+ "reference": "The kube-scheduler identifies the resource [requests and limits](/docs/concepts/configuration/manage-resources-containers/) configured for each Pod; when either a request or limit is non-zero, the kube-scheduler reports a metrics timeseries. The time series is labelled by:\n- namespace\n- pod name\n- the node where the pod is scheduled or an empty string if not yet scheduled\n- priority\n- the assigned scheduler for that pod\n- the name of the resource (for example, `cpu`)\n- the unit of the resource if known (for example, `cores`)",
+ "reference_kind": "quote"
+}

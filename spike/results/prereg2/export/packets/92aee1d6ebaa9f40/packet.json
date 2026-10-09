@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "If you breach this Agreement, we may terminate the Agreement or any Order Form thirty (30) days after we provide you with notice of the breach unless you cure the breach in that period. However, no such notice or cure period is required for any breach of any provision relating to intellectual property (including compliance with the license or rights grant and any license or rights restrictions).",
+ "oracle_target": "### 5.3 Termination for Breach.",
+ "packet": "92aee1d6ebaa9f40",
+ "questions": "QUESTIONS.md",
+ "reference": "### 5.3 Termination for Breach.\nIf you breach this Agreement, we may terminate the Agreement or any Order Form thirty (30) days after we provide you with notice of the breach unless you cure the breach in that period. However, no such notice or cure period is required for any breach of any provision  relating to intellectual property (including compliance with the license or rights grant and any license or rights restrictions).",
+ "reference_kind": "quote"
+}

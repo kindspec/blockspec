@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Dropping a Vector Drops Its Elements\n\nLike any other `struct`, a vector is freed when it goes out of scope, as\nannotated in Listing 8-4.\n\n```rust\n{{#rustdoc_include ../listings/ch08-common-collections/listing-08-04/src/main.rs:here}}\n```\n\n<span class=\"caption\">Listing 8-4: Showing where the vector and its elements\nare dropped</span>\n\nWhen the vector gets dropped, all of its contents are also dropped, meaning\nthose integers it holds will be cleaned up. This may seem like a\nstraightforward point but can get a bit more complicated when you start to\nintroduce references to the elements of the vector. Let’s tackle that next!",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "72238d1108dcb2c2",
+ "questions": "QUESTIONS.md",
+ "reference": "dropping-a-vector-drops-its-elements",
+ "reference_kind": "name"
+}

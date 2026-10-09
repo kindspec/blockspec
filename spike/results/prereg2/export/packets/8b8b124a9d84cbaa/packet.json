@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "You can enable access to the Dashboard using the `kubectl` command-line tool,\nby running the following command:",
+ "oracle_target": "### Command line proxy",
+ "packet": "8b8b124a9d84cbaa",
+ "questions": "QUESTIONS.md",
+ "reference": "### Command line proxy\nYou can access Dashboard using the kubectl command-line tool by running the following command:",
+ "reference_kind": "quote"
+}

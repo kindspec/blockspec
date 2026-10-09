@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Add Docker repository.\nyum-config-manager --add-repo \\\n  https://download.docker.com/linux/centos/docker-ce.repo",
+ "oracle_target": "# Install prerequisites\ncurl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/CentOS_7/devel:kubic:libcontainers:stable.repo",
+ "packet": "67abaa8ce2f5f871",
+ "questions": "QUESTIONS.md",
+ "reference": "# Install prerequisites\nyum-config-manager --add-repo=https://cbs.centos.org/repos/paas7-crio-115-release/x86_64/os/",
+ "reference_kind": "quote"
+}

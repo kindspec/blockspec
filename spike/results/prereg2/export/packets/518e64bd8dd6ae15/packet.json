@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "{{< note >}}\n이 방법은 프라이빗 레지스트리의 이미지를 기반으로 컨테이너를 실행하는 데\n권장된다.\n{{< /note >}}",
+ "oracle_target": "{{< note >}}\n{{< feature-state feature_gate_name=\"KubeletEnsureSecretPulledImages\" >}}\n미리 내려받은 이미지에 대한 접근은 [이미지 풀 자격증명 검증 보장](#ensureimagepullcredentialverification)에\n따라 인가될 수 있다.\n{{< /note >}}",
+ "packet": "518e64bd8dd6ae15",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\n이 방법은 현재 Google 쿠버네티스 엔진, GCE 및 노드 생성이 자동화된 모든 클라우드 제공자에게 \n권장된다.\n{{< /note >}}",
+ "reference_kind": "quote"
+}

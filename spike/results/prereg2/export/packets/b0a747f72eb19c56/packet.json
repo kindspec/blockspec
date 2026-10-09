@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "- _Users._ Customer acknowledges that Users retain ultimate administrative control over their individual accounts and the Content within them. [GitHub's Standard Terms of Service](/site-policy/github-terms/github-terms-of-service) govern Users' use of the Service, except with respect to Users' activities under this Section B.",
+ "oracle_target": "### 1. Account Controls.",
+ "packet": "b0a747f72eb19c56",
+ "questions": "QUESTIONS.md",
+ "reference": "### 1. Account Controls.\n  * _Users._ Customer acknowledges that Users retain ultimate administrative control over their individual accounts and the Content within them. [GitHub's Standard Terms of Service](/articles/github-terms-of-service) govern Users' use of the Service, except with respect to Users' activities under this Section B.",
+ "reference_kind": "quote"
+}

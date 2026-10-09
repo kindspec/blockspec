@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "- `obsidian://daily?vault=my%20vault`\n  This opens the vault `my vault`, and creates or opens the daily note.",
+ "oracle_target": "- `obsidian://open?vault=my%20vault`\n  This opens the vault `my vault`. If the vault is already open, focus on the window.\n- `obsidian://open?vault=ef6ca3e3b524d22f`\n  This opens the vault identified by the ID `ef6ca3e3b524d22f`.\n- `obsidian://open?vault=my%20vault&file=my%20note`\n  This opens the note `my note.md` in the vault `my vault`, assuming the file exists.\n- `obsidian://open?path=%2Fhome%2Fuser%2Fmy%20vault%2Fpath%2Fto%2Fmy%20note`\n  This will look for any vault that contains the path `/home/user/my vault/path/to/my note`. Then, the rest of the path is passed to the `file` parameter. For example, if a vault exists at `/home/user/my vault`, then this would be equivalent to `file` parameter set to `path/to/my note`.",
+ "packet": "f077421e3dd6e438",
+ "questions": "QUESTIONS.md",
+ "reference": "- `obsidian://open?vault=my%20vault`\n  This opens the vault `my vault`. If the vault is already open, focus on the window.",
+ "reference_kind": "quote"
+}

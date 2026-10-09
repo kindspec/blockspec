@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Before you begin\n\nIdeally, all ingress controllers should fulfill this specification, but the various ingress\ncontrollers operate slightly differently.\n\n{{< note >}}\nMake sure you review your ingress controller's documentation to understand the caveats of choosing it.\n{{< /note >}}",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "2b5cbb93d5deb187",
+ "questions": "QUESTIONS.md",
+ "reference": "before-you-begin",
+ "reference_kind": "name"
+}

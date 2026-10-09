@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "**Short version:** _You are responsible for any fees associated with your use of GitHub. We are responsible for communicating those fees to you clearly and accurately, and letting you know well in advance if those prices change._",
+ "oracle_target": "## K. Payment",
+ "packet": "4174e8c7ed0f30bd",
+ "questions": "QUESTIONS.md",
+ "reference": "## K. Payment\n**Short version:** *You are responsible for any fees associated with your use of GitHub. We are responsible for communicating those fees to you clearly and accurately, and letting you know well in advance if those prices change.*",
+ "reference_kind": "quote"
+}

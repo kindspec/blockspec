@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## A. Confidentiality.\n\nThe terms and conditions of this Agreement are the Confidential Information of both parties. Neither party will use Confidential Information provided by the other party hereunder, except as permitted by this Agreement.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "31c6deb516fe3562",
+ "questions": "QUESTIONS.md",
+ "reference": "a-confidentiality",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Control Plane Components\n\nManage the overall state of the cluster:\n\n[kube-apiserver](/docs/concepts/architecture/#kube-apiserver)\n: The core component server that exposes the Kubernetes HTTP API\n\n[etcd](/docs/concepts/architecture/#etcd)\n: Consistent and highly-available key value store for all API server data\n\n[kube-scheduler](/docs/concepts/architecture/#kube-scheduler)\n: Looks for Pods not yet bound to a node, and assigns each Pod to a suitable node.\n\n[kube-controller-manager](/docs/concepts/architecture/#kube-controller-manager)\n: Runs {{< glossary_tooltip text=\"controllers\" term_id=\"controller\" >}} to implement Kubernetes API behavior.\n\n[cloud-controller-manager](/docs/concepts/architecture/#cloud-controller-manager) (optional)\n: Integrates with underlying cloud provider(s).",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "11f8d4b87ce81484",
+ "questions": "QUESTIONS.md",
+ "reference": "control-plane-components",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "#### Refactoring with Closures to Store Code",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "852150e28b74ff18",
+ "questions": "QUESTIONS.md",
+ "reference": "refactoring-with-closures-to-store-code",
+ "reference_kind": "name"
+}

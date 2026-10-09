@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Some Service features may be subject to additional terms as set forth in the [GitHub Additional Product Terms](/site-policy/github-terms/github-terms-for-additional-products-and-features). By accessing or using these features, Customer agrees to the GitHub Additional Product Terms.",
+ "oracle_target": "## G. GitHub Additional Product Terms",
+ "packet": "93785bcb89d5760f",
+ "questions": "QUESTIONS.md",
+ "reference": "## G. GitHub Additional Product Terms\nSome Service features may be subject to additional terms as set forth in the [GitHub Additional Product Terms](/github/site-policy/github-additional-product-terms). By accessing or using these features, Customer agrees to the GitHub Additional Product Terms.",
+ "reference_kind": "quote"
+}

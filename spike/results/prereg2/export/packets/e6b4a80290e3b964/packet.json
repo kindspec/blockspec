@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Pinned commands\n\nYou can pin frequently used commands at the top of the Command palette to quickly access them without having to type their name.\n\n> [!tip]\n> If you want to quickly run frequently used commands, you can also [[Hotkeys#Setting hotkeys|set hotkeys]] for them.\n\n### Pin a command\n\n1. Open **Settings**.\n2. In the sidebar, click **Command palette** under **Plugin options**.\n3. Next to **New pinned command**, click **Select a command**.\n4. Select the command you want to pin from the list.\n5. Press `Enter`.\n\n### Unpin a command\n\n1. Open **Settings**.\n2. In the sidebar, click **Command palette** under **Plugin options**.\n3. Under **Pinned commands**, click the cross icon next to the command you want to unpin.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "e6b4a80290e3b964",
+ "questions": "QUESTIONS.md",
+ "reference": "pinned-commands",
+ "reference_kind": "name"
+}

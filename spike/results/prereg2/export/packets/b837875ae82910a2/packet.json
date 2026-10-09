@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## 二进制  {#binaries}\n\n{{< release-binaries >}}",
+ "oracle_target": "- [Install kubectl on Linux](/docs/tasks/tools/install-kubectl-linux)\n- [Install kubectl on macOS](/docs/tasks/tools/install-kubectl-macos)\n- [Install kubectl on Windows](/docs/tasks/tools/install-kubectl-windows)\n-->\nkubectl 可安装在各种 Linux 平台、macOS 和 Windows 上。\n在下方找到你首选的操作系统。",
+ "packet": "b837875ae82910a2",
+ "questions": "QUESTIONS.md",
+ "reference": "二进制--binaries",
+ "reference_kind": "name"
+}

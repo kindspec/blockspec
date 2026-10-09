@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "You can use either `kubectl create configmap` or a ConfigMap generator in `kustomization.yaml`\nto create a ConfigMap.",
+ "oracle_target": "## Create a ConfigMap",
+ "packet": "4067df79f68f1716",
+ "questions": "QUESTIONS.md",
+ "reference": "## Create a ConfigMap\nYou can use either `kubectl create configmap` or a ConfigMap generator in `kustomization.yaml` to create a ConfigMap. Note that `kubectl` starts to support `kustomization.yaml` since 1.14.",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "For more information about probes, see\n[Liveness, Readiness and Startup Probes](/docs/concepts/workloads/pods/probes).",
+ "oracle_target": "* Learn more about\n  [Liveness, Readiness and Startup Probes](/docs/concepts/workloads/pods/probes/).\n* For the full specification of probe-related fields, see the API reference:\n  [Pod](/docs/reference/kubernetes-api/workload-resources/pod-v1/),\n  [Container](/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container),\n  [Probe](/docs/reference/kubernetes-api/workload-resources/pod-v1/#Probe)",
+ "packet": "5d6c4ed1ae5a06d9",
+ "questions": "QUESTIONS.md",
+ "reference": "* Learn more about\n  [Container Probes](/docs/concepts/workloads/pods/pod-lifecycle/#container-probes).",
+ "reference_kind": "quote"
+}

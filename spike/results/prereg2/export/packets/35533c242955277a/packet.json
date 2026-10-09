@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Minimum required content\n\nAt a minimum, all localizations must include:\n\nDescription | URLs\n-----|-----\nHome | [All heading and subheading URLs](/docs/home/)\nSetup | [All heading and subheading URLs](/docs/setup/)\nTutorials | [Kubernetes Basics](/docs/tutorials/kubernetes-basics/), [Hello Minikube](/docs/tutorials/hello-minikube/)\nSite strings | [All site strings](#Site-strings-in-i18n) in a new localized TOML file\n\nTranslated documents must reside in their own `content/**/` subdirectory, but otherwise follow the same URL path as the English source. For example, to prepare the [Kubernetes Basics](/docs/tutorials/kubernetes-basics/) tutorial for translation into German, create a subfolder under the `content/de/` folder and copy the English source:\n\n```shell\nmkdir -p content/de/docs/tutorials\ncp content/en/docs/tutorials/kubernetes-basics.md content/de/docs/tutorials/kubernetes-basics.md\n```\n\nTranslation tools can speed up the translation process. For example, some editors offers plugins to quickly translate text.\n\n{{< caution >}}\nMachine-generated translation is insufficient on its own. Localization requires extensive human review to meet minimum standards of quality.\n{{< /caution >}}\n\nTo ensure accuracy in grammar and meaning, members of your localization team should carefully review all machine-generated translations before publishing.",
+ "oracle_target": "```diff\n--- a/OWNERS_ALIASES\n+++ b/OWNERS_ALIASES\n@@ -48,6 +48,14 @@ aliases:\n     - stewart-yu\n     - xiangpengzhao\n     - zhangxiaoyu-zidif\n+  sig-docs-es-owners: # Admins for Spanish content\n+    - alexbrand\n+    - raelga\n+  sig-docs-es-reviews: # PR reviews for Spanish content\n+    - alexbrand\n+    - electrocucaracha\n+    - glo-pena\n+    - raelga\n   sig-docs-fr-owners: # Admins for French content\n     - perriea\n     - remyleone\n```",
+ "packet": "35533c242955277a",
+ "questions": "QUESTIONS.md",
+ "reference": "minimum-required-content",
+ "reference_kind": "name"
+}

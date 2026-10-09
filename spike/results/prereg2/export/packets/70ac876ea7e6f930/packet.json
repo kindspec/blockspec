@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Caveats and limitations when preserving source IPs\n\nLoad balancing services from some cloud providers do not let you configure different weights for each target.\n\nWith each target weighted equally in terms of sending traffic to Nodes, external\ntraffic is not equally load balanced across different Pods. The external load balancer\nis unaware of the number of Pods on each node that are used as a target.\n\nWhere `NumServicePods <<  _NumNodes` or `NumServicePods >> NumNodes`, a fairly close-to-equal\ndistribution will be seen, even without weights.\n\nInternal pod to pod traffic should behave similar to ClusterIP services, with equal probability across all pods.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "70ac876ea7e6f930",
+ "questions": "QUESTIONS.md",
+ "reference": "caveats-and-limitations-when-preserving-source-ips",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### TLS Secret\n\nKubernetes 提供一种内置的 `kubernetes.io/tls` Secret 类型，用来存放 TLS\n场合通常要使用的证书及其相关密钥。\nTLS Secret 的一种典型用法是为 [Ingress](/zh-cn/docs/concepts/services-networking/ingress/)\n资源配置传输过程中的数据加密，不过也可以用于其他资源或者直接在负载中使用。\n当使用此类型的 Secret 时，Secret 配置中的 `data` （或 `stringData`）字段必须包含\n`tls.key` 和 `tls.crt` 主键，尽管 API 服务器实际上并不会对每个键的取值作进一步的合法性检查。\n\n作为使用 `stringData` 的替代方法，你可以使用 `data` 字段来指定 base64 编码的证书和私钥。\n有关详细信息，请参阅 [Secret 名称和数据的限制](#restriction-names-data)。\n\n下面的 YAML 包含一个 TLS Secret 的配置示例：\n\n```yaml\napiVersion: v1\nkind: Secret\nmetadata:\n  name: secret-tls\ntype: kubernetes.io/tls\nstringData:\n  # 此例中的数据被截断\n  tls.crt: |\n    --------BEGIN CERTIFICATE-----\n    MIIC2DCCAcCgAwIBAgIBATANBgkqh ...\n  tls.key: |\n    -----BEGIN RSA PRIVATE KEY-----\n    MIIEpgIBAAKCAQEA7yn3bRHQ5FHMQ ...\n```\n\n<!--\nThe TLS Secret type is provided for user's convenience. You can create an `Opaque`\nfor credentials used for TLS server and/or client. However, using the builtin Secret\ntype helps ensure the consistency of Secret format in your project; the API server\ndoes verify if the required keys are provided in a Secret configuration.\n\nWhen creating a TLS Secret using `kubectl`, you can use the `tls` subcommand\nas shown in the following example:\n-->\n提供 TLS 类型的 Secret 仅仅是出于用户方便性考虑。\n你也可以使用 `Opaque` 类型来保存用于 TLS 服务器与/或客户端的凭据。\n不过，使用内置的 Secret 类型的有助于对凭据格式进行归一化处理，并且\nAPI 服务器确实会检查 Secret 配置中是否提供了所需要的主键。\n\n当使用 `kubectl` 来创建 TLS Secret 时，你可以像下面的例子一样使用 `tls`\n子命令：\n\n```shell\nkubectl create secret tls my-tls-secret \\\n  --cert=path/to/cert/file \\\n  --key=path/to/key/file\n```\n\n<!--\nThe public/private key pair must exist before hand. The public key certificate for `--cert` must be .PEM encoded\nand must match the given private key for `--key`.\n-->\n公钥/私钥对必须事先存在，`--cert` 的公钥证书必须采用 .PEM 编码，\n并且必须与 `--key` 的给定私钥匹配。\n\n<!--",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "1624e37d82fc5b34",
+ "questions": "QUESTIONS.md",
+ "reference": "tls-secret",
+ "reference_kind": "name"
+}

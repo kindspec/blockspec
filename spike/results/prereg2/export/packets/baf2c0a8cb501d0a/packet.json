@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Language style\n\nFor our English documentation, it is recommended to use [Global English](https://docs.openedx.org/en/latest/documentors/references/doc_english_writing.html) to better serve our worldwide audience and to assist with [[#Translations]]. This means:\n\n- Avoiding idioms and culturally-specific expressions\n- Using active voice and direct sentence construction\n- Preferring simple, common words over complex terminology\n- Being explicit rather than implied\n- For spelling conventions, use American English (e.g., 'organize' not 'organise').",
+ "oracle_target": "```md\n# Heading 1\n\nThis is a section.\n\n1. First item\n2. Second item\n3. Third item\n```",
+ "packet": "baf2c0a8cb501d0a",
+ "questions": "QUESTIONS.md",
+ "reference": "language-style",
+ "reference_kind": "name"
+}

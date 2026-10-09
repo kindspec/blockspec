@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "<!--\nPart of the specification used to implement\n[ApplySet-based pruning in kubectl](/docs/tasks/manage-kubernetes-objects/declarative-config/#alternative-kubectl-apply-f-directory-prune).\nThis label is what makes an object an ApplySet parent object.\nIts value is the unique ID of the ApplySet, which is derived from the identity of the parent\nobject itself. This ID **must** be the base64 encoding (using the URL safe encoding of RFC4648) of\nthe hash of the group-kind-name-namespace of the object it is on, in the form:\n`<base64(sha256(<name>.<namespace>.<kind>.<group>))>`.\nThere is no relation between the value of this label and object UID.\n-->\n规范的部分功能用来实现[在 kubectl 中基于 ApplySet 的删除](/zh-cn/docs/tasks/manage-kubernetes-objects/declarative-config/#alternative-kubectl-apply-f-directory-prune)。\n此标签使对象成为 ApplySet 父对象。\n它的值是 ApplySet 的唯一 ID，该 ID 派生自父对象本身的标识。\n该 ID **必须**是所在对象的 group-kind-name-namespace 的哈希的 base64 编码（使用 RFC4648 的 URL 安全编码），\n格式为：`<base64(sha256(<name>.<namespace>.<kind>.<group>))>`。\n此标签的值与对象 UID 之间没有关系。",
+ "oracle_target": "Use of this label is Alpha.\nFor Kubernetes version {{< skew currentVersion >}}, you can use this label on Secrets, ConfigMaps,\nor custom resources if the CustomResourceDefinition\ndefining them has the `applyset.kubernetes.io/is-parent-type` label.\n-->",
+ "packet": "07dbf633d93e0d03",
+ "questions": "QUESTIONS.md",
+ "reference": "Part of the specification used to implement [ApplySet-based pruning in kubectl](/docs/tasks/manage-kubernetes-objects/declarative-config/#alternative-kubectl-apply-f-directory-prune). This label is what makes an object an ApplySet parent object. Its value is the unique ID of the ApplySet, which is derived from the identity of the parent object itself. This ID **must** be the base64 encoding (using the URL safe encoding of RFC4648) of the hash of the group-kind-name-namespace of the object it is on, in the form: `<base64(sha256(<name>.<namespace>.<kind>.<group>))>`. There is no relation between the value of this label and object UIDs.\n-->",
+ "reference_kind": "quote"
+}

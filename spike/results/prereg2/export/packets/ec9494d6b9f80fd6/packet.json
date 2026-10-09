@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Editing a Secret\n\nYou can edit an existing Secret unless it is [immutable](#secret-immutable). To\nedit a Secret, use one of the following methods:\n\n*  [Use `kubectl`](/docs/tasks/configmap-secret/managing-secret-using-kubectl/#edit-secret)\n*  [Use a configuration file](/docs/tasks/configmap-secret/managing-secret-using-config-file/#edit-secret)\n\nYou can also edit the data in a Secret using the [Kustomize tool](/docs/tasks/configmap-secret/managing-secret-using-kustomize/#edit-secret). However, this\nmethod creates a new `Secret` object with the edited data.\n\nDepending on how you created the Secret, as well as how the Secret is used in\nyour Pods, updates to existing `Secret` objects are propagated automatically to\nPods that use the data. For more information, refer to [Using Secrets as files from a Pod](#using-secrets-as-files-from-a-pod) section.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "ec9494d6b9f80fd6",
+ "questions": "QUESTIONS.md",
+ "reference": "editing-a-secret",
+ "reference_kind": "name"
+}

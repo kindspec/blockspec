@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "Delete the persistent storage media for the PersistentVolumes used in this tutorial.",
+ "oracle_target": "```\nNo resources found in default namespace.\n```\n{{< note >}}\nYou also need to delete the persistent storage media for the PersistentVolumes\nused in this tutorial.\nFollow the necessary steps, based on your environment, storage configuration,\nand provisioning method, to ensure that all storage is reclaimed.\n{{< /note >}}",
+ "packet": "a0d17fa51d5e0fb9",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\nYou also need to delete the persistent storage media for the PersistentVolumes\nused in this tutorial.",
+ "reference_kind": "quote"
+}

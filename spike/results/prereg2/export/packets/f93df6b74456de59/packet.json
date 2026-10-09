@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### The `_` Placeholder\n\nRust also has a pattern we can use when we don’t want to list all possible\nvalues. For example, a `u8` can have valid values of 0 through 255. If we only\ncare about the values 1, 3, 5, and 7, we don’t want to have to list out 0, 2,\n4, 6, 8, 9 all the way up to 255. Fortunately, we don’t have to: we can use the\nspecial pattern `_` instead:\n\n```rust\n{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-11-underscore-placeholder/src/main.rs:here}}\n```\n\nThe `_` pattern will match any value. By putting it after our other arms, the\n`_` will match all the possible cases that aren’t specified before it. The `()`\nis just the unit value, so nothing will happen in the `_` case. As a result, we\ncan say that we want to do nothing for all the possible values that we don’t\nlist before the `_` placeholder.\n\nHowever, the `match` expression can be a bit wordy in a situation in which we\ncare about only *one* of the cases. For this situation, Rust provides `if let`.\n\nMore about patterns, and matching can be found in [chapter 18][ch18-00-patterns].\n\n[ch18-00-patterns]:\nch18-00-patterns",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "f93df6b74456de59",
+ "questions": "QUESTIONS.md",
+ "reference": "the-_-placeholder",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "#### Configuring the `systemd` cgroup driver {#containerd-systemd}\n\nTo use the `systemd` cgroup driver in `/etc/containerd/config.toml` with `runc`, set\n-->",
+ "oracle_target": "<!-- \nOn Linux the default CRI socket for containerd is `/run/containerd/containerd.sock`.\nOn Windows the default CRI endpoint is `npipe://./pipe/containerd-containerd`.\n-->\n在 Linux 上，containerd 的默认 CRI 套接字是 `/run/containerd/containerd.sock`。\n在 Windows 上，默认 CRI 端点是 `npipe://./pipe/containerd-containerd`。",
+ "packet": "4c85534902e1f587",
+ "questions": "QUESTIONS.md",
+ "reference": "configuring-the-systemd-cgroup-driver-containerd-systemd",
+ "reference_kind": "name"
+}

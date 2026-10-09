@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "See [topology.kubernetes.io/zone](#topologykubernetesiozone).\n-->",
+ "oracle_target": "Type: Label\n-->",
+ "packet": "dca9221f07e6bb83",
+ "questions": "QUESTIONS.md",
+ "reference": "See [topology.kubernetes.io/zone](#topologykubernetesiozone).\n-->",
+ "reference_kind": "quote"
+}

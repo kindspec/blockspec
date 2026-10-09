@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "#### Warnings {#caveat-sctp-overview}\n\n##### Support for multihomed SCTP associations {#caveat-sctp-multihomed}\n\n{{< warning >}}\nThe support of multihomed SCTP associations requires that the CNI plugin can support the assignment of multiple interfaces and IP addresses to a Pod.\n\nNAT for multihomed SCTP associations requires special logic in the corresponding kernel modules.\n{{< /warning >}}\n\n##### Windows {#caveat-sctp-windows-os}\n\n{{< note >}}\nSCTP is not supported on Windows based nodes.\n{{< /note >}}\n\n##### Userspace kube-proxy {#caveat-sctp-kube-proxy-userspace}\n\n{{< warning >}}\nThe kube-proxy does not support the management of SCTP associations when it is in userspace mode.\n{{< /warning >}}",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "ebea3465775293e9",
+ "questions": "QUESTIONS.md",
+ "reference": "warnings-caveat-sctp-overview",
+ "reference_kind": "name"
+}

@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "# replace x in {{< skew currentVersion >}}.x-0 with the latest patch version\n    yum install -y kubeadm-{{< skew currentVersion >}}.x-0 --disableexcludes=kubernetes\n{{% /tab %}}\n{{< /tabs >}}",
+ "oracle_target": "# replace x in {{< skew currentVersion >}}.x-0 with the latest patch version\n    yum install -y kubeadm-{{< skew currentVersion >}}.x-0 --disableexcludes=kubernetes\n{{% /tab %}}\n{{< /tabs >}}\n<br />",
+ "packet": "245cc2ec5ca4b824",
+ "questions": "QUESTIONS.md",
+ "reference": "# replace x in {{< skew currentVersion >}}.x-0 with the latest patch version\n    yum install -y kubeadm-{{< skew currentVersion >}}.x-0 --disableexcludes=kubernetes\n{{% /tab %}}\n{{< /tabs >}}",
+ "reference_kind": "quote"
+}

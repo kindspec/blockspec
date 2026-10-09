@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Sponsors may provide Feedback to GitHub regarding the Program. Feedback is voluntary and is not Sponsor Confidential Information, even if designated as such. GitHub may fully exercise and exploit such Feedback for any purpose.",
+ "oracle_target": "### 1.4 Feedback.",
+ "packet": "7034f498725774d8",
+ "questions": "QUESTIONS.md",
+ "reference": "### 1.4 Feedback.\nSponsors may provide Feedback to GitHub regarding the Program. Feedback is voluntary and is not Sponsor Confidential Information, even if designated as such. GitHub may fully exercise and exploit such Feedback for any purpose.",
+ "reference_kind": "quote"
+}

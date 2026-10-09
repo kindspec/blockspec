@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "如果你想使用标签{{<glossary_tooltip text=\"选择算符\" term_id=\"selector\" >}}定位特定 Namespace，这很有用。",
+ "oracle_target": "<!--",
+ "packet": "4b43359d37382c82",
+ "questions": "QUESTIONS.md",
+ "reference": "如果你想使用标签{{<glossary_tooltip text=\"选择器\" term_id=\"selector\" >}}定位特定 Namespace，这很有用。\n<!--",
+ "reference_kind": "quote"
+}

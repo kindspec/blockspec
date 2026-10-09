@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Lists\n\nYou can create an unordered list by adding a `-`, `*`, or `+` before the text.\n\n```md\n- First list item\n- Second list item\n- Third list item\n```\n\n- First list item\n- Second list item\n- Third list item\n\nTo create an ordered list, start each line with a number followed by a `.` symbol.\n\n```md\n1. First list item\n2. Second list item\n3. Third list item\n```\n\n1. First list item\n2. Second list item\n3. Third list item\n\n### Task lists\n\nTo create a task list, start each list item with a hyphen and space followed by `[ ]`.\n\n```md\n- [x] This is a completed task.\n- [ ] This is an incomplete task.\n```\n\n- [x] This is a completed task.\n- [ ] This is an incomplete task.\n\nYou can toggle a task in Reading view by selecting the checkbox.\n\n> [!tip]\n> You can use any character inside the brackets to mark it as complete.\n>\n> ```md\n> - [x] Milk\n> - [?] Eggs\n> - [-] Eggs\n> ```\n>\n> - [x] Milk\n> - [?] Eggs\n> - [-] Eggs\n\n### Nesting lists\n\nAll list types can be nested in Obsidian.\n\nTo create a nested list, indent one or more list items:\n\n```md\n1. First list item\n   1. Ordered nested list item\n2. Second list item\n   - Unordered nested list item\n```\n\n1. First list item\n   1. Ordered nested list item\n2. Second list item\n   - Unordered nested list item\n\nSimilarly, you can create a nested task list by indenting one or more list items:\n\n```md\n- [ ] Task item 1\n\t- [ ] Subtask 1\n- [ ] Task item 2\n\t- [ ] Subtask 1\n```\n\n- [ ] Task item 1\n\t- [ ] Subtask 1\n- [ ] Task item 2\n\t- [ ] Subtask 1\n\nUse `Tab` or `Shift+Tab` to indent or unindent one or more selected list items for easy organization.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "c09b6ff7797ca349",
+ "questions": "QUESTIONS.md",
+ "reference": "lists",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Projects\n\nSee the [current CNCF projects](https://www.cncf.io/projects/) and a description of project maturity levels (Sandbox, Incubating, Graduated).\n\nThe CNCF provides [list of services](https://www.cncf.io/services-for-projects/) for incubating and graduated projects hosted in the foundation. A subset of these services is also available for [Sandbox](https://www.cncf.io/sandbox-projects/) level projects.\n\nDo you want to contribute to a project? We have [outlined the process](https://github.com/cncf/toc/blob/master/process/README.md) to get started. If you have any questions or don't know where to start, please open an [issue](https://github.com/cncf/toc/issues).",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "f897bc42d985f8fc",
+ "questions": "QUESTIONS.md",
+ "reference": "projects",
+ "reference_kind": "name"
+}

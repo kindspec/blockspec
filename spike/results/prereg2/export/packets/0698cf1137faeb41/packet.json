@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Meeting Time\n\nThe TOC meets on the 1st and 3rd Tuesday of every month at 8AM PT (USA Pacific):\n\nhttps://zoom.us/j/967220397\n\nOr Telephone:\n\nDial: +1 646 558 8656 (US Toll) or +1 408 638 0968 (US Toll)\n\n+1 855 880 1246 (US Toll Free)\n+1 877 369 0926 (US Toll Free)\n\nMeeting ID: 263 858 603\n\nInternational numbers available [here](https://zoom.us/zoomconference?m=ddKUsXGa2tGOHvCl4ccI0juqU7TZaCov)\n\nHere is a public Google calendar you can add the meetings to your calendar: https://goo.gl/eyutah\n\nNOTE: Please use *6 to mute/un-mute your phone during the call\n\nLink to a World Time Zone Converter [here](http://www.thetimezoneconverter.com/?t=8:00%20a.m.%20&tz=San%20Francisco&)",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "0698cf1137faeb41",
+ "questions": "QUESTIONS.md",
+ "reference": "meeting-time",
+ "reference_kind": "name"
+}

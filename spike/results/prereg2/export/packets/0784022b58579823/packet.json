@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "`kubectl` 커맨드라인 도구를 이용해 다음 커맨드를 실행함으로써 대시보드로의\n접속을 활성화할 수 있다.",
+ "oracle_target": "### 커맨드 라인 프록시",
+ "packet": "0784022b58579823",
+ "questions": "QUESTIONS.md",
+ "reference": "### 커맨드 라인 프록시\nkubectl 커맨드라인 도구를 이용해 다음 커맨드를 실행함으로써 대시보드를 사용할 수 있다.",
+ "reference_kind": "quote"
+}

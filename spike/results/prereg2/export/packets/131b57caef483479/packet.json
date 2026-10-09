@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Code blocks\n\nTo format code as a block, enclose it with three backticks or three tildes.\n\n~~~\n`````\ncd ~/Desktop\n`````\n~~~\n`````\n~~~\ncd ~/Desktop\n~~~\n`````\n`````md\ncd ~/Desktop\n`````\n\nYou can also create a code block by indenting the text using `Tab` or 4 blank spaces.\n`````md\n    cd ~/Desktop\n`````\n\nYou can add syntax highlighting to a code block, by adding a language code after the first set of backticks.\n\n~~~md\n`````js\nfunction fancyAlert(arg) {\n  if(arg) {\n    $.facebox({div:'#foo'})\n  }\n}\n`````\n~~~\n`````js\nfunction fancyAlert(arg) {\n  if(arg) {\n    $.facebox({div:'#foo'})\n  }\n}\n`````\n\nObsidian uses Prism for syntax highlighting. For more information, refer to [Supported languages](https://prismjs.com/#supported-languages).\n\n> [!info]+ PrismJS and editing views\n> [[Views and editing mode#Source mode|Source mode]] and [[Views and editing mode#Live Preview|Live Preview]] do not support PrismJS, and may render syntax highlighting differently.\n\n#### Nesting code blocks\n\nWhen you need to include a code block inside another code block (for example, when documenting how to use code blocks), you can use more than three backticks or tildes for the outer code block.\n\nTo nest code blocks, use four or more backticks (or tildes) for the outer block, while the inner block uses three:\n`````md\n````md\nHere's how to create a code block:\n```js\nconsole.log(\"Hello world\")\n```\n````\n`````\n\nYou can also mix backticks and tildes. This is particularly useful when working with code that generates other code blocks:\n`````md\n````md\n```dataviewjs\ndv.paragraph(`\n~~~mermaid\ngraph TD\n    A --> B\n~~~\n`)\n```\n````\n`````\n\nThe key principle is that the outer code block must use **more** fence characters (backticks or tildes) than any inner code block, or use a different fence character type.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "131b57caef483479",
+ "questions": "QUESTIONS.md",
+ "reference": "code-blocks",
+ "reference_kind": "name"
+}

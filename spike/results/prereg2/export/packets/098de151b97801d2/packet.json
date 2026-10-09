@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "### PersistentVolumeClaimResize {#persistentvolumeclaimresize}\n\nThis admission controller implements additional validations for checking incoming `PersistentVolumeClaim` resize requests.\n\n{{< note >}}\nSupport for volume resizing is available as an alpha feature. Admins must set the feature gate `ExpandPersistentVolumes`\nto `true` to enable resizing.\n{{< /note >}}\n\nAfter enabling the `ExpandPersistentVolumes` feature gate, enabling the `PersistentVolumeClaimResize` admission\ncontroller is recommended, too. This admission controller prevents resizing of all claims by default unless a claim's `StorageClass`\n explicitly enables resizing by setting `allowVolumeExpansion` to `true`.\n\nFor example: all `PersistentVolumeClaim`s created from the following `StorageClass` support volume expansion:\n\n```yaml\napiVersion: storage.k8s.io/v1\nkind: StorageClass\nmetadata:\n  name: gluster-vol-default\nprovisioner: kubernetes.io/glusterfs\nparameters:\n  resturl: \"http://192.168.10.100:8080\"\n  restuser: \"\"\n  secretNamespace: \"\"\n  secretName: \"\"\nallowVolumeExpansion: true\n```\n\nFor more information about persistent volume claims, see [PersistentVolumeClaims](/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "098de151b97801d2",
+ "questions": "QUESTIONS.md",
+ "reference": "persistentvolumeclaimresize-persistentvolumeclaimresize",
+ "reference_kind": "name"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "In response to procedure call Version, a compatible KMS plugin should return `v1beta1` as `VersionResponse.version`.",
+ "oracle_target": "In response to the `Status` remote procedure call, a compatible KMS plugin should return its KMS compatibility\n  version as `StatusResponse.version`. That status response should also include\n  \"ok\" as `StatusResponse.healthz` and a `key_id` (remote KMS KEK ID) as `StatusResponse.key_id`.\n  The Kubernetes project recommends you make your plugin\n  compatible with the stable `v2` KMS API. Kubernetes {{< skew currentVersion >}} also supports the\n  `v2beta1` API for KMS; future Kubernetes releases are likely to continue supporting that beta version.",
+ "packet": "54380551bcad1d50",
+ "questions": "QUESTIONS.md",
+ "reference": "In response to procedure call `Status`, a compatible KMS plugin should return `v2` as `StatusResponse.version`,\n  \"ok\" as `StatusResponse.healthz` and a `key_id` (remote KMS KEK ID) as `StatusResponse.key_id`.",
+ "reference_kind": "quote"
+}

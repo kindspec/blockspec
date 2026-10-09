@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## References\n\n1. https://parquet.apache.org/\n2. https://www.tensorflow.org/tutorials/load_data/tfrecord\n3. https://github.com/webdataset/webdataset\n4. https://pytorch.org/\n5. https://www.tensorflow.org/\n6. https://www.deepspeed.ai/\n7. https://horovod.readthedocs.io/\n8. https://dvc.org/\n9. https://www.kubeflow.org/docs/components/trainer/\n10. https://docs.ray.io/en/latest/data/data.html",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "8051a7afe8c8e1e1",
+ "questions": "QUESTIONS.md",
+ "reference": "references",
+ "reference_kind": "name"
+}

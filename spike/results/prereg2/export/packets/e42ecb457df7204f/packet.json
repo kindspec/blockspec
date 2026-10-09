@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Purpose\n\nThe Technical Oversight Committee has adopted these leadership principles to help guide the ecosystem in growth and maturity. These principles define the expectations of TOC members, project maintainers, TAG Chairs and Leads, chairs and leads of any group or committee, and other persons serving in any leadership role in the CNCF community.",
+ "oracle_target": "#### Provide feedback and appreciation appropriately\nProvide praise, gratitude, appreciation and encouragement in public. Look for opportunities to say “thank you” and recognize people when they are being helpful or making contributions. Be specific in what was done and describe the impact it had or continues to have.",
+ "packet": "e42ecb457df7204f",
+ "questions": "QUESTIONS.md",
+ "reference": "purpose",
+ "reference_kind": "name"
+}

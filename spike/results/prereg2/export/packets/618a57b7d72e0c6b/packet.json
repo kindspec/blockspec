@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "You must provide channels of communications and information to enable GitHub to communicate information about GitHub products and services to Qualified Users. These channels of communications may include email, SMS, social media or other means of communications designed to reach the maximum number of potential Qualified Users. To the extent required by applicable law, you represent and warrant that you have permission to provide such channels of communication and for GitHub to communication with such Qualified Users. Every potential Qualified User contacted by GitHub will have the ability to opt-out of any future communications.",
+ "oracle_target": "#### 2.2.4 Qualified User Communications.",
+ "packet": "618a57b7d72e0c6b",
+ "questions": "QUESTIONS.md",
+ "reference": "#### 2.2.4 Qualified User Communications.\nYou must provide channels of communications and information to enable GitHub to communicate information about GitHub products and services to Qualified Users. These channels of communications may include email, SMS, social media or other means of communications designed to reach the maximum number of potential Qualified Users. To the extent required by applicable law, you represent and warrant that you have permission to provide such channels of communication and for GitHub to communication with such Qualified Users.  Every potential Qualified User contacted by GitHub will have the ability to opt-out of any future communications.",
+ "reference_kind": "quote"
+}

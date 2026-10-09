@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "**podSelector**：此选择器将在与 NetworkPolicy 相同的名字空间中选择特定的\nPod，应将其允许作为入站流量来源或出站流量目的地。",
+ "oracle_target": "**namespaceSelector** *and* **podSelector**: A single `to`/`from` entry that specifies both\n`namespaceSelector` and `podSelector` selects particular Pods within particular namespaces. Be\ncareful to use correct YAML syntax. For example:\n-->\n**namespaceSelector**：此选择器将选择特定的名字空间，应将所有 Pod\n用作其入站流量来源或出站流量目的地。",
+ "packet": "0304e162808b09ee",
+ "questions": "QUESTIONS.md",
+ "reference": "**namespaceSelector**：此选择器将选择特定的名字空间，应将所有 Pod\n用作其入站流量来源或出站流量目的地。",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "### Node isolation/restriction\n\nAdding labels to nodes allows you to target Pods for scheduling on specific\nnodes or groups of nodes. You can use this functionality to ensure that specific\nPods only run on nodes with certain isolation, security, or regulatory\nproperties. \n\nIf you use labels for node isolation, choose label keys that the {{<glossary_tooltip text=\"kubelet\" term_id=\"kubelet\">}}\ncannot modify. This prevents a compromised node from setting those labels on\nitself so that the scheduler schedules workloads onto the compromised node.\n\nThe [`NodeRestriction` admission plugin](/docs/reference/access-authn-authz/admission-controllers/#noderestriction)\nprevents the kubelet from setting or modifying labels with a\n`node-restriction.kubernetes.io/` prefix. \n\nTo make use of that label prefix for node isolation:\n\n1. Ensure you are using the [Node authorizer](/docs/reference/access-authn-authz/node/) and have _enabled_ the `NodeRestriction` admission plugin.\n2. Add labels with the `node-restriction.kubernetes.io/` prefix to your nodes, and use those labels in your [node selectors](#nodeselector).\n   For example, `example.com.node-restriction.kubernetes.io/fips=true` or `example.com.node-restriction.kubernetes.io/pci-dss=true`.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "a068f5c07cb115b6",
+ "questions": "QUESTIONS.md",
+ "reference": "node-isolationrestriction",
+ "reference_kind": "name"
+}

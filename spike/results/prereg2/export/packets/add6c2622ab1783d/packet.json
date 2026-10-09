@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Labels, annotations and taints used on API objects\n-->",
+ "oracle_target": "One of the [recommended labels](/docs/concepts/overview/working-with-objects/common-labels/#labels).\n-->",
+ "packet": "add6c2622ab1783d",
+ "questions": "QUESTIONS.md",
+ "reference": "labels-annotations-and-taints-used-on-api-objects",
+ "reference_kind": "name"
+}

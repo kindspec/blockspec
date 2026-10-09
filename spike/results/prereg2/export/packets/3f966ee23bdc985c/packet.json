@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "A cluster administrator creates a number of `VolumeSnapshotContents`. They carry the details\nof the real volume snapshot on the storage system which is available for use by cluster users.\nThey exist in the Kubernetes API and are available for consumption.",
+ "oracle_target": "#### Pre-provisioned {#static}",
+ "packet": "3f966ee23bdc985c",
+ "questions": "QUESTIONS.md",
+ "reference": "#### Pre-provisioned {#static}\nA cluster administrator creates a number of `VolumeSnapshotContents`. They carry the details of the real volume snapshot on the storage system which is available for use by cluster users. They exist in the Kubernetes API and are available for consumption.",
+ "reference_kind": "quote"
+}

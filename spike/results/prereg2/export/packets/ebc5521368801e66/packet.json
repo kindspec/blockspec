@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "## 업데이트 전략\n\n스테이트풀셋의 `.spec.updateStrategy` 필드는 스테이트풀셋의\n파드에 대한 컨테이너, 레이블, 리소스의 요청/제한 그리고 주석에 대한 자동화된 롤링 업데이트를\n구성하거나 비활성화할 수 있다. 두 가지 가능한 전략이 있다.\n\n`OnDelete`(삭제시)\n: 스테이트풀셋의 `.spec.updateStrategy.type` 은 `OnDelete` 를 설정하며, \n스테이트풀셋 컨트롤러는 스테이트풀셋의 파드를 자동으로 업데이트하지 않는다. \n사용자는 컨트롤러가 스테이트풀셋의\n`.spec.template`를 반영하는 수정된 새로운 파드를 생성하도록 수동으로 파드를 삭제해야 한다.\n\n`RollingUpdate`(롤링 업데이트)\n: `롤링 업데이트` 의 업데이트 전략은 스테이트풀셋의 파드에 대한 롤링 업데이트를\n구현한다. 롤링 업데이트는 `.spec.updateStrategy` 가 지정되지 않으면 기본 전략이 된다.",
+ "oracle_target": "`롤링 업데이트` 의 업데이트 전략은 `.spec.updateStrategy.rollingUpdate.partition`\n를 명시해서 파티션 할 수 있다. 만약 파티션을 명시하면 스테이트풀셋의 `.spec.template` 가\n업데이트 될 때 부여된 수가 파티션보다 크거나 같은 모든 파드가 업데이트 된다.\n파티션보다 작은 수를 가진 모든 파드는 업데이트 되지 않으며,\n삭제 된 경우라도 이전 버전에서 재생성된다.\n만약 스테이트풀셋의 `.spec.updateStrategy.rollingUpdate.partition` 이\n`.spec.replicas` 보다 큰 경우 `.spec.template` 의 업데이트는 해당 파드에 전달하지 않는다.\n대부분의 케이스는 파티션을 사용할 필요가 없지만 업데이트를 준비하거나,\n카나리의 롤 아웃 또는 단계적인 롤 아웃을 행하려는 경우에는 유용하다.",
+ "packet": "ebc5521368801e66",
+ "questions": "QUESTIONS.md",
+ "reference": "업데이트-전략",
+ "reference_kind": "name"
+}

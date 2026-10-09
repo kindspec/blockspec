@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "<!--\nThis flag takes a comma-delimited list of IP blocks (e.g. `10.0.0.0/8`, `192.0.2.0/25`)\nto specify IP address ranges that kube-proxy should consider as local to this node.",
+ "oracle_target": "Using a NodePort gives you the freedom to set up your own load balancing solution,\nto configure environments that are not fully supported by Kubernetes, or even\nto expose one or more nodes' IP addresses directly.\n-->",
+ "packet": "484be6dfe904135a",
+ "questions": "QUESTIONS.md",
+ "reference": "This flag takes a comma-delimited list of IP blocks (e.g. `10.0.0.0/8`, `192.0.2.0/25`) to specify IP address ranges that kube-proxy should consider as local to this node.\n-->",
+ "reference_kind": "quote"
+}

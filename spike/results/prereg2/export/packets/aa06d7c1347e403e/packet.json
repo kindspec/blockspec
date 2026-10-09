@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Mirantis Container Runtime {#mcr}\n\n[Mirantis Container Runtime](https://docs.mirantis.com/mcr/20.10/overview.html) (MCR) is a commercially\navailable container runtime that was formerly known as Docker Enterprise Edition.\n\nYou can use Mirantis Container Runtime with Kubernetes using the open source\n[`cri-dockerd`](https://github.com/Mirantis/cri-dockerd) component, included with MCR.\n-->",
+ "oracle_target": "<!--\nFor `cri-dockerd`, the CRI socket is `/run/cri-dockerd.sock` by default.\n-->\n对于 `cri-dockerd`，默认情况下，CRI 套接字是 `/run/cri-dockerd.sock`。",
+ "packet": "aa06d7c1347e403e",
+ "questions": "QUESTIONS.md",
+ "reference": "mirantis-container-runtime-mcr",
+ "reference_kind": "name"
+}

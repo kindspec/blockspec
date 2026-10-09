@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Self-registration of Nodes\n\nWhen the kubelet flag `--register-node` is true (the default), the kubelet will attempt to\nregister itself with the API server.  This is the preferred pattern, used by most distros.\n\nFor self-registration, the kubelet is started with the following options:\n\n  - `--kubeconfig` - Path to credentials to authenticate itself to the API server.\n  - `--cloud-provider` - How to talk to a {{< glossary_tooltip text=\"cloud provider\" term_id=\"cloud-provider\" >}} to read metadata about itself.\n  - `--register-node` - Automatically register with the API server.\n  - `--register-with-taints` - Register the node with the given list of {{< glossary_tooltip text=\"taints\" term_id=\"taint\" >}} (comma separated `<key>=<value>:<effect>`).\n\n    No-op if `register-node` is false.\n  - `--node-ip` - IP address of the node.\n  - `--node-labels` - {{< glossary_tooltip text=\"Labels\" term_id=\"label\" >}} to add when registering the node in the cluster (see label restrictions enforced by the [NodeRestriction admission plugin](/docs/reference/access-authn-authz/admission-controllers/#noderestriction)).\n  - `--node-status-update-frequency` - Specifies how often kubelet posts node status to master.\n\nWhen the [Node authorization mode](/docs/reference/access-authn-authz/node/) and\n[NodeRestriction admission plugin](/docs/reference/access-authn-authz/admission-controllers/#noderestriction) are enabled,\nkubelets are only authorized to create/modify their own Node resource.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "ac5128a29fa21b0c",
+ "questions": "QUESTIONS.md",
+ "reference": "self-registration-of-nodes",
+ "reference_kind": "name"
+}

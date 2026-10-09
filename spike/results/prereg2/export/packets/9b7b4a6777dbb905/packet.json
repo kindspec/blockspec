@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "One of the best features of GitHub is the ability for users to \"fork\" one another's repositories. What does that mean? In essence, it means that users can make a copy of a project on GitHub into their own repositories. As the license or the law allows, users can then make changes to that fork to either push back to the main project or just keep as their own variation of a project. Each of these copies is a \"[AUTOTITLE](/get-started/quickstart/github-glossary#fork)\" of the original repository, which in turn may also be called the \"parent\" of the fork.",
+ "oracle_target": "### What About Forks? (or What's a Fork?)",
+ "packet": "9b7b4a6777dbb905",
+ "questions": "QUESTIONS.md",
+ "reference": "### What About Forks? (or What's a Fork?)\nOne of the best features of GitHub is the ability for users to \"fork\" one another's repositories. What does that mean? In essence, it means that users can make a copy of a project on GitHub into their own repositories. As the license or the law allows, users can then make changes to that fork to either push back to the main project or just keep as their own variation of a project. Each of these copies is a \"[fork](/articles/github-glossary/#fork)\" of the original repository, which in turn may also be called the \"parent\" of the fork.",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Shows Kubernetes resources that allow for exposing services to external world and\ndiscovering them within a cluster.\nFor that reason, Service and Ingress views show Pods targeted by them,\ninternal endpoints for cluster connections and external endpoints for external users.",
+ "oracle_target": "#### Services",
+ "packet": "980b87e4f4747c95",
+ "questions": "QUESTIONS.md",
+ "reference": "#### Services\nShows Kubernetes resources that allow for exposing services to external world and discovering them within a cluster. For that reason, Service and Ingress views show Pods targeted by them, internal endpoints for cluster connections and external endpoints for external users.",
+ "reference_kind": "quote"
+}

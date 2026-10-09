@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Template file\n\nBy configuring a template, you can customize the content before you add it to the new note. To use a template, enter a **Template file location** in the plugin settings.\n\nThe template can contain the following variables:\n\n| Variable          | Description                                                                                                                                              |\n|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|\n| `{{content}}`     | The content to merge, or the extracted text selection. If you don't include this variable, Note composer adds the content at the bottom of the template. |\n| `{{fromTitle}}`   | Name of the source note.                                                                                                                                 |\n| `{{newTitle}}`    | Name of the destination note. For example, to add the file name as a heading at the top of the file.                                                     |\n| `{{date:FORMAT}}` | Creation date of the new note. For example, `{{date:YYYY-MM-DD}}`.                                                                                       |",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "c5bdbad25ed3af05",
+ "questions": "QUESTIONS.md",
+ "reference": "template-file",
+ "reference_kind": "name"
+}

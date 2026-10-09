@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Obsidian Sync deleted a note I just created on two devices\n\nGenerally, Obsidian Sync tries to [[#Conflict resolution|resolve conflicts]] between devices by merging the content of the conflicting notes. Unfortunately, merging conflicting notes can cause issues for users who <u>automatically generate</u> or <u>alter notes</u> on startup, for example using [[Daily notes]].\n\nIf a note was created locally on a device less than a couple of minutes before Sync downloads a remote version of that note, then Sync keeps the remote version without attempting to merge the two. You can still recover the local version using [[File recovery]].",
+ "oracle_target": "1. Open **Settings → Sync**.\n2. Explore the options under **Vault size over limit** for how you can reduce the size of your vault.",
+ "packet": "5921350808d46be2",
+ "questions": "QUESTIONS.md",
+ "reference": "obsidian-sync-deleted-a-note-i-just-created-on-two-devices",
+ "reference_kind": "name"
+}

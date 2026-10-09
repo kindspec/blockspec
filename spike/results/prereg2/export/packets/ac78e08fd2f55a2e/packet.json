@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "By default, the valid UIDs/GIDs when this feature is enabled is the range 0-65535.\nThis applies to files and processes (`runAsUser`, `runAsGroup`, etc.).\n-->\n通过这种方式，Pod 可以轻松启用或禁用用户命名空间（不会影响其卷中文件的所有权），\n并且可以通过在容器内部设置适当的用户（`runAsUser`、`runAsGroup`、`fsGroup` 等），\n即可与没有用户命名空间的 Pod 共享卷。这一点适用于 Pod 可挂载的任何卷，\n包括 `hostPath`（前提是允许 Pod 挂载 `hostPath` 卷）。",
+ "oracle_target": "The `runAsUser`, `runAsGroup`, `fsGroup`, etc. fields in the `pod.spec` always\nrefer to the user inside the container. These users will be used for volume\nmounts (specified in `pod.spec.volumes`) and therefore the host UID/GID will not\nhave any effect on writes/reads from volumes the pod can mount. In other words,\nthe inodes created/read in volumes mounted by the pod will be the same as if the\npod wasn't using user namespaces.\n-->\nkubelet 将挑选 Pod 所映射的主机 UID/GID，\n并以此保证同一节点上没有两个 Pod 使用相同的方式进行映射。",
+ "packet": "ac78e08fd2f55a2e",
+ "questions": "QUESTIONS.md",
+ "reference": "The valid UIDs/GIDs when this feature is enabled is the range 0-65535. This\napplies to files and processes (`runAsUser`, `runAsGroup`, etc.).\n-->\nkubelet 将挑选 Pod 所映射的主机 UID/GID，\n并以此保证同一节点上没有两个 Pod 使用相同的方式进行映射。",
+ "reference_kind": "quote"
+}

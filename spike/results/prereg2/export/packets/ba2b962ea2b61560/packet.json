@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "**ingress**：每个 NetworkPolicy 可包含一个 `ingress` 规则的白名单列表。\n每个规则都允许同时匹配 `from` 和 `ports` 部分的流量。示例策略中包含一条简单的规则：\n它匹配某个特定端口，来自三个来源中的一个，第一个通过 `ipBlock`\n指定，第二个通过 `namespaceSelector` 指定，第三个通过 `podSelector` 指定。",
+ "oracle_target": "<!--\n**egress**: Each NetworkPolicy may include a list of allowed `egress` rules. Each rule allows\ntraffic which matches both the `to` and `ports` sections. The example policy contains a single\nrule, which matches traffic on a single port to any destination in `10.0.0.0/24`.\n-->\n**egress**：每个 NetworkPolicy 可包含一个 `egress` 规则的白名单列表。\n每个规则都允许匹配 `to` 和 `ports` 部分的流量。该示例策略包含一条规则，\n该规则将指定端口上的流量匹配到 `10.0.0.0/24` 中的任何目的地。",
+ "packet": "ba2b962ea2b61560",
+ "questions": "QUESTIONS.md",
+ "reference": "**egress**：每个 NetworkPolicy 可包含一个 `egress` 规则的白名单列表。\n每个规则都允许匹配 `to` 和 `port` 部分的流量。该示例策略包含一条规则，\n该规则将指定端口上的流量匹配到 `10.0.0.0/24` 中的任何目的地。",
+ "reference_kind": "quote"
+}

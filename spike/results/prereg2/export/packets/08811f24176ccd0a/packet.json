@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "We do not allow content or activity on GitHub that:",
+ "oracle_target": "We do not allow content or activity on GitHub that:",
+ "packet": "08811f24176ccd0a",
+ "questions": "QUESTIONS.md",
+ "reference": "We do not allow content or activity on GitHub that:",
+ "reference_kind": "quote"
+}

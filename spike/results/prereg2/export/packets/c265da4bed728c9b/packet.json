@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "{{< tabs name=\"k8s_install_versions\" >}}\n{{% tab name=\"Ubuntu, Debian or HypriotOS\" %}}",
+ "oracle_target": "{{< tabs name=\"k8s_upgrade_versions\" >}}\n{{% tab name=\"Ubuntu, Debian or HypriotOS\" %}}",
+ "packet": "c265da4bed728c9b",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< tabs name=\"k8s_install_versions\" >}}\n{{% tab name=\"Ubuntu, Debian or HypriotOS\" %}}",
+ "reference_kind": "quote"
+}

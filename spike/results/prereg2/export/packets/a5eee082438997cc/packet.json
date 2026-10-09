@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "#### File or HTTPS-based discovery\n\nThis provides an out-of-band way to establish a root of trust between the control-plane node\nand bootstrapping nodes. Consider using this mode if you are building automated provisioning\nusing kubeadm. The format of the discovery file is a regular Kubernetes\n[kubeconfig](/docs/tasks/access-application-cluster/configure-access-multiple-clusters/) file.\n\nIn case the discovery file does not contain credentials, the TLS discovery token will be used.\n\n**Example `kubeadm join` commands:**\n\n- `kubeadm join --discovery-file path/to/file.conf` (local file)\n\n- `kubeadm join --discovery-file https://url/file.conf` (remote HTTPS URL)\n\n**Advantages:**\n\n- Allows bootstrapping nodes to securely discover a root of trust for the\n  control-plane node even if the network or other worker nodes are compromised.\n\n**Disadvantages:**\n\n- Requires that you have some way to carry the discovery information from\n  the control-plane node to the bootstrapping nodes. If the discovery file contains credentials\n  you must keep it secret and transfer it over a secure channel. This might be possible with your\n  cloud provider or provisioning tool.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "a5eee082438997cc",
+ "questions": "QUESTIONS.md",
+ "reference": "file-or-https-based-discovery",
+ "reference_kind": "name"
+}

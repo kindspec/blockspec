@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### EnqueueExtension\n\nEnqueueExtension is the interface where the plugin can control\nwhether to retry scheduling of Pods rejected by this plugin, based on changes in the cluster.\nPlugins that implement PreEnqueue, PreFilter, Filter, Reserve or Permit should implement this interface.",
+ "oracle_target": "{{< note >}}\nQueueingHint evaluation during scheduling is a beta-level feature. \nThe v1.28 release series initially enabled the associated feature gate; however, after the\ndiscovery of an excessive memory footprint, the Kubernetes project set that feature gate\nto be disabled by default. In Kubernetes {{< skew currentVersion >}}, this feature gate is\ndisabled and you need to enable it manually.\nYou can enable it via the\n`SchedulerQueueingHints` [feature gate](/docs/reference/command-line-tools-reference/feature-gates/).\n{{< /note >}}",
+ "packet": "573b12999145f423",
+ "questions": "QUESTIONS.md",
+ "reference": "enqueueextension",
+ "reference_kind": "name"
+}

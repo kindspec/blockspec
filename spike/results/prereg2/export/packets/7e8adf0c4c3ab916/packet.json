@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Part of the specification used to implement\n[ApplySet-based pruning in kubectl](/docs/tasks/manage-kubernetes-objects/declarative-config/#alternative-kubectl-apply-f-directory-prune).\nThis annotation is applied to the parent object used to track an ApplySet to optimize listing of\nApplySet member objects. It is optional in the ApplySet specification, as tools can perform discovery\nor use a different optimization. However, as of Kubernetes version {{< skew currentVersion >}},\nit is required by kubectl. When present, the value of this annotation must be a comma separated list\nof the group-kinds, in the fully-qualified name format, i.e. `<resource>.<group>`.",
+ "oracle_target": "Part of the specification used to implement\n[ApplySet-based pruning in kubectl](/docs/tasks/manage-kubernetes-objects/declarative-config/#alternative-kubectl-apply-f-directory-prune).\nThis annotation is applied to the parent object used to track an ApplySet to optimize listing of\nApplySet member objects. It is optional in the ApplySet specification, as tools can perform discovery\nor use a different optimization. However, in Kubernetes version {{< skew currentVersion >}},\nit is required by kubectl. When present, the value of this annotation must be a comma separated list\nof the group-kinds, in the fully-qualified name format, i.e. `<resource>.<group>`.",
+ "packet": "7e8adf0c4c3ab916",
+ "questions": "QUESTIONS.md",
+ "reference": "Part of the specification used to implement\n[ApplySet-based pruning in kubectl](/docs/tasks/manage-kubernetes-objects/declarative-config/#alternative-kubectl-apply-f-directory-prune).\nThis annotation is applied to the parent object used to track an ApplySet to optimize listing of\nApplySet member objects. It is optional in the ApplySet specification, as tools can perform discovery\nor use a different optimization. However, as of Kubernetes version {{< skew currentVersion >}},\nit is required by kubectl. When present, the value of this annotation must be a comma separated list\nof the group-kinds, in the fully-qualified name format, i.e. `<resource>.<group>`.",
+ "reference_kind": "quote"
+}

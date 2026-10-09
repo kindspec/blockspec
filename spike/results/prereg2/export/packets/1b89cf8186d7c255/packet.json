@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Configure all key-value pairs in a ConfigMap as container environment variables\n\n{{< note >}}\nThis functionality is available in Kubernetes v1.6 and later.\n{{< /note >}}\n\n* Create a ConfigMap containing multiple key-value pairs.\n\n  {{< codenew file=\"configmap/configmap-multikeys.yaml\" >}}\n\n  Create the ConfigMap:\n\n ```shell\n kubectl create -f https://kubernetes.io/examples/configmap/configmap-multikeys.yaml\n ```\n\n* Use `envFrom` to define all of the ConfigMap's data as container environment variables. The key from the ConfigMap becomes the environment variable name in the Pod.\n\n {{< codenew file=\"pods/pod-configmap-envFrom.yaml\" >}}\n\n Create the Pod:\n\n ```shell\n kubectl create -f https://kubernetes.io/examples/pods/pod-configmap-envFrom.yaml\n ```\n\n Now, the Pod's output includes environment variables `SPECIAL_LEVEL=very` and `SPECIAL_TYPE=charm`.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "1b89cf8186d7c255",
+ "questions": "QUESTIONS.md",
+ "reference": "configure-all-key-value-pairs-in-a-configmap-as-container-environment-variables",
+ "reference_kind": "name"
+}

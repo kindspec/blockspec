@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Projects being submitted to the CNCF at the sandbox level are intended to be the entry point for early stage projects and are not required to undergo due diligence.",
+ "oracle_target": "## Sandbox Projects:",
+ "packet": "6b70769f683d72fb",
+ "questions": "QUESTIONS.md",
+ "reference": "## Sandbox Projects: \nProjects being submitted to the CNCF at the sandbox level are intended to be the entry point for early stage projects and are not required to undergo due diligence. A project is reviewed by a SIG (chosen by the TOC to review). After presenting to the SIG, a SIG will make a written recommendation to the TOC to review. Three sponsors are required for entry into the sandbox.",
+ "reference_kind": "quote"
+}

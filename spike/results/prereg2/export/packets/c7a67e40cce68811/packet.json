@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Manual Node administration\n\nYou can create and modify Node objects using\n{{< glossary_tooltip text=\"kubectl\" term_id=\"kubectl\" >}}.\n\nWhen you want to create Node objects manually, set the kubelet flag `--register-node=false`.\n\nYou can modify Node objects regardless of the setting of `--register-node`.\nFor example, you can set labels on an existing Node, or mark it unschedulable.\n\nYou can use labels on Nodes in conjunction with node selectors on Pods to control\nscheduling. For example, you can constrain a Pod to only be eligible to run on\na subset of the available nodes.\n\nMarking a node as unschedulable prevents the scheduler from placing new pods onto\nthat Node, but does not affect existing Pods on the Node. This is useful as a\npreparatory step before a node reboot or other maintenance.\n\nTo mark a Node unschedulable, run:\n\n```shell\nkubectl cordon $NODENAME\n```\n\n{{< note >}}\nPods that are part of a {{< glossary_tooltip term_id=\"daemonset\" >}} tolerate\nbeing run on an unschedulable Node. DaemonSets typically provide node-local services\nthat should run on the Node even if it is being drained of workload applications.\n{{< /note >}}",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "c7a67e40cce68811",
+ "questions": "QUESTIONS.md",
+ "reference": "manual-node-administration",
+ "reference_kind": "name"
+}

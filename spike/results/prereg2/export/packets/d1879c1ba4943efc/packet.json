@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Note that when you specify multiple rules in the `.spec.succeessPolicy.rules`,\nthe rules are evaluated in order. Once the Job meets a rule, the remaining rules are ignored.",
+ "oracle_target": "* When you specify the only `.spec.successPolicy.rules[*].succeededIndexes`,\nonce all indexes specified in the `succeededIndexes` succeeded, the Job is marked as succeeded.\nThe `succeededIndexes` must be a list of intervals between 0 and `.spec.completions-1`.\n* When you specify the only `spec.successPolicy.rules[*].succeededCount`,\nonce the number of succeeded indexes reaches the `succeededCount`, the Job is marked as succeeded.\n* When you specify both `succeededIndexes` and `succeededCount`,\nonce the number of succeeded indexes specified in the `succeededIndexes` reaches the `succeededCount`,\nthe Job is marked as succeeded.",
+ "packet": "d1879c1ba4943efc",
+ "questions": "QUESTIONS.md",
+ "reference": "When you specify the only `spec.successPolicy.rules[*].succeededCount`,\nonce the number of succeeded indexes reaches the `succeededCount`, the Job is marked as succeeded.",
+ "reference_kind": "quote"
+}

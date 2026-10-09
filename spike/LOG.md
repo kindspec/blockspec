@@ -1829,3 +1829,48 @@ This is the rule's count, and it stands. `site-policy` M therefore has no
 unit in its verdict cell. The first registration's 21 were counted over all
 78 cases, before any path selection. That the 21 fell among the 31 cases
 dropped by path selection is a reading of these counts; it was not checked.
+
+## 2026-10-09 — §26. The export
+
+§9's third commit is "scoring-arm results and the export", so the export is
+committed in the same pull request as the scoring arms (§25), and both land
+in the one squash commit.
+
+`prereg2.py export` ran once, bound by validation commit `d79bf2e`, under
+`python3 -I -S -B`. It read the sealed manifest at
+`/home/cam/kindspec-data/prereg2-seal/` and exited 0. An unbound
+`export --help` was run first, to check the arguments, and committed.
+
+The export is `results/prereg2/export/`. It holds `PROMPT.md` and 486
+packets, three of them Appendix B's plants. Each packet is named by the
+first 16 hex characters of `sha256(nonce + ":" + key)`. Each packet holds:
+
+- `packet.json`, with only the fields `packet`, `reference_kind`,
+  `reference`, `mechanism_target`, `oracle_target`, `files` and
+  `questions`;
+- `QUESTIONS.md`;
+- either `before.md` and `after.md` (436 packets), or `base.md`,
+  `leg-a.md`, `leg-c.md` and `after.md` (50 packets).
+
+`results/prereg2/export-manifest.txt`, outside the export, lists the
+sha256 of each file.
+
+Checks on the export after the run:
+
+- `p2/export.validate` reports it clean.
+- It holds no `.git` and no symlinks, and every packet name is 16 hex
+  characters.
+- The nonce does not appear anywhere under `results/prereg2/`, whether in
+  full, as its first 16 hex characters, or as raw bytes.
+- No arm name, corpus or bundle name, plant name, or oracle or resolver
+  field appears in `PROMPT.md`, `QUESTIONS.md` or the metadata fields of any
+  `packet.json`.
+- The corpus texts themselves name their own projects in places, for
+  example a `site-policy` link or a `cncf-toc` mailing list. That is the
+  file content §7.3 requires.
+
+**Who tiers.** §7.3 says "Whoever ran an arm may not tier." A recorded
+owner decision reads this as follows: a fresh agent with no access to the
+authoring conversation counts as independent, and the barrier is the export
+directory, with no `.git`. The sandboxed tierer sees only the export, so it
+meets §7.3.

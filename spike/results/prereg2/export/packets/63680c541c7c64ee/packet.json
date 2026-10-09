@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "* `apiserver_flowcontrol_priority_level_seat_count_watermarks` is a\n  histogram vector of high or low water marks of the utilization of a\n  priority level's concurrency limit, broken down by `priority_level`\n  and `mark` (which takes on values `high` and `low`).  Each histogram\n  in the vector is also labeled with `phase: executing` (there is no\n  seat limit for the waiting phase).  The water marks are accumulated\n  over windows bounded by the times when an observation was added to\n  `apiserver_flowcontrol_priority_level_seat_count_samples`.  These\n  water marks show the range of values that occurred between samples.",
+ "oracle_target": "* `apiserver_flowcontrol_priority_level_request_count_watermarks` is a\n  histogram vector of high or low water marks of the number of\n  requests (divided by the corresponding limit to get a ratio in the\n  range 0 to 1) broken down by the labels `phase` (which takes on the\n  values `waiting` and `executing`) and `priority_level`; the label\n  `mark` takes on values `high` and `low`.  The water marks are\n  accumulated over windows bounded by the times when an observation\n  was added to\n  `apiserver_flowcontrol_priority_level_request_count_samples`.  These\n  water marks show the range of values that occurred between samples.",
+ "packet": "63680c541c7c64ee",
+ "questions": "QUESTIONS.md",
+ "reference": "* `apiserver_flowcontrol_priority_level_request_count_watermarks` is a\n  vector of histograms of high or low water marks of the number of\n  requests broken down by the labels `phase` (which takes on the\n  values `waiting` and `executing`) and `priorityLevel`; the label\n  `mark` takes on values `high` and `low`.  The water marks are\n  accumulated over windows bounded by the times when an observation\n  was added to\n  `apiserver_flowcontrol_priority_level_request_count_samples`.  These\n  water marks show the range of values that occurred between samples.",
+ "reference_kind": "quote"
+}

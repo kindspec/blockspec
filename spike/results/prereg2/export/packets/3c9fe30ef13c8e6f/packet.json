@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "{{< note >}}\nYou must replace the `<CA_BUNDLE>` in the above example by a valid CA bundle\nwhich is a PEM-encoded CA bundle for validating the webhook's server certificate.\n{{< /note >}}",
+ "oracle_target": "{{< note >}}\nYou must replace the `<CA_BUNDLE>` in the above example by a valid CA bundle\nwhich is a PEM-encoded (field value is Base64 encoded) CA bundle for validating the webhook's server certificate.\n{{< /note >}}",
+ "packet": "3c9fe30ef13c8e6f",
+ "questions": "QUESTIONS.md",
+ "reference": "{{< note >}}\nYou must replace the `<CA_BUNDLE>` in the above example by a valid CA bundle\nwhich is a PEM-encoded CA bundle for validating the webhook's server certificate.\n{{< /note >}}",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "動的プロビジョニングを有効にするために、クラスター管理者はユーザーのために1つまたはそれ以上のStorageClassを事前に作成する必要があります。StorageClassオブジェクトは、動的プロビジョニングが実行されるときに、どのプロビジョナーが使用されるべきか、またどのようなパラメーターをプロビジョナーに渡すべきか定義します。StorageClassオブジェクトの名前は、有効な[DNSサブドメイン名](/ja/docs/concepts/overview/working-with-objects/names#dns-subdomain-names)である必要があります。",
+ "oracle_target": "下記のマニフェストでは標準的な永続化ディスクをプロビジョンする\"slow\"というStorageClassを作成します。",
+ "packet": "6230f46382dde6f2",
+ "questions": "QUESTIONS.md",
+ "reference": "動的プロビジョニングを有効にするために、クラスター管理者はユーザーのために1つまたはそれ以上のStorageClassを事前に作成する必要があります。StorageClassオブジェクトは、動的プロビジョニングが実行されるときに、どのプロビジョナーが使用されるべきか、またどのようなパラメーターをプロビジョナーに渡すべきか定義します。  \n下記のマニフェストでは標準的な永続化ディスクをプロビジョンする\"slow\"というStorageClassを作成します。",
+ "reference_kind": "quote"
+}

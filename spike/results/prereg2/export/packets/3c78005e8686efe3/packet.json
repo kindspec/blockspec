@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "You agree to indemnify and hold GitHub, its parents, subsidiaries, affiliates, officers, directors, employees, agents, and representatives harmless, including costs, liabilities, and legal fees, from any claim or demand made by any third party due to, related to, or connected with your attendance or conduct at the Event.",
+ "oracle_target": "### Indemnity",
+ "packet": "3c78005e8686efe3",
+ "questions": "QUESTIONS.md",
+ "reference": "### Indemnity\nBy the same token, you agree to indemnify and hold GitHub, its parents, subsidiaries, affiliates, officers, directors, employees, agents and representatives harmless, including costs, liabilities and legal fees, from any claim or demand made by any third party due to, related to, or connected with your attendance or conduct at the Event or any related event.",
+ "reference_kind": "quote"
+}

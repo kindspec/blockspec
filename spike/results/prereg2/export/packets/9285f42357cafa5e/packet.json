@@ -1,0 +1,14 @@
+{
+ "files": {
+  "after": "after.md",
+  "base": "base.md",
+  "leg_a": "leg-a.md",
+  "leg_c": "leg-c.md"
+ },
+ "mechanism_target": "One of the [recommended labels](/docs/concepts/overview/working-with-objects/common-labels/#labels).",
+ "oracle_target": "One of the [recommended labels](/docs/concepts/overview/working-with-objects/common-labels/#labels).",
+ "packet": "9285f42357cafa5e",
+ "questions": "QUESTIONS.md",
+ "reference": "One of the [recommended labels](/docs/concepts/overview/working-with-objects/common-labels/#labels).",
+ "reference_kind": "quote"
+}

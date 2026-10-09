@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## Monitoring device plugin resources\n-->",
+ "oracle_target": "<!--\nIn order to monitor resources provided by device plugins, monitoring agents need to be able to\ndiscover the set of devices that are in-use on the node and obtain metadata to describe which\ncontainer the metric should be associated with. [Prometheus](https://prometheus.io/) metrics\nexposed by device monitoring agents should follow the\n[Kubernetes Instrumentation Guidelines](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/metric-instrumentation.md),\nidentifying containers using `pod`, `namespace`, and `container` prometheus labels.\n-->\n为了监控设备插件提供的资源，监控代理程序需要能够发现节点上正在使用的设备，\n并获取元数据来描述哪个指标与容器相关联。\n设备监控代理暴露给 [Prometheus](https://prometheus.io/) 的指标应该遵循\n[Kubernetes Instrumentation Guidelines（英文）](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/metric-instrumentation.md)，\n使用 `pod`、`namespace` 和 `container` 标签来标识容器。",
+ "packet": "60c3c7b2c007b256",
+ "questions": "QUESTIONS.md",
+ "reference": "monitoring-device-plugin-resources",
+ "reference_kind": "name"
+}

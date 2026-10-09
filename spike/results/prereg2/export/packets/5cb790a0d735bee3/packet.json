@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "- **strategy.rollingUpdate** (RollingUpdateDeployment)",
+ "oracle_target": "<!--\n  - **strategy.rollingUpdate** (RollingUpdateDeployment)",
+ "packet": "5cb790a0d735bee3",
+ "questions": "QUESTIONS.md",
+ "reference": "- **strategy.rollingUpdate** (RollingUpdateDeployment)",
+ "reference_kind": "quote"
+}

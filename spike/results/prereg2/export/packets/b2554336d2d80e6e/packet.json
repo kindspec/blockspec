@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### 환경 변수\n\n파드가 노드에서 실행되면, kubelet은 활성화된 각 서비스에 대한 환경 변수\n집합을 추가한다. `{SVCNAME}_SERVICE_HOST`와 `{SVCNAME}_SERVICE_PORT` 변수를\n추가하는데, 이때 서비스 이름은 대문자로 바뀌고 하이픈은 언더스코어로 변환된다.\n\n\n예를 들어, TCP 포트 6379를 노출하고 클러스터 IP 주소 10.0.0.11이 할당된\n서비스 `redis-primary`는 다음과 같은 \n환경 변수를 생성한다.\n\n```shell\nREDIS_PRIMARY_SERVICE_HOST=10.0.0.11\nREDIS_PRIMARY_SERVICE_PORT=6379\nREDIS_PRIMARY_PORT=tcp://10.0.0.11:6379\nREDIS_PRIMARY_PORT_6379_TCP=tcp://10.0.0.11:6379\nREDIS_PRIMARY_PORT_6379_TCP_PROTO=tcp\nREDIS_PRIMARY_PORT_6379_TCP_PORT=6379\nREDIS_PRIMARY_PORT_6379_TCP_ADDR=10.0.0.11\n```\n\n{{< note >}}\n서비스에 접근해야 하는 파드가 있고, 환경 변수 방식을 사용하여 포트와\n클러스터 IP를 클라이언트 파드에 노출하는 경우, 클라이언트 파드가 존재하기\n*전에* 서비스를 생성해야 한다. 그렇지 않으면 해당 클라이언트 파드는 환경\n변수가 채워지지 않는다.\n\n서비스의 클러스터 IP를 찾는 데 DNS만 사용한다면, 이러한 순서 문제를\n걱정할 필요가 없다.\n{{< /note >}}\n\n쿠버네티스는 또한 도커 엔진의 \"_[레거시 컨테이너 링크](https://docs.docker.com/network/links/)_\"\n기능과 호환되는 변수도 지원하고 제공한다.\n쿠버네티스에서 이것이 어떻게 구현되어 있는지 확인하려면\n[`makeLinkVariables`](https://github.com/kubernetes/kubernetes/blob/dd2d12f6dc0e654c15d5db57a5f9f6ba61192726/pkg/kubelet/envvars/envvars.go#L72)를 참고한다.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "b2554336d2d80e6e",
+ "questions": "QUESTIONS.md",
+ "reference": "환경-변수",
+ "reference_kind": "name"
+}

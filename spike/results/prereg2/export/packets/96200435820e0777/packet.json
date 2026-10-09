@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "## 컨테이너 상태\n\n전체 파드의 [단계](#파드의-단계)뿐 아니라, 쿠버네티스는 파드 내부의\n각 컨테이너 상태를 추적한다.\n[컨테이너 라이프사이클 훅(hook)](/ko/docs/concepts/containers/container-lifecycle-hooks/)을\n사용하여 컨테이너 라이프사이클의 특정 지점에서 실행할 이벤트를 트리거할 수 있다.\n\n일단 {{< glossary_tooltip text=\"스케줄러\" term_id=\"kube-scheduler\" >}}가\n노드에 파드를 할당하면, kubelet은 {{< glossary_tooltip text=\"컨테이너 런타임\" term_id=\"container-runtime\" >}}을\n사용하여 해당 파드에 대한 컨테이너 생성을 시작한다.\n표시될 수 있는 세 가지 컨테이너 상태는 `Waiting`, `Running` 그리고 `Terminated` 이다.\n\n파드의 컨테이너 상태를 확인하려면, `kubectl describe pod <name-of-pod>` 를\n사용할 수 있다. 출력 결과는 해당 파드 내의 각 컨테이너 상태가\n표시된다.\n\n각 상태에는 특정한 의미가 있다.\n\n### `Waiting` {#container-state-waiting}\n\n만약 컨테이너가 `Running` 또는 `Terminated` 상태가 아니면, `Waiting` 상태이다.\n`Waiting` 상태의 컨테이너는 시작을 완료하는 데 필요한\n작업(예를 들어, 컨테이너 이미지 레지스트리에서 컨테이너 이미지 가져오거나,\n{{< glossary_tooltip text=\"시크릿(Secret)\" term_id=\"secret\" >}} 데이터를 적용하는 작업)을\n계속 실행하고 있는 중이다.\n`kubectl` 을 사용하여 컨테이너가 `Waiting` 인 파드를 쿼리하면, 컨테이너가\n해당 상태에 있는 이유를 요약하는 Reason 필드도 표시된다.\n\n### `Running` {#container-state-running}\n\n`Running` 상태는 컨테이너가 문제없이 실행되고 있음을 나타낸다. `postStart` 훅이\n구성되어 있었다면, 이미 실행되고 완료되었다. `kubectl` 을\n사용하여 컨테이너가 `Running` 인 파드를 쿼리하면, 컨테이너가 `Running` 상태에 진입한 시기에 대한\n정보도 볼 수 있다.\n\n### `Terminated` {#container-state-terminated}\n\n`Terminated` 상태의 컨테이너는 실행을 시작한 다음 완료될 때까지\n실행되었거나 어떤 이유로 실패했다. `kubectl` 을 사용하여 컨테이너가 `Terminated` 인 파드를\n쿼리하면, 이유와 종료 코드 그리고 해당 컨테이너의 실행 기간에 대한 시작과\n종료 시간이 표시된다.\n\n컨테이너에 구성된 `preStop` 훅이 있는 경우, 컨테이너가 `Terminated` 상태에 들어가기 전에\n실행된다.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "96200435820e0777",
+ "questions": "QUESTIONS.md",
+ "reference": "컨테이너-상태",
+ "reference_kind": "name"
+}

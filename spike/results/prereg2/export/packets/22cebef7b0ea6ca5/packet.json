@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "스토리지는 애플리케이션이 데이터를 저장하기 위해 사용하는 퍼시턴트볼륨클레임 리소스들을 보여준다.",
+ "oracle_target": "#### 스토리지",
+ "packet": "22cebef7b0ea6ca5",
+ "questions": "QUESTIONS.md",
+ "reference": "#### 스토리지\n스토리지는 애플리케이션이 데이터를 저장하기 위해 사용하는 퍼시턴트 볼륨 클레임 리소스들을 보여준다.",
+ "reference_kind": "quote"
+}

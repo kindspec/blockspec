@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "### Add a localized README file\n\nTo guide other localization contributors, add a new [`README-**.md`](https://help.github.com/articles/about-readmes/) to the top level of k/website, where `**` is the two-letter language code. For example, a German README file would be `README-de.md`.\n\nProvide guidance to localization contributors in the localized `README-**.md` file. Include the same information contained in `README.md` as well as:\n\n- A point of contact for the localization project\n- Any information specific to the localization\n\nAfter you create the localized README, add a link to the file from the main English `README.md`, and include contact information in English. You can provide a GitHub ID, email address, [Slack channel](https://slack.com/), or other method of contact. You must also provide a link to your localized Community Code of Conduct.",
+ "oracle_target": "(none: the oracle says the referenced text was deleted by the edit)",
+ "packet": "04968c830c689ab3",
+ "questions": "QUESTIONS.md",
+ "reference": "add-a-localized-readme-file",
+ "reference_kind": "name"
+}
