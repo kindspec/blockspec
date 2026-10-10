@@ -21,6 +21,3 @@ CommonMark embeds its conformance examples inside a CC-BY-SA spec document, so
 vendoring the test cases arguably vendors share-alike prose. These fixtures are
 meant to be vendored: copy them into an implementation in any language, under
 any licence, without obligation.
-
-NOTHING IS LICENSED YET BECAUSE NOTHING EXISTS YET. This file is here so the
-split is decided before the first file lands, rather than retrofitted after.
