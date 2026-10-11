@@ -457,6 +457,84 @@ def v_pins(root):
         X3.PREREG3, X3.PREREG3_SHA256 = saved
 
 
+def v_aggregate_cli(root, d8, recs, inst, m3, export3_dir):
+    """prereg3.py aggregate, run in-process on fixtures with --unbound and
+    --fixture-ok. prereg 2's export tree is read from a fixture repository:
+    p3.export3.read_tree_packets is pointed at it, since the real e46e320
+    tree is not a fixture."""
+    import contextlib
+    import gzip
+    import io
+    import hashlib
+    import prereg3
+    fx = os.path.join(root, "agg")
+    os.makedirs(fx)
+    repo, c2, m2 = p2_export_repo(fx, recs, inst)
+    sd = os.path.join(fx, "score", "k8s-en")
+    os.makedirs(sd)
+    write(os.path.join(sd, "status.json"), json.dumps({"arm": "k8s-en", "modes": ["E"]}))
+    write(os.path.join(sd, "instances.jsonl"), "".join(
+        json.dumps(dict({k: v for k, v in i.items() if k != "texts"}, id=key[1])) + "\n" for key, i in inst.items()))
+    with gzip.open(os.path.join(sd, "units.jsonl.gz"), "wt", encoding="utf-8") as g:
+        g.write("".join(json.dumps(r) + "\n" for r in recs))
+    write(os.path.join(fx, "arm0", "k8s-en.json"), json.dumps({"arm": "k8s-en", "passes_bar": True}))
+    names3 = sorted(os.listdir(os.path.join(export3_dir, "packets")))
+    pn = PL.plant_names(m3)
+    lines = []
+    for n in names3:
+        p = [k for k, v in pn.items() if v == n]
+        a = RIGHT[p[0]] if p else ("yes", "yes", "no", "no")
+        lines.append(json.dumps({"packet": n, "q1": a[0], "q2": a[1], "q3": a[2], "q4": a[3],
+                                 "unplaceable": False, "why": "fixture"}) + "\n")
+    st = os.path.join(fx, "state")
+    write(os.path.join(st, "tier-work-1", "tiers.jsonl"), "".join(lines))
+    write(os.path.join(st, "tier-runs.txt"), json.dumps({"event": "started", "n": 1, "at": "x"}) + "\n"
+          + json.dumps({"event": "completed", "n": 1, "lines": len(lines), "init_failed": False}) + "\n")
+    for r in recs:
+        write(os.path.join(fx, "repro2", hashlib.sha256(r["id"].encode()).hexdigest()[:16] + ".json"), json.dumps(
+            {"id": r["id"], "ok": True, "bound": True, "binding": {"validation_commit": D79},
+             "committed_sha256": "a" * 64, "regenerated_sha256": "a" * 64}))
+    os.makedirs(os.path.join(fx, "repro3"))
+    mf3, mf2 = os.path.join(fx, "m3.json"), os.path.join(fx, "m2.json")
+    write(mf3, json.dumps(m3))
+    write(mf2, json.dumps(m2))
+    sha = lambda p: hashlib.sha256(open(p, "rb").read()).hexdigest()  # noqa: E731
+    tampered = os.path.join(fx, "export3-tampered")
+    shutil.copytree(export3_dir, tampered)
+    real = sorted(set(names3) - set(pn.values()))
+    write(os.path.join(tampered, "packets", real[0], "after.md"), "x", "a")
+    orig = X3.read_tree_packets
+    X3.read_tree_packets = lambda spike, commit=None, rel=X3.EXPORT2_REL: orig(os.path.join(repo, "spike"), c2, rel)
+
+    def run(export, out):
+        argv = ["aggregate", "--unbound", "--fixture-ok", "--transcript-dir", os.path.join(fx, "tr"),
+                "--d8-dir", d8, "--manifest", mf3, "--manifest-sha", sha(mf3), "--manifest2", mf2,
+                "--manifest2-sha", sha(mf2), "--arm0-dir", os.path.join(fx, "arm0"),
+                "--score-dir", os.path.join(fx, "score"), "--state-dir", st, "--repro-dir",
+                os.path.join(fx, "repro3"), "--repro-dir2", os.path.join(fx, "repro2"),
+                "--export", export, "--out", out, "--spike-repo", os.path.join(repo, "spike")]
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(io.StringIO()):
+            rc = prereg3.main(argv)
+        return rc, buf.getvalue()
+    try:
+        out_bad = os.path.join(fx, "verdict-bad.json")
+        rc, text = run(tampered, out_bad)
+        verdictish = [ln for ln in text.splitlines()
+                      if ln.startswith("OVERALL") or ln.startswith("TIERING VOID") or ln.startswith("  k8s-en")
+                      or ln.startswith("near misses")]
+        case("aggregate cli: a failed per-name check prints no cell, VOID or OVERALL line and writes no verdict",
+             rc == 1 and "SAME PER NAME: FAIL" in text and not verdictish and not os.path.exists(out_bad),
+             f"exit {rc}, {len(verdictish)} verdict line(s)")
+        out_ok = os.path.join(fx, "verdict-ok.json")
+        rc, text = run(export3_dir, out_ok)
+        case("aggregate cli: with the per-name check passing, the same fixture prints OVERALL and writes a verdict",
+             rc == 0 and "SAME PER NAME: PASS" in text and "OVERALL:" in text and os.path.exists(out_ok),
+             f"exit {rc}")
+    finally:
+        X3.read_tree_packets = orig
+
+
 def v_binding(root):
     src = os.path.dirname(SPIKE)
     clone = os.path.join(root, "clone")
@@ -729,6 +807,8 @@ def main():
         v_aggregate(root)
         v_pins(root)
         out = v_export(a.d8_dir, root)
+        recs_f, inst_f = fixture_records()
+        v_aggregate_cli(root, a.d8_dir, recs_f, inst_f, manifest3(), out)
         v_binding(root)
         v_order(root)
         gate = v_gate(root)

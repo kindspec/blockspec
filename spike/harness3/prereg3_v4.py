@@ -24,7 +24,23 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 P3 = os.path.join(HERE, "p3")
 
 # Mutants in prereg3.py, outside p3/, are listed with the path "../prereg3.py".
+PERNAME = """    ok, lines = X3.same_per_name(repo, m2["nonce"], a.export, m["nonce"], res["packet_keys"])
+    for ln in lines:
+        print(ln)
+    if not ok:
+        print("refusing: the per-name check failed; no verdict is written", file=sys.stderr)
+        return 1
+"""
+PRINTS = """    for (arm, mode, mech), c in sorted(res["cells"].items()):
+        print(f"  {arm:<14}{mode:<5}{mech}  {c['verdict']:<11} {c.get('reason', '')}")
+    if res["void"]:
+        print("TIERING VOID: " + "; ".join(res["void"]))
+    print(f"near misses (distinct units): {res['near_misses']}")
+    print(f"OVERALL: {res['overall']}")
+"""
 MUTATIONS = [
+    ("../prereg3.py", "per-name check moved after the OVERALL print (delta Low)",
+     PERNAME + PRINTS, PRINTS + PERNAME),
     ("../prereg3.py", "aggregate runs without --manifest2 (M1)",
      "    p.add_argument(\"--manifest2\", required=True,", "    p.add_argument(\"--manifest2\", required=False,"),
     # (file, label, pattern, replacement)
