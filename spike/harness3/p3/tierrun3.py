@@ -81,12 +81,13 @@ def rerun_allowed(state_dir):
         return 1, None
     if len(started) >= 2:
         raise TierRefused("two tiering runs have started; there is one rerun in total, ever")
-    lines, init_failed = run_status(state_dir, 1)
+    last = started[-1]
+    lines, init_failed = run_status(state_dir, last)
     if init_failed:
-        return 2, "RERUN: the first run failed the init check"
+        return len(started) + 1, f"RERUN: run {last} failed the init check"
     if lines == 0:
-        return 2, "RERUN: the first run wrote zero lines"
-    raise TierRefused(f"the first run's tiers.jsonl binds; it wrote {lines} line(s)")
+        return len(started) + 1, f"RERUN: run {last} wrote zero lines"
+    raise TierRefused(f"run {last}'s tiers.jsonl binds; it wrote {lines} line(s)")
 
 
 def binding_run(state_dir):

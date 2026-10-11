@@ -88,6 +88,23 @@ def _show(spike, commit, rel):
     return out if rc == 0 else None
 
 
+def _ledger(text, where):
+    """The JSON objects of a committed ledger. A line that is not a JSON
+    object is a refusal, never a traceback and never skipped."""
+    out = []
+    for i, ln in enumerate((text or "").splitlines(), 1):
+        if not ln.strip():
+            continue
+        try:
+            o = json.loads(ln)
+        except ValueError:
+            o = None
+        if not isinstance(o, dict):
+            raise GateError(f"{where}, line {i}, is not a JSON object")
+        out.append(o)
+    return out
+
+
 def _executed_time(text):
     for ln in (text or "").splitlines():
         if ln.startswith("# executed: "):
@@ -105,14 +122,7 @@ def committed_order(spike):
         raise GateError(f"the export-3 commit {e3[0][:12]} is not an ancestor of {t2[0][:12]}, "
                         f"which adds prereg 2's tiers.jsonl")
     runs = _show(spike, "HEAD", TIER_RUNS2)
-    started = []
-    for ln in (runs or "").splitlines():
-        try:
-            o = json.loads(ln)
-        except ValueError:
-            continue
-        if o.get("event") == "started":
-            started.append(o.get("at"))
+    started = [o.get("at") for o in _ledger(runs, TIER_RUNS2) if o.get("event") == "started"]
     if not started:
         raise GateError(f"no committed {TIER_RUNS2} with a started run")
     marker = _show(spike, "HEAD", os.path.join(R3, "executed", "export.json"))
@@ -152,7 +162,7 @@ def verdict_gate(spike):
     if len(t2) != 1 or not _ancestor(spike, t2[0], vc):
         raise GateError(f"no commit adding {TIERS2} in the verdict commit's history")
     runs = _show(spike, vc, TIER_RUNS2)
-    if not runs or not any(json.loads(ln).get("event") == "started" for ln in runs.splitlines() if ln.strip()):
+    if not runs or not any(o.get("event") == "started" for o in _ledger(runs, TIER_RUNS2)):
         raise GateError(f"{TIER_RUNS2} with a started run is not committed in the verdict commit's history")
     return vc
 

@@ -55,6 +55,17 @@ def raises(fn, exc=Exception):
     return None
 
 
+def raises_exactly(fn, exc):
+    """True only if fn raises exc; any other exception, or none, is False."""
+    try:
+        fn()
+    except exc:
+        return True
+    except Exception:  # noqa: BLE001
+        return False
+    return False
+
+
 def sh(*a, cwd=None, env=None, check=True):
     e = dict(BD.git_env(), **(env or {}))
     r = subprocess.run(list(a), cwd=cwd, capture_output=True, text=True, env=e)
@@ -131,7 +142,7 @@ def p2_export_repo(root, recs, inst, extra_plant=False, drop_plant=False):
 
 
 def gate_repo(root, name, verdict=True, bound=True, vc=D79, tiers=True, started=1,
-              change_after=False, days_ago=3, runs_text=None):
+              change_after=False, days_ago=3, runs_text=None, tiers_after=False, runs_after=False):
     """A repository shaped like the history after prereg 2's step 5."""
     repo = new_repo(root, name)
     r2 = os.path.join(repo, "spike", "results", "prereg2")
@@ -139,12 +150,12 @@ def gate_repo(root, name, verdict=True, bound=True, vc=D79, tiers=True, started=
     d = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=days_ago)).strftime(
         "%Y-%m-%dT12:00:00Z")
     commit(repo, "tier model", d)
-    if tiers:
+    if tiers and not tiers_after:
         write(os.path.join(r2, "tiers.jsonl"), '{"packet":"x"}\n')
     runs = "".join(json.dumps({"event": "started", "n": i + 1, "at": d}) + "\n" for i in range(started))
     if runs_text is not None:
         write(os.path.join(r2, "tier-runs.txt"), runs_text)
-    elif started:
+    elif started and not runs_after:
         write(os.path.join(r2, "tier-runs.txt"), runs)
     commit(repo, "prereg 2 tiers", d)
     if verdict:
@@ -155,6 +166,12 @@ def gate_repo(root, name, verdict=True, bound=True, vc=D79, tiers=True, started=
         write(os.path.join(r2, "verdict.json"), json.dumps({"bound": True, "binding": {"validation_commit": vc},
                                                             "overall": "FOUND"}))
         commit(repo, "edit verdict", d)
+    if tiers_after or runs_after:
+        if tiers_after:
+            write(os.path.join(r2, "tiers.jsonl"), '{"packet":"x"}\n')
+        if runs_after:
+            write(os.path.join(r2, "tier-runs.txt"), runs)
+        commit(repo, "after the verdict", d)
     return os.path.join(repo, "spike")
 
 
@@ -243,6 +260,9 @@ def v_void(root):
         t.pop(names[p])
         case(f"void: {p} untiered", PL.void_reasons(names, t))
     case("void: A<->B confusion on P-B does not void", with_("P-B", q2="yes") == [])
+    case("void: P-A unplaceable, with q1-q4 as expected, voids (UNPLACEABLE does not qualify)",
+         with_("P-A", unplaceable=True))
+    case("void: P-B unplaceable, with q1-q4 as expected, voids", with_("P-B", unplaceable=True))
     case("void: no tiers at all", PL.void_reasons(names, {}))
 
 
@@ -312,15 +332,24 @@ def v_aggregate(root):
     rp = lambda vc, b=True, okv=True: {"id": "i1|0", "ok": okv, "bound": b,  # noqa: E731
                                        "binding": {"validation_commit": vc},
                                        "committed_sha256": "a" * 64, "regenerated_sha256": "a" * 64}
-    case("repro: bound to d79bf2e accepted", raises(lambda: A3.accept_repros([rp(D79)], vc3)) is None)
-    case("repro: bound to prereg 3's validation commit accepted",
-         raises(lambda: A3.accept_repros([rp(vc3)], vc3)) is None)
+    case("repro: prereg 2's, bound to d79bf2e, accepted", raises(lambda: A3.accept_repros([rp(D79)], [], vc3)) is None)
+    case("repro: prereg 3's, bound to prereg 3's validation commit, accepted",
+         raises(lambda: A3.accept_repros([], [rp(vc3)], vc3)) is None)
     case("repro: bound to another commit refused",
-         raises(lambda: A3.accept_repros([rp("9" * 40)], vc3), A3.InputRefused))
-    case("repro: bound:false refused", raises(lambda: A3.accept_repros([rp(D79, b=False)], vc3), A3.InputRefused))
+         raises_exactly(lambda: A3.accept_repros([rp("9" * 40)], [], vc3), A3.InputRefused))
+    case("repro: bound:false refused",
+         raises_exactly(lambda: A3.accept_repros([rp(D79, b=False)], [], vc3), A3.InputRefused))
     case("repro: two accepted results that disagree refused",
-         raises(lambda: A3.accept_repros([rp(D79), rp(vc3, okv=False)], vc3), A3.InputRefused))
-    acc = A3.accept_repros([rp(D79)], vc3)
+         raises_exactly(lambda: A3.accept_repros([rp(D79)], [rp(vc3, okv=False)], vc3), A3.InputRefused))
+    case("repro: a prereg 3 result bound to d79bf2e is refused (source split)",
+         raises_exactly(lambda: A3.accept_repros([], [rp(D79)], vc3), A3.InputRefused))
+    case("repro: a prereg 2 result bound to prereg 3's validation commit is refused (source split)",
+         raises_exactly(lambda: A3.accept_repros([rp(vc3)], [], vc3), A3.InputRefused))
+    case("repro: with no prereg 3 validation commit, a prereg 3 result bound to None is refused",
+         raises_exactly(lambda: A3.accept_repros([], [rp(None)], None), A3.InputRefused))
+    case("repro: with no prereg 3 validation commit, prereg 2's d79bf2e results are still accepted",
+         raises(lambda: A3.accept_repros([rp(D79)], [], None)) is None)
+    acc = A3.accept_repros([rp(D79)], [], vc3)
     r = A3.aggregate3(arm0, scores, m, tiers, acc)
     case("repro: the reprodemo case gives FOUND with a d79bf2e-bound repro", r["overall"] == "FOUND")
 
@@ -352,9 +381,16 @@ def v_export(d8, root):
     case("manifest: validate3 rejects an empty directory", X3.validate3(os.path.join(root, "nothing")) != [])
     # same records / same plants
     repo, c2, m2 = p2_export_repo(root, recs, inst)
+    # the work tree is made to differ from the committed export: same_records
+    # must read the commit, so it still passes (L5)
+    wt_pk = os.path.join(repo, "spike", "results", "prereg2", "export", "packets")
+    victim = sorted(os.listdir(wt_pk))[0]
+    shutil.rmtree(os.path.join(wt_pk, victim))
+    write(os.path.join(wt_pk, sorted(os.listdir(wt_pk))[0], "after.md"), "work-tree edit", "a")
     pn = PL.plant_names(m3)
     ok, lines = X3.same_records(os.path.join(repo, "spike"), out, pn, c2)
-    case("same records: passes on a fixture built like the real exports", ok, lines[-2])
+    case("same records: passes on a fixture built like the real exports, reading the commit while the work "
+         "tree differs", ok and git(repo, "status", "--porcelain").strip() != "", lines[-2])
     case("same records: prints counts only, no packet name",
          not any(n in "\n".join(lines) for n in os.listdir(os.path.join(out, "packets"))))
     ok, lines = X3.same_plants(out, pn)
@@ -389,6 +425,8 @@ def v_export(d8, root):
     write(os.path.join(d, "packets", X.packet_name(m3["nonce"], keys[0]), "after.md"), "x", "a")
     ok, lines = X3.same_per_name(os.path.join(repo, "spike"), m2["nonce"], d, m3["nonce"], keys, c2)
     case("per name: red when one key's packets differ", not ok, lines[0])
+    ok, lines = X3.same_per_name(os.path.join(repo, "spike"), m2["nonce"], out, m3["nonce"], [], c2)
+    case("per name: red when no key is checked", not ok, lines[0])
     return out
 
 
@@ -515,6 +553,11 @@ def v_order(root):
             commit(r, "export 3 after")
         return s
     case("committed order: passes in §7's order", raises(lambda: G.committed_order(history("co-ok"))) is None)
+    bad = history("co-badjson")
+    write(os.path.join(bad, "results", "prereg2", "tier-runs.txt"), "not json\n", "a")
+    commit(os.path.dirname(bad), "garble the ledger")
+    case("committed order: a non-JSON tier-runs.txt line is a GateError, not a traceback",
+         raises_exactly(lambda: G.committed_order(bad), G.GateError))
     case("committed order: refuses tiers.jsonl not descending from export 3",
          raises(lambda: G.committed_order(history("co-bad", order_ok=False)), G.GateError))
     case("committed order: refuses a started run earlier than export 3's execution",
@@ -535,6 +578,18 @@ def v_gate(root):
     case("gate: refuses a tier-runs.txt with zero started runs",
          raises(lambda: G.verdict_gate(gate_repo(root, "g-zero", runs_text='{"event": "completed", "n": 1}\n')),
                 G.GateError))
+    case("gate: refuses a tiers.jsonl committed only after the verdict",
+         raises_exactly(lambda: G.verdict_gate(gate_repo(root, "g-tiers-after", tiers_after=True)), G.GateError))
+    case("gate: refuses a tier-runs.txt committed only after the verdict (read at the verdict commit, not HEAD)",
+         raises_exactly(lambda: G.verdict_gate(gate_repo(root, "g-runs-after", runs_after=True)), G.GateError))
+    case("gate: a non-JSON tier-runs.txt line is a GateError, not a traceback",
+         raises_exactly(lambda: G.verdict_gate(gate_repo(root, "g-badjson", runs_text="not json\n")),
+                        G.GateError))
+    utc = new_repo(root, "g-utc")
+    write(os.path.join(utc, "spike", "x"), "x")
+    commit(utc, "late evening, New York", "2026-10-10T22:30:00-04:00")
+    case("start day: the committer date is converted to UTC (22:30 -04:00 on 10-10 is UTC day 10-11)",
+         G.commit_day(os.path.join(utc, "spike"), "HEAD") == datetime.date(2026, 10, 11))
     case("model pin: the pinned tier-model.json gives the model", G.tier_model(ok) == "claude-opus-5-5")
     bad = gate_repo(root, "g-model")
     write(os.path.join(bad, "results", "prereg2", "tier-model.json"), " ", "a")
@@ -647,6 +702,8 @@ def v_cli(root, export_dir):
     case("cli: refuses a repeated option", r.returncode != 0 and "more than once" in r.stderr)
     r = go("validate-ex", "--unbound", "--transcript-dir", td, export_dir)
     case("cli: refuses an abbreviated command", r.returncode != 0)
+    r = go("aggregate", "--unbound", "--transcript-dir", td, "--d8-dir", "x", "--manifest", "x")
+    case("cli: aggregate refuses without --manifest2", r.returncode != 0 and "--manifest2" in r.stderr)
     r = go("tier-run", "--unbound", "--transcript-dir", td, "--state-dir", os.path.join(SPIKE, "results",
            "prereg3", "x"), "--export", export_dir, "--gate-repo", os.path.join(root, "nowhere"))
     case("cli: an unbound run may not write under results/", r.returncode != 0 and "results" in r.stderr)

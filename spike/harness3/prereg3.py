@@ -345,12 +345,12 @@ def cmd_aggregate(a, tr):
     for p in problems:
         print("tiers.jsonl:", p)
     vc3 = tr.state.get("validation_commit") if tr.state["bound"] else a.validation_commit3
-    results = []
-    for d in (a.repro_dir, os.path.join(RESULTS2, "repro") if BOUND_RUN else a.repro_dir2):
-        for p in sorted(glob.glob(os.path.join(d or "", "*.json"))):
-            results.append(json.load(open(p)))
+    load = lambda d: [json.load(open(p)) for p in sorted(glob.glob(os.path.join(d, "*.json")))] if d else []  # noqa: E731
+    results3 = load(a.repro_dir)
+    results2 = load(os.path.join(RESULTS2, "repro") if BOUND_RUN else a.repro_dir2)
     try:
-        repro = aggregate3.accept_repros(results, vc3) if not a.fixture_ok else {o["id"]: o for o in results}
+        repro = aggregate3.accept_repros(results2, results3, vc3) if not a.fixture_ok else \
+            {o["id"]: o for o in results2 + results3}
     except aggregate3.InputRefused as e:
         print(f"refusing: {e}", file=sys.stderr)
         return 2
@@ -371,24 +371,26 @@ def cmd_aggregate(a, tr):
     except aggregate.MissingRepro as e:
         print(f"refusing: {e}", file=sys.stderr)
         return 2
+    # §5's per-name check comes first: nothing is printed or written unless
+    # every real key's packet is the same under both names.
+    try:
+        from p2 import export as X2
+        m2 = X2.load_manifest(a.manifest2, a.manifest2_sha or BD.derive_validation(repo, BD.PREREG2)[1])
+    except Exception as e:  # noqa: BLE001
+        print(f"refusing: prereg 2's manifest: {e}", file=sys.stderr)
+        return 2
+    ok, lines = X3.same_per_name(repo, m2["nonce"], a.export, m["nonce"], res["packet_keys"])
+    for ln in lines:
+        print(ln)
+    if not ok:
+        print("refusing: the per-name check failed; no verdict is written", file=sys.stderr)
+        return 1
     for (arm, mode, mech), c in sorted(res["cells"].items()):
         print(f"  {arm:<14}{mode:<5}{mech}  {c['verdict']:<11} {c.get('reason', '')}")
     if res["void"]:
         print("TIERING VOID: " + "; ".join(res["void"]))
     print(f"near misses (distinct units): {res['near_misses']}")
     print(f"OVERALL: {res['overall']}")
-    if a.manifest2:
-        try:
-            from p2 import export as X2
-            m2 = X2.load_manifest(a.manifest2, a.manifest2_sha or BD.derive_validation(repo, BD.PREREG2)[1])
-        except Exception as e:  # noqa: BLE001
-            print(f"refusing: prereg 2's manifest: {e}", file=sys.stderr)
-            return 2
-        ok, lines = X3.same_per_name(repo, m2["nonce"], a.export, m["nonce"], res["packet_keys"])
-        for ln in lines:
-            print(ln)
-        if not ok:
-            return 1
     out = dict(res, bound=bool(tr.state["bound"] and not a.fixture_ok), binding=binding_of(tr))
     out["cells"] = {"|".join(k): v for k, v in res["cells"].items()}
     jdump(out, a.out)
@@ -445,7 +447,7 @@ def build_parser():
     p.add_argument("--d8-dir", required=True)
     p.add_argument("--manifest", required=True)
     p.add_argument("--manifest-sha")
-    p.add_argument("--manifest2")
+    p.add_argument("--manifest2", required=True, help="prereg 2's sealed manifest, for §5's per-name check")
     p.add_argument("--manifest2-sha")
     p.add_argument("--arm0-dir")
     p.add_argument("--score-dir")

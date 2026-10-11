@@ -300,5 +300,5 @@ def same_per_name(spike, nonce2, export3_dir, nonce3, keys, commit=SCORING_COMMI
             continue
         got3 = {f: open(os.path.join(d3, f), "rb").read() for f in os.listdir(d3)}
         differ += content_hash(p2pk[n2]) != content_hash(got3)
-    return differ == 0, [f"per-name check: {checked} keys checked, {differ} differ",
+    return differ == 0 and checked > 0, [f"per-name check: {checked} keys checked, {differ} differ",
                          "SAME PER NAME: " + ("PASS" if differ == 0 and checked else "FAIL")]

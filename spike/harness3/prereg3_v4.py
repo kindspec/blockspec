@@ -23,7 +23,10 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 P3 = os.path.join(HERE, "p3")
 
+# Mutants in prereg3.py, outside p3/, are listed with the path "../prereg3.py".
 MUTATIONS = [
+    ("../prereg3.py", "aggregate runs without --manifest2 (M1)",
+     "    p.add_argument(\"--manifest2\", required=True,", "    p.add_argument(\"--manifest2\", required=False,"),
     # (file, label, pattern, replacement)
     ("tierrun3.py", "init check accepts any first event",
      "    return (isinstance(ev, dict) and ev.get(\"type\") == \"system\"",
@@ -53,8 +56,17 @@ MUTATIONS = [
     ("gates.py", "gate needs no tiers.jsonl",
      "    if len(t2) != 1 or not _ancestor(spike, t2[0], vc):", "    if False:"),
     ("gates.py", "gate needs no started run",
-     "    if not runs or not any(json.loads(ln).get(\"event\") == \"started\"",
-     "    if False and not any(json.loads(ln).get(\"event\") == \"started\""),
+     "    if not runs or not any(o.get(\"event\") == \"started\" for o in _ledger(runs, TIER_RUNS2)):",
+     "    if not runs:"),
+    ("gates.py", "gate needs tiers.jsonl but not before the verdict (O3)",
+     "    if len(t2) != 1 or not _ancestor(spike, t2[0], vc):", "    if len(t2) != 1:"),
+    ("gates.py", "gate reads tier-runs.txt at HEAD, not at the verdict commit (O4)",
+     "    runs = _show(spike, vc, TIER_RUNS2)", "    runs = _show(spike, \"HEAD\", TIER_RUNS2)"),
+    ("gates.py", "start day not converted to UTC (O5)",
+     "datetime.datetime.fromisoformat(out.strip()).astimezone(datetime.timezone.utc).date()",
+     "datetime.datetime.fromisoformat(out.strip()).date()"),
+    ("gates.py", "a non-JSON ledger line is skipped (L3)",
+     "            raise GateError(f\"{where}, line {i}, is not a JSON object\")", "            continue"),
     ("gates.py", "tier-model blob not pinned", "    if rc != 0 or blob.strip() != TIER_MODEL_BLOB:",
      "    if rc != 0:"),
     ("gates.py", "order guard ignores history and reflogs",
@@ -74,6 +86,13 @@ MUTATIONS = [
      "    if False and ("),
     ("aggregate3.py", "inputs accepted from any commit", "not in accepted:", "in ():"),
     ("aggregate3.py", "disagreeing repros accepted", "        if rid in out and (", "        if False and ("),
+    ("aggregate3.py", "prereg 3 repros accepted when bound to d79bf2e (L4 source split)",
+     "        tagged.append((o, (vc3,)))", "        tagged.append((o, (vc3, BD.PREREG2_VALIDATION)))"),
+    ("aggregate3.py", "prereg 3 repros accepted with no prereg 3 validation commit (L4)",
+     "        if not vc3:\n            raise InputRefused", "        if False:\n            raise InputRefused"),
+    ("plants.py", "an UNPLACEABLE plant counts as qualifying (O2)",
+     "        if QUALIFIES.get(t, False) != QUALIFIES[exp[\"tier\"]]:",
+     "        if QUALIFIES.get(t, True) != QUALIFIES[exp[\"tier\"]]:"),
     ("plants.py", "void ignores the B/C line",
      "        if QUALIFIES.get(t, False) != QUALIFIES[exp[\"tier\"]]:", "        if False:"),
     ("plants.py", "void ignores q3", "        for q in (\"q3\", \"q4\"):\n            if ans[q] != exp[q]:",
@@ -102,6 +121,8 @@ MUTATIONS = [
     ("export3.py", "same_records ignores prereg 2's plant count", "        ok &= c == 1", "        ok &= True"),
     ("export3.py", "same_plants accepts any plant",
      "        same = content_hash(got) == content_hash(regen[p]) and", "        same = True or"),
+    ("export3.py", "per-name check passes with zero keys checked (M1)",
+     "    return differ == 0 and checked > 0, [", "    return differ == 0, ["),
     ("export3.py", "per-name check counts no difference",
      "        differ += content_hash(p2pk[n2]) != content_hash(got3)", "        differ += 0"),
     ("export3.py", "document pin not checked",

@@ -28,12 +28,20 @@ def check_input(o, what, accepted=(BD.PREREG2_VALIDATION,)):
         raise InputRefused(f"{what} is not a bound output of {', '.join(c[:12] for c in accepted)}")
 
 
-def accept_repros(results, vc3):
-    """{record id: result}: H7's acceptance rule. results: an iterable of
-    reproduction results from results/prereg2/repro/ and results/prereg3/repro/."""
+def accept_repros(results2, results3, vc3):
+    """{record id: result}: H7's acceptance rule, with its source split.
+    results2, from results/prereg2/repro/, must be bound to d79bf2e;
+    results3, from results/prereg3/repro/, must be bound to prereg 3's
+    validation commit vc3. With no vc3, no prereg 3 result is accepted."""
     out = {}
-    for o in results:
-        check_input(o, f"reproduction {o.get('id')!r}", (BD.PREREG2_VALIDATION, vc3))
+    tagged = [(o, (BD.PREREG2_VALIDATION,)) for o in results2]
+    for o in results3:
+        if not vc3:
+            raise InputRefused(f"reproduction {o.get('id')!r} is prereg 3's, and no prereg 3 validation "
+                               "commit is known")
+        tagged.append((o, (vc3,)))
+    for o, accepted in tagged:
+        check_input(o, f"reproduction {o.get('id')!r}", accepted)
         rid = o.get("id")
         if rid in out and (out[rid].get("ok"), out[rid].get("committed_sha256"),
                            out[rid].get("regenerated_sha256")) != (o.get("ok"), o.get("committed_sha256"),
