@@ -8,6 +8,7 @@ deliberate, not an oversight.
   spike/*.md                CC-BY-4.0
   spike/harness/*           MIT
   spike/harness/plant_cases/  CC0-1.0
+  spike/harness3/*          MIT
 
 Full texts are in LICENSES/.
 
