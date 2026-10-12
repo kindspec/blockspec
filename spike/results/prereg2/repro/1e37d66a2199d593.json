@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "c9477c9d2598ae003191f35f62f213f8fa242fb7",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "98a5e0bf0ec5b659efc2f7a4fd108c954c395d5cc0a11d26db7484acc89dcfc5",
+ "id": "M:20b43d6095f6347e18fb3ffa60fd73cc10cefd4e:content/en/docs/reference/access-authn-authz/validating-admission-policy.md|Q|44",
+ "ok": true,
+ "regenerated_sha256": "98a5e0bf0ec5b659efc2f7a4fd108c954c395d5cc0a11d26db7484acc89dcfc5"
+}
