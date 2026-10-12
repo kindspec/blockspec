@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "b931367fc401c19c248044d4c16821f600579018",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "5730a597caf50012173d0c50f698590f4af15f8639fabeefccb1311c9619be52",
+ "id": "S25:6:content/ko/docs/concepts/architecture/nodes.md|R|수동-노드-관리",
+ "ok": true,
+ "regenerated_sha256": "5730a597caf50012173d0c50f698590f4af15f8639fabeefccb1311c9619be52"
+}
