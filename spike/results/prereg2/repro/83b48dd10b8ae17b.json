@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "bb2b2eec5aebc5dfa3cfd15f29f49f8106bb7b99",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "f481987075a69fcb536c16a5c70f013f5a9120a35b2f2d0830eefe6c372a9048",
+ "id": "E:36d67d5a00bef5e82eb81ac60a5794f0acb3bffb:governance/tag-governance.md|R|tech-lead",
+ "ok": true,
+ "regenerated_sha256": "f481987075a69fcb536c16a5c70f013f5a9120a35b2f2d0830eefe6c372a9048"
+}
