@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "54cfaf25ecc41c1b91402b236264c4bf15b8ef2f",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ca6964b2e5c6b3715ddd4537943132b99a5803c119d08547bbc5d6062b5f4f3b",
+ "id": "M:8df4092df982b4a7d6a99bcdfacc3c6ee79796b0:content/en/docs/tutorials/stateful-application/basic-stateful-set.md|Q|281",
+ "ok": true,
+ "regenerated_sha256": "ca6964b2e5c6b3715ddd4537943132b99a5803c119d08547bbc5d6062b5f4f3b"
+}
