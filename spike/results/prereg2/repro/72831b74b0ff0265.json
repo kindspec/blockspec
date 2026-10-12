@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "bfb2046580eab54d73a1138731a8bec76192d9c8",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "711588688901dc7909b2c4e90a471dfa2e54a7320e203d257b5e3a9ad5b4656e",
+ "id": "S5:214:README.md|R|meeting-time",
+ "ok": true,
+ "regenerated_sha256": "711588688901dc7909b2c4e90a471dfa2e54a7320e203d257b5e3a9ad5b4656e"
+}
