@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d1de7a753398e4bc2d7441eef67f13820f165171",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "98e126676c894b940c8d27a45887549b0604beb8d8d347647f875320658bf17e",
+ "id": "S25:15:content/en/docs/concepts/architecture/nodes.md|R|manual-node-administration",
+ "ok": true,
+ "regenerated_sha256": "98e126676c894b940c8d27a45887549b0604beb8d8d347647f875320658bf17e"
+}
