@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id S25:18:content/en/docs/concepts/workloads/controllers/statefulset.md|R|update-strategies --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-RGuSq1
+# start: 2026-10-12T15:06:35Z
+# blockspec HEAD: 267713571976767610bcb7df127d0b480a2b6bb7
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   7eb1d8360c9a8c2910ab2613b4c3734c242ec257b7d425ba522d7a17a0836dd1
+regenerated 7eb1d8360c9a8c2910ab2613b4c3734c242ec257b7d425ba522d7a17a0836dd1
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:18:content/en/docs/concepts/workloads/controllers/statefulset.md|R|update-strategies
+
+# end: 2026-10-12T15:06:52Z
+# exited: exit status 0
