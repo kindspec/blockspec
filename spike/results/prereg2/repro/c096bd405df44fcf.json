@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "fad98a4f3442d594c555729b7ba06a7b92875578",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "19e664cb0ab20f66179ff3342edc6f7b7d2cfe34ecd266785cb73856945b0919",
+ "id": "S25:1:content/zh-cn/docs/concepts/storage/volumes.md|R|portworx-csi-迁移",
+ "ok": true,
+ "regenerated_sha256": "19e664cb0ab20f66179ff3342edc6f7b7d2cfe34ecd266785cb73856945b0919"
+}
