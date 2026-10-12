@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "0f24eb8677d726f1bb86c993c946a25215c4f9ef",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "8ad02dd51c228095535eb5f1a7931e886403ee9b8a6fff8709cfc644745123f9",
+ "id": "M:3c22c23255d493d13a873eb0ea09d7813e2f05ee:content/en/docs/concepts/services-networking/service.md|R|warnings-caveat-sctp-overview",
+ "ok": true,
+ "regenerated_sha256": "8ad02dd51c228095535eb5f1a7931e886403ee9b8a6fff8709cfc644745123f9"
+}
