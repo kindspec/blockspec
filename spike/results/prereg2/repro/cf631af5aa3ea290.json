@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "9e2c09cae39bfc76822f3760bc9f6f0c2f2d788f",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "109b71ce8217486f6210aceb210ad60f5565500a1d853c0d334f3bc4a0d16063",
+ "id": "E:754aba4596ee0aa8f6c435536fdf4065b096c4a6:process/README.md|Q|11",
+ "ok": true,
+ "regenerated_sha256": "109b71ce8217486f6210aceb210ad60f5565500a1d853c0d334f3bc4a0d16063"
+}
