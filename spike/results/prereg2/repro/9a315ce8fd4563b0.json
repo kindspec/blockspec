@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "80c1027e68434cbcc77f4865434bd29bc251184b",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "a55945d246e6011015a7365014d7991605e691989ada1c1142d9a0a9478f06c3",
+ "id": "S25:3:content/en/docs/tasks/tls/managing-tls-in-a-cluster.md|R|trusting-tls-in-a-cluster",
+ "ok": true,
+ "regenerated_sha256": "a55945d246e6011015a7365014d7991605e691989ada1c1142d9a0a9478f06c3"
+}
