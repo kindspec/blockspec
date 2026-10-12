@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "6bf9976208deb43925933c29f22be8a3803c037c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ba8ba2313b9bb53815d512834d6836e367909616b2adfd9f0a62d48856b00bc1",
+ "id": "S25:0:content/zh-cn/docs/setup/production-environment/container-runtimes.md|R|mirantis-container-runtime-mcr",
+ "ok": true,
+ "regenerated_sha256": "ba8ba2313b9bb53815d512834d6836e367909616b2adfd9f0a62d48856b00bc1"
+}
