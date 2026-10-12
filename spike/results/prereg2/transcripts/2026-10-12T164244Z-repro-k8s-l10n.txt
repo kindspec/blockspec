@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id E:b928e5c8de3f3fc3b668373577edc469737b8d64:content/ko/docs/concepts/workloads/controllers/statefulset.md|R|최소-준비-시간-초-minimum-ready-seconds --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-l3ZMLo
+# start: 2026-10-12T16:42:44Z
+# blockspec HEAD: b0943d4199ba180c6c4958d7bf6b381834b6132a
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   0ec948dee1aa59169e318319700d27437a51526e9aa52cf2c44b086c4994d4fc
+regenerated 0ec948dee1aa59169e318319700d27437a51526e9aa52cf2c44b086c4994d4fc
+F9 REPRODUCTION: BYTE-IDENTICAL  E:b928e5c8de3f3fc3b668373577edc469737b8d64:content/ko/docs/concepts/workloads/controllers/statefulset.md|R|최소-준비-시간-초-minimum-ready-seconds
+
+# end: 2026-10-12T16:42:54Z
+# exited: exit status 0

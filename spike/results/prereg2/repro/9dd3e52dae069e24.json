@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "b0943d4199ba180c6c4958d7bf6b381834b6132a",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "0ec948dee1aa59169e318319700d27437a51526e9aa52cf2c44b086c4994d4fc",
+ "id": "E:b928e5c8de3f3fc3b668373577edc469737b8d64:content/ko/docs/concepts/workloads/controllers/statefulset.md|R|최소-준비-시간-초-minimum-ready-seconds",
+ "ok": true,
+ "regenerated_sha256": "0ec948dee1aa59169e318319700d27437a51526e9aa52cf2c44b086c4994d4fc"
+}
