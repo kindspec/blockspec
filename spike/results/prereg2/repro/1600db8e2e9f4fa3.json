@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "ff0d0e0757003e167dcca64e5aeb4747c0deb45a",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "34923138b5ea9e4c46eeab55f610ac39c96152ee36c5123da0695ef423353fe9",
+ "id": "M:c5778fd5c05d51f12235e6202920223e3498ca92:content/en/docs/tasks/configure-pod-container/configure-pod-configmap.md|Q|5",
+ "ok": true,
+ "regenerated_sha256": "34923138b5ea9e4c46eeab55f610ac39c96152ee36c5123da0695ef423353fe9"
+}
