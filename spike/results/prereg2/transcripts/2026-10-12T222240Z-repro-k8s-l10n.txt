@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S25:8:content/ja/docs/concepts/workloads/pods/pod-lifecycle.md|R|コンテナのprobe-container-probes --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-HRyope
+# start: 2026-10-12T22:22:40Z
+# blockspec HEAD: 9b314a2871fba6b5ba656294367c9ff73b0b80db
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   6caec2d63542bc2cadbfb143298b8c139f7964e3b659bb230ce129423cb072db
+regenerated 6caec2d63542bc2cadbfb143298b8c139f7964e3b659bb230ce129423cb072db
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:8:content/ja/docs/concepts/workloads/pods/pod-lifecycle.md|R|コンテナのprobe-container-probes
+
+# end: 2026-10-12T22:22:55Z
+# exited: exit status 0
