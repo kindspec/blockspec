@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "65bb57a7ebe840cea35a02e8aaed92b816bbad2c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "d0b2078ba92d27df07652a9935277183ce133827dfd772d1e36737f08505ac0e",
+ "id": "S5:72:content/en/docs/concepts/architecture/nodes.md|R|graceful-node-shutdown-graceful-node-shutdown",
+ "ok": true,
+ "regenerated_sha256": "d0b2078ba92d27df07652a9935277183ce133827dfd772d1e36737f08505ac0e"
+}
