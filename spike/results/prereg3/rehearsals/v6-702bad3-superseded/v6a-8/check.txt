@@ -1,0 +1,7 @@
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Exact quote landed on the 'Superseded Backup wording, kept for the change log' copy (seven days) instead of the live Backup service text (thirty days); the superseded label is visible; the retention change looks deliberate
+  P-E: yes yes yes yes OK | q3 why: Quote landed on a leftover duplicate 'Upload limits' section (50 GB) instead of the first one (80 GB, raised from 50 GB in May); the live text visibly says 50 GB is outdated, and the stale duplicate section is a visible author error
+V6 RUN: PASS

@@ -1,0 +1,3 @@
+harness HEAD 33f3a341a6ef1995d5623795b25b48f1e70c3c00; harness3 uncommitted files: 0
+2026-10-11T22:01:39Z credential mtime 2026-10-11T16:47:30Z (before v6b-3)
+2026-10-11T22:19:55Z credential mtime 2026-10-11T16:47:30Z (after v6b-3)

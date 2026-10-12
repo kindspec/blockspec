@@ -1,0 +1,7 @@
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Quote hit the 'Superseded Backup wording' change-log copy (seven days); live Backup text now says thirty days, a deliberate policy change
+  P-E: yes yes yes yes OK | q3 why: Quote hit a stale duplicate 'Upload limits' section (50 GB); the first one says 80 GB, raised from 50 GB, so the stale leftover duplicate is a visible author error
+V6 RUN: PASS

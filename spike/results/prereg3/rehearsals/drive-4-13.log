@@ -1,0 +1,51 @@
+<REHEARSAL>/export-p3-4 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-4-20261010T141954Z 30 answered
+  P-A: yes yes no no OK | Quote about Ingest retries now exactly matches a new 'Defaults' section (three) while Ingest says five; scope and value differ, the exact match in Defaults looks intended, and both edits are legitimate.
+  P-B: yes no no no OK | Identical 'Status: approved' lines under Alpha and Beta; the telemetry proposal moved from Alpha to Beta, so the two targets certify approval of different proposals, but the rendered text is the same; the duplicate gives no sign which was meant, and the rescoping is a legitimate edit.
+  P-C: no no no no OK | Every copy of the UTC note is identical and states its own scope as the whole page ('in every section'), so the copy it landed on makes no difference to meaning, rendering, or what a reader can see; no author error.
+<REHEARSAL>/export-p3-5 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-5-20261010T142539Z 30 answered
+  P-A: yes yes no no OK | Ingest retry count changed three->five and the old sentence now sits under a new 'Defaults' section; exact match lands there, says three, and applies to defaults rather than Ingest
+  P-B: yes no no no OK | Identical Status line under two projects; telemetry proposal moved Alpha->Beta, so the two lines attest different proposals; text identical, quote ambiguous to a reader
+  P-C: no no no no OK | Identical note repeated per section; it states it covers the whole page, so every copy says and applies to the same thing
+<REHEARSAL>/export-p3-6 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-6-20261010T142924Z 30 answered
+  P-A: yes yes no no OK | Ingest retries changed three->five; the old sentence now appears only under a new 'Defaults' section, so the quote lands on the default and not the ingest rule; the unique exact match under a plausible heading gives no sign of error
+  P-B: yes no no no OK | Identical status lines sit under Alpha and Beta, and the telemetry proposal moved from Alpha to Beta; same text so transclusion is unchanged, but the approval now attaches to a different project; the duplicate quote shows ambiguity, not which copy is right
+  P-C: no no no no OK | Mechanism and oracle targets are textually identical copies of the page-wide UTC note (repeated in three sections); its claim covers every section, so swapping occurrences changes neither what it says nor what it applies to
+<REHEARSAL>/export-p3-7 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-7-20261010T143339Z 30 answered
+  P-A: yes yes no no OK | Quote now matches the new Defaults paragraph (three times) while the Ingest service paragraph it came from now says five; different value and scope; the exact match looks legitimate in the after-file; the edit is coherent, with no author error.
+  P-B: yes no no no OK | Identical Status lines in Alpha and Beta, and the sandbox-telemetry proposal moved from Alpha to Beta; the text is identical so rendering changes nothing, but the approval applies to a different proposal; indistinguishable to a reader; the edit is coherent.
+  P-C: no no no no OK | Mechanism and oracle pick different copies of the same note, which says it applies page-wide ('in every section'); the text and scope are identical, so nothing changes and nothing is detectable; the duplication is deliberate repetition, not an error.
+<REHEARSAL>/export-p3-8 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-8-20261010T143825Z 30 answered
+  P-A: yes yes no no OK | Quote ('retried three times') now matches a new 'Defaults' section while Ingest service says five times; mechanism took Defaults, which looks legitimate in after.md alone.
+  P-B: yes no no no OK | Identical Status line appears under both Alpha and Beta (and the telemetry proposal moved from Alpha to Beta); targets differ only by position, so the text renders the same but the approval applies to a different project; packet does not say which occurrence each picked.
+  P-C: no no no no OK | Targets are identical copies of a UTC note that explicitly scopes itself to every section of the page, so they differ only by position; neither content nor scope changes, and nothing in after.md shows a wrong landing.
+<REHEARSAL>/export-p3-9 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-9-20261010T144340Z 30 answered
+  P-A: yes yes no no OK | Ingest now retries five times; the old 'three times' wording now sits in a new Defaults section, which the mechanism matched; count and scope differ; the verbatim match under Defaults looks legitimate; deliberate edit.
+  P-B: yes no no no OK | Identical Status line occurs under Alpha and Beta; text is the same so transclusion is unchanged, but the approval applies to a different project (telemetry vs rescoped audit logs); after-file gives no sign which was meant; legitimate content edit, no error.
+  P-C: no no no no OK | The UTC note is repeated verbatim in each section and explicitly applies to the whole page, so any occurrence says and covers the same thing.
+<REHEARSAL>/export-p3-10 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-10-20261010T144725Z 30 answered
+  P-A: yes yes no no OK | Quote now matches only a new 'Defaults' section (three retries); Ingest service now says five; the exact match looks legitimate from the after-file alone; deliberate edit, no author error
+  P-B: yes no no no OK | Identical Status line appears under Alpha and Beta (whose content swapped); same text so transclusion is unchanged, but which project's approval it applies to differs; after-file shows only ambiguity, not which is wrong; boilerplate repeat is legitimate
+  P-C: no no no no OK | Identical page-wide UTC note repeated in each section; mechanism picked a different copy, but text is identical and the note explicitly applies to the whole page, so nothing changes; landing is undetectable; repetition is deliberate
+<REHEARSAL>/export-p3-11 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-11-20261010T145425Z 30 answered
+  P-A: yes yes no no OK | Quote 'retried three times' landed on the new Defaults section instead of the Ingest service line (now 'five times'); count and scope differ; the exact match in Defaults looks legitimate to an after-file reader; no visible author error.
+  P-B: yes no no no OK | Identical 'Status: approved' line under Alpha and Beta; text is the same so transclusion is unchanged, but each applies to a different proposal (sandbox-telemetry content moved Alpha->Beta), and the duplicate match gives no visible sign of the wrong pick.
+  P-C: no no no no OK | Identical page-wide UTC note repeated per section; mechanism picked a different copy, but the text is identical and its scope ('this page, in every section') is the same, so nothing true of one is false of the other.
+<REHEARSAL>/export-p3-12 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-12-20261010T145740Z 30 answered
+  P-A: yes yes no no OK | Mechanism matched a new Defaults section (three retries) instead of the Ingest service sentence, now five retries. Both scope and value differ, and the exact match in Defaults gives no visible sign of error.
+  P-B: yes no no no OK | The status line appears word for word under both Project Alpha and Project Beta, so the rendered text is the same. But 'this proposal' means a different project in each, and the file cannot show which copy was meant.
+  P-C: no no no no OK | Both targets are the same page-wide UTC note, word for word, and the note itself says it covers every section. Landing on a different copy changes neither what it says nor what it covers, and nothing shows it.
+<REHEARSAL>/export-p3-13 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-13-20261010T150155Z 30 answered
+  P-A: yes yes no no OK | Quote now matches only the new Defaults section (three retries); the Ingest passage it was taken from now says five, and nothing in the after-file ties the quote to Ingest.
+  P-B: yes no no no OK | Identical status line appears under both projects; the two targets have the same text but apply to different proposals, and the after-file shows two matches with nothing to say which one was meant.
+  P-C: no no no no OK | The UTC note is repeated word for word in every section and itself says it covers the whole page, so any instance says and applies to the same thing; the after-file has three identical matches and nothing to show which was meant.
+DRIVE-DONE 4..13

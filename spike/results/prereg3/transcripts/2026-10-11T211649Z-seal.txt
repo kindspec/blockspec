@@ -1,0 +1,13 @@
+# prereg3 seal
+# argv: prereg3.py seal --manifest /home/cam/kindspec-data/prereg3-seal/manifest.json
+# start: 2026-10-11T21:16:49Z
+# blockspec HEAD: 33f3a341a6ef1995d5623795b25b48f1e70c3c00
+# python 3.13.5
+# harness bound: False
+#   not bound: seal is not bound
+
+sealed manifest written: /home/cam/kindspec-data/prereg3-seal/manifest.json
+sha256: 19aa710cd9962a6788369ff378cf9620815cc53d66c2c3c54a826c7857fbea50, written to results/prereg3/VALIDATION
+
+# end: 2026-10-11T21:16:49Z
+# exited: exit status 0

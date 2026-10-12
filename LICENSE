@@ -9,6 +9,23 @@ deliberate, not an oversight.
   spike/harness/*           MIT
   spike/harness/plant_cases/  CC0-1.0
   spike/harness3/*          MIT
+  spike/results/prereg3/    CC-BY-4.0, except third-party excerpts (below)
+
+THIRD-PARTY EXCERPTS IN spike/results/prereg3/
+
+The rehearsal evidence under spike/results/prereg3/rehearsals/, the archives
+included, quotes synthetic test text. That text is taken from the docstrings
+of CPython 3.13 standard-library modules, as rendered by pydoc (the rehearsal
+builder, rehearsals/tools/build.py, lists the modules). The pydoc output links
+to docs.python.org/3.13. A few docstrings link to docs.python.org/3.11 in their
+own text. These excerpts are Copyright (c) the Python Software Foundation and
+contributors, and they keep their own licence, the Python Software Foundation
+License Version 2 (https://docs.python.org/3.13/license.html), whose text is
+in LICENSES/PSF-2.0.txt. That file is the Python 3.13 distribution's own
+licence file, /usr/lib/python3.13/LICENSE.txt from Debian's
+libpython3.13-stdlib 3.13.5-2+deb13u5, copied verbatim. The excerpts are not
+offered under CC-BY-4.0. The builder used no other outside source. The plant
+texts, prompts and harness output are this project's own.
 
 Full texts are in LICENSES/.
 

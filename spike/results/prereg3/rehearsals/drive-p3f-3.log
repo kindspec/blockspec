@@ -1,0 +1,8 @@
+<REHEARSAL>/export-p3f-3 488 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3f-3-20261011T073340Z 488 answered
+  P-A: yes yes no no OK | quote hit new Defaults section ('three times') while Ingest now says five; plausible defaults-vs-override layout, no label flags it
+  P-B: yes no no no OK | identical 'approved ... 2026-03-04' status lines; the sandbox-telemetry proposal moved to Beta, so the two lines approve different proposals, but the rendered words are the same and nothing distinguishes them
+  P-C: no no no no OK | identical page-wide UTC note repeated in each section (new Sunday section copy hit); same text, same page-wide scope, nothing to tell them apart
+  P-D: yes yes yes no OK | quote matched copy labeled 'Superseded Backup wording, kept for the change log' (seven days); live text says thirty days
+  P-E: yes yes yes yes OK | quote hit a leftover duplicate 'Upload limits' section saying 50 GB; live section says 80 GB 'raised from 50 GB', and the stray duplicate heading is a visible authoring slip
+DRIVE-DONE 3..3

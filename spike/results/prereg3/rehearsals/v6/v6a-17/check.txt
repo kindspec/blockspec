@@ -1,0 +1,7 @@
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: The live Backup text now says 'thirty days' but the mechanism landed on the 'seven days' copy kept under 'Change log', which is labelled superseded, so the wrong landing is visible; the retention change was a deliberate edit, not an error.
+  P-E: yes yes yes yes OK | q3 why: Mechanism landed on a stale duplicate 'Upload limits' section (50 GB) left at the end of the file, while the live limit is 80 GB; the first section's 'raised from 50 GB in May' shows the quoted text is outdated, and the leftover duplicate section is a visible author error.
+V6 RUN: PASS

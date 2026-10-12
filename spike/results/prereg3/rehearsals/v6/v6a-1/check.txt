@@ -1,0 +1,7 @@
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Live Backup service now keeps snapshots thirty days; the quote matches only the change-log copy labeled 'Superseded Backup wording', so the retention period differs and the label shows the landing is wrong
+  P-E: yes yes yes yes OK | q3 why: Mechanism hit a stale duplicate 'Upload limits' section still saying 50 GB, while the live section says 80 GB, raised from 50 GB; the duplicate heading and the 'raised from 50 GB' wording visibly expose a leftover the author failed to remove
+V6 RUN: PASS

@@ -1,0 +1,137 @@
+# blockspec HEAD 33f3a341a6ef1995d5623795b25b48f1e70c3c00  uncommitted or ignored files under spike/harness3, PRE-REGISTRATION-3.md: 0
+# python 3.13.5  git 2.47.3  D8 HEAD d51ce09cdb23af32f35e7a3c6111ac21ab0f033f
+PASS  plants: prereg3_plants.py prints PLANTS: PASS
+PASS  plants: mutant 'P-A Defaults says four' goes red
+PASS  plants: mutant 'P-B Beta status dated 03-05' goes red
+PASS  plants: mutant 'P-C keeps old window time' goes red
+PASS  plants: mutant 'P-D retention unchanged' goes red
+PASS  plants: mutant 'P-E stale duplicate removed' goes red
+PASS  loader: accepts P-A..P-E with §3's expectations
+PASS  loader: refuses three plants
+PASS  loader: refuses six plants
+PASS  loader: refuses one changed expectation
+PASS  loader: refuses an empty manifest
+PASS  void: all plants right -> not void
+PASS  void: P-D q3 'no'
+PASS  void: P-E q4 'no'
+PASS  void: P-A q3 'yes'
+PASS  void: P-C in tier B
+PASS  void: P-A untiered
+PASS  void: P-B untiered
+PASS  void: P-C untiered
+PASS  void: P-D untiered
+PASS  void: P-E untiered
+PASS  void: A<->B confusion on P-B does not void
+PASS  void: P-A unplaceable, with q1-q4 as expected, voids (UNPLACEABLE does not qualify)
+PASS  void: P-B unplaceable, with q1-q4 as expected, voids
+PASS  void: no tiers at all
+PASS  H8: every plant right -> FOUND
+PASS  H8: P-D q3 'no' alone -> every exporting cell NO VERDICT, overall INCONCLUSIVE
+PASS  H8: P-E q4 'no' alone -> every exporting cell NO VERDICT, overall INCONCLUSIVE
+PASS  H8: P-C in tier B alone -> every exporting cell NO VERDICT, overall INCONCLUSIVE
+PASS  coverage: an untiered real packet -> its cell NO VERDICT
+PASS  coverage: a skipped plant voids the tiering
+PASS  inputs: a gap makes its cell NO VERDICT
+PASS  H8: aggregate3 refuses a three-plant manifest
+PASS  repro: a record meeting F1-F6 with no repro stops aggregate (MissingRepro), never NOT FOUND
+PASS  inputs: bound to d79bf2e accepted
+PASS  inputs: bound to another commit refused
+PASS  inputs: marked unbound refused
+PASS  repro: prereg 2's, bound to d79bf2e, accepted
+PASS  repro: prereg 3's, bound to prereg 3's validation commit, accepted
+PASS  repro: bound to another commit refused
+PASS  repro: bound:false refused
+PASS  repro: two accepted results that disagree refused
+PASS  repro: a prereg 3 result bound to d79bf2e is refused (source split)
+PASS  repro: a prereg 2 result bound to prereg 3's validation commit is refused (source split)
+PASS  repro: with no prereg 3 validation commit, a prereg 3 result bound to None is refused
+PASS  repro: with no prereg 3 validation commit, prereg 2's d79bf2e results are still accepted
+PASS  repro: the reprodemo case gives FOUND with a d79bf2e-bound repro
+PASS  pins: the merged document gives the registered prompt
+PASS  pins: a changed document is refused
+PASS  pins: a change outside Appendix A is refused by the document pin
+PASS  pins: a changed Appendix A is refused even if the document pin were updated
+PASS  export3: 5 real + 5 plants written, validator clean
+PASS  export3: PROMPT.md is the registered prompt
+PASS  manifest: validate3 rejects a missing PACKETS.txt
+PASS  manifest: validate3 rejects a PACKETS.txt symlink
+PASS  manifest: validate3 rejects a list that omits a name
+PASS  manifest: validate3 rejects a list with an extra name
+PASS  manifest: validate3 rejects an unsorted list
+PASS  manifest: validate3 rejects prereg 2's PROMPT.md
+PASS  manifest: validate3 rejects an empty directory
+PASS  same records: passes on a fixture built like the real exports, reading the commit while the work tree differs  -- real packets in prereg 2 but not export 3: 0; in export 3 but not prereg 2: 0
+PASS  same records: prints counts only, no packet name
+PASS  same plants: passes on the fixture export
+PASS  same records: red when one byte of one real packet changes
+PASS  same records: red when a real packet is missing
+PASS  same plants: red when one plant packet's text changes
+PASS  same records: red when prereg 2's export lacks one of its plants
+PASS  same records: red when a fourth prereg 2 plant is in excess
+PASS  per name: passes when every key's packets agree  -- per-name check: 5 keys checked, 0 differ
+PASS  per name: red when one key's packets differ  -- per-name check: 5 keys checked, 1 differ
+PASS  per name: red when no key is checked  -- per-name check: 0 keys checked, 0 differ
+PASS  aggregate cli: a failed per-name check prints no cell, VOID or OVERALL line and writes no verdict  -- exit 1, 0 verdict line(s)
+PASS  aggregate cli: with the per-name check passing, the same fixture prints OVERALL and writes a verdict  -- exit 0
+PASS  prereg 2 untouched: a fresh clone passes
+PASS  prereg 2 untouched: one byte changed under harness/ is refused
+PASS  prereg 2 untouched: a changed ORACLE.md is refused
+PASS  namespace: a prereg 3 export marker lands under <common>/prereg3/
+PASS  namespace: a prereg 3 marker does not stop a prereg 2 command
+PASS  namespace: a prereg 2 marker does not stop a prereg 3 command
+PASS  namespace: a prereg 3 marker stops prereg 3's export
+PASS  order guard: runs when prereg 2's tiering has not started
+PASS  order guard: refuses tier-runs.txt in the work tree
+PASS  order guard: refuses tier-runs.txt only in another work tree
+PASS  order guard: refuses tier-runs.txt committed then deleted
+PASS  order guard: refuses tier-runs.txt held only by a reflog
+PASS  order guard: refuses a tier-work-1/ directory
+PASS  committed order: passes in §7's order
+PASS  committed order: a non-JSON tier-runs.txt line is a GateError, not a traceback
+PASS  committed order: refuses tiers.jsonl not descending from export 3
+PASS  committed order: refuses a started run earlier than export 3's execution
+PASS  gate: passes on a committed, bound, unchanged verdict with tiers and a started run
+PASS  gate: refuses no verdict.json
+PASS  gate: refuses a verdict marked bound:false
+PASS  gate: refuses a verdict bound to another commit
+PASS  gate: refuses a verdict changed after it was added
+PASS  gate: refuses no committed tiers.jsonl
+PASS  gate: refuses no tier-runs.txt
+PASS  gate: refuses a tier-runs.txt with zero started runs
+PASS  gate: refuses a tiers.jsonl committed only after the verdict
+PASS  gate: refuses a tier-runs.txt committed only after the verdict (read at the verdict commit, not HEAD)
+PASS  gate: a non-JSON tier-runs.txt line is a GateError, not a traceback
+PASS  start day: the committer date is converted to UTC (22:30 -04:00 on 10-10 is UTC day 10-11)
+PASS  model pin: the pinned tier-model.json gives the model
+PASS  model pin: refuses a tier-model.json with another blob
+PASS  model pin: refuses another committed blob even when the work tree holds the pinned bytes
+PASS  model pin: refuses a work tree that differs from the pinned, committed blob
+PASS  window: refuses on the verdict commit's own day
+PASS  window: runs on day D+1
+PASS  window: runs on day D+14
+PASS  window: day D+15 needs --late-reason
+PASS  window: day D+15 with a reason is a logged late run
+PASS  sandbox: a stub can read /work/PACKETS.txt and cannot write it  -- ['PACKETS True READONLY']
+PASS  init check: a stub with the exact init event runs, and its run binds
+PASS  credential: logged before and after
+PASS  init check: stub 'extra-tool' is stopped, recorded init_failed, and does not bind
+PASS  init check: stub 'mcp' is stopped, recorded init_failed, and does not bind
+PASS  init check: stub 'not-init' is stopped, recorded init_failed, and does not bind
+PASS  init check: a stream with no init event is init_failed
+PASS  auth abort: labelled auth_aborted, with the credential's sha256 and mtime logged
+PASS  auth abort: a run that wrote a line binds, and no rerun is allowed
+PASS  run cap: zero-line run, init_failed rerun, third run refused
+PASS  run cap: init_failed run, zero-line rerun, third run refused
+PASS  run cap: a run with lines refuses any rerun
+PASS  tier-run: refuses an export without PACKETS.txt
+PASS  tier-run: refuses without prereg 2's verdict commit
+PASS  cli: validate-export on a clean export exits 0
+PASS  cli: refuses without python3 -I -S
+PASS  cli: refuses a repeated option
+PASS  cli: refuses an abbreviated command
+PASS  cli: aggregate refuses without --manifest2
+PASS  cli: an unbound run may not write under results/
+PASS  cli: every invocation, refusals included, wrote a transcript  -- 6 transcripts
+132 of 132 cases passed
+V3: PASS
+exit=0

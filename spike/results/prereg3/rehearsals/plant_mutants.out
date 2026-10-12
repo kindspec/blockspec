@@ -1,0 +1,10 @@
+P-A Defaults says four: f5f5a376->b1402005 exit 1 RED | P-A: TLLC=('SURVIVED', 3) hard=REFUSED_MARGIN,None repeat_decided=True -> FAIL
+P-A Ingest unchanged: f5f5a376->287a9bf8 exit 1 RED | P-A: TLLC=('SURVIVED', 3) hard=EXACT_CTX,3 repeat_decided=True -> FAIL
+P-B Beta status dated 03-05: f5f5a376->9592fc6f exit 1 RED | P-B: TLLC=('SURVIVED', 2) hard=EXACT,2 repeat_decided=True -> FAIL
+P-C keeps old window time: f5f5a376->2e55d37f exit 1 RED | P-C: TLLC=('SURVIVED', 1) hard=EXACT_CTX,1 repeat_decided=True -> FAIL
+P-D change-log copy edited: f5f5a376->79a381e0 exit 1 RED | P-D: TLLC=('SURVIVED', 1) hard=REFUSED_MARGIN,None repeat_decided=True -> FAIL
+P-D retention unchanged: f5f5a376->00e1a745 exit 1 RED | P-D: TLLC=('SURVIVED', 1) hard=EXACT_CTX,1 repeat_decided=True -> FAIL
+P-E stale duplicate removed: f5f5a376->8985b7eb exit 1 RED | P-E: TLLC=('SURVIVED', 1) hard=FUZZY,1 repeat_decided=True -> FAIL
+P-E limit unchanged: f5f5a376->952aa95b exit 1 RED | P-E: TLLC=('SURVIVED', 1) hard=EXACT_CTX,1 repeat_decided=True -> FAIL
+unmutated: PLANTS: PASS exit 0
+MUTANTS: ALL RED

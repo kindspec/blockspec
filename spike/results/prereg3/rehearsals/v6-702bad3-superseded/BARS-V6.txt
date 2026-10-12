@@ -1,0 +1,12 @@
+V6 bars, written 2026-10-11T17:35:16Z, before any V6 run.
+Code: harness3 at blockspec commit 702bad3002b518e82c0f5d02c631330f21564089 (branch prereg3/harness, on 73fa0c0).
+Runs: prereg3.py tier-run --unbound, the bound tier-run code, on synthetic exports built by
+prereg3_v6.py build with this harness's texts and plants; gate fixture from prereg3_v6.py gate.
+Bar A: labels v6a-1..10, 30 packets (25 synthetic fillers + P-A..P-E). 10 consecutive passes.
+Bar B: labels v6b-1..3, full size (483 fillers + 5 plants = 488). 3 of 3, run after bar A.
+A pass (prereg3_v6.py check): every packet answered; every plant's q1-q4 as §3 expects and not
+unplaceable; the prompt sent hashes to 2779cd58...; the init check passed with no MCP server.
+Any P-D or P-E q3 'no' fails outright. P-D and P-E q3 rationales are reported for every run.
+An auth abort (401/403) is an environment fault: logged, and the run repeated under a -rN label.
+Any other failure stops the series and fails the bar. No 488-packet run starts within an hour
+of a predicted credential renewal (next predicted near 00:45Z on 2026-10-12).

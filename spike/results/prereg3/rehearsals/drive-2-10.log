@@ -1,0 +1,11 @@
+<REHEARSAL>/export-p3-2 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-2-20261010T141042Z 30 answered
+  P-A: yes yes no no OK | The quote matches a new 'Defaults' paragraph (three retries), but the Ingest service now says five. A statement about ingest retries, or the transcluded text, would be wrong. The exact match looks fine, and the edit is a legitimate change, not an error.
+  P-B: yes no no no OK | The same Status sentence appears under both Alpha and Beta, and Alpha's scope moved to Beta. The text is identical, so transclusion is unchanged, but the approval claim attaches to a different proposal. The duplicate gives no clue which one is right.
+  P-C: no no no no OK | The identical 'All times on this page are UTC' note now appears three times. The text is the same, and its claim is page-wide, so any occurrence asserts and renders the same thing: a bare misdirection.
+<REHEARSAL>/export-p3-3 30 packets; validator clean; PROMPT.md sha256 90e589442cd2393a4ef423241a6356a4e7181b58b74bb2e8563f1d6482722788
+== run-p3-3-20261010T141427Z 30 answered
+  P-A: yes yes no no OK | The quote exactly matches the new Defaults text (three retries), but the Ingest service now says five. That changes both the claim and its scope, and the exact match looks valid in the after-file.
+  P-B: yes no no no OK | The status lines are identical, so transclusion does not change the text. But the sandbox-telemetry proposal moved from Alpha to Beta, so the approval now applies to the rescoped Alpha, and two identical lines give no sign of error.
+  P-C: yes no no no MISMATCH | Both targets are the same UTC note, so transcluding either gives identical text. They differ in which section the note covers (new Sunday windows vs Maintenance windows), and the after-file has three matching notes with nothing marking which is meant.
+STOP: p3-3 has a plant mismatch
