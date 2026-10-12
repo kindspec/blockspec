@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id E:f65c00799a06b201874adf1cf8b238cf33f1f554:content/zh-cn/blog/_posts/2024/consistent-read-from-cache.md|R|下一步是什么---whats-next --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-38JQ0P
+# start: 2026-10-12T16:42:55Z
+# blockspec HEAD: f94cb08b031b844b89979b6649ed715215fa0346
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   f291f62458dae0bb29b41567b83fd24f81f36fa5649ebfee50e0d93cc1068240
+regenerated f291f62458dae0bb29b41567b83fd24f81f36fa5649ebfee50e0d93cc1068240
+F9 REPRODUCTION: BYTE-IDENTICAL  E:f65c00799a06b201874adf1cf8b238cf33f1f554:content/zh-cn/blog/_posts/2024/consistent-read-from-cache.md|R|下一步是什么---whats-next
+
+# end: 2026-10-12T16:43:04Z
+# exited: exit status 0
