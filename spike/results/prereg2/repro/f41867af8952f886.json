@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "cecbf3320697d4ac08b410f59aaa1726fba6cab6",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "35c630539de5193962ee6f341cfb2d4e4fadb4c6f1ca17f7ab55ed5c4f8e0d86",
+ "id": "S25:15:content/ja/docs/setup/production-environment/tools/kubeadm/install-kubeadm.md|R|必須ポートの確認",
+ "ok": true,
+ "regenerated_sha256": "35c630539de5193962ee6f341cfb2d4e4fadb4c6f1ca17f7ab55ed5c4f8e0d86"
+}

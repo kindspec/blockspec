@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S25:15:content/ja/docs/setup/production-environment/tools/kubeadm/install-kubeadm.md|R|必須ポートの確認 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-ENEFU7
+# start: 2026-10-12T17:19:16Z
+# blockspec HEAD: cecbf3320697d4ac08b410f59aaa1726fba6cab6
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   35c630539de5193962ee6f341cfb2d4e4fadb4c6f1ca17f7ab55ed5c4f8e0d86
+regenerated 35c630539de5193962ee6f341cfb2d4e4fadb4c6f1ca17f7ab55ed5c4f8e0d86
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:15:content/ja/docs/setup/production-environment/tools/kubeadm/install-kubeadm.md|R|必須ポートの確認
+
+# end: 2026-10-12T17:19:33Z
+# exited: exit status 0
