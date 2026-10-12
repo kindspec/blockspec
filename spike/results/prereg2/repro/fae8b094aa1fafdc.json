@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "2cf58b06fb63f6f49dd43da0f530e1c522fb693e",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "af8963b869fab32833384bea522f4358b66b0c15d8238655d5a71984f9109caa",
+ "id": "S25:1:content/zh-cn/docs/concepts/services-networking/service.md|R|无头服务headless-services--headless-services",
+ "ok": true,
+ "regenerated_sha256": "af8963b869fab32833384bea522f4358b66b0c15d8238655d5a71984f9109caa"
+}
