@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d36618cc85841ebd69d82de4d4f162f36c7a05c4",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "0b563620ba1a180c585c428a5b30b8efc056a31c0dde91ad295863cfb32f24f2",
+ "id": "M:298382169cc431a58d6908b32bcbbe8a527d9da9:content/ja/docs/concepts/storage/dynamic-provisioning.md|Q|9",
+ "ok": true,
+ "regenerated_sha256": "0b563620ba1a180c585c428a5b30b8efc056a31c0dde91ad295863cfb32f24f2"
+}
