@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id M:aa5279581766cb9dc24984de6e05e0abc9f2d728:content/en/docs/concepts/storage/volumes.md|R|hostpath-hostpath --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-elOayz
+# start: 2026-10-12T14:51:01Z
+# blockspec HEAD: 2ab5fd0a23669bfc014c6d87c59dcd6518f47312
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   6eca6379d1ca8e002b29cd75fac9c383293de230e91c15574549e4bf8b11d87c
+regenerated 6eca6379d1ca8e002b29cd75fac9c383293de230e91c15574549e4bf8b11d87c
+F9 REPRODUCTION: BYTE-IDENTICAL  M:aa5279581766cb9dc24984de6e05e0abc9f2d728:content/en/docs/concepts/storage/volumes.md|R|hostpath-hostpath
+
+# end: 2026-10-12T14:51:32Z
+# exited: exit status 0
