@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "c0fd95cb484605daa93c96c7ee7eb29883eac57f",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "5353183efe8b10a1b23e874252cbe3980b4d75ff857961d3df9a13c4632752a5",
+ "id": "E:36d67d5a00bef5e82eb81ac60a5794f0acb3bffb:governance/tag-governance.md|R|subprojects",
+ "ok": true,
+ "regenerated_sha256": "5353183efe8b10a1b23e874252cbe3980b4d75ff857961d3df9a13c4632752a5"
+}
