@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "8cdd0448ac1a324808019b0d444e9493994fd948",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "94dedd15c9ce1fb51e85448fad09865602116a170b3fce911eaa197fff162fd1",
+ "id": "M:e475bf69fba89ca7467f42c9b028d7162b5607f7:content/en/docs/tasks/configure-pod-container/pull-image-private-registry.md|Q|61",
+ "ok": true,
+ "regenerated_sha256": "94dedd15c9ce1fb51e85448fad09865602116a170b3fce911eaa197fff162fd1"
+}
