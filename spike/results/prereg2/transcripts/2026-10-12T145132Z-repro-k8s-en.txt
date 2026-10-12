@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id M:b2097006f07e7a9934a9e689c9cdbc9328ed6cb8:content/en/docs/concepts/scheduling-eviction/assign-pod-node.md|R|node-isolationrestriction --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-ybh5VD
+# start: 2026-10-12T14:51:32Z
+# blockspec HEAD: bd5933ae2940f2758446fa570c33ee3532e508dc
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   fea6b49f0f018c0ca1ed4ba34cda23f1c91ee4983225eaf01c1addb4f2b6b227
+regenerated fea6b49f0f018c0ca1ed4ba34cda23f1c91ee4983225eaf01c1addb4f2b6b227
+F9 REPRODUCTION: BYTE-IDENTICAL  M:b2097006f07e7a9934a9e689c9cdbc9328ed6cb8:content/en/docs/concepts/scheduling-eviction/assign-pod-node.md|R|node-isolationrestriction
+
+# end: 2026-10-12T14:51:56Z
+# exited: exit status 0

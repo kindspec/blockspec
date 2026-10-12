@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "bd5933ae2940f2758446fa570c33ee3532e508dc",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "fea6b49f0f018c0ca1ed4ba34cda23f1c91ee4983225eaf01c1addb4f2b6b227",
+ "id": "M:b2097006f07e7a9934a9e689c9cdbc9328ed6cb8:content/en/docs/concepts/scheduling-eviction/assign-pod-node.md|R|node-isolationrestriction",
+ "ok": true,
+ "regenerated_sha256": "fea6b49f0f018c0ca1ed4ba34cda23f1c91ee4983225eaf01c1addb4f2b6b227"
+}
