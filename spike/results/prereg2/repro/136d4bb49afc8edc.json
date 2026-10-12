@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "00a1b9a4853b3227602fc712c329c40b58cb8ec2",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1f83ab247b5d4033300ae712dfe5321b80ff81dff3a934c7284b24eda7b2fa43",
+ "id": "S5:13:content/zh-cn/docs/concepts/services-networking/network-policies.md|Q|63",
+ "ok": true,
+ "regenerated_sha256": "1f83ab247b5d4033300ae712dfe5321b80ff81dff3a934c7284b24eda7b2fa43"
+}
