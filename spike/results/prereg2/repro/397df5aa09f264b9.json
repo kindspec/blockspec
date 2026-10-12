@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "100b88b757fc87703c6b0c3fc226b431a2c45f46",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "28576c396d90b4904300928ebfeff718ed0603e74e54da1408a3a51ccdabbaf8",
+ "id": "S25:75:content/en/docs/concepts/configuration/secret.md|R|use-cases",
+ "ok": true,
+ "regenerated_sha256": "28576c396d90b4904300928ebfeff718ed0603e74e54da1408a3a51ccdabbaf8"
+}
