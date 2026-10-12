@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "8e87f3ad4f983c25df0de3df5fda18aaa1660d89",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "65eaf2c19fdc2abda781e5cf90f49c9248927b3520cf808dc74cb75d4378a358",
+ "id": "S25:10:content/en/docs/reference/access-authn-authz/service-accounts-admin.md|R|serviceaccount-admission-controller",
+ "ok": true,
+ "regenerated_sha256": "65eaf2c19fdc2abda781e5cf90f49c9248927b3520cf808dc74cb75d4378a358"
+}
