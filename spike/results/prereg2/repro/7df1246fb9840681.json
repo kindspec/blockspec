@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "ad1c9a81c3644b2f03590e5958e5b862aaa314f4",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1f8b6acd7aae960032b6b0c326365bc3427021e0cdaafffd677b4deea45c9362",
+ "id": "E:049f5a257211412e6fd81d1b1f3f870c3cf125a7:content/en/blog/_posts/2026/breaking-changes-in-selinux-volume-labeling.md|R|the-breaking-change",
+ "ok": true,
+ "regenerated_sha256": "1f8b6acd7aae960032b6b0c326365bc3427021e0cdaafffd677b4deea45c9362"
+}
