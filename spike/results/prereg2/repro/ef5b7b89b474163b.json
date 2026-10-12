@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "276fb429562c543d854af05c3b4b435c2795cdd4",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1cb1e7102e39540aa63678baad3f684d269a9c825b21f34e9c1e41c47984e336",
+ "id": "S5:6:content/en/community/static/cncf-code-of-conduct.md|R|enforcement",
+ "ok": true,
+ "regenerated_sha256": "1cb1e7102e39540aa63678baad3f684d269a9c825b21f34e9c1e41c47984e336"
+}
