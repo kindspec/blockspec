@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "fd0dabfab6d8f1c2342256fc47513723f27c36e6",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "081b32a7ed6c6b711d9a68656fd211e8aee5fcbe960eb03aea95652bcd451bf1",
+ "id": "M:3fc2fa9853efd9bdb6e624107f1162c27c7f6b8f:content/en/docs/concepts/storage/persistent-volumes.md|Q|25",
+ "ok": true,
+ "regenerated_sha256": "081b32a7ed6c6b711d9a68656fd211e8aee5fcbe960eb03aea95652bcd451bf1"
+}
