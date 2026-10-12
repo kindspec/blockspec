@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id S25:3:content/en/docs/reference/setup-tools/kubeadm/kubeadm-join.md|R|file-or-https-based-discovery --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-Ihi8xv
+# start: 2026-10-12T15:17:50Z
+# blockspec HEAD: 3d582409d904932b4812a95f370c62f7cb902f4d
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   33e652ca40e8c6e753c16e4cfa4308a70d91eb9438e124b20e80ea9aa3e25ce4
+regenerated 33e652ca40e8c6e753c16e4cfa4308a70d91eb9438e124b20e80ea9aa3e25ce4
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:3:content/en/docs/reference/setup-tools/kubeadm/kubeadm-join.md|R|file-or-https-based-discovery
+
+# end: 2026-10-12T15:18:08Z
+# exited: exit status 0

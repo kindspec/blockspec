@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "3d582409d904932b4812a95f370c62f7cb902f4d",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "33e652ca40e8c6e753c16e4cfa4308a70d91eb9438e124b20e80ea9aa3e25ce4",
+ "id": "S25:3:content/en/docs/reference/setup-tools/kubeadm/kubeadm-join.md|R|file-or-https-based-discovery",
+ "ok": true,
+ "regenerated_sha256": "33e652ca40e8c6e753c16e4cfa4308a70d91eb9438e124b20e80ea9aa3e25ce4"
+}
