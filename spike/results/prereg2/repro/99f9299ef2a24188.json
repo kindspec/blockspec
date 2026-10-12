@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d12c11a95fb323493c0101ba62179695675ed770",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "e219ea85f9335c144efb7985d9bc11a190f585dbb1695c97c2a911420990e726",
+ "id": "S25:2:content/zh-cn/docs/setup/production-environment/container-runtimes.md|R|configuring-the-systemd-cgroup-driver-containerd-systemd",
+ "ok": true,
+ "regenerated_sha256": "e219ea85f9335c144efb7985d9bc11a190f585dbb1695c97c2a911420990e726"
+}
