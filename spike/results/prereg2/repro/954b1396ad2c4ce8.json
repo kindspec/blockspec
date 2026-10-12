@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "80b93ac1b55d6aff046ebcadc42dbdef655e9c56",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "2d4491ba6d09d23160871198d73b4a0849c440f66be026fc2713c78cc00d3092",
+ "id": "S25:3:content/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins.md|R|注册设备插件----device-plugin-registration",
+ "ok": true,
+ "regenerated_sha256": "2d4491ba6d09d23160871198d73b4a0849c440f66be026fc2713c78cc00d3092"
+}
