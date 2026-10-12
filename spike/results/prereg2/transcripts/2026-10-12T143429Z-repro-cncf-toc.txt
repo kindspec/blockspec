@@ -1,0 +1,13 @@
+# prereg2 repro cncf-toc
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm cncf-toc --id S25:212:README.md|R|projects --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-prEwrX
+# start: 2026-10-12T14:34:29Z
+# blockspec HEAD: d3e91a007407e02f886617946c4235ef5c373d0a
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   73d5c6b7b900d5470901edd456668787ab2d6ea8299a5af835ffae72786e9732
+regenerated 73d5c6b7b900d5470901edd456668787ab2d6ea8299a5af835ffae72786e9732
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:212:README.md|R|projects
+
+# end: 2026-10-12T14:34:32Z
+# exited: exit status 0
