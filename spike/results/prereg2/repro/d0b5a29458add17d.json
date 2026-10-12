@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "f641fb3853b8a0e338a365cf55e57ab886e01575",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "4826993bdc0c1fbc58e70dbfb752da6a83dbe4705750c9f468c5ec67444836bf",
+ "id": "S25:0:content/zh-cn/docs/concepts/workloads/pods/_index.md|Q|16",
+ "ok": true,
+ "regenerated_sha256": "4826993bdc0c1fbc58e70dbfb752da6a83dbe4705750c9f468c5ec67444836bf"
+}
