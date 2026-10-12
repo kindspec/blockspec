@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d492ddf04a091729baf1a06ac2e9672cb11fd98e",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "24df8557b4f6a698eebde784c3e7e405c8f42a0d6984d5974177884dd3a5d689",
+ "id": "S25:42:content/en/docs/tasks/tools/install-kubectl-linux.md|Q|50",
+ "ok": true,
+ "regenerated_sha256": "24df8557b4f6a698eebde784c3e7e405c8f42a0d6984d5974177884dd3a5d689"
+}
