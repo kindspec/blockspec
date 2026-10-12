@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "c7f172a88d9e67ac03f67b8190e7a69658344f1d",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "de2e4b78714c1413ed3431f81e6e69bf206d336a154d05dc52f51860e23c933b",
+ "id": "S5:1:content/en/docs/tasks/administer-cluster/declare-network-policy.md|Q|1",
+ "ok": true,
+ "regenerated_sha256": "de2e4b78714c1413ed3431f81e6e69bf206d336a154d05dc52f51860e23c933b"
+}
