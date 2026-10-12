@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S25:1:content/zh-cn/docs/reference/labels-annotations-taints/_index.md|R|labels-annotations-and-taints-used-on-api-objects --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-5x2unP
+# start: 2026-10-12T18:22:20Z
+# blockspec HEAD: d4b08b1b3c9a4514aaf74301b0f04024cf8fe305
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   65ec2e5b783a9616257e84293af8d4cd414ac527ae98e6cdb7e21b9900881eee
+regenerated 65ec2e5b783a9616257e84293af8d4cd414ac527ae98e6cdb7e21b9900881eee
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:1:content/zh-cn/docs/reference/labels-annotations-taints/_index.md|R|labels-annotations-and-taints-used-on-api-objects
+
+# end: 2026-10-12T18:29:39Z
+# exited: exit status 0
