@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "0585658e84304ad55a543fa3e109c41dfa53ad30",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "f3fa917d634781e0a3e9504f7213bf4fde816b11ac8e711a42096ee5d3dc0ac2",
+ "id": "S25:195:README.md|R|projects",
+ "ok": true,
+ "regenerated_sha256": "f3fa917d634781e0a3e9504f7213bf4fde816b11ac8e711a42096ee5d3dc0ac2"
+}
