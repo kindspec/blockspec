@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id M:390dcc47bab35d93e8bbc40fc8c6f4404f9d3056:content/en/docs/reference/access-authn-authz/authentication.md|R|anonymous-requests --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-tXmbAX
+# start: 2026-10-12T14:41:51Z
+# blockspec HEAD: 3ac87f291cfce4f299f94b66cb35615b6a92452d
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   6451e51c124401eba2587471b45e2e03fde970b0a72cf6e04ec3eaa4074d7974
+regenerated 6451e51c124401eba2587471b45e2e03fde970b0a72cf6e04ec3eaa4074d7974
+F9 REPRODUCTION: BYTE-IDENTICAL  M:390dcc47bab35d93e8bbc40fc8c6f4404f9d3056:content/en/docs/reference/access-authn-authz/authentication.md|R|anonymous-requests
+
+# end: 2026-10-12T14:42:39Z
+# exited: exit status 0
