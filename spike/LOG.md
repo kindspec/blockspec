@@ -2132,3 +2132,65 @@ the export-3 commit to be an ancestor of the commit that adds prereg 2's
 `main`, once both export 3 (#25) and this PR have merged, and its results
 land on `main` as step 5's pull request. It does not run in the
 `prereg2/tiers` checkout, where export 3 is not in the history.
+
+## 2026-10-12 — §30. Prereg 2's tiering run
+
+This is PRE-REGISTRATION-2.md §9 step 4, and PRE-REGISTRATION-3.md §7 step 5
+(first half). This entry belongs to the `tiers.jsonl` pull request.
+
+### The run
+
+- **How it was run.** `prereg2.py tier-run`, bound by `d79bf2e`, ran once
+  under `python3 -I -S -B`. It ran in a fresh worktree of `main` at
+  `ddcf8d9` (#26's merge), on branch `prereg2/tiers-run`, so export 3's
+  commit is in its history.
+- **Preflight.**
+  - scoring-arm commit `e46e320`, committer day 2026-10-09 UTC;
+  - start day 2026-10-10, run on 2026-10-12, within the 14-day window;
+  - model `claude-opus-5-5`, as `tier-model.json` fixed it.
+- **Prompt.** The transcript records "Appendix A as sent, sha256
+  654b06319fd4197c81000694c10239df9f61a36e6c4703e3b0a9cb85db12313c", which is
+  prereg 2's prompt.
+- **Times and result.** The run started at 13:57:09Z and ended at 14:26:37Z.
+  The agent exited 0 and wrote 486 lines.
+  `results/prereg2/tier-runs.txt` records "started" and then "completed",
+  with `tiers.jsonl` sha256
+  `d99313a70aa6036707a9b727471f9ba569ea6fc8f7c46e338bca63251b68f051`.
+  `tier-work-1/tiers.jsonl` is kept as written. `results/prereg2/tiers.jsonl`
+  is the harness's byte-identical copy.
+- **The agent's init event** listed the tools Edit, Glob, Grep, Read and
+  Write, and `mcp_servers: []`. The claude.ai connector had been switched off
+  before the run. The transcript has no error status.
+- **The transcript** is committed verbatim. It holds the local work-tree path
+  of the working directory, as prereg 2's transcripts do.
+
+### An event during the run
+
+The owner ran `/login` during the run. That rewrote the credential file at
+13:58:07Z, about a minute after the start. The time comes from its mtime,
+which a metadata-only log recorded at 13:58:23Z.
+
+This broke the operating rule of PRE-REGISTRATION-3.md §0 item 10: no other
+Claude session refreshes the account's credential during a bound run.
+
+The run was not affected. No authentication error followed. The run passed
+30 lines by 14:01Z, completed with all 486 lines, and the agent exited 0.
+
+### Coverage and the void rule
+
+- **Coverage.** All 486 packets have a line, with 0 malformed or duplicate
+  lines and no unknown packet name. No line is marked unplaceable.
+- **The void rule.** Prereg 2 §7.3 applied to its three plants gives:
+  - P-A: q3 "yes", where "no" is expected;
+  - P-B: q4 "yes", where "no" is expected;
+  - P-C: q4 "yes", where "no" is expected.
+
+  **The tiering is void**, as PRE-REGISTRATION-3.md §8 predicted. Under prereg
+  2, every cell that exported a packet is NO VERDICT. Prereg 2's overall
+  verdict is computed at step 5, with its sealed manifest, reproductions and
+  join.
+- **Tiers of the 483 real packets** (counts only): A 458, B 23, C 2,
+  UNPLACEABLE 0.
+
+Prereg 2's three plant packet names stay unpublished until the
+sealed-manifest commit.
