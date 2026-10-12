@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "385d20b4255bc26759ec03647b3ece1e1aab9719",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1b77683f6c54b882a2aa2d0228f112c2e8fdfdb8f68c46682c20bcc64ff02fbc",
+ "id": "S5:11:content/en/docs/tasks/access-application-cluster/create-external-load-balancer.md|R|caveats-and-limitations-when-preserving-source-ips",
+ "ok": true,
+ "regenerated_sha256": "1b77683f6c54b882a2aa2d0228f112c2e8fdfdb8f68c46682c20bcc64ff02fbc"
+}
