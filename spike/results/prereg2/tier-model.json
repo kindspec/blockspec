@@ -1,0 +1,9 @@
+{
+ "listing_date_header": "Sat, 10 Oct 2026 00:08:03 GMT",
+ "listing_day": "2026-10-10",
+ "listing_sha256": "ac6cebbf6b232286bbb4c3b0c438bd0fa7975deb8ba37a018101ee057356d6f9",
+ "model": "claude-opus-5-5",
+ "scoring_commit": "e46e320a0245e99211aea95bd436609029436f49",
+ "start_day": "2026-10-10",
+ "why": "the pinned model is listed on the start day"
+}

@@ -2077,3 +2077,58 @@ directory, under `prereg3/`.
 
 Prereg 2's tier-run has not started. Step 4 lands prereg 2's
 `prereg2/tiers` branch, and step 5 is prereg 2's tier-run, as registered.
+
+## 2026-10-12 — §29. Prereg 2's tier-model commits land on main
+
+Step 4 of PRE-REGISTRATION-3.md §7: "Prereg 2's `prereg2/tiers` branch lands
+on `main`, if it has not already: both of its commits, `da61140` (two
+refused tier-model attempts) and `ef62c84` (the tier model), unchanged."
+
+**The reading.** The repository's ruleset allows squash merges only, and
+merge commits are off. A true merge, which would keep `da61140` and
+`ef62c84` as commits, is not possible without changing either. The
+recorded reading for this spike is one pull request per §9 step,
+squash-merged, with the squash commit as the binding commit. Under that
+reading, "unchanged" in §7 step 4 is met by content. The commits are
+squashed, and every byte they added lands as it was. This PR is one squash
+of the branch onto `main`.
+
+**The content, checked by command:**
+
+- `git diff --quiet ef62c84 HEAD -- spike/results/prereg2` exits 0. On this
+  PR's head, everything under `spike/results/prereg2` equals `ef62c84`'s tree.
+- `results/prereg2/tier-model.json` is blob
+  `3ded7091b9b7b825853c140ee7ecc3c63bef2e96`, the blob PRE-REGISTRATION-3.md
+  and harness3 pin (`git rev-parse HEAD:spike/results/prereg2/tier-model.json`).
+- The two refused-attempt transcripts from `da61140` have the same blobs as at
+  `ef62c84`:
+  `transcripts/2026-10-09T235456Z-tier-model.txt` is
+  `191e6b47f7e63977bb7f3f0fdd9b5cd88249e0e6`, and
+  `transcripts/2026-10-10T000713Z-tier-model.txt` is
+  `15c3ceec675aab7387e67fa53201217d2b7d860d`. `ef62c84`'s own transcript,
+  `2026-10-10T000803Z-tier-model.txt`, is
+  `b1abe430be3075bc5914872924f092d8fd47ab31` in both.
+
+**Where prereg 2's tier-run will bind.** A dry preflight ran prereg2.py's
+tier-run checks without starting an agent: `p2.binding.check(spike,
+"tier-run")`, `p2.tierrun.scoring_commit`, the tier-model, and the gap rule.
+It ran in two places:
+- on this PR's head, which is `main` with this squash;
+- in a checkout of `prereg2/tiers` at `ef62c84`.
+
+Both bind:
+- validation commit `d79bf2e`;
+- scoring-arm commit `e46e320`, derived;
+- model `claude-opus-5-5`, whose `scoring_commit` matches;
+- 0 gaps.
+
+Prereg 2's binding does not depend on `ef62c84` being an ancestor. It
+depends on `d79bf2e`, on the bound paths, on `results/prereg2/` being
+committed, and on the one commit that adds `results/prereg2/score/`.
+
+Prereg 3's committed order check does depend on the branch, though. It needs
+the export-3 commit to be an ancestor of the commit that adds prereg 2's
+`tiers.jsonl`. So prereg 2's bound tier-run runs in a clean checkout of
+`main`, once both export 3 (#25) and this PR have merged, and its results
+land on `main` as step 5's pull request. It does not run in the
+`prereg2/tiers` checkout, where export 3 is not in the history.

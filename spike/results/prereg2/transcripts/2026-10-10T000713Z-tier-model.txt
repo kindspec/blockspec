@@ -1,0 +1,13 @@
+# prereg2 tier-model
+# argv: prereg2.py tier-model
+# start: 2026-10-10T00:07:13Z
+# blockspec HEAD: e46e320a0245e99211aea95bd436609029436f49
+# python 3.13.5
+# harness bound: False
+#   not bound: uncommitted under results/prereg2: ?? spike/results/prereg2/transcripts/2026-10-09T235456Z-tier-model.txt
+
+not bound: uncommitted under results/prereg2: ?? spike/results/prereg2/transcripts/2026-10-09T235456Z-tier-model.txt
+refusing: this run would not be bound; use --fixture-repo or --unbound to run it for testing, with no verdict
+
+# end: 2026-10-10T00:07:13Z
+# aborted: exit status 2
