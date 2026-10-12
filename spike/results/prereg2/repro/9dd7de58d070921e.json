@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "eb240fde912b2c9a7fc785cf169b918d956d19c6",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "e85526e5b87df4126502a5f2db68c4b2555e274967b0eaf72f861bd066a65f59",
+ "id": "S25:1:content/zh-cn/docs/concepts/services-networking/service.md|R|dns",
+ "ok": true,
+ "regenerated_sha256": "e85526e5b87df4126502a5f2db68c4b2555e274967b0eaf72f861bd066a65f59"
+}
