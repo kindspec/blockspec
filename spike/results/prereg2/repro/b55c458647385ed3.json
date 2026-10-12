@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "31a33f5ecbe7d58043b94f6b9da6744a0fc2b7e1",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "a352aa99bba48477447fc152be256fc5c3d64e53213580242c19635864ec2c42",
+ "id": "S25:20:content/ko/docs/concepts/services-networking/service.md|R|환경-변수",
+ "ok": true,
+ "regenerated_sha256": "a352aa99bba48477447fc152be256fc5c3d64e53213580242c19635864ec2c42"
+}
