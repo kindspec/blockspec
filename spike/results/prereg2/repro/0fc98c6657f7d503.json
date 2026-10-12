@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "ea61e2d29b3a9811e8a956b640dd20646c2f5c52",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "53e7c8b9061cefd7b7e697be0f7c3944268e5f9cc3b53a30b11ae3cfe9a491da",
+ "id": "M:84c035d5a7e2b1d9fb65cc7b2543abe01cfc7565:content/en/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions.md|Q|68",
+ "ok": true,
+ "regenerated_sha256": "53e7c8b9061cefd7b7e697be0f7c3944268e5f9cc3b53a30b11ae3cfe9a491da"
+}
