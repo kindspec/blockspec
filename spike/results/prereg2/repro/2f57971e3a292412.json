@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "fdc039fe83f79ed6ccd8f76b2d79b3bf2ca18fb5",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "f5b431c93f3a5718c986d4b464719f9ae2e6011dfcfa5702403aaf7d20c1652f",
+ "id": "S5:22:content/ko/docs/concepts/overview/components.md|R|컨트롤-플레인-컴포넌트",
+ "ok": true,
+ "regenerated_sha256": "f5b431c93f3a5718c986d4b464719f9ae2e6011dfcfa5702403aaf7d20c1652f"
+}
