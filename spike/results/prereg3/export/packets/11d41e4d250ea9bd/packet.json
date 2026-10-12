@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Snapshots are kept for seven days\nbefore they are pruned.",
+ "oracle_target": "Snapshots are kept for thirty days\nbefore they are pruned.",
+ "packet": "11d41e4d250ea9bd",
+ "questions": "QUESTIONS.md",
+ "reference": "Snapshots are kept for seven days\nbefore they are pruned.",
+ "reference_kind": "quote"
+}

@@ -1,0 +1,12 @@
+# prereg3 validate-export
+# argv: prereg3.py validate-export /home/cam/repos_kindspec/blockspec/spike/results/prereg3/export
+# start: 2026-10-12T06:28:37Z
+# blockspec HEAD: a518e08d4d351d0dd76bb823fe0fc97186a4d5d6
+# python 3.13.5
+# harness bound: False
+#   not bound: validate-export is not bound
+
+export: clean
+
+# end: 2026-10-12T06:28:37Z
+# exited: exit status 0
