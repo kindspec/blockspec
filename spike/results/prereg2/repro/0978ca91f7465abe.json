@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "3d250d85f49a7bee0bc66a8bfa06b0714d75ff79",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "fcaddee49d7e7dbcdf3af84443d16d411c8d4b43b46f43220bcef75b33db8bd9",
+ "id": "S25:36:content/en/docs/reference/networking/virtual-ips.md|R|avoiding-collisions",
+ "ok": true,
+ "regenerated_sha256": "fcaddee49d7e7dbcdf3af84443d16d411c8d4b43b46f43220bcef75b33db8bd9"
+}
