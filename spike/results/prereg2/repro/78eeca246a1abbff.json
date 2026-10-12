@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "770efd1b13ef4744938c497c76c08b5d75e1f3f6",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "9b12250f004d5ff695960abb4d8e1731434518bcf919e908e348998f041c8176",
+ "id": "S25:3:content/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins.md|R|monitoring-device-plugin-resources",
+ "ok": true,
+ "regenerated_sha256": "9b12250f004d5ff695960abb4d8e1731434518bcf919e908e348998f041c8176"
+}
