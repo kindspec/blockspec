@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "3b9b2a26377307eaf4e1ed88b3b10a1f217cd283",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ea0c0b3c8a4dc51b007508811d04e4347f958bb6200be3df6751490ef1594bdd",
+ "id": "S25:20:content/en/docs/concepts/configuration/secret.md|R|overview-of-secrets",
+ "ok": true,
+ "regenerated_sha256": "ea0c0b3c8a4dc51b007508811d04e4347f958bb6200be3df6751490ef1594bdd"
+}
