@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "bcea16a777a1b076d4b8ef4958db76f46e5a2b86",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "2e8e9561ad76e2ae94ed954b3af348ba6e72a04d84b8c46587c43687d9e8c6a6",
+ "id": "S25:122:content/en/docs/concepts/configuration/secret.md|R|docker-config-secrets",
+ "ok": true,
+ "regenerated_sha256": "2e8e9561ad76e2ae94ed954b3af348ba6e72a04d84b8c46587c43687d9e8c6a6"
+}
