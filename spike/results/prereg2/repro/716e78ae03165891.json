@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "04eefd33aa814a7c2c34dd357c3d7f2b211ba9ff",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "0bf4eeff7428e78829947dfd806edd117a4e27286dc95e7dd9c4dd1e8979dede",
+ "id": "E:32fd60c16ed207e32fe5c59757f3fd80fe35729c:content/en/docs/concepts/workloads/controllers/job.md|Q|113",
+ "ok": true,
+ "regenerated_sha256": "0bf4eeff7428e78829947dfd806edd117a4e27286dc95e7dd9c4dd1e8979dede"
+}
