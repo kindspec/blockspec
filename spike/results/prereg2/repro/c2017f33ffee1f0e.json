@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d669196df6e57b3758d66ce6551da5f945ba7d31",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "5ac3d75ffc6a35d937df9412b010ca189440fb61584fff19421d248f11fc34bb",
+ "id": "S5:42:content/en/docs/concepts/overview/components.md|R|control-plane-components",
+ "ok": true,
+ "regenerated_sha256": "5ac3d75ffc6a35d937df9412b010ca189440fb61584fff19421d248f11fc34bb"
+}
