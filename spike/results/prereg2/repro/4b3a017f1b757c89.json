@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "e8faa4b7bc00fefc8fd4ed33ea667b4b63b9c076",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "e770f7754ca602ca2151c9d386579250f94e4015b949b21819ae76e7ea1e02a1",
+ "id": "E:afaf64e48204c64c5739a1a08dd1d440102ea46c:content/en/blog/_posts/2026/kubernetes-v1-36-release/index.md|Q|15",
+ "ok": true,
+ "regenerated_sha256": "e770f7754ca602ca2151c9d386579250f94e4015b949b21819ae76e7ea1e02a1"
+}
