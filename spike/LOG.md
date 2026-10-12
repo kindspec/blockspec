@@ -2050,5 +2050,30 @@ directory, under `prereg3/`.
 - **No real packet was opened.** The checks compare content hashes and print
   counts.
 
+- **The order guard's result is as of the run,** at `2026-10-12T06:28:20Z`, the
+  transcript's `# executed:` time.
+- **The transcript is committed verbatim.** Its argv holds local work-tree
+  paths and a scratch path, the D8 directory and the sealed manifest's
+  location, as prereg 2's transcripts do.
+- **Observation: file sizes mark the plants.** In export 3, the plants'
+  `before.md` and `after.md` rank [0, 0, 0, 0, 1] by size among the real
+  packets' files. So the five smallest `after.md` files are the plants, with
+  at most one exception. Prereg 2's export has the same property: its three
+  plants have the three smallest `after.md` files, 237, 262 and 276 bytes,
+  and the smallest real one is 290. Nothing else separates the plants from
+  real packets:
+  - the file set: plants have `before.md` and `after.md`, like 433 of the
+    483 real packets;
+  - the one shared `QUESTIONS.md`;
+  - `packet.json` size, where the plants rank 17 to 28 among real packets;
+  - the order of `PACKETS.txt`, which is sorted by name;
+  - file modes.
+
+  The export ran once and is frozen, so this is disclosed, not changed. The
+  verdict rules do not change: the void rule still reads the plants' answers.
+  Figures from the review's `struct.py`. It finds the plants by
+  regenerating them from Appendix B and reads sizes from `git ls-tree -l`;
+  it reads no real packet's content.
+
 Prereg 2's tier-run has not started. Step 4 lands prereg 2's
 `prereg2/tiers` branch, and step 5 is prereg 2's tier-run, as registered.
