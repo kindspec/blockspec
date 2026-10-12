@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "44395e1cc63ad61df64abf30afe4c6a1b401c0da",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "6b41d6d8916dab14053edc227a380901fafb0794cbf7abcabb45bec577781e09",
+ "id": "M:e861bd334a2fc8efda723e1a83c8169b0fc1edbe:content/en/docs/concepts/workloads/controllers/statefulset.md|R|update-strategies",
+ "ok": true,
+ "regenerated_sha256": "6b41d6d8916dab14053edc227a380901fafb0794cbf7abcabb45bec577781e09"
+}
