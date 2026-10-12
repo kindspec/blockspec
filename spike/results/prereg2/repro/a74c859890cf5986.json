@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "55b04a7a03366863d7fd7de3efcd4eb08af346d2",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "99fe154eb66cf036d79cf9f658d6b8649c45a227b7c5fe2ac63ecce1ece566bc",
+ "id": "S25:10:content/en/docs/contribute/localization.md|R|minimum-required-content",
+ "ok": true,
+ "regenerated_sha256": "99fe154eb66cf036d79cf9f658d6b8649c45a227b7c5fe2ac63ecce1ece566bc"
+}
