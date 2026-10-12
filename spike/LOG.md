@@ -2005,3 +2005,50 @@ real packet. `results/prereg3/rehearsals/v6/` holds the evidence.
 - LICENSE gains a row for `spike/results/prereg3/`: CC-BY-4.0, except
   third-party excerpts. The synthetic packets quote CPython 3.13
   standard-library docstrings, which keep the PSF License Version 2.
+
+## 2026-10-12 — §28. Export 3
+
+Step 3 of PRE-REGISTRATION-3.md §7. This entry belongs to the export pull
+request.
+
+`prereg3.py export` ran once, bound by prereg 3's validation commit
+`a518e08`, under `python3 -I -S -B`. It read the sealed manifest at
+`/home/cam/kindspec-data/prereg3-seal/`, and the scores in
+`results/prereg2/score/`, accepted as bound to `d79bf2e`. It exited 0. Its
+transcript is `results/prereg3/transcripts/2026-10-12T062809Z-export.txt`,
+which records `# executed: 2026-10-12T06:28:20Z`. The execution marker is
+`results/prereg3/executed/export.json`, with a second copy in the git common
+directory, under `prereg3/`.
+
+- **The order guard passed:** "prereg 2's tiering has not started (work
+  trees, refs and reflogs)". No `tier-runs.txt` or `tier-work-*` exists in
+  any work tree of the repository or in any ref or reflog.
+- **The export** is `results/prereg3/export/`:
+  - `PROMPT.md`, whose sha256 is the registered `2779cd58…`;
+  - `PACKETS.txt`;
+  - 488 packets: 483 real records and the five plants.
+
+  Each packet is named by the first 16 hex characters of
+  `sha256(nonce + ":" + key)`, with prereg 3's nonce.
+  `results/prereg3/export-manifest.txt` lists the sha256 of each file.
+- **§5's checks,** printed in the transcript as counts only:
+  - Same records: prereg 2's export at `e46e320` has 486 packets. Each of
+    prereg 2's three plants was found exactly once. 0 real packets are in
+    prereg 2's export but not export 3, and 0 the other way.
+    `SAME RECORDS: PASS`.
+  - Same plants: P-A to P-E each equal the plant as regenerated.
+    `SAME PLANTS: PASS`.
+  - The per-name check needs prereg 2's sealed manifest. That is committed at
+    prereg 2's step 5, so this check runs in `aggregate`, at step 9 of §7.
+- **Checks after the run:**
+  - `prereg3.py validate-export` reports the export clean. Its transcript is
+    committed.
+  - Every packet name is 16 hex characters, and there is no symlink and no
+    `.git`.
+  - The nonce does not appear anywhere under `results/prereg3/`, either in
+    full or as its first 16 hex characters.
+- **No real packet was opened.** The checks compare content hashes and print
+  counts.
+
+Prereg 2's tier-run has not started. Step 4 lands prereg 2's
+`prereg2/tiers` branch, and step 5 is prereg 2's tier-run, as registered.
