@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d25ff676c7ce5f97b262fbb3bbaeeb3448904892",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "49163d7ea92d19b551e85d7ea0b2b518982ca0eff6c1bf27d27a90dcfdaccc8d",
+ "id": "S25:75:content/en/docs/concepts/configuration/secret.md|R|mounted-secrets-are-updated-automatically",
+ "ok": true,
+ "regenerated_sha256": "49163d7ea92d19b551e85d7ea0b2b518982ca0eff6c1bf27d27a90dcfdaccc8d"
+}
