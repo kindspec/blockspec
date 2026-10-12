@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "db195dab98c5f25ee7e422a1c29dcca6bf5672ac",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "6563bded72b1563c08fc59c14932897d04ff7cdd5f7c21f49afab9883a833369",
+ "id": "S5:10:content/en/docs/reference/using-api/api-concepts.md|R|merge-strategy",
+ "ok": true,
+ "regenerated_sha256": "6563bded72b1563c08fc59c14932897d04ff7cdd5f7c21f49afab9883a833369"
+}
