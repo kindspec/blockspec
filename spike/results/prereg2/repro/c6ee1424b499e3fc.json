@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "07dae7f39c0074d7999202d56ddb3adaf1128f22",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "b7e9551663f757ec4c7b1ec0bfb474279a82ad951f58dfed4edcdb2988e6f634",
+ "id": "M:3c22c23255d493d13a873eb0ea09d7813e2f05ee:content/en/docs/concepts/services-networking/service.md|R|sctp",
+ "ok": true,
+ "regenerated_sha256": "b7e9551663f757ec4c7b1ec0bfb474279a82ad951f58dfed4edcdb2988e6f634"
+}
