@@ -44,7 +44,9 @@ Local directories are replaced by `<REHEARSAL>`, `<SCRATCH>`, `<V6>`, `<TMP>`
 and `<HOME>`, in plain files and inside both archives. The names of prereg 2's
 three plant packets are withheld until prereg 2's manifest commit (§10). The
 staging script refuses to finish if any staged file, archived or not, still
-holds a local path or one of those names.
+holds a local path or one of those names. It checks for the names by
+comparing the sha256 of every 16-hex token with the names' sha256 values, so
+the script itself never holds the names.
 
 The archives leave out the synthetic exports' packets and keep their key
 files. Each key file maps every packet name to its plant, or to the synthetic
@@ -88,6 +90,11 @@ The harness it binds is the tree at `33f3a34`:
 
 The `spike/harness3` tree at `33f3a34` equals the tree at #23's last
 commit, `b50beb2`.
+
+The V0–V5 transcripts in `results/prereg3/validation/` and the V6 runs carry
+the stamp `33f3a34`, the commit they ran on. The validation commit adds no
+byte under `harness3/` or `PRE-REGISTRATION-3.md`, so the harness they ran is
+the harness it binds.
 
 ## V6's prompt check
 

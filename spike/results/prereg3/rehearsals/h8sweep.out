@@ -1,0 +1,13 @@
+unmutated: (0, 'H8 CHECK: PASS')
+void not passed to cell: 76f8d6f4->2e1edafe exit 1 RED | H8 CHECK: FAIL
+P-D q3 expectation flipped: 76f8d6f4->05d04fcd exit 1 RED | (no output) g3/h8sweep/h3/p3/aggregate3.py", line 45, in load_manifest3
+    raise ValueError("the manifest's plants are not prereg 3's Appendix B")
+ValueError: the manifest's plants are not prereg 3's Appendix B
+
+q3/q4 loop drops q3: 76f8d6f4->32553346 exit 1 RED | H8 CHECK: FAIL
+P-E q4 expectation flipped: 76f8d6f4->ce540b14 exit 1 RED | (no output) g3/h8sweep/h3/p3/aggregate3.py", line 45, in load_manifest3
+    raise ValueError("the manifest's plants are not prereg 3's Appendix B")
+ValueError: the manifest's plants are not prereg 3's Appendix B
+
+B/C check removed: 76f8d6f4->0baef1c9 exit 1 RED | H8 CHECK: FAIL
+manifest check removed: 76f8d6f4->a1a992a1 exit 1 RED | H8 CHECK: FAIL

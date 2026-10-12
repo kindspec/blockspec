@@ -1,0 +1,8 @@
+all plants right: FOUND | overall FOUND | void []
+P-D q3=no: NO VERDICT | tiering void: P-D: q3=no, expected yes | overall INCONCLUSIVE
+P-E q4=no: NO VERDICT | tiering void: P-E: q4=no, expected yes | overall INCONCLUSIVE
+P-C answered tier B (q1=yes; q3, q4 right): NO VERDICT | tiering void: P-C: tier B is on the wrong side of the B/C line (expect | overall INCONCLUSIVE
+V4 mutant (void not passed to cell), P-D q3=no: FOUND | 1 qualifying distinct unit(s) | overall FOUND
+  -> KILLED by the P-D case
+four-plant manifest: refused: the manifest's plants are not prereg 3's Appendix B
+H8 CHECK: PASS

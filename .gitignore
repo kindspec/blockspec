@@ -44,3 +44,6 @@ htmlcov/
 .cache/
 mutant_impl.py
 .venv/
+
+# prereg 3's cited rehearsal evidence includes .out files; keep them
+!spike/results/prereg3/rehearsals/**/*.out

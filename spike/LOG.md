@@ -1989,6 +1989,19 @@ real packet. `results/prereg3/rehearsals/v6/` holds the evidence.
   `tiers.jsonl` was rewritten six times: every line was kept, and only the
   order changed. Neither harness monitors this, and neither pre-registration
   requires `tiers.jsonl` to be append-only.
+- **Disclosure: prereg 2's plant names were published in this PR's
+  branch.** This PR's first commit, `877a9ed`, which `refs/pull/24/head`
+  keeps, held a copy of `rehearsals/tools/stage_evidence.py` whose leak
+  check spelled out prereg 2's three plant packet names, split in halves.
+  PRE-REGISTRATION-3.md §10 withholds those names until prereg 2's manifest
+  commit. A later commit in this PR replaces them with their sha256 values.
+  The check now hashes every 16-hex token it meets. The squash merge to
+  `main` does not contain the names. No purge was requested. The names can
+  already be derived from prereg 2's public Appendix B, and prereg 2's
+  tierer has no web tools.
+- Seven cited `.out` evidence files had been left out of the first commit
+  by the repository's `*.out` ignore rule. `.gitignore` now keeps
+  `spike/results/prereg3/rehearsals/**/*.out`, and the files are committed.
 - LICENSE gains a row for `spike/results/prereg3/`: CC-BY-4.0, except
   third-party excerpts. The synthetic packets quote CPython 3.13
   standard-library docstrings, which keep the PSF License Version 2.
