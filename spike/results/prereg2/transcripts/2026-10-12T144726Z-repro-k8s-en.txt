@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id M:68fe9a8adcde7f1ebe9eeb1239ef0e08322d5918:content/en/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm.md|Q|97 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-bEPVbh
+# start: 2026-10-12T14:47:26Z
+# blockspec HEAD: dc5169f0fdbc2160acbd1ec2495b6a8cea1cddd8
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   0da94799f17586f6625192d30d3754450820c38f269465ead92bbeb5899174f9
+regenerated 0da94799f17586f6625192d30d3754450820c38f269465ead92bbeb5899174f9
+F9 REPRODUCTION: BYTE-IDENTICAL  M:68fe9a8adcde7f1ebe9eeb1239ef0e08322d5918:content/en/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm.md|Q|97
+
+# end: 2026-10-12T14:47:51Z
+# exited: exit status 0
