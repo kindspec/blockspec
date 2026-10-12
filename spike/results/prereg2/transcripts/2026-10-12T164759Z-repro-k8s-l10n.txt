@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S25:0:content/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node.md|R|亲和性与反亲和性--affinity-and-anti-affinity --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-GzXBP5
+# start: 2026-10-12T16:47:59Z
+# blockspec HEAD: e2abe3088aa00c9ccff431a35224d82d01893503
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   d3149cb189b2364c8c522694107cab46f500a22bdffa22562ccf445eef264af5
+regenerated d3149cb189b2364c8c522694107cab46f500a22bdffa22562ccf445eef264af5
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:0:content/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node.md|R|亲和性与反亲和性--affinity-and-anti-affinity
+
+# end: 2026-10-12T16:48:16Z
+# exited: exit status 0
