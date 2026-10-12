@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "71c8c55fd620b10822dc4992bfd09fe2b9402e97",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "e8c4eb4e8149345f7b435d52f98a488ec31e1151224d3a55afdb50e2086a8efa",
+ "id": "S25:0:content/zh-cn/docs/setup/production-environment/container-runtimes.md|R|cgroup-drivers",
+ "ok": true,
+ "regenerated_sha256": "e8c4eb4e8149345f7b435d52f98a488ec31e1151224d3a55afdb50e2086a8efa"
+}
