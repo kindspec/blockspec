@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "e7a5313514fb77c59f3876b8d29dd213d705dc58",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "7ae711c6410af0b82ecc05a550196badf944b3264d4d21adc6e7e6a3c7abf8fe",
+ "id": "S25:0:content/zh-cn/docs/reference/access-authn-authz/admission-controllers.md|R|why-do-i-need-them",
+ "ok": true,
+ "regenerated_sha256": "7ae711c6410af0b82ecc05a550196badf944b3264d4d21adc6e7e6a3c7abf8fe"
+}
