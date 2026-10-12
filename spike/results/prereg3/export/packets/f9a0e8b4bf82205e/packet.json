@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "Each project may store up to 50 GB\nof build artifacts at a time.",
+ "oracle_target": "Each project may store up to 80 GB, raised from 50 GB in May,\nof build artifacts at a time.",
+ "packet": "f9a0e8b4bf82205e",
+ "questions": "QUESTIONS.md",
+ "reference": "Each project may store up to 50 GB\nof build artifacts at a time.",
+ "reference_kind": "quote"
+}

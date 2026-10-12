@@ -1,0 +1,29 @@
+# prereg3 export
+# argv: prereg3.py export --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --manifest /home/cam/kindspec-data/prereg3-seal/manifest.json
+# start: 2026-10-12T06:28:09Z
+# blockspec HEAD: a518e08d4d351d0dd76bb823fe0fc97186a4d5d6
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+order guard: prereg 2's tiering has not started (work trees, refs and reflogs)
+
+# executed: 2026-10-12T06:28:20Z
+exported 488 packets to /home/cam/repos_kindspec/blockspec/spike/results/prereg3/export
+export manifest (sha256 of each file): /home/cam/repos_kindspec/blockspec/spike/results/prereg3/export-manifest.txt
+prereg 2 export at e46e320a0245: 486 packets
+export 3: 488 packets, 483 real
+prereg 2 plant P-A: found 1 time(s) in prereg 2's export (want 1)
+prereg 2 plant P-B: found 1 time(s) in prereg 2's export (want 1)
+prereg 2 plant P-C: found 1 time(s) in prereg 2's export (want 1)
+real packets in prereg 2 but not export 3: 0; in export 3 but not prereg 2: 0
+SAME RECORDS: PASS
+P-A: equal
+P-B: equal
+P-C: equal
+P-D: equal
+P-E: equal
+SAME PLANTS: PASS
+packet count: 488
+
+# end: 2026-10-12T06:28:25Z
+# exited: exit status 0

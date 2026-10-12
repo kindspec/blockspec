@@ -1,0 +1,12 @@
+{
+ "files": {
+  "after": "after.md",
+  "before": "before.md"
+ },
+ "mechanism_target": "**Short version:** _We use email and other electronic means to stay in touch with our users._",
+ "oracle_target": "## M. Communications with GitHub",
+ "packet": "eb6ede9fd1a4b2ef",
+ "questions": "QUESTIONS.md",
+ "reference": "## M. Communications with GitHub\n**Short version:** *We use email and other electronic means to stay in touch with our users.*",
+ "reference_kind": "quote"
+}
