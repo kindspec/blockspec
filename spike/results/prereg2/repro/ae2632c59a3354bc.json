@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "66c80576aac98988941a3b27c346cb50d69fbee6",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "240c2570b9643b5dd3cb40b064f2d8b64b4b408cd23c09fd63e160583178dcb4",
+ "id": "S25:11:content/en/docs/reference/using-api/server-side-apply.md|R|merge-strategy",
+ "ok": true,
+ "regenerated_sha256": "240c2570b9643b5dd3cb40b064f2d8b64b4b408cd23c09fd63e160583178dcb4"
+}
