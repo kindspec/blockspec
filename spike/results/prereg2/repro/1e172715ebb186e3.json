@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "3f9f2f72dc1c3b06ba0e18dc807c7a8ca48919ed",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "181c0d0a18cde70fc83f0539b08b73e66ec1a41829c70d000f83163dc0181f7e",
+ "id": "S25:14:content/ko/docs/concepts/containers/images.md|R|파드에-imagepullsecrets-명시",
+ "ok": true,
+ "regenerated_sha256": "181c0d0a18cde70fc83f0539b08b73e66ec1a41829c70d000f83163dc0181f7e"
+}
