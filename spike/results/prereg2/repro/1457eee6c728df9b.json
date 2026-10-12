@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "987d030595920889a37cad82a97cacbb4658ed3c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "616d5aa770dd13bb9b037251e5754315707831f494e32a8ddabcd63ece720837",
+ "id": "S25:12:content/en/docs/reference/access-authn-authz/authorization.md|R|authorization-modes-authorization-modules",
+ "ok": true,
+ "regenerated_sha256": "616d5aa770dd13bb9b037251e5754315707831f494e32a8ddabcd63ece720837"
+}
