@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "80210ea77f9d2e5609ba996a8dc75f1f3c2fe6d2",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "79883abcc61c348319a296bf243d4c439050e3e9814361cd4cadf80b884b16bb",
+ "id": "S25:8:content/en/docs/contribute/localization.md|R|upstream-contributions",
+ "ok": true,
+ "regenerated_sha256": "79883abcc61c348319a296bf243d4c439050e3e9814361cd4cadf80b884b16bb"
+}
