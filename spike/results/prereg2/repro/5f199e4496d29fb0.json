@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "06fa16fb67020b424c16b19a245849bbe70b8f6c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "bbdb448d21ed1b162dc51041d04d5c3e9b3ab65a0a4cfea93bea7f3ac194934e",
+ "id": "E:2f9f73ec4576224f3834b7c2dc6e2cd366d9a33f:tags/tag-infrastructure/data-storage-in-cloud-native-ai/topics/inference.md|R|references",
+ "ok": true,
+ "regenerated_sha256": "bbdb448d21ed1b162dc51041d04d5c3e9b3ab65a0a4cfea93bea7f3ac194934e"
+}

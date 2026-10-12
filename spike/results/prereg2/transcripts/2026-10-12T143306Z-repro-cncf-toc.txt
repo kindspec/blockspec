@@ -1,0 +1,13 @@
+# prereg2 repro cncf-toc
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm cncf-toc --id E:2f9f73ec4576224f3834b7c2dc6e2cd366d9a33f:tags/tag-infrastructure/data-storage-in-cloud-native-ai/topics/inference.md|R|references --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-A4QOMj
+# start: 2026-10-12T14:33:06Z
+# blockspec HEAD: 06fa16fb67020b424c16b19a245849bbe70b8f6c
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   bbdb448d21ed1b162dc51041d04d5c3e9b3ab65a0a4cfea93bea7f3ac194934e
+regenerated bbdb448d21ed1b162dc51041d04d5c3e9b3ab65a0a4cfea93bea7f3ac194934e
+F9 REPRODUCTION: BYTE-IDENTICAL  E:2f9f73ec4576224f3834b7c2dc6e2cd366d9a33f:tags/tag-infrastructure/data-storage-in-cloud-native-ai/topics/inference.md|R|references
+
+# end: 2026-10-12T14:33:07Z
+# exited: exit status 0
