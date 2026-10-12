@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S25:7:content/ja/docs/concepts/workloads/pods/pod-lifecycle.md|R|コンテナのprobe-container-probes --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-lcQ5Ou
+# start: 2026-10-12T22:08:49Z
+# blockspec HEAD: 7413ced93c4741e80b2af210d684e7fd3ebf0c67
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   24455e02ddc75ce67e3d6e8c7df62ff46a60a5c3a5763e6bc954f15e10a73531
+regenerated 24455e02ddc75ce67e3d6e8c7df62ff46a60a5c3a5763e6bc954f15e10a73531
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:7:content/ja/docs/concepts/workloads/pods/pod-lifecycle.md|R|コンテナのprobe-container-probes
+
+# end: 2026-10-12T22:09:10Z
+# exited: exit status 0
