@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "078a02bb5b281a5b31a0eed39a5eb15764a7468a",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "3a6a7685e9eee3635f442d2c3cfb586ef057ed1625219025cc0c8bef618ac393",
+ "id": "S25:38:content/en/docs/concepts/containers/images.md|R|configuring-nodes-to-authenticate-to-a-private-registry",
+ "ok": true,
+ "regenerated_sha256": "3a6a7685e9eee3635f442d2c3cfb586ef057ed1625219025cc0c8bef618ac393"
+}

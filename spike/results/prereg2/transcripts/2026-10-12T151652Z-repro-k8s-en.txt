@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id S25:38:content/en/docs/concepts/containers/images.md|R|configuring-nodes-to-authenticate-to-a-private-registry --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-EqeNlN
+# start: 2026-10-12T15:16:52Z
+# blockspec HEAD: 078a02bb5b281a5b31a0eed39a5eb15764a7468a
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   3a6a7685e9eee3635f442d2c3cfb586ef057ed1625219025cc0c8bef618ac393
+regenerated 3a6a7685e9eee3635f442d2c3cfb586ef057ed1625219025cc0c8bef618ac393
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:38:content/en/docs/concepts/containers/images.md|R|configuring-nodes-to-authenticate-to-a-private-registry
+
+# end: 2026-10-12T15:17:11Z
+# exited: exit status 0
