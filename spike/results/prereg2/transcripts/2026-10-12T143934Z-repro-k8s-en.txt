@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id E:e8199cfe93a8f925c1daa098a873fc085670066c:content/en/docs/concepts/services-networking/cluster-ip-allocation.md|R|how-can-you-avoid-service-clusterip-conflicts-avoid-clusterip-conflict --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-8ts7IG
+# start: 2026-10-12T14:39:34Z
+# blockspec HEAD: 222ad492e548b17b87d8332a017a6341a659c2d5
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   ac7d7740c34bd860c2893aa697af623f4c5ad8b7b7844bfd70b95fd37a03ceee
+regenerated ac7d7740c34bd860c2893aa697af623f4c5ad8b7b7844bfd70b95fd37a03ceee
+F9 REPRODUCTION: BYTE-IDENTICAL  E:e8199cfe93a8f925c1daa098a873fc085670066c:content/en/docs/concepts/services-networking/cluster-ip-allocation.md|R|how-can-you-avoid-service-clusterip-conflicts-avoid-clusterip-conflict
+
+# end: 2026-10-12T14:39:48Z
+# exited: exit status 0
