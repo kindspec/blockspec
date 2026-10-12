@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "b98058aa4f582903b2c0f802108c7b7bba41ac31",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "a581759a96775bd2d90d1e91069bcdb6fa7acd2bea35301a4dee9974a578202b",
+ "id": "S25:46:content/en/docs/tasks/configure-pod-container/configure-pod-configmap.md|R|understanding-configmaps-and-pods",
+ "ok": true,
+ "regenerated_sha256": "a581759a96775bd2d90d1e91069bcdb6fa7acd2bea35301a4dee9974a578202b"
+}
