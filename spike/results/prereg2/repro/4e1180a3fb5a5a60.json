@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "7e2104ffdef25ee482c56424c570985910413183",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "240b2a57b1150b82e0922533d9cb88515eaaf3d03f071e0bffb7ac26c35ef660",
+ "id": "M:82ac6d49faa5f65c9f03e16f7718f7919c8ca0c8:content/en/docs/concepts/services-networking/ingress.md|R|path-types",
+ "ok": true,
+ "regenerated_sha256": "240b2a57b1150b82e0922533d9cb88515eaaf3d03f071e0bffb7ac26c35ef660"
+}
