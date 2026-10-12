@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id E:30e455331ad3e16198760e923e3b5ff2c180eb14:content/zh-cn/docs/tasks/administer-cluster/encrypt-data.md|Q|39 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-tFYAMQ
+# start: 2026-10-12T15:45:50Z
+# blockspec HEAD: f96c226be607062757149926113fb286bd3e3e97
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   1f658a01ba21de9bbac39afe3c8f97d6252ce6e0b03bdaefd89f75f5d9cb821e
+regenerated 1f658a01ba21de9bbac39afe3c8f97d6252ce6e0b03bdaefd89f75f5d9cb821e
+F9 REPRODUCTION: BYTE-IDENTICAL  E:30e455331ad3e16198760e923e3b5ff2c180eb14:content/zh-cn/docs/tasks/administer-cluster/encrypt-data.md|Q|39
+
+# end: 2026-10-12T15:46:14Z
+# exited: exit status 0

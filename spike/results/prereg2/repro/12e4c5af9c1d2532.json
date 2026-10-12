@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "f96c226be607062757149926113fb286bd3e3e97",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1f658a01ba21de9bbac39afe3c8f97d6252ce6e0b03bdaefd89f75f5d9cb821e",
+ "id": "E:30e455331ad3e16198760e923e3b5ff2c180eb14:content/zh-cn/docs/tasks/administer-cluster/encrypt-data.md|Q|39",
+ "ok": true,
+ "regenerated_sha256": "1f658a01ba21de9bbac39afe3c8f97d6252ce6e0b03bdaefd89f75f5d9cb821e"
+}
