@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "88476026a714cb524db74dec0901ebb07d69fbe8",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "42e7356faebb5c4f13be3e0f8fc8f2b1eca1965eac680f7ec9823f403068e837",
+ "id": "M:d118037f84d6dfe64db3fc2dad61b7c73e41d944:content/en/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes.md|Q|121",
+ "ok": true,
+ "regenerated_sha256": "42e7356faebb5c4f13be3e0f8fc8f2b1eca1965eac680f7ec9823f403068e837"
+}
