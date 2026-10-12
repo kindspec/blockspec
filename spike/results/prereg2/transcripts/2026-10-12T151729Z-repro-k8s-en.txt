@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id S25:3:content/en/docs/concepts/services-networking/ingress.md|R|ingress-controllers --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-OUweDs
+# start: 2026-10-12T15:17:29Z
+# blockspec HEAD: 07197ed0487619d94394ad618f4c112cbbc9694e
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   9788e8c279b1dc8a8c8f514e458e215cdbb781b58a45f771d6291297b972f7dd
+regenerated 9788e8c279b1dc8a8c8f514e458e215cdbb781b58a45f771d6291297b972f7dd
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:3:content/en/docs/concepts/services-networking/ingress.md|R|ingress-controllers
+
+# end: 2026-10-12T15:17:49Z
+# exited: exit status 0

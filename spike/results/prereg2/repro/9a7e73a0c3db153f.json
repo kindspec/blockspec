@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "07197ed0487619d94394ad618f4c112cbbc9694e",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "9788e8c279b1dc8a8c8f514e458e215cdbb781b58a45f771d6291297b972f7dd",
+ "id": "S25:3:content/en/docs/concepts/services-networking/ingress.md|R|ingress-controllers",
+ "ok": true,
+ "regenerated_sha256": "9788e8c279b1dc8a8c8f514e458e215cdbb781b58a45f771d6291297b972f7dd"
+}
