@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "867b8405a91098ebd8f4a5274bc444754ec1a4fb",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "9ea54e59aa6e2970acf6dabec6a4888023698e1eda47403d4f6098bbb4c0c97d",
+ "id": "S5:0:content/zh-cn/docs/reference/kubernetes-api/extend-resources/validating-webhook-configuration-v1.md|Q|149",
+ "ok": true,
+ "regenerated_sha256": "9ea54e59aa6e2970acf6dabec6a4888023698e1eda47403d4f6098bbb4c0c97d"
+}
