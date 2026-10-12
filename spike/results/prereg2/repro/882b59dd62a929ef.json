@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "5f544e9b0a68bbfa6d22de62d9d90a63742c3fe6",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "343b8592c482924de15584b8ee75391e2b594c867868b09f8de3751ddc0c8fdf",
+ "id": "S25:1:content/ko/docs/concepts/architecture/nodes.md|R|노드-컨트롤러",
+ "ok": true,
+ "regenerated_sha256": "343b8592c482924de15584b8ee75391e2b594c867868b09f8de3751ddc0c8fdf"
+}
