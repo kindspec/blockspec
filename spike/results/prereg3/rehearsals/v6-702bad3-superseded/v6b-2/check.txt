@@ -1,0 +1,7 @@
+binding run: 1; answered 488 of 488; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Backup retention was deliberately changed to 'thirty days' (oracle, l.3); mechanism hit the old 'seven days' text, marked 'Superseded Backup wording, kept for the change log' (l.14); the change is intentional, not an error
+  P-E: yes yes yes yes OK | q3 why: the oracle says 80 GB, 'raised from 50 GB in May' (l.3); the hit is a leftover duplicate 'Upload limits' section still saying 50 GB (l.12); the first section shows 50 GB is outdated, and the duplicate heading looks like a forgotten deletion
+V6 RUN: PASS

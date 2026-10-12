@@ -1,0 +1,7 @@
+binding run: 1; answered 488 of 488; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Hit the 'Superseded Backup wording' change-log copy (seven days) instead of the live policy (thirty days). The label makes the miss visible, and the policy change was deliberate.
+  P-E: yes yes yes yes OK | q3 why: Hit a stale duplicate 'Upload limits' section (50 GB) instead of the live one (80 GB, raised from 50 GB). The live text contradicts it, and leaving the old copy is an author slip.
+V6 RUN: PASS

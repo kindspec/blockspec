@@ -1,0 +1,232 @@
+2026-10-11T21:09:52Z BARS-V6.txt sha256 dba2b9524c0fed55def5ac145072303f12453200452b74b4b9bcac3ff1344da3 (before v6b-1)
+gate fixture <V6>/gate: verdict commit f6f92135d807 dated 2026-10-08T12:00:00Z; model claude-opus-5-5
+<V6>/v6b-1/export: 488 packets (5 plants), validate3 clean
+2026-10-11T21:09:57Z credential mtime 2026-10-11T16:47:30Z (before v6b-1)
+duplicate session: v6-v6b-1
+2026-10-11T21:16:37Z note: the first v6b-1 attempt never started; tmux refused a duplicate session name left from the superseded 702bad3 series. Its export was built and is removed; nothing ran. Session names now carry the output directory.
+2026-10-11T21:16:38Z BARS-V6.txt sha256 dba2b9524c0fed55def5ac145072303f12453200452b74b4b9bcac3ff1344da3 (before v6b-1, restart)
+<V6>/v6b-1/export: 488 packets (5 plants), validate3 clean
+2026-10-11T21:16:38Z credential mtime 2026-10-11T16:47:30Z (before v6b-1)
+2026-10-11T21:30:38Z credential mtime 2026-10-11T16:47:30Z (after v6b-1)
+binding run: 1; answered 488 of 488; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Hit the 'Superseded Backup wording' change-log copy (seven days) instead of the live policy (thirty days). The label makes the miss visible, and the policy change was deliberate.
+  P-E: yes yes yes yes OK | q3 why: Hit a stale duplicate 'Upload limits' section (50 GB) instead of the live one (80 GB, raised from 50 GB). The live text contradicts it, and leaving the old copy is an author slip.
+V6 RUN: PASS
+<V6>/v6b-2/export: 488 packets (5 plants), validate3 clean
+2026-10-11T21:30:38Z credential mtime 2026-10-11T16:47:30Z (before v6b-2)
+2026-10-11T22:01:39Z credential mtime 2026-10-11T16:47:30Z (after v6b-2)
+binding run: 1; answered 488 of 488; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Backup retention changed from seven to thirty days; mechanism hit the old text under 'Superseded Backup wording, kept for the change log', which is visibly marked superseded
+  P-E: yes yes yes yes OK | q3 why: Limit raised to 80 GB in the first 'Upload limits'; a leftover duplicate 'Upload limits' section at the end still says 50 GB and caught the quote; the live section says 'raised from 50 GB', so the stale duplicate is a visible authoring slip
+V6 RUN: PASS
+<V6>/v6b-3/export: 488 packets (5 plants), validate3 clean
+2026-10-11T22:01:39Z credential mtime 2026-10-11T16:47:30Z (before v6b-3)
+2026-10-11T22:19:55Z credential mtime 2026-10-11T16:47:30Z (after v6b-3)
+binding run: 1; answered 488 of 488; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Quote hit the 'Superseded Backup wording' copy (seven days) in the Change log, while the live Backup service text now says thirty days; the label makes the miss visible, and keeping the old text is intentional, not an error.
+  P-E: yes yes yes yes OK | q3 why: Quote hit a stale duplicate 'Upload limits' section still saying 50 GB; the real section now says 80 GB, raised from 50 GB, so a reader can see the hit is outdated and the duplicate heading is an author slip.
+V6 RUN: PASS
+V6-SERIES-DONE v6b full 3
+2026-10-11T22:19:55Z BARS-V6.txt sha256 dba2b9524c0fed55def5ac145072303f12453200452b74b4b9bcac3ff1344da3 (before v6a-1)
+<V6>/v6a-1/export: 30 packets (5 plants), validate3 clean
+2026-10-11T22:19:55Z credential mtime 2026-10-11T16:47:30Z (before v6a-1)
+2026-10-11T22:23:55Z credential mtime 2026-10-11T16:47:30Z (after v6a-1)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Live Backup service now keeps snapshots thirty days; the quote matches only the change-log copy labeled 'Superseded Backup wording', so the retention period differs and the label shows the landing is wrong
+  P-E: yes yes yes yes OK | q3 why: Mechanism hit a stale duplicate 'Upload limits' section still saying 50 GB, while the live section says 80 GB, raised from 50 GB; the duplicate heading and the 'raised from 50 GB' wording visibly expose a leftover the author failed to remove
+V6 RUN: PASS
+<V6>/v6a-2/export: 30 packets (5 plants), validate3 clean
+2026-10-11T22:23:55Z credential mtime 2026-10-11T16:47:30Z (before v6a-2)
+2026-10-11T22:29:25Z credential mtime 2026-10-11T16:47:30Z (after v6a-2)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Backup retention deliberately changed seven->thirty days; quote lands on the copy explicitly labeled 'Superseded Backup wording' in the change log, which a reader can see is not live policy; no author error.
+  P-E: yes yes yes yes OK | q3 why: Limit raised to 80 GB in first Upload limits; a stale duplicate 'Upload limits' section with the old 50 GB text was left at the end (visible author error), and 'raised from 50 GB' shows the matched copy is stale.
+V6 RUN: PASS
+<V6>/v6a-3/export: 30 packets (5 plants), validate3 clean
+2026-10-11T22:29:25Z credential mtime 2026-10-11T16:47:30Z (before v6a-3)
+2026-10-11T22:33:55Z credential mtime 2026-10-11T16:47:30Z (after v6a-3)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Mechanism hit the change-log copy (seven days), labeled 'Superseded Backup wording', instead of the live Backup text (thirty days); the label shows the miss, and keeping the old wording is deliberate.
+  P-E: yes yes yes yes OK | q3 why: Mechanism hit a stale duplicate 'Upload limits' section (50 GB) instead of the live one (80 GB); the live text says 'raised from 50 GB', exposing the stale duplicate left in the file.
+V6 RUN: PASS
+<V6>/v6a-4/export: 30 packets (5 plants), validate3 clean
+2026-10-11T22:33:56Z credential mtime 2026-10-11T16:47:30Z (before v6a-4)
+2026-10-11T22:38:41Z credential mtime 2026-10-11T16:47:30Z (after v6a-4)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Backup retention was deliberately changed to thirty days. The quote lands on the change-log copy of the old 'seven days' text, so the retention period differs. The 'Superseded Backup wording' label shows the wrong landing, but the edit is intentional, not an author error.
+  P-E: yes yes yes yes OK | q3 why: The live Upload limits now says 80 GB, but the quote lands on a stale duplicate 'Upload limits' section at the end that says 50 GB. The live text's 'raised from 50 GB in May' shows the landing is stale, and the leftover duplicate section is a visible author error.
+V6 RUN: PASS
+<V6>/v6a-5/export: 30 packets (5 plants), validate3 clean
+2026-10-11T22:38:41Z credential mtime 2026-10-11T16:47:30Z (before v6a-5)
+2026-10-11T22:43:41Z credential mtime 2026-10-11T16:47:30Z (after v6a-5)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: The quote landed on the 'Superseded Backup wording' copy in the Change log (seven days), while Backup service now says thirty; the meaning differs, the label shows the landing is wrong, and the copy is deliberate
+  P-E: yes yes yes yes OK | q3 why: The quote landed on a stale duplicate 'Upload limits' section (50 GB), while the live section says 80 GB 'raised from 50 GB'; the conflicting duplicate heading shows the miss and is a visible author error (a stale section left behind)
+V6 RUN: PASS
+<V6>/v6a-6/export: 30 packets (5 plants), validate3 clean
+2026-10-11T22:43:41Z credential mtime 2026-10-11T16:47:30Z (before v6a-6)
+2026-10-11T22:47:41Z credential mtime 2026-10-11T16:47:30Z (after v6a-6)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Mechanism landed on the change-log copy (seven days), while the live Backup policy now says thirty days; the only match is explicitly labelled 'Superseded', so a reader can see it; the edit itself is legitimate.
+  P-E: yes yes yes yes OK | q3 why: Mechanism hit a stale duplicate 'Upload limits' section (50 GB); the live limit is 80 GB. The first section says it was 'raised from 50 GB in May', so a reader can tell the 50 GB copy is outdated, and the contradictory duplicate heading is a visible author error.
+V6 RUN: PASS
+<V6>/v6a-7/export: 30 packets (5 plants), validate3 clean
+2026-10-11T22:47:41Z credential mtime 2026-10-11T16:47:30Z (before v6a-7)
+2026-10-11T22:51:12Z credential mtime 2026-10-11T16:47:30Z (after v6a-7)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Backup retention changed to thirty days; quote matched the copy under 'Superseded Backup wording, kept for the change log' - value and live status differ, the superseded label is visible; this is a legitimate edit, not an error
+  P-E: yes yes yes yes OK | q3 why: Live Upload limits now says 80 GB, raised from 50 GB; quote matched a stale duplicate 'Upload limits' section at the end still saying 50 GB - value differs; the live text's 'raised from 50 GB' shows the hit is stale; the leftover contradictory duplicate section is a visible author error
+V6 RUN: PASS
+<V6>/v6a-8/export: 30 packets (5 plants), validate3 clean
+2026-10-11T22:51:12Z credential mtime 2026-10-11T16:47:30Z (before v6a-8)
+2026-10-11T22:55:12Z credential mtime 2026-10-11T16:47:30Z (after v6a-8)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Quote landed on the change-log copy labelled 'Superseded Backup wording' (seven days) instead of the live Backup text (thirty days); label makes it visible; deliberate archival copy, no author error
+  P-E: yes yes no yes MISMATCH | q3 why: Mechanism hit a stale duplicate 'Upload limits' section saying 50 GB; oracle says 80 GB; quote matches the stale copy verbatim so a reader cannot tell; duplicated section is a visible author error
+V6 RUN: FAIL
+STOP: v6a-8 failed the bar
+2026-10-12T05:17:15Z BARS-V6.txt sha256 0b6a3015c75c00dac23486f92af50a248d0ff80cefd8a53dbbe32ad14a1d27d5 (addendum, before v6a-9)
+<V6>/v6a-9/export: 30 packets (5 plants), validate3 clean
+2026-10-12T05:17:41Z credential mtime 2026-10-12T00:42:45Z (before v6a-9)
+2026-10-12T05:21:56Z credential mtime 2026-10-12T00:42:45Z (after v6a-9)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Retention was deliberately changed from seven to thirty days; the quote matched the change-log copy marked 'Superseded Backup wording', so an assertion about current retention would be false, and the label shows it is superseded; this is an intended edit, not an author error
+  P-E: yes yes yes yes OK | q3 why: The quota rose to 80 GB; the quote matched a stale duplicate 'Upload limits' section still saying 50 GB, while the live section says 'raised from 50 GB in May', which exposes it; the leftover duplicate heading is a visible author error
+V6 RUN: PASS
+consecutive passes: 1 of 10
+<V6>/v6a-10/export: 30 packets (5 plants), validate3 clean
+2026-10-12T05:21:56Z credential mtime 2026-10-12T00:42:45Z (before v6a-10)
+2026-10-12T05:25:26Z credential mtime 2026-10-12T00:42:45Z (after v6a-10)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Quote hit the 'Superseded Backup wording' change-log copy (seven days); live Backup text now says thirty days, a deliberate policy change
+  P-E: yes yes yes yes OK | q3 why: Quote hit a stale duplicate 'Upload limits' section (50 GB); the first one says 80 GB, raised from 50 GB, so the stale leftover duplicate is a visible author error
+V6 RUN: PASS
+consecutive passes: 2 of 10
+<V6>/v6a-11/export: 30 packets (5 plants), validate3 clean
+2026-10-12T05:25:27Z credential mtime 2026-10-12T00:42:45Z (before v6a-11)
+2026-10-12T05:35:27Z credential mtime 2026-10-12T00:42:45Z (after v6a-11)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Backup retention changed seven->thirty days; quote matched the copy under 'Superseded Backup wording, kept for the change log:', which labels it as stale; deliberate archive, not an author error
+  P-E: yes yes yes yes OK | q3 why: Oracle says 80 GB (raised from 50 GB); mechanism hit a stale duplicate 'Upload limits' section still saying 50 GB; the file's own 'raised from 50 GB' and the duplicated heading expose it and are an author error
+V6 RUN: PASS
+consecutive passes: 3 of 10
+<V6>/v6a-12/export: 30 packets (5 plants), validate3 clean
+2026-10-12T05:35:27Z credential mtime 2026-10-12T00:42:45Z (before v6a-12)
+2026-10-12T05:39:27Z credential mtime 2026-10-12T00:42:45Z (after v6a-12)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: The quote landed on the superseded change-log copy ('seven days'), not the live Backup service text ('thirty days'); the change-log label shows it is stale, and the seven-to-thirty edit is a clean, deliberate change
+  P-E: yes yes yes yes OK | q3 why: The quote landed on a stale duplicate 'Upload limits' section at the end (50 GB), not the live one (80 GB); the live text says the limit was 'raised from 50 GB', so a reader can see the match is stale, and the leftover duplicate section is a visible author error
+V6 RUN: PASS
+consecutive passes: 4 of 10
+<V6>/v6a-13/export: 30 packets (5 plants), validate3 clean
+2026-10-12T05:39:27Z credential mtime 2026-10-12T00:42:45Z (before v6a-13)
+2026-10-12T05:44:42Z credential mtime 2026-10-12T00:42:45Z (after v6a-13)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: The live Backup policy now says thirty days; the quote exactly matches the seven-day text kept under 'Superseded Backup wording, kept for the change log'. The label shows it is superseded, and keeping it was a deliberate choice, not an error.
+  P-E: yes yes yes yes OK | q3 why: The live Upload limits section now says 80 GB (raised from 50 GB); a duplicate stale 'Upload limits' section at the end still says 50 GB and matches the quote exactly. The contradiction and duplicate heading are visible and look like an author's leftover.
+V6 RUN: PASS
+consecutive passes: 5 of 10
+<V6>/v6a-14/export: 30 packets (5 plants), validate3 clean
+2026-10-12T05:44:43Z credential mtime 2026-10-12T00:42:45Z (before v6a-14)
+2026-10-12T05:47:58Z credential mtime 2026-10-12T00:42:45Z (after v6a-14)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Quote matched the 'Superseded Backup wording' copy in the change log (seven days) instead of live Backup service text (thirty days); superseded label visible, retention deliberate
+  P-E: yes yes yes yes OK | q3 why: A stale duplicate 'Upload limits' section still says 50 GB while the live one says 80 GB (raised from 50 GB); the conflicting duplicate heading is a visible authoring error
+V6 RUN: PASS
+consecutive passes: 6 of 10
+<V6>/v6a-15/export: 30 packets (5 plants), validate3 clean
+2026-10-12T05:47:58Z credential mtime 2026-10-12T00:42:45Z (before v6a-15)
+2026-10-12T05:57:13Z credential mtime 2026-10-12T00:42:45Z (after v6a-15)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Quote lands on superseded change-log copy (seven days) instead of live Backup text (thirty days); the after-file labels it superseded
+  P-E: yes yes yes yes OK | q3 why: Quote lands on a stale duplicate 'Upload limits' section (50 GB) instead of the live one (80 GB, 'raised from 50 GB'); the contradiction and duplicated heading are visible
+V6 RUN: PASS
+consecutive passes: 7 of 10
+<V6>/v6a-16/export: 30 packets (5 plants), validate3 clean
+2026-10-12T05:57:13Z credential mtime 2026-10-12T00:42:45Z (before v6a-16)
+2026-10-12T06:01:13Z credential mtime 2026-10-12T00:42:45Z (after v6a-16)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Mechanism hit the change-log copy explicitly labeled 'Superseded Backup wording' (seven days); live Backup service (oracle) says thirty days; a deliberate retention change, not an author slip
+  P-E: yes yes yes yes OK | q3 why: Mechanism hit a leftover duplicate 'Upload limits' section still saying 50 GB; live section (oracle) says 80 GB 'raised from 50 GB in May', so the stale duplicate is visibly contradicted
+V6 RUN: PASS
+consecutive passes: 8 of 10
+<V6>/v6a-17/export: 30 packets (5 plants), validate3 clean
+2026-10-12T06:01:13Z credential mtime 2026-10-12T00:42:45Z (before v6a-17)
+2026-10-12T06:05:29Z credential mtime 2026-10-12T00:42:45Z (after v6a-17)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: The live Backup text now says 'thirty days' but the mechanism landed on the 'seven days' copy kept under 'Change log', which is labelled superseded, so the wrong landing is visible; the retention change was a deliberate edit, not an error.
+  P-E: yes yes yes yes OK | q3 why: Mechanism landed on a stale duplicate 'Upload limits' section (50 GB) left at the end of the file, while the live limit is 80 GB; the first section's 'raised from 50 GB in May' shows the quoted text is outdated, and the leftover duplicate section is a visible author error.
+V6 RUN: PASS
+consecutive passes: 9 of 10
+<V6>/v6a-18/export: 30 packets (5 plants), validate3 clean
+2026-10-12T06:05:29Z credential mtime 2026-10-12T00:42:45Z (before v6a-18)
+2026-10-12T06:09:29Z credential mtime 2026-10-12T00:42:45Z (after v6a-18)
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Quote ('seven days') matched the superseded copy in the Change log, while the live Backup service text now says thirty days; the claim differs, the 'Superseded ... kept for the change log' label makes the miss visible, and the edit looks deliberate.
+  P-E: yes yes yes yes OK | q3 why: Quote ('50 GB') matched a stale duplicate 'Upload limits' section at the end, while the live one says 80 GB, raised from 50 GB in May; the limit differs, the file openly contradicts the matched text, and leaving a stale duplicate section is a visible author error.
+V6 RUN: PASS
+consecutive passes: 10 of 10
+V6-SERIES-DONE v6a 30: 10 consecutive passes, ending at 18; failed runs in total: 1

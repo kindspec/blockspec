@@ -1874,3 +1874,121 @@ owner decision reads this as follows: a fresh agent with no access to the
 authoring conversation counts as independent, and the barrier is the export
 directory, with no `.git`. The sandboxed tierer sees only the export, so it
 meets §7.3.
+
+## 2026-10-12 — §27. Prereg 3's validation commit
+
+This entry belongs to prereg 3's validation pull request, step 2 of
+PRE-REGISTRATION-3.md §7. The validation commit is that PR's squash commit:
+the one commit that adds `results/prereg3/VALIDATION`. Prereg 2's tiering
+has not started.
+
+### The split reading, and the harness it binds
+
+PRE-REGISTRATION-3.md (blockspec#22, merged as `73fa0c0`) lists "the new
+harness files" as part of validation 3. These are read as two pull
+requests, matching prereg 2's #16 and #17:
+- blockspec#23 merged `spike/harness3/` as
+  `33f3a341a6ef1995d5623795b25b48f1e70c3c00`;
+- this PR adds `results/prereg3/VALIDATION`, and adds nothing under
+  `harness3/` or `PRE-REGISTRATION-3.md`.
+
+`p3/binding.py` requires exactly this. It refuses a validation commit that
+changes `harness3/` or `PRE-REGISTRATION-3.md`, and any later commit that
+does.
+
+| path | git tree or blob sha at `33f3a34` |
+|---|---|
+| `spike/harness3` | `3b26a87215a0c51b723633b2afb423254044e07d` |
+| `spike/PRE-REGISTRATION-3.md` | `f36b1ecafae7fc67edc570a8e11fea9117b4196a` |
+| `spike/harness` | `cf57ca84e353810fa4c8f34f1c50ac43d10d2f54`, as at `d79bf2e` |
+| `spike/PRE-REGISTRATION-2.md` | `24496a7385ca2748f899f5db7eaea20b9082ec21`, as at `d79bf2e` |
+| `spike/ORACLE.md` | `4a72c84cefbd0a91cd15573caf11a6c3dff2ffe6`, as at `d79bf2e` |
+
+The `spike/harness3` tree at `33f3a34` equals the one at #23's last commit,
+`b50beb2`.
+
+### The sealed manifest
+
+`prereg3.py seal` drew a new nonce and wrote the sealed manifest outside the
+repository, at `/home/cam/kindspec-data/prereg3-seal/manifest.json`, mode 600,
+in a directory of mode 700. Its sha256 is
+`19aa710cd9962a6788369ff378cf9620815cc53d66c2c3c54a826c7857fbea50`, and
+`results/prereg3/VALIDATION` holds it. The manifest itself is committed at
+step 8 of §7. The seal transcript is committed verbatim, local path
+included, as prereg 2's was.
+
+### V steps
+
+`harness3/prereg3_validate.sh all` ran on `33f3a34`. Its transcripts are in
+`results/prereg3/validation/`.
+
+| step | result |
+|---|---|
+| V0 | 7 of 7 checks passed. Red mode, one planted fault per check: 0 of 7, as planted |
+| V3 | 132 of 132 cases passed |
+| V4 | 52 mutants: 52 killed, 0 survived, 0 broken. Each mutant hash-verified, and each file restored to its hashed bytes |
+| V5 | prereg 2's V5, run unchanged: PASS |
+
+V1 and V2 are not rerun, as §9 says.
+
+### V6, and the owner's ruling on its bar
+
+V6 ran `prereg3.py tier-run --unbound`, the bound tier-run code, on
+synthetic exports built from harness3's own texts and plants. It ran at
+`33f3a34`, one run at a time, each in its own tmux session, and no run saw a
+real packet. `results/prereg3/rehearsals/v6/` holds the evidence.
+
+- **Bar B, full size** (483 fillers + 5 plants = 488 packets): 3 of 3 runs
+  passed, `v6b-1` to `v6b-3`. No 488-packet run started within an hour of a
+  predicted credential renewal.
+- **Bar A, 30 packets.** `v6a-1` to `v6a-7` passed. **`v6a-8` failed:**
+  - P-E answered q3 "no", where "yes" is expected. Its `why`: "quote matches
+    the stale copy verbatim so a reader cannot tell".
+  - Every packet was answered, the prompt sha matched, and the init check
+    passed.
+  - Under the void rule, a bound run with this answer would void.
+  - The run is reported and kept.
+- **The wording of the bar.** `BARS-V6.txt`, written before the runs, said
+  "Any other failure stops the series and fails the bar", and the series
+  stopped. That wording was stricter than the bar the frozen document cites.
+- **The owner's ruling.** The frozen document's cited bar governs: §3's
+  `BARS.txt` bar 1, "10 consecutive runs … A run that fails restarts the
+  count", with every run kept. An addendum to `BARS-V6.txt` recorded this
+  before `v6a-9` ran, with its sha logged. It also set a stop condition: stop
+  at 3 failed bar-A runs in total.
+- **Bar A then:** after the ruling, `v6a-9` to `v6a-18` passed: 10 consecutive. Bar A passed, with 1 failed run (`v6a-8`) among its 18 runs. The stop condition, 3 failed runs, was not reached.
+- **§9's summary misstates the bar it cites.** PRE-REGISTRATION-3.md §9 V6
+  describes the bar as "one 30-packet run with every plant's q1–q4 as
+  expected". The bar it cites, and goes on to say V6 repeats, is `BARS.txt`
+  bar 1: 10 consecutive 30-packet runs. §11 allows §9's V-list to be corrected
+  where it is wrong about a fact, so the correction is logged here, with the
+  original wording quoted above.
+- **P-E's q3 record.** This counts every completed run with the final plants
+  and prompt: the v2.1 rehearsals `p3g` and `p3i`, the superseded V6 at
+  `702bad3`, and this V6. P-E answered q3 'yes' in 46 of 47 completed runs, and 'no' in 1 (`v6a-8`). The exact one-sided 95% upper bound on the per-run 'no' rate is 9.7% (`tools/pe_record.py`, output in `pe_record.out`). This is the measured risk that P-E alone
+  voids prereg 3's bound tiering run. No plant or prompt change is possible:
+  both are frozen.
+- **The prompt check.** Each V6 run's prompt sha256 was checked against the
+  "Appendix A as sent" line in its tier-run transcript, which harness3 writes
+  before the agent starts, not against a separate run-info file. Every V6 run
+  sent `2779cd58c9c7882aad9706e2e999c87f5e7b341f14f7141282a5bda798226a0f`.
+- **The superseded V6.** An earlier V6 ran at `702bad3`, before #23's review
+  fixes changed code that tier-run imports. It passed 10 of 10 and 3 of 3.
+  It is kept, as superseded evidence, in
+  `results/prereg3/rehearsals/v6-702bad3-superseded/`.
+
+### Rehearsal evidence and licence
+
+- `results/prereg3/rehearsals/` holds what PRE-REGISTRATION-3.md §10
+  promises. Its `README.md` lists the contents. Local paths are scrubbed, and
+  prereg 2's plant packet names are withheld until prereg 2's manifest
+  commit.
+- The run directories are in `runs.tar.xz` and `v6*/v6-runs.tar.xz`. The
+  README gives the sha256 of each.
+- The README also records one observation. In the `run-p3i-1` rehearsal,
+  `tiers.jsonl` was rewritten six times: every line was kept, and only the
+  order changed. Neither harness monitors this, and neither pre-registration
+  requires `tiers.jsonl` to be append-only.
+- LICENSE gains a row for `spike/results/prereg3/`: CC-BY-4.0, except
+  third-party excerpts. The synthetic packets quote CPython 3.13
+  standard-library docstrings, which keep the PSF License Version 2.

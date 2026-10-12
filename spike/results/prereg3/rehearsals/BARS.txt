@@ -1,0 +1,90 @@
+Pass bars for the prereg-3 v2 rehearsals, written before any v2 run started.
+Written 2026-10-11T04:09Z (`date -u`). The plants module is the prototype's
+prereg3_plants.py with five plants, sha256 prefix 817ec6bfcbc6.
+
+1. Plant bar (30 packets). 25 random synthetic fillers + the five plants
+   (P-A..P-E), fresh random names, prereg 3's Appendix A and PACKETS.txt.
+   Labels p3b-1, p3b-2, ... Pass: 10 consecutive runs in which every plant
+   gives all four expected answers and every packet is answered. A run that
+   fails restarts the count; if a plant is revised, the count restarts from
+   zero with the revised set, and every earlier run stays in the table.
+
+2. Full-size bar (V6 style). All 483 synthetic fillers + the same five plants,
+   fresh random names (488 packets). Labels p3f-1, p3f-2, p3f-3. Run only after
+   bar 1 passes, with the identical plants module. Pass: all three runs answer
+   all 488 packets, and every plant gives all four expected answers in all
+   three. Any failure is reported as a failure; it is not rerun away.
+
+3. Zero-failure bound reported with the result: with n passing runs and no
+   failure, the one-sided 95% upper bound on the per-run failure rate is
+   1 - 0.05^(1/n): n=10 gives 25.9%, n=13 gives 20.6%.
+
+Addendum, 2026-10-11T04:37Z, before any p3c run. run-p3b-5 failed bar 1:
+P-B was marked unplaceable (its status line appeared twice in the before-file,
+so the reference's origin was ambiguous). P-B is revised so that the line is
+unique in the before-file (Beta's status reads "under review"). New plants
+module sha256 prefix cc6eb0e3c50c. Per bar 1, the count restarts at zero with
+the revised set, labels p3c-1, p3c-2, ...; bar 2 uses labels p3f-1..3 with
+this same module. Runs p3b-1..5 stay in the table.
+
+Addendum, 2026-10-11T05:23Z, before any p3d run. run-p3c-9 failed bar 1
+(after 8 passes): P-E answered q3 "no" because "nothing marks which copy is
+current". P-E is revised: the live line reads "80 GB, raised from 50 GB in May,".
+New plants module sha256 prefix f5f5a37600a6. The count restarts at zero:
+labels p3d-1, p3d-2, ...; bar 2 then uses labels p3f-1..3 with this module.
+Runs p3c-1..9 stay in the table.
+
+Addendum, 2026-10-11T06:14Z, before any p3e run. run-p3d-9 failed bar 1
+(after 8 passes): P-B was marked unplaceable because its two targets have the
+same text and "the packet gives no location". This is a property of the packet
+format, not of P-B alone, so the fix is in the prompt: Appendix A's "They differ."
+becomes "They differ: unless the oracle says the text was deleted, they are
+different places in the after-file, even when their text is the same."
+New PROMPT.md sha256 prefix b52ac3792010. Plants unchanged (f5f5a37600a6).
+Both bars restart at zero: labels p3e-1, p3e-2, ... for bar 1, then p3f-1..3
+for bar 2. Runs p3d-1..9 stay in the table.
+
+Note, 2026-10-11T07:33:44Z: run-p3f-2 failed bar 2 (P-B q3 "yes", P-C q3 "yes":
+"the quote matching twice is visible"). Bar 2 is FAILED. p3f-3 is still run,
+because bar 2 named three runs; its result is reported either way and cannot
+turn bar 2 into a pass.
+
+=== v2.1 bars, written 2026-10-11T07:49:30Z, before any v2.1 run ===
+Change: Appendix A gains one sentence after "...from the files alone.":
+"For question 3, a quote that matches more than one place does not by itself
+show that it landed wrong." New PROMPT.md sha256 prefix 2779cd58c9c7.
+Plants unchanged: module sha256 prefix f5f5a37600a6.
+
+Bar 1': labels p3g-1..p3g-10. 10 consecutive 30-packet runs, every plant's
+q1-q4 as expected and every packet answered. Any failure stops the series.
+Bar 2': labels p3h-1..p3h-3, run only if bar 1' passes. Three full-size runs
+(483 synthetic fillers + 5 plants, 488 packets), every packet answered and every
+plant's q1-q4 as expected in all three. All three are run; any failure fails
+the bar.
+Guard against suppressing a true q3 "yes": any P-D or P-E q3 "no" in any
+v2.1 run fails the bar it belongs to outright. P-D's and P-E's q3 rationales
+are reported from every run. P-E's "yes" is checked by reading its rationale:
+it must rest on the stale section's content (50 GB against the live 80 GB,
+raised from 50 GB), not on the quote matching twice; a P-E rationale that rests
+only on the duplicate match is reported as a failure of this check.
+Stop rule: if bar 1' or bar 2' fails, stop and do not iterate further.
+
+Result, 2026-10-11T08:54:05Z: bar 1' PASSED (p3g-1..10, 10 of 10; every P-D and
+P-E q3 "yes", every P-E rationale on the 50/80 GB content). Bar 2' FAILED at
+p3h-1: the run ended after 280 of 488 packets with "Failed to authenticate:
+OAuth token revoked" (HTTP 401, 08:52Z); the host credential file was
+rewritten at 08:52Z. P-A was among the untiered packets. All four tiered plants
+were right. Per the stop rule, p3h-2 and p3h-3 were not run.
+
+Addendum, 2026-10-11T08:58:00Z, before any p3i run: run-p3h-1 was an environment
+abort (HTTP 401 "OAuth token revoked" after 280 of 488 packets) and is not a
+judgement on the answers. Bar 2' restarts as p3i-1, p3i-2, p3i-3 under the
+same criteria (488 packets, every packet answered, every plant's q1-q4 as
+expected, any P-D or P-E q3 "no" fails outright, P-E rationale read for
+content). Any further auth abort stops the series. Prompt 2779cd58c9c7 and
+plants f5f5a37600a6 unchanged.
+
+Result, 2026-10-11T10:21:31Z: bar 2' (restart) PASSED 3 of 3: p3i-1, p3i-2, p3i-3
+each answered 488 of 488 with every plant's q1-q4 as expected; P-D and P-E q3
+"yes" in all three; no auth error; credential mtime unchanged (08:52:20Z)
+before and after every run.

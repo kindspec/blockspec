@@ -1,0 +1,22 @@
+# blockspec HEAD 33f3a341a6ef1995d5623795b25b48f1e70c3c00  uncommitted or ignored files under spike/harness3, PRE-REGISTRATION-3.md: 0
+# python 3.13.5  git 2.47.3  D8 HEAD d51ce09cdb23af32f35e7a3c6111ac21ab0f033f
+PASS  PRE-REGISTRATION-3.md is the merged document  -- 92a97ce15783e96b
+PASS  Appendix B's texts are prereg3_plants.PLANTS's  -- 10 blocks
+PASS  Appendix A as PROMPT.md hashes to the registered prompt  -- 2779cd58c9c7882a
+PASS  QUESTIONS.md: prereg 2's §7.1 table and §7.2, then Appendix A
+PASS  p3/plants.py's expectations are §3's table
+PASS  prereg 2's harness, PRE-REGISTRATION-2.md and ORACLE.md are d79bf2e's
+PASS  prereg 2's binding check still binds a prereg 2 command here
+7 of 7 checks passed
+V0: PASS
+== V0 red: one planted fault per check, in memory; every check must FAIL
+FAIL  PRE-REGISTRATION-3.md is the merged document  -- 92a97ce15783e96b
+FAIL  Appendix B's texts are prereg3_plants.PLANTS's  -- 10 blocks
+FAIL  Appendix A as PROMPT.md hashes to the registered prompt  -- 0000000000000000
+FAIL  QUESTIONS.md: prereg 2's §7.1 table and §7.2, then Appendix A
+FAIL  p3/plants.py's expectations are §3's table
+FAIL  prereg 2's harness, PRE-REGISTRATION-2.md and ORACLE.md are d79bf2e's  -- harness/prereg2_validate.sh: not in f59c109 (untracked or ignored); harness/prereg2.py: not in f59c109 (untracked or ignored); harness/prereg2_v3.py: not in f59c109 (untracked or ignored); harness/pre
+FAIL  prereg 2's binding check still binds a prereg 2 command here  -- 0 commits in HEAD's history add results/prereg2/VALIDATION-red; the validation commit is the one that adds it
+0 of 7 checks passed
+V0 RED: PASS (every check failed on its planted fault)
+exit=0

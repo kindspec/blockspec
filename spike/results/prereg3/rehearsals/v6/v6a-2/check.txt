@@ -1,0 +1,7 @@
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: Backup retention deliberately changed seven->thirty days; quote lands on the copy explicitly labeled 'Superseded Backup wording' in the change log, which a reader can see is not live policy; no author error.
+  P-E: yes yes yes yes OK | q3 why: Limit raised to 80 GB in first Upload limits; a stale duplicate 'Upload limits' section with the old 50 GB text was left at the end (visible author error), and 'raised from 50 GB' shows the matched copy is stale.
+V6 RUN: PASS

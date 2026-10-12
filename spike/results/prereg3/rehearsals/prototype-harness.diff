@@ -1,0 +1,155 @@
+diff -ru '--exclude=__pycache__' <SCRATCH>/q-prereg3/proto/spike/harness.orig/p2/export.py <SCRATCH>/q-prereg3/proto/spike/harness/p2/export.py
+--- <SCRATCH>/q-prereg3/proto/spike/harness.orig/p2/export.py	2026-10-09 20:08:20.000000000 -0400
++++ <SCRATCH>/q-prereg3/proto/spike/harness/p2/export.py	2026-10-11 00:08:46.110165082 -0400
+@@ -21,19 +21,27 @@
+ # PRE-REGISTRATION-2.md as merged (blockspec f59c109). The texts a packet
+ # carries are cut from it, so a changed document is refused, not exported.
+ PREREG_SHA256 = "3cbcad16df127c021cbc1216bdcac54238a4ac14084878c7f65075d161f6a18f"
++# PROTOTYPE (prereg 3): Appendix A is cut from PRE-REGISTRATION-3.md. The
++# bound implementation pins its sha256 as PREREG_SHA256 pins prereg 2's.
++PREREG3 = os.path.join(HERE, "..", "..", "PRE-REGISTRATION-3.md")
++MANIFEST = "PACKETS.txt"
+ 
+ # Appendix B: the expected answers and tier of each plant.
+ PLANT_EXPECT = {
+     "P-A": {"q1": "yes", "q2": "yes", "q3": "no", "q4": "no", "tier": "A"},
+     "P-B": {"q1": "yes", "q2": "no", "q3": "no", "q4": "no", "tier": "B"},
+     "P-C": {"q1": "no", "q2": "no", "q3": "no", "q4": "no", "tier": "C"},
++    # PROTOTYPE (prereg 3): positive controls. The bound code keeps these in
++    # harness3's own plant manifest; p2's PLANT_EXPECT stays at three.
++    "P-D": {"q1": "yes", "q2": "yes", "q3": "yes", "q4": "no", "tier": "A"},
++    "P-E": {"q1": "yes", "q2": "yes", "q3": "yes", "q4": "yes", "tier": "A"},
+ }
+ 
+ PACKET_FIELDS = {"packet", "reference_kind", "reference", "mechanism_target",
+                  "oracle_target", "files", "questions"}
+ FILE_ROLES = {"before": "before.md", "after": "after.md", "base": "base.md",
+               "leg_a": "leg-a.md", "leg_c": "leg-c.md"}
+-ROOT_FILES = {"PROMPT.md", "packets"}
++ROOT_FILES = {"PROMPT.md", "packets", "PACKETS.txt"}
+ NAME_RE = re.compile(r"^[0-9a-f]{16}$")
+ DELETED_TEXT = "(none: the oracle says the referenced text was deleted by the edit)"
+ 
+@@ -51,6 +59,15 @@
+     return raw.decode("utf-8")
+ 
+ 
++def prereg3_text():
++    return open(PREREG3, "rb").read().decode("utf-8")
++
++
++def manifest_text(names):
++    """PACKETS.txt: every packet name, sorted, one per line."""
++    return "".join(n + "\n" for n in sorted(names))
++
++
+ def _between(text, start, stop):
+     a = text.index(start)
+     b = text.index(stop, a)
+@@ -62,14 +79,14 @@
+     t = prereg_text()
+     table = _between(t, "| tier | shape | qualifies |", "\nTiers are assigned")
+     s72 = _between(t, "### 7.2 Questions, and the computed tier", "### 7.3 Procedure")
+-    appa = _between(t, "## Appendix A — the tierer's prompt, verbatim", "## Appendix B")
++    appa = _between(prereg3_text(), "## Appendix A — the tierer's prompt, verbatim", "## Appendix B")
+     return "### 7.1 Tiers (table)\n\n" + table + "\n" + s72 + "\n" + appa
+ 
+ 
+ def prompt_text():
+     """Appendix A as sent: the quoted paragraphs with the `> ` quoting
+     removed, nothing else changed."""
+-    t = prereg_text()
++    t = prereg3_text()
+     a = _between(t, "## Appendix A — the tierer's prompt, verbatim", "## Appendix B")
+     lines = [ln for ln in a.splitlines() if ln.startswith(">")]
+     return "\n".join(ln[2:] if ln.startswith("> ") else ln[1:] for ln in lines) + "\n"
+@@ -204,7 +221,7 @@
+     """Run the harness on each Appendix B plant, as for a real record: the
+     one-leg TLLC and the hardened quote resolver. Returns {plant: (record,
+     texts)}; a plant that does not come out a decided hardened WRONG raises."""
+-    import prereg2_plants as PP
++    import prereg3_plants as PP
+     out = {}
+     for n, (base, after, k, _, _) in PP.PLANTS.items():
+         inst = {"arm": "plant", "mode": "E", "id": f"plant:{n}", "path": "doc.md",
+@@ -243,6 +260,8 @@
+     for name, key, r, texts in sorted(items):
+         fields, files = packet_fields(r, texts)
+         write_packet(out_dir, name, fields, files, questions)
++    with open(os.path.join(out_dir, MANIFEST), "w", encoding="utf-8") as f:
++        f.write(manifest_text(names))
+     bad = validate(out_dir)
+     if bad:
+         raise ExportError("export failed its own validator: " + "; ".join(bad))
+@@ -281,6 +300,11 @@
+     names = sorted(os.listdir(pd)) if os.path.isdir(pd) else []
+     if not names:
+         bad.append("no packets")
++    mp = os.path.join(root, MANIFEST)
++    if not os.path.isfile(mp) or os.path.islink(mp):
++        bad.append(f"{MANIFEST} missing")
++    elif open(mp, encoding="utf-8").read() != manifest_text(names):
++        bad.append(f"{MANIFEST} does not list exactly the packets, sorted, one per line")
+     q = questions_text()
+     for n in names:
+         d = os.path.join(pd, n)
+diff -ru '--exclude=__pycache__' <SCRATCH>/q-prereg3/proto/spike/harness.orig/p2/tierrun.py <SCRATCH>/q-prereg3/proto/spike/harness/p2/tierrun.py
+--- <SCRATCH>/q-prereg3/proto/spike/harness.orig/p2/tierrun.py	2026-10-09 20:08:20.000000000 -0400
++++ <SCRATCH>/q-prereg3/proto/spike/harness/p2/tierrun.py	2026-10-11 04:54:25.822072173 -0400
+@@ -206,10 +206,12 @@
+         return [binary, model, prompt]
+     return [binary, "-p", "--model", model, "--no-session-persistence",
+             "--output-format", "stream-json", "--verbose", "--permission-mode", "acceptEdits",
++            "--strict-mcp-config",
+             "--tools", "Read", "Write", "Edit", "Glob", "Grep", "--", prompt]
+ 
+ 
+ SANDBOX_HOME = "/home/tierer"
++INIT_TOOLS = ["Edit", "Glob", "Grep", "Read", "Write"]  # PROTOTYPE (prereg 3, L3)
+ DEFAULT_CREDENTIALS = os.path.expanduser("~/.claude/.credentials.json")
+ 
+ 
+@@ -248,6 +250,7 @@
+           "--bind", work, "/work",
+           "--ro-bind", os.path.join(export_dir, "PROMPT.md"), "/work/PROMPT.md",
+           "--ro-bind", os.path.join(export_dir, "packets"), "/work/packets",
++          "--ro-bind", os.path.join(export_dir, "PACKETS.txt"), "/work/PACKETS.txt",
+           "--chdir", "/work", "--"]
+     return a + argv
+ 
+@@ -314,14 +317,33 @@
+     try:
+         log("---- agent output ----")
+         p = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
++        checked = False  # round 2, L-b: stubs are checked too
+         for line in p.stdout:
+             log(line.rstrip("\n"))
++            if not checked:
++                try:
++                    ev = json.loads(line)
++                except ValueError:
++                    continue  # not JSON; the first JSON event decides
++                checked = True
++                if not (isinstance(ev, dict) and ev.get("type") == "system" and ev.get("subtype") == "init"):
++                    log("INIT CHECK FAILED: the first JSON event is not system/init; stopping the agent")
++                    p.terminate()
++                    continue
++                tools, mcp = sorted(ev.get("tools") or []), ev.get("mcp_servers")
++                if tools != INIT_TOOLS or mcp != []:
++                    log(f"INIT CHECK FAILED: tools {tools}, mcp_servers {mcp}; stopping the agent")
++                    p.terminate()
++                else:
++                    log(f"init check: tools {tools}, mcp_servers []")
++        if not checked:
++            log("INIT CHECK FAILED: the stream ended with no init event")
+         rc = p.wait()
+         log(f"---- agent exit status {rc} ----")
+     finally:
+         if p is not None and p.poll() is None:
+             p.terminate()
+-        for mp in ("PROMPT.md", "packets"):
++        for mp in ("PROMPT.md", "PACKETS.txt", "packets"):
+             q = os.path.join(work, mp)
+             if os.path.isfile(q) and not os.path.islink(q) and os.path.getsize(q) == 0:
+                 os.remove(q)
+Only in <SCRATCH>/q-prereg3/proto/spike/harness: prereg3_plants.py

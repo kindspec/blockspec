@@ -1,0 +1,28 @@
+<REHEARSAL>/export-p3i-1 488 packets; validator clean; PROMPT.md sha256 2779cd58c9c7882aad9706e2e999c87f5e7b341f14f7141282a5bda798226a0f
+2026-10-11T08:58:20Z credential mtime 2026-10-11T08:52:20Z (before p3i-1)
+2026-10-11T09:24:21Z credential mtime 2026-10-11T08:52:20Z (after p3i-1)
+== run-p3i-1-20261011T085820Z 488 answered
+  P-A: yes yes no no OK | Quote now matches a new 'Defaults' section (three retries) while Ingest service says five; the exact match in a plausible section gives no sign it is the wrong one
+  P-B: yes no no no OK | Identical approval sentence under Alpha and Beta; same words but it applies to a different project (Alpha rescoped vs Beta's telemetry); two plain matches, nothing marks either as wrong
+  P-C: no no no no OK | Identical page-wide UTC note repeated in every section; both targets say the same thing and apply to the whole page, and nothing marks the chosen copy as wrong
+  P-D: yes yes yes no OK | Quote matched the 'Superseded Backup wording, kept for the change log' copy (seven days); live Backup service says thirty days; label makes it visible
+  P-E: yes yes yes yes OK | Quote matched a stray duplicate 'Upload limits' section still saying 50 GB; live section says 80 GB 'raised from 50 GB', so the conflict and leftover duplicate are visible
+<REHEARSAL>/export-p3i-2 488 packets; validator clean; PROMPT.md sha256 2779cd58c9c7882aad9706e2e999c87f5e7b341f14f7141282a5bda798226a0f
+2026-10-11T09:24:21Z credential mtime 2026-10-11T08:52:20Z (before p3i-2)
+2026-10-11T09:40:36Z credential mtime 2026-10-11T08:52:20Z (after p3i-2)
+== run-p3i-2-20261011T092421Z 488 answered
+  P-A: yes yes no no OK | Quote matched the new Defaults section (three retries) while the Ingest service now says five; different value and subject; Defaults is a legitimate section, so nothing marks the match as wrong
+  P-B: yes no no no OK | Identical 'approved by TOC vote' lines under Alpha and Beta; the two lines apply to different proposals, but the text is the same; quote matching both does not by itself expose the miss
+  P-C: no no no no OK | Identical page-wide UTC note repeated in each section; both copies say the same and apply to the whole page, so nothing changes; repetition alone shows no miss
+  P-D: yes yes yes no OK | Quote matched the change-log copy (seven days) while the live Backup section now says thirty days; that copy is explicitly labelled superseded, so the miss is visible; deliberate change log, no author error
+  P-E: yes yes yes yes OK | Quote matched a stale duplicate 'Upload limits' section (50 GB) while the live one says 80 GB, raised from 50; the duplicate heading and the explicit raise make the miss visible and are an authoring slip
+<REHEARSAL>/export-p3i-3 488 packets; validator clean; PROMPT.md sha256 2779cd58c9c7882aad9706e2e999c87f5e7b341f14f7141282a5bda798226a0f
+2026-10-11T09:40:36Z credential mtime 2026-10-11T08:52:20Z (before p3i-3)
+2026-10-11T10:20:52Z credential mtime 2026-10-11T08:52:20Z (after p3i-3)
+== run-p3i-3-20261011T094036Z 488 answered
+  P-A: yes yes no no OK | Ingest service now retries five times; a new Defaults section carries the old 'three times' text and the mechanism hit it; retry count and the service it applies to both differ; the exact match is unique and unlabeled so a reader cannot tell; no author error [6200cb15]
+  P-B: yes no no no OK | Identical status lines but one sits under Alpha and one under Beta; an assertion about which proposal the approval applies to flips, rendered text same, quote matches both so not visible, no author error
+  P-C: no no no no OK | The UTC note is repeated verbatim in every section and explicitly applies to the whole page, so whichever copy is hit says and covers the same thing; no rendered change; reader cannot tell; no author error [33b3e864]
+  P-D: yes yes yes no OK | Backup retention changed from seven to thirty days; mechanism hit the change-log copy labeled 'Superseded Backup wording'; retention period differs; the exact match sits under a superseded label so a reader can tell; no author error [be772879]
+  P-E: yes yes yes yes OK | Live Upload limits now says 80 GB (raised from 50 GB); a stale duplicate 'Upload limits' section with the old 50 GB text was appended and the mechanism hit it; the limit differs; the live section states the limit was raised so a reader can tell; the duplicated stale heading is a visible author error [a3fef4c8]
+DRIVE-DONE 1..3

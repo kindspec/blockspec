@@ -1,0 +1,71 @@
+<REHEARSAL>/export-p3e-1 30 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3e-1-20261011T061421Z 30 answered
+  P-A: yes yes no no OK | Ingest service now retries five times; the old 'three times' text now sits in a new 'Defaults' section, which the mechanism hit; the quote is verbatim there and nothing marks it as the wrong one
+  P-B: yes no no no OK | Identical status line now appears under both Alpha (rescoped) and Beta (now the sandbox-telemetry proposal); text is the same so rendering is unchanged, but which proposal the approval applies to differs, and the duplicates are indistinguishable
+  P-C: no no no no OK | Note is repeated verbatim in each section and its scope is explicitly page-wide ('in every section'), so the copy chosen makes no difference to what it says or applies to, and a reader cannot tell
+  P-D: yes yes yes no OK | Mechanism hit the superseded 'seven days' copy under the change-log note; live Backup policy is now thirty days; the 'Superseded Backup wording' label lets a reader see it landed on the old text
+  P-E: yes yes yes yes OK | Mechanism matched a stale duplicate 'Upload limits' section (50 GB) left at the end of the after-file; the live section says 80 GB 'raised from 50 GB in May', so the conflict and the leftover duplicate are both visible
+<REHEARSAL>/export-p3e-2 30 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3e-2-20261011T061937Z 30 answered
+  P-A: yes yes no no OK | Oracle is Ingest service now retrying five times; mechanism hit a new, legitimate 'Defaults' section saying three times; exact match to a plausible target, no author error
+  P-B: yes no no no OK | Identical status line under Alpha (rescoped to audit logs) and Beta (now the telemetry proposal); text same so transclusion unchanged, but what the approval applies to differs; two equal matches give reader no way to tell
+  P-C: no no no no OK | Identical page-wide UTC note repeated in each section; its text and stated scope ('every section') are the same whichever copy is hit, and nothing distinguishes the copies
+  P-D: yes yes yes no OK | Oracle is the live Backup policy (thirty days); mechanism hit the old seven-day text under 'Superseded Backup wording, kept for the change log' (label makes it visible); the edit is clean, no author error
+  P-E: yes yes yes yes OK | Oracle says limit is 80 GB (raised from 50); mechanism hit a stale duplicate 'Upload limits' section still saying 50 GB; the duplicate heading and 'raised from 50 GB' make the stale leftover visible
+<REHEARSAL>/export-p3e-3 30 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3e-3-20261011T062352Z 30 answered
+  P-A: yes yes no no OK | Reference was Ingest's retry line, now five times; mechanism hit the new Defaults section's 'three times', so value and subject differ; the exact match looks legitimate and the edit is deliberate
+  P-B: yes no no no OK | Identical 'approved' status lines now sit under Alpha (rescoped to audit logs) and Beta (telemetry); the text is the same but it applies to a different project; nothing marks which is meant; the edits look deliberate
+  P-C: no no no no OK | Identical page-wide 'All times ... in every section, are UTC' notes repeated per section; the note applies to the whole page wherever it sits, so claims and rendering are the same; nothing marks the miss; the sections were split on purpose
+  P-D: yes yes yes no OK | Mechanism hit the change-log copy marked 'superseded' (seven days); live Backup text says thirty days, so claims and transclusion differ; the label shows the miss; the edit was deliberate, not an author error
+  P-E: yes yes yes yes OK | Live Upload limits says 80 GB (raised from 50); mechanism hit a stale duplicate 'Upload limits' section still saying 50 GB, a visible author error that a reader can spot
+<REHEARSAL>/export-p3e-4 30 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3e-4-20261011T062807Z 30 answered
+  P-A: yes yes no no OK | Mechanism took the new Defaults copy (three retries); oracle is the Ingest section, which now says five. The quote matches Defaults exactly, so a reader can't see the miss, and the edit is a legitimate change.
+  P-B: yes no no no OK | The status line appears verbatim under both Alpha (now rescoped to audit logs) and Beta (now the sandbox-telemetry proposal), so rendering either says the same words. But which proposal the approval applies to differs. Both copies match the quote exactly, so a reader can't tell which is wrong, and no author error is visible.
+  P-C: no no no no OK | Every copy of the UTC note is identical and explicitly page-wide, so any copy says the same thing and covers the same scope; nothing distinguishes them.
+  P-D: yes yes yes no OK | Mechanism took the superseded change-log copy (seven days); oracle is the live Backup section (thirty days). The 'Superseded ... kept for the change log' label shows the hit is stale, but keeping a change log is deliberate, not an author error.
+  P-E: yes yes yes yes OK | Mechanism took a stale duplicate 'Upload limits' section at the end (50 GB); oracle is the live section (80 GB, 'raised from 50 GB'). The duplicate heading and the 'raised from' wording expose the stale copy, and the leftover duplicate is a visible author error.
+<REHEARSAL>/export-p3e-5 30 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3e-5-20261011T063322Z 30 answered
+  P-A: yes yes no no OK | Ingest retries changed three->five; a new legitimate 'Defaults' section now holds the 'three times' wording; it applies to a different scope and gives a different value, and it looks like a proper match
+  P-B: yes no no no OK | Identical status lines under Alpha and Beta after the telemetry proposal moved from Alpha to Beta; the text is the same but the approval applies to a different project; a reader sees two equal copies and cannot tell which was meant
+  P-C: no no no no OK | Identical page-wide UTC note repeated in each section after a split; whichever copy is hit, it says and applies to the same thing (whole page), and nothing distinguishes copies
+  P-D: yes yes yes no OK | Retention changed seven->thirty days; exact match is the change-log copy explicitly labelled 'Superseded Backup wording'; transclusion would show the old 7-day value; the label is visible and the change log is deliberate, not an error
+  P-E: yes yes yes yes OK | Live limit raised to 80 GB; exact match is a stale duplicate 'Upload limits' section still saying 50 GB; the conflicting duplicate heading is visible, and leaving it in is an author error
+<REHEARSAL>/export-p3e-6 30 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3e-6-20261011T063737Z 30 answered
+  P-A: yes yes no no OK | Oracle is the Ingest service sentence now saying five retries; mechanism is the new Defaults section's 'three times' sentence, so the retry count and the service it applies to differ; the exact quote matches a legitimate-looking Defaults section, so a reader cannot tell; adding defaults plus an override is a valid edit
+  P-B: yes no no no OK | The identical approved-status sentence now appears under Alpha (rescoped to audit logs) and Beta (now the sandbox-telemetry proposal); whichever line each side holds, 'approved' attaches to a different project, but the transcluded words are identical; with two identical matches a reader cannot tell which was meant; edits look legitimate
+  P-C: no no no no OK | All copies of the note are identical and say they cover every section of the page, so whichever copy is hit says and covers the same thing; rendering it changes nothing; three identical matches give a reader no sign of a wrong landing; the section split is a legitimate edit
+  P-D: yes yes yes no OK | Oracle is the live Backup sentence saying thirty days; mechanism is the superseded seven-days copy in the Change log, so the asserted retention period and rendered text differ; the 'Superseded Backup wording' label makes the stale hit visible; keeping it in the change log is deliberate, not an error
+  P-E: yes yes yes yes OK | Oracle says the limit is 80 GB (raised from 50 GB); mechanism is a leftover duplicate 'Upload limits' section at the end still saying 50 GB, so the asserted limit and rendered text differ; the after-file shows two same-named sections, one saying 50 was raised, so the stale duplicate is a visible author error
+<REHEARSAL>/export-p3e-7 30 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3e-7-20261011T064253Z 30 answered
+  P-A: yes yes no no OK | The quoted Ingest retry policy (three times) now sits verbatim in a new Defaults section (after:3), which the mechanism hit; Ingest now says five times (after:8); the count and scope differ; the exact match in a plausible section gives no signal; a legitimate restructure, not an author error
+  P-B: yes no no no OK | Identical status lines under Alpha (after:5) and Beta (after:11), and the telemetry proposal moved from Alpha to Beta; the text is the same, so transclusion is unchanged, but the approval applies to a different project; the after-file alone can't show which was meant; no clear author error
+  P-C: no no no no OK | The page-wide UTC note appears identically in three sections (after:3, 9, 15) and says it covers every section, so neither its text nor its scope depends on which copy is hit; a reader can't tell the copies apart; no author error
+  P-D: yes yes yes no OK | Mechanism hit the change-log copy labeled 'Superseded' (after:14, seven days); the live policy (after:3) says thirty days; the label shows the landing is wrong; no author error
+  P-E: yes yes yes yes OK | Mechanism hit a stale duplicate 'Upload limits' section (after:12, 50 GB); oracle is the live 80 GB limit (after:3); the conflicting duplicate heading and 'raised from 50 GB' expose it; leaving the duplicate in is a visible author error
+<REHEARSAL>/export-p3e-8 30 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3e-8-20261011T064708Z 30 answered
+  P-A: yes yes no no OK | Ingest retries changed three->five and a new Defaults section took the old 'three times' text; quote lands on Defaults, which reads as a legitimate exact match, not Ingest
+  P-B: yes no no no OK | Identical 'approved 2026-03-04' status lines now sit under Alpha (rescoped to audit logs) and Beta (now sandbox telemetry); text is the same but what it applies to differs, and nothing in the after-file shows which was meant
+  P-C: no no no no OK | Section split duplicated an identical page-wide UTC note; both targets say the same thing and explicitly apply to every section, so the wrong copy is harmless and indistinguishable
+  P-D: yes yes yes no OK | Retention deliberately changed seven->thirty days; quote now matches only the 'Superseded Backup wording' change-log copy, visibly labelled; the edit itself is intentional, not an error
+  P-E: yes yes yes yes OK | Live limit raised to 80 GB but a stale duplicate 'Upload limits' section with 50 GB was left at the end; quote matches the stale copy, and the duplicate heading plus 'raised from 50 GB' make the error visible
+<REHEARSAL>/export-p3e-9 30 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3e-9-20261011T065223Z 30 answered
+  P-A: yes yes no no OK | Ingest retries changed three->five; quote now matches the new Defaults section; says three not five and applies to defaults, nothing in after-file flags it
+  P-B: yes no no no OK | Identical status line; telemetry proposal moved to Beta but quote hits Alpha (rescoped to audit logs), so 'telemetry approved' applies to the wrong project; text renders the same
+  P-C: no no no no OK | Identical page-wide UTC note now repeated in new Sunday windows section; note applies to every section so nothing true of the oracle copy is false of the mechanism copy
+  P-D: yes yes yes no OK | Retention changed seven->thirty days; quote hits the change-log copy labelled 'Superseded Backup wording'; deliberate edit, no author error
+  P-E: yes yes yes yes OK | Quota raised to 80 GB in first Upload limits; a stale duplicate 'Upload limits' section still says 50 GB and the quote hits it; the duplicate heading and 'raised from 50 GB' expose it
+<REHEARSAL>/export-p3e-10 30 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3e-10-20261011T065638Z 30 answered
+  P-A: yes yes no no OK | Quote was about Ingest service (now 'five times'); mechanism hit the new Defaults section's verbatim 'three times'; retry count and scope differ; Defaults is a legitimate live section so the miss is invisible; no author error.
+  P-B: yes no no no OK | Identical status line now appears under both Alpha (rescoped) and Beta (now the sandbox-telemetry proposal); which project the approval applies to differs, but transcluded text is identical; after-file alone shows two matches but not which is right; no author error.
+  P-C: no no no no OK | Identical page-wide UTC note repeated in each section; it explicitly applies to every section, so neither its content nor its scope differs between copies; nothing in the after-file distinguishes them; no author error.
+  P-D: yes yes yes no OK | Mechanism hit the superseded change-log copy ('seven days') instead of the live Backup service policy ('thirty days'); retention value differs; 'Superseded ... kept for the change log' label makes it visible; deliberate edit, no author error.
+  P-E: yes yes yes yes OK | Mechanism hit a stale duplicate '## Upload limits' section (line 12, 50 GB) instead of the updated original (line 3, 80 GB); limit differs; two same-named sections with contradicting limits are visible and the leftover duplicate is an evident author error.
+DRIVE-DONE 1..10

@@ -1,0 +1,29 @@
+V6 bars, written 2026-10-11T21:09:52Z, before any V6 run on the merge commit.
+Code: harness3 at blockspec 33f3a341a6ef1995d5623795b25b48f1e70c3c00 (#23's merge), run from branch
+prereg3/validation at that commit; spike/harness3 tree 3b26a87215a0c51b723633b2afb423254044e07d, equal
+to b50beb2's. The 702bad3 V6 is superseded evidence (kindspec-data/prereg3-v6-702bad3-superseded).
+Runs: prereg3.py tier-run --unbound on synthetic exports built by prereg3_v6.py build with this
+harness's texts and plants; gate fixture from prereg3_v6.py gate.
+Order, chosen to keep 488-packet runs clear of the predicted credential renewals (00:45Z, 08:45Z):
+Bar B first: labels v6b-1..3, full size (483 fillers + 5 plants = 488), 3 of 3.
+Bar A second: labels v6a-1..10, 30 packets (25 fillers + P-A..P-E), 10 consecutive.
+No 488-packet run starts within an hour of a predicted renewal (23:45-01:45Z, 07:45-09:45Z);
+the driver waits instead.
+A pass (prereg3_v6.py check): every packet answered; every plant's q1-q4 as §3 expects and not
+unplaceable; the transcript's 'Appendix A as sent' sha256 is 2779cd58...; the init check passed with
+no MCP server. Any P-D or P-E q3 'no' fails outright; their q3 rationales are reported for every run.
+An auth abort (401/403) is an environment fault: logged, and the run repeated under a -rN label.
+Any other failure stops the series and fails the bar.
+
+Addendum, 2026-10-12T05:17:15Z, before any further V6 run.
+- v6a-8 FAILED: P-E answered q3 "no" (q1 yes, q2 yes, q4 yes); all 30 packets answered; prompt sha
+  and init check fine. It is reported and kept, like every run.
+- This file's own wording above was stricter than the document's cited bar: "Any other failure
+  stops the series and fails the bar." Under that wording bar A failed at v6a-8 and the series stopped.
+- The owner ruled that the frozen document's cited bar governs: BARS.txt bar 1, "10 consecutive
+  runs ... A run that fails restarts the count", with every run kept in the table. Bar B (3 of 3 at
+  488 packets) has already passed.
+- Bar A therefore continues as v6a-9, v6a-10, ... and passes at 10 consecutive passing runs.
+  Any further failed run restarts the count; every run is kept.
+- Stop condition: if 3 bar-A runs fail in total (v6a-8 counts as the first), stop and report.
+  No plant or prompt change is possible: both are frozen in the merged document.

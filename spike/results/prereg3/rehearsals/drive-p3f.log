@@ -1,0 +1,15 @@
+<REHEARSAL>/export-p3f-1 488 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3f-1-20261011T070154Z 488 answered
+  P-A: yes yes no no OK | Quote resolved to the new Defaults section ('three times') rather than the Ingest service line now saying 'five times'; a legitimate exact match that nothing marks as wrong.
+  P-B: yes no no no OK | The identical 'Status: approved' line now appears under both projects; the text is the same, but the oracle's copy applies to the sandbox-telemetry proposal and the mechanism's to Alpha; a reader cannot tell which was meant.
+  P-C: no no no no OK | The identical page-wide UTC note now heads both the new Sunday section and Maintenance; same text, same page-wide scope, nothing distinguishes them, and the repetition is intentional.
+  P-D: yes yes yes no OK | Mechanism hit the change-log copy labelled 'Superseded Backup wording' (seven days); the live Backup text says thirty days; the label shows the hit is stale, and the copy was kept deliberately.
+  P-E: yes yes yes yes OK | Mechanism hit a second, stale 'Upload limits' section still saying 50 GB; the live section says 80 GB; the unlabelled duplicate heading is a visible authoring error.
+<REHEARSAL>/export-p3f-2 488 packets; validator clean; PROMPT.md sha256 b52ac3792010fd60feb6ab3394423749ce720972f7f4517f77a1290bb1764af4
+== run-p3f-2-20261011T071754Z 488 answered
+  P-A: yes yes no no OK | quote hits new 'Defaults' section (retried three times) while the Ingest section it came from now says five times; plausible defaults text gives no signal and the edit is legitimate
+  P-B: yes no yes no MISMATCH | identical 'approved by TOC vote' line now appears under both Alpha and Beta; text is the same so transclusion is unchanged, but the approval applies to a different project; the quote matching twice is visible
+  P-C: no no yes no MISMATCH | identical page-wide 'All times ... are UTC' note now repeated in three sections; it applies to the whole page wherever it sits, so meaning and rendering are unchanged; the triple match is visible
+  P-D: yes yes yes no OK | quote hits the change-log copy (seven days) instead of the live Backup service text (thirty days); the hit sits under an explicit 'Superseded Backup wording' label, so a reader can see it is stale; the edit itself is deliberate
+  P-E: yes yes yes yes OK | quote hits a stale duplicated 'Upload limits' section (50 GB) instead of the edited one (80 GB); two same-named sections with conflicting limits are visible in the after-file
+STOP: p3f-2 has a plant mismatch

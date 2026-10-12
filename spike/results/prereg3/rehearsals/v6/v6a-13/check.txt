@@ -1,0 +1,7 @@
+binding run: 1; answered 30 of 30; prompt sha registered: True; init check passed (no MCP server): True; auth error: False
+  P-A: yes yes no no OK
+  P-B: yes no no no OK
+  P-C: no no no no OK
+  P-D: yes yes yes no OK | q3 why: The live Backup policy now says thirty days; the quote exactly matches the seven-day text kept under 'Superseded Backup wording, kept for the change log'. The label shows it is superseded, and keeping it was a deliberate choice, not an error.
+  P-E: yes yes yes yes OK | q3 why: The live Upload limits section now says 80 GB (raised from 50 GB); a duplicate stale 'Upload limits' section at the end still says 50 GB and matches the quote exactly. The contradiction and duplicate heading are visible and look like an author's leftover.
+V6 RUN: PASS

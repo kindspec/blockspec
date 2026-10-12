@@ -1,0 +1,8 @@
+<REHEARSAL>/export-p3h-1 488 packets; validator clean; PROMPT.md sha256 2779cd58c9c7882aad9706e2e999c87f5e7b341f14f7141282a5bda798226a0f
+== run-p3h-1-20261011T083606Z 280 answered
+  P-A: UNTIERED
+  P-B: yes no no no OK | The status line is identical under Alpha and Beta, so transclusion is unchanged, but the approval applies to a different project (Alpha was rescoped; Beta now has the approved proposal); a reader cannot tell which is meant
+  P-C: no no no no OK | Identical page-wide UTC note repeated in three sections; it says 'all times on this page, in every section', so its meaning and scope are the same wherever it lands
+  P-D: yes yes yes no OK | Quote landed on the superseded 'seven days' wording in the change log instead of the live 'thirty days' policy; the 'Superseded ... kept for the change log' label is visible
+  P-E: yes yes yes yes OK | Quote landed on a leftover duplicate 'Upload limits' section still saying 50 GB, while the first section says 80 GB 'raised from 50 GB'; the stale duplicate section is a visible author error
+STOP: p3h-1 has a plant mismatch

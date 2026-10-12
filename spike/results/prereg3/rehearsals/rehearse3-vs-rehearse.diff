@@ -1,0 +1,64 @@
+--- <SCRATCH>/q-prereg3/tools/rehearse.sh.orig	2026-10-10 10:05:42.366378751 -0400
++++ <REHEARSAL>/rehearse3.sh	2026-10-10 10:05:58.226392594 -0400
+@@ -1,22 +1,29 @@
+ #!/usr/bin/env bash
+-# Rehearse prereg 2's tier-run on a synthetic export. It is unbound and commits nothing.
+-# It runs the same harness code path, sandbox, PROMPT.md, model, flags and credential
+-# mount as the bound tier-run.
++# Rehearse the prereg-3 tier-run on a synthetic export. Unbound; commits nothing.
+ #
+-#   rehearse.sh 120|486 [poll-seconds]
++# This is rehearse.sh with three changes, and no others:
++#   1. H is the PROTOTYPE harness (a scratch copy of wt-tier's spike/harness with
++#      the PACKETS.txt manifest, prereg 3's Appendix A and the candidate plants).
++#      The bound harness in wt-tier cannot run an export that holds PACKETS.txt:
++#      its validator refuses any root file but PROMPT.md and packets/.
++#   2. The monitor's key is the export's own key file, export-<label>-key.json,
++#      when it exists, else rehearsal-key.json as before.
++#   3. run-info.txt also records the prototype harness's tree hash.
++# Same tier-run code path otherwise: same sandbox, model (tier-model.json copy),
++# argv, credential mount, and no API key.
+ #
+-# The agent is the default `claude`. `--agent-cmd` is left unset, so tierrun.agent_argv
+-# builds the same argv as the bound run, with the model taken from tier-model.json,
+-# which is a copy of the committed one. Credentials are the --credentials default,
+-# ~/.claude/.credentials.json, bind-mounted read-only. No API key is used.
++#   rehearse3.sh <label> [poll-seconds]      (export: export-<label>)
+ set -u
+-N=${1:?usage: rehearse.sh 120|486 [poll-seconds]}
++N=${1:?usage: rehearse3.sh <label> [poll-seconds]}
+ POLL=${2:-60}
+ ROOT=<REHEARSAL>
+ WT=<SCRATCH>/q-prereg2/wt-tier
+-H=$WT/spike/harness/prereg2.py
++PROTO=<SCRATCH>/q-prereg3/proto/spike
++H=$PROTO/harness/prereg2.py
+ SC=e46e320a0245e99211aea95bd436609029436f49
+ EXPORT=$ROOT/export-$N
++KEY=$ROOT/export-$N-key.json
++[ -f "$KEY" ] || KEY=$ROOT/rehearsal-key.json
+ [ -d "$EXPORT/packets" ] || { echo "no export $EXPORT"; exit 2; }
+ if [ -n "${ANTHROPIC_API_KEY:-}" ]; then echo "refusing: ANTHROPIC_API_KEY is set; tiering uses the subscription only"; exit 2; fi
+ RUN=$ROOT/run-$N-$(date -u +%Y%m%dT%H%M%SZ)
+@@ -25,9 +32,11 @@
+ {
+   echo "start_utc $(date -u +%FT%TZ)"
+   echo "export $EXPORT ($(ls "$EXPORT/packets" | wc -l) packets)"
++  echo "key $KEY"
+   echo "claude $(readlink -f "$(command -v claude)") $(claude --version 2>&1)"
+   echo "bwrap $(bwrap --version)"
+-  echo "harness $(git -C "$WT" rev-parse HEAD)"
++  echo "harness PROTOTYPE $PROTO (tree sha256 $(cd "$PROTO" && find harness PRE-REGISTRATION-3.md -type f ! -path '*__pycache__*' -print0 | sort -z | xargs -0 sha256sum | sha256sum | cut -c1-16)); bound harness $(git -C "$WT" rev-parse HEAD)"
++  echo "prompt_sha256 $(sha256sum "$EXPORT/PROMPT.md" | cut -c1-64)"
+ } > "$RUN/run-info.txt"
+ cd /tmp || exit 1
+ T0=$(date +%s)
+@@ -36,7 +45,7 @@
+   --repo "$WT/spike" --scoring-commit "$SC" > "$RUN/tier-run.out" 2>&1 &
+ PID=$!
+ echo "rehearsal $N started: run dir $RUN, pid $PID"
+-python3 -I -S "$ROOT/monitor.py" "$RUN" "$PID" "$ROOT/rehearsal-key.json" "$POLL" "$EXPORT" > "$RUN/monitor.out" 2>&1 &
++python3 -I -S "$ROOT/monitor.py" "$RUN" "$PID" "$KEY" "$POLL" "$EXPORT" > "$RUN/monitor.out" 2>&1 &
+ MPID=$!
+ wait "$PID"; RC=$?
+ wait "$MPID"
