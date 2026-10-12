@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d3b6dc2f15ce188454a05400919e3230bcb3f46e",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "b080ba334498102a0ff700d5345375fde47f945c86e71e913d836365a0b081e0",
+ "id": "S25:10:content/en/docs/concepts/extend-kubernetes/api-extension/custom-resources.md|R|custom-resources",
+ "ok": true,
+ "regenerated_sha256": "b080ba334498102a0ff700d5345375fde47f945c86e71e913d836365a0b081e0"
+}
