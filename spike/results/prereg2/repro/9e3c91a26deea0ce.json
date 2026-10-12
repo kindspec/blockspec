@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "18c284f2836bf701908580f0a9408abe7ff8198c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "99dc34e1037c94fac7066ecd71d81acea48bb39507453b2098ca2b4a51540bf8",
+ "id": "M:5ea6ba08e7f3971bf4989bc84149e6809b7ed936:content/en/docs/tasks/administer-cluster/configure-upgrade-etcd.md|R|heading-prerequisites",
+ "ok": true,
+ "regenerated_sha256": "99dc34e1037c94fac7066ecd71d81acea48bb39507453b2098ca2b4a51540bf8"
+}
