@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "ecda50160ce1e5c4f2770a70e6dd4164e351ccb3",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1b2d3c5b74ee27be3d7d944c1f7124cdaaf9000ab64f00d963a3c000efd45c9a",
+ "id": "S5:2:content/zh-cn/docs/tasks/debug/debug-cluster/resource-metrics-pipeline.md|Q|33",
+ "ok": true,
+ "regenerated_sha256": "1b2d3c5b74ee27be3d7d944c1f7124cdaaf9000ab64f00d963a3c000efd45c9a"
+}
