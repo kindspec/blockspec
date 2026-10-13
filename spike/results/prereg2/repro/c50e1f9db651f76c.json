@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "354bf53ae5c0beb152b0fef5a82765fa9a5a5f72",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "3131382a9b5d0ef0f085a8c9dd0608e865d698c7e6c772156facf40bad70c6a0",
+ "id": "E:68e93df7e24bbd2b3160c7c931da32319d8ffd83:en/Getting started/Link notes.md|Q|19",
+ "ok": true,
+ "regenerated_sha256": "3131382a9b5d0ef0f085a8c9dd0608e865d698c7e6c772156facf40bad70c6a0"
+}
