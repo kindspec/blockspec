@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "81a1dfd8df572fa6185035eb527b8d8e5d280ca2",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "a069671818df362265b2452bdb352d8470be9669692d6d6c16174c3b8c5f2e79",
+ "id": "S5:6:src/ch18-03-oo-design-patterns.md|R|trade-offs-of-the-state-pattern",
+ "ok": true,
+ "regenerated_sha256": "a069671818df362265b2452bdb352d8470be9669692d6d6c16174c3b8c5f2e79"
+}
