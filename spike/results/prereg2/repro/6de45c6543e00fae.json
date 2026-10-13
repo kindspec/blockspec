@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "2c3b6e11819280e0349e71a8a7624a3d402872d6",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "5cf8fb68904b8e3924de1f587276bf94b50e0a5b00e61ee3e3cd448ef8a61abe",
+ "id": "S5:7:src/ch11-01-writing-tests.md|R|testing-equality-with-the-assert_eq-and-assert_ne-macros",
+ "ok": true,
+ "regenerated_sha256": "5cf8fb68904b8e3924de1f587276bf94b50e0a5b00e61ee3e3cd448ef8a61abe"
+}
