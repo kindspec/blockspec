@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "631b098015f49a44744d89bb8a2a6ebc9b7a854a",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "87ff7095a87b9f0c2299bdbc8ef875b8650d136220f9f85e9771d15c21033620",
+ "id": "S5:9:en/Editing and formatting/Basic formatting syntax.md|R|lists",
+ "ok": true,
+ "regenerated_sha256": "87ff7095a87b9f0c2299bdbc8ef875b8650d136220f9f85e9771d15c21033620"
+}
