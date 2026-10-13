@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "8691ad21fb780bef9cbef87b72df193cd33b1a04",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "9119b7d89d3d82d2631a1418abacca1b7590cdc92ce8f1acccc062776d803742",
+ "id": "S5:13:src/ch13-01-closures.md|R|refactoring-with-closures-to-store-code",
+ "ok": true,
+ "regenerated_sha256": "9119b7d89d3d82d2631a1418abacca1b7590cdc92ce8f1acccc062776d803742"
+}
