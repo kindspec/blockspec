@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "8099c61f6586437ff91855a1ffc020543a13ef41",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ff41dc5dad4f6283fc8f4ac90fc9310d1a31abab5c12c8d5bd4963bc1075f3a3",
+ "id": "S5:5:content/zh-cn/releases/download.md|R|binaries",
+ "ok": true,
+ "regenerated_sha256": "ff41dc5dad4f6283fc8f4ac90fc9310d1a31abab5c12c8d5bd4963bc1075f3a3"
+}
