@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d13f274278b4a0f409e75ab17d0c3e1e27ac1a2c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "112b65538d7f04ee5837dd685d91867d7bcf3991727934d0a233c846ef9cd1f0",
+ "id": "S5:3:Policies/github-terms/github-terms-of-service.md|Q|76",
+ "ok": true,
+ "regenerated_sha256": "112b65538d7f04ee5837dd685d91867d7bcf3991727934d0a233c846ef9cd1f0"
+}
