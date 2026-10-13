@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "132957f5078a79f8d7ff044ba6e9efe84c6805d7",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "72c865d2009540f4938266e091e609f53423b24c4332fb86c7f97078357ee326",
+ "id": "S25:9:content/ko/docs/concepts/storage/volumes.md|Q|48",
+ "ok": true,
+ "regenerated_sha256": "72c865d2009540f4938266e091e609f53423b24c4332fb86c7f97078357ee326"
+}

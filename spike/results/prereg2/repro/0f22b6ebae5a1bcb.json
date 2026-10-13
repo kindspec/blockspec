@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "2ab5fd0a23669bfc014c6d87c59dcd6518f47312",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "6eca6379d1ca8e002b29cd75fac9c383293de230e91c15574549e4bf8b11d87c",
+ "id": "M:aa5279581766cb9dc24984de6e05e0abc9f2d728:content/en/docs/concepts/storage/volumes.md|R|hostpath-hostpath",
+ "ok": true,
+ "regenerated_sha256": "6eca6379d1ca8e002b29cd75fac9c383293de230e91c15574549e4bf8b11d87c"
+}

@@ -1,0 +1,13 @@
+# prereg2 repro rust-book
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --id E:dc0d00215fdcd31e9ff64f664cdb9fd65e398725:src/ch14-00-more-about-cargo.md|R|cargo-workspaces --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-a8ez0z
+# start: 2026-10-13T00:12:46Z
+# blockspec HEAD: 1953826909f07a26ccd1d542124048953e2098d5
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   3e5c3c061b7256e05b4f74146b3841c94523217a5296689e2e5f11b5e1dab4a6
+regenerated 3e5c3c061b7256e05b4f74146b3841c94523217a5296689e2e5f11b5e1dab4a6
+F9 REPRODUCTION: BYTE-IDENTICAL  E:dc0d00215fdcd31e9ff64f664cdb9fd65e398725:src/ch14-00-more-about-cargo.md|R|cargo-workspaces
+
+# end: 2026-10-13T00:12:51Z
+# exited: exit status 0

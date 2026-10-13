@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "182c85436d7abd97bc6aae436051d65528467b37",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "af61026196cb4f6cacc2a8dcc85862f7e6e8802bf1e227df85f52fd85d0eb4a9",
+ "id": "S5:17:content/ko/docs/concepts/configuration/secret.md|R|시크릿-사용하기",
+ "ok": true,
+ "regenerated_sha256": "af61026196cb4f6cacc2a8dcc85862f7e6e8802bf1e227df85f52fd85d0eb4a9"
+}

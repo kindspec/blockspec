@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "6b6aa0feb5169f5ee08caa5a52e1589d69e1151e",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "47625467635b192b70e2855ebc7b2dfec93b61df8b630bfcd6e19dbc1a1c892e",
+ "id": "S25:20:content/ko/docs/concepts/services-networking/service.md|R|서비스-디스커버리하기",
+ "ok": true,
+ "regenerated_sha256": "47625467635b192b70e2855ebc7b2dfec93b61df8b630bfcd6e19dbc1a1c892e"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "0b424478102f56d5906a0a5dd7aa67d37bd51234",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "692495c3f44484e80e4f2510ffd3a586e2f65a29a52fbc79fb4e257c84c148aa",
+ "id": "S25:12:src/ch17-00-async-await.md|R|parallelism-and-concurrency",
+ "ok": true,
+ "regenerated_sha256": "692495c3f44484e80e4f2510ffd3a586e2f65a29a52fbc79fb4e257c84c148aa"
+}

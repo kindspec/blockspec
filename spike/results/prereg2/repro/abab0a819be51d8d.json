@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "730aa4a8a1fed061c509f791fd68e4377d840ecd",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "b4a49f100803fc235dd78e2338cc8224c2fdcbe2170ddc2aff0b50394ec22380",
+ "id": "S25:0:src/ch01-02-hello-world.md|R|building-for-release",
+ "ok": true,
+ "regenerated_sha256": "b4a49f100803fc235dd78e2338cc8224c2fdcbe2170ddc2aff0b50394ec22380"
+}

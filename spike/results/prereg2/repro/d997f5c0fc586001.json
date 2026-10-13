@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "840368afc3f2e6aa0b30f19769b4a26f869e8fcb",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ea1ee9fd182c506f2de836a31e42bf3463d07ddca11485961aded60400d3ff04",
+ "id": "S25:2:src/ch06-02-match.md|R|the-_-placeholder",
+ "ok": true,
+ "regenerated_sha256": "ea1ee9fd182c506f2de836a31e42bf3463d07ddca11485961aded60400d3ff04"
+}

@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S25:1:content/zh-cn/docs/concepts/storage/persistent-volumes.md|R|pod-specification-adding-raw-block-device-path-in-container --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-fWUFyg
+# start: 2026-10-12T17:41:06Z
+# blockspec HEAD: 1e2edb6026fec7127c1c164a7765a59d2859f2e3
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   f16c935c30b8d1014ee322ea4d0fba518c5b0fd7a6a4ed1dfdb17f488898c7af
+regenerated f16c935c30b8d1014ee322ea4d0fba518c5b0fd7a6a4ed1dfdb17f488898c7af
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:1:content/zh-cn/docs/concepts/storage/persistent-volumes.md|R|pod-specification-adding-raw-block-device-path-in-container
+
+# end: 2026-10-12T17:43:08Z
+# exited: exit status 0

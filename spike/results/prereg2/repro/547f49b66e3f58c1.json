@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "ff1ec06c01a92e8a56b4dc43a384ec2ec73ec885",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "a398091d0082f26a08305bb2c2d45e6b7908e8f12d0c10ceca49fdbca956ba98",
+ "id": "S25:12:content/zh-cn/docs/reference/labels-annotations-taints/_index.md|R|labels-annotations-and-taints-used-on-api-objects",
+ "ok": true,
+ "regenerated_sha256": "a398091d0082f26a08305bb2c2d45e6b7908e8f12d0c10ceca49fdbca956ba98"
+}

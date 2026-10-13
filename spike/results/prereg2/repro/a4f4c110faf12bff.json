@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "58f2747b7e2b77f6669dc0d251ab65750d0dbec8",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "7dcda3e94b6273ed7df6bc106d387ca8b682f3c445b7d44363b47e28e17818bb",
+ "id": "S5:1:content/zh-cn/docs/reference/kubernetes-api/workload-resources/job-v1.md|R|alpha-级别",
+ "ok": true,
+ "regenerated_sha256": "7dcda3e94b6273ed7df6bc106d387ca8b682f3c445b7d44363b47e28e17818bb"
+}

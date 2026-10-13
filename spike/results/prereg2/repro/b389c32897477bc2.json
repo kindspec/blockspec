@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "2f8914d71070cf19f50786cb11ccb047ecf0520f",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "a39e48985793ee11a30fc47354770deeb5036e3b36d1a910e097663258d8637b",
+ "id": "S5:17:content/ko/docs/concepts/configuration/secret.md|R|사용-사레",
+ "ok": true,
+ "regenerated_sha256": "a39e48985793ee11a30fc47354770deeb5036e3b36d1a910e097663258d8637b"
+}

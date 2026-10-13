@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id S5:1:content/en/docs/tasks/administer-cluster/declare-network-policy.md|Q|1 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-XRPePt
+# start: 2026-10-12T15:42:25Z
+# blockspec HEAD: c7f172a88d9e67ac03f67b8190e7a69658344f1d
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   de2e4b78714c1413ed3431f81e6e69bf206d336a154d05dc52f51860e23c933b
+regenerated de2e4b78714c1413ed3431f81e6e69bf206d336a154d05dc52f51860e23c933b
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:1:content/en/docs/tasks/administer-cluster/declare-network-policy.md|Q|1
+
+# end: 2026-10-12T15:42:40Z
+# exited: exit status 0

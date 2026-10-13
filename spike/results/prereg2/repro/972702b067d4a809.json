@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "7413ced93c4741e80b2af210d684e7fd3ebf0c67",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "24455e02ddc75ce67e3d6e8c7df62ff46a60a5c3a5763e6bc954f15e10a73531",
+ "id": "S25:7:content/ja/docs/concepts/workloads/pods/pod-lifecycle.md|R|コンテナのprobe-container-probes",
+ "ok": true,
+ "regenerated_sha256": "24455e02ddc75ce67e3d6e8c7df62ff46a60a5c3a5763e6bc954f15e10a73531"
+}

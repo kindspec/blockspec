@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "0dbea0dbe77c2dc70b69d2c742d9aaf238f11b93",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1d7c033f7d5378961af44cb9702b1b91ebfae62e2a94f79dcbbbb0430446bf97",
+ "id": "S25:42:content/en/docs/concepts/architecture/nodes.md|R|heartbeats",
+ "ok": true,
+ "regenerated_sha256": "1d7c033f7d5378961af44cb9702b1b91ebfae62e2a94f79dcbbbb0430446bf97"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "505f08abbe649867b600abdeb2d6f6f164f4f3bc",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "aa985aac866d4ac74e14fc60b2f5d3814c98fc4080c36bd60ce8921b5548001f",
+ "id": "S25:28:content/en/docs/reference/access-authn-authz/certificate-signing-requests.md|R|signers",
+ "ok": true,
+ "regenerated_sha256": "aa985aac866d4ac74e14fc60b2f5d3814c98fc4080c36bd60ce8921b5548001f"
+}

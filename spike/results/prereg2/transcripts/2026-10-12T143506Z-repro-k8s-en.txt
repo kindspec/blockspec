@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id E:049f5a257211412e6fd81d1b1f3f870c3cf125a7:content/en/blog/_posts/2026/breaking-changes-in-selinux-volume-labeling.md|R|the-breaking-change --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-qtOACo
+# start: 2026-10-12T14:35:06Z
+# blockspec HEAD: ad1c9a81c3644b2f03590e5958e5b862aaa314f4
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   1f8b6acd7aae960032b6b0c326365bc3427021e0cdaafffd677b4deea45c9362
+regenerated 1f8b6acd7aae960032b6b0c326365bc3427021e0cdaafffd677b4deea45c9362
+F9 REPRODUCTION: BYTE-IDENTICAL  E:049f5a257211412e6fd81d1b1f3f870c3cf125a7:content/en/blog/_posts/2026/breaking-changes-in-selinux-volume-labeling.md|R|the-breaking-change
+
+# end: 2026-10-12T14:35:22Z
+# exited: exit status 0

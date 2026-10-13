@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "631f6ad82d41a0d610a42ad14fc02a25aad8c204",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "8882b0af5ae713df64d075f7835807147c301effe57f001cc3f0d1636314b1ef",
+ "id": "E:addc690ed7e75e71b690424e921610721929293f:content/en/docs/concepts/workloads/pods/ephemeral-containers.md|R|uses-for-ephemeral-containers",
+ "ok": true,
+ "regenerated_sha256": "8882b0af5ae713df64d075f7835807147c301effe57f001cc3f0d1636314b1ef"
+}

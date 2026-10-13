@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "0f27ebba67d94307ccd06e7e0b961f01b512913f",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "8494af7a7c389f3bbf7cf828f9d6c486dccf43153de91e29b74a2fcdc4e0a348",
+ "id": "E:e694be5991f1c5cf65c654ed610b4049e2389ed1:src/ch19-01-all-the-places-for-patterns.md|R|let-statements",
+ "ok": true,
+ "regenerated_sha256": "8494af7a7c389f3bbf7cf828f9d6c486dccf43153de91e29b74a2fcdc4e0a348"
+}

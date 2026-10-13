@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "23b00c02aa6aa85dfb6c014e531185ec71467e7f",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "36b4a36631195adf32293c1b0b10d148aa59899855434b49628898749e57716b",
+ "id": "S5:7:content/ja/docs/tasks/access-application-cluster/web-ui-dashboard.md|Q|56",
+ "ok": true,
+ "regenerated_sha256": "36b4a36631195adf32293c1b0b10d148aa59899855434b49628898749e57716b"
+}

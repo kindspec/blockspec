@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "49e516ce1053c482aa9f1a946cb3abe8048d6ab4",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "6a8c74a039cee8f632fa24b316dc75991e14189fdedc28fc08c679811ed259ab",
+ "id": "S25:30:content/en/docs/concepts/containers/images.md|R|using-a-private-registry",
+ "ok": true,
+ "regenerated_sha256": "6a8c74a039cee8f632fa24b316dc75991e14189fdedc28fc08c679811ed259ab"
+}

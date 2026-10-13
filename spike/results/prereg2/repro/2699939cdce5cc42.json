@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "88a5d92edfd5146da5456b7cebd9c850445923cf",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ec8a4ba1e34b669ac3414f5166b61a903f4aecbb31cac04b52533142093886b0",
+ "id": "S5:20:content/en/docs/concepts/storage/volume-snapshots.md|Q|16",
+ "ok": true,
+ "regenerated_sha256": "ec8a4ba1e34b669ac3414f5166b61a903f4aecbb31cac04b52533142093886b0"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "e3a09bbbd79b7695751d828bd700ff220cbc8642",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "c6ced31bd62bef4cca0efb09a769a3e67682d60493cc7d35d51be18da3b2b86e",
+ "id": "S25:2:content/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node.md|R|亲和性与反亲和性--affinity-and-anti-affinity",
+ "ok": true,
+ "regenerated_sha256": "c6ced31bd62bef4cca0efb09a769a3e67682d60493cc7d35d51be18da3b2b86e"
+}

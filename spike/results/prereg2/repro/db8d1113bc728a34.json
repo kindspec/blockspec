@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "4421bc0f642f8706b79d4b39b41b2fdc283af394",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "198e8078f4df489dbb0653839b3c804fb350c85dcfe08c5fac85850628e2f6f9",
+ "id": "S25:20:content/ko/docs/concepts/services-networking/service.md|R|dns",
+ "ok": true,
+ "regenerated_sha256": "198e8078f4df489dbb0653839b3c804fb350c85dcfe08c5fac85850628e2f6f9"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "1413975b89db5726b356284aea27a107ad55a2f8",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "d6d5efa222f21db3579c399fd974c5534872350a86fb8d0f6617aae785e64227",
+ "id": "S5:9:process/README.md|R|iv-annual-review-process",
+ "ok": true,
+ "regenerated_sha256": "d6d5efa222f21db3579c399fd974c5534872350a86fb8d0f6617aae785e64227"
+}

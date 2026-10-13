@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id M:8df4092df982b4a7d6a99bcdfacc3c6ee79796b0:content/en/docs/tutorials/stateful-application/basic-stateful-set.md|Q|281 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-4urc47
+# start: 2026-10-12T14:50:06Z
+# blockspec HEAD: 54cfaf25ecc41c1b91402b236264c4bf15b8ef2f
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   ca6964b2e5c6b3715ddd4537943132b99a5803c119d08547bbc5d6062b5f4f3b
+regenerated ca6964b2e5c6b3715ddd4537943132b99a5803c119d08547bbc5d6062b5f4f3b
+F9 REPRODUCTION: BYTE-IDENTICAL  M:8df4092df982b4a7d6a99bcdfacc3c6ee79796b0:content/en/docs/tutorials/stateful-application/basic-stateful-set.md|Q|281
+
+# end: 2026-10-12T14:50:41Z
+# exited: exit status 0

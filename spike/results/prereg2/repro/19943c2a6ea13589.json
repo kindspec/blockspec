@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "5f8c553529de6e6b8ac8a3b1e819a8d0c62d852c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "dd89b8f42890f4e754e24d6c54d93c9d117330a9d9e94dce1387e83e65677b0f",
+ "id": "S25:13:content/en/docs/concepts/cluster-administration/logging.md|R|system-component-logs",
+ "ok": true,
+ "regenerated_sha256": "dd89b8f42890f4e754e24d6c54d93c9d117330a9d9e94dce1387e83e65677b0f"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "73d534b6a9d9f4d75cb44eb2cb5cccbd4b7ba295",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "17be6c757ffe6d8b8f1f04fd57aa212ee7b38cf1919c466a109f0c664e7ab68f",
+ "id": "S25:3:content/zh-cn/docs/concepts/configuration/manage-resources-containers.md|Q|130",
+ "ok": true,
+ "regenerated_sha256": "17be6c757ffe6d8b8f1f04fd57aa212ee7b38cf1919c466a109f0c664e7ab68f"
+}

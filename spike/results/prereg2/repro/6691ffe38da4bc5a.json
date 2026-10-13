@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d0b7e3cf4eef0183c8bf845dcad9c590babd6fa5",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1a6c442223a8aed0c4446562a59ecdb8c46d21c0933392d91bb1f7f03d736bdc",
+ "id": "S25:269:README.md|R|technical-advisory-groups",
+ "ok": true,
+ "regenerated_sha256": "1a6c442223a8aed0c4446562a59ecdb8c46d21c0933392d91bb1f7f03d736bdc"
+}

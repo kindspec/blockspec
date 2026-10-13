@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "1a328f0cf91d156483bd3f5acb862ebe6e018b0d",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "6a4e5df537bd8085d07009bcfc200ccc2c5ca53a41938493a851c0a6c3ba05a7",
+ "id": "S5:13:src/ch13-01-closures.md|R|refactoring-using-functions",
+ "ok": true,
+ "regenerated_sha256": "6a4e5df537bd8085d07009bcfc200ccc2c5ca53a41938493a851c0a6c3ba05a7"
+}

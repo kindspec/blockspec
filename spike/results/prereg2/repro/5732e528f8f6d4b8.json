@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "1c60f6615a530cca29f1311aaea215ccc8ebafd9",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ef2877581678c6cc90b736b92586f06f92c34cbd242f0eb46d1270b2c6cadfcb",
+ "id": "M:38be8510622804a724805e1f2456e7230207e55c:content/ko/docs/concepts/workloads/controllers/statefulset.md|R|업데이트-전략",
+ "ok": true,
+ "regenerated_sha256": "ef2877581678c6cc90b736b92586f06f92c34cbd242f0eb46d1270b2c6cadfcb"
+}

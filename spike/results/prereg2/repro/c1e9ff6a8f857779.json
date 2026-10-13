@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "3ac87f291cfce4f299f94b66cb35615b6a92452d",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "6451e51c124401eba2587471b45e2e03fde970b0a72cf6e04ec3eaa4074d7974",
+ "id": "M:390dcc47bab35d93e8bbc40fc8c6f4404f9d3056:content/en/docs/reference/access-authn-authz/authentication.md|R|anonymous-requests",
+ "ok": true,
+ "regenerated_sha256": "6451e51c124401eba2587471b45e2e03fde970b0a72cf6e04ec3eaa4074d7974"
+}

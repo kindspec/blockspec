@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "ae2c47a979f63daa6618a6d106560c5e766545a6",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "c6e98098149fb26f8b696a9b1fd41a09183b2edd55660153c52ce4eed27dfe83",
+ "id": "S5:4:src/ch11-03-test-organization.md|R|submodules-in-integration-tests",
+ "ok": true,
+ "regenerated_sha256": "c6e98098149fb26f8b696a9b1fd41a09183b2edd55660153c52ce4eed27dfe83"
+}

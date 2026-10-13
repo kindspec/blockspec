@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "1e95a5e64f475aa06a179da4363d654cbc39b50b",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "820dfa50c68e066caaa3d292b4e8f66afd9446ac0a20cd0bae20fe39ae2e8341",
+ "id": "S5:5:content/zh-cn/releases/download.md|R|二进制--binaries",
+ "ok": true,
+ "regenerated_sha256": "820dfa50c68e066caaa3d292b4e8f66afd9446ac0a20cd0bae20fe39ae2e8341"
+}

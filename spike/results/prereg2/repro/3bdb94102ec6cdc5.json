@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d60faf6b625538df6351431a671ad474279ff529",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1287dad3e813b48e3a2d9aff36b62f26b18bf5dee5d2eafef8765d6ad3dad13a",
+ "id": "S25:0:content/ja/docs/concepts/workloads/controllers/deployment.md|Q|32",
+ "ok": true,
+ "regenerated_sha256": "1287dad3e813b48e3a2d9aff36b62f26b18bf5dee5d2eafef8765d6ad3dad13a"
+}

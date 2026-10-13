@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "4306061f9a4fa6630a8d91725c74a818b2bccbc4",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "987c41e2184630015d203cd44d81bd62a62b67f96c1d37c4af942ad20b93a589",
+ "id": "S5:9:content/ko/docs/concepts/workloads/controllers/deployment.md|Q|34",
+ "ok": true,
+ "regenerated_sha256": "987c41e2184630015d203cd44d81bd62a62b67f96c1d37c4af942ad20b93a589"
+}

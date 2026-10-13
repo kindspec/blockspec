@@ -1,0 +1,13 @@
+# prereg2 repro site-policy
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm site-policy --id S5:0:Policies/github-terms/github-event-terms.md|Q|17 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-B00Cur
+# start: 2026-10-13T00:15:45Z
+# blockspec HEAD: 8d36c58a73b08634c960427d1b4e27de112c0439
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   99f8e2c467c1f9d9afa480951741958e537c670841791d680aed0b2b56ca426e
+regenerated 99f8e2c467c1f9d9afa480951741958e537c670841791d680aed0b2b56ca426e
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:0:Policies/github-terms/github-event-terms.md|Q|17
+
+# end: 2026-10-13T00:15:46Z
+# exited: exit status 0

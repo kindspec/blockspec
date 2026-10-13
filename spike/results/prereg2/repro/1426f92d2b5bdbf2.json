@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "88fbb3a3ee7579288169a583cdda5eb5aa310d46",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "0f437ce1afdef4f9b3e1cc446eea2759bc975e57dd9f18ecaf52b07c8788d913",
+ "id": "M:86db461dd11604e0f5ffbcbaf6873c8bc20b69c1:content/en/docs/reference/labels-annotations-taints/_index.md|Q|83",
+ "ok": true,
+ "regenerated_sha256": "0f437ce1afdef4f9b3e1cc446eea2759bc975e57dd9f18ecaf52b07c8788d913"
+}

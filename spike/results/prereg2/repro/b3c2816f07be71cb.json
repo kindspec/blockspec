@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "fb65fe6f9f82a057c929a1369fd74067f8fcf6a0",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "f263c83507e05fbdb961a53d0b46be8bf88ad116bf4aaad0aa3771e56a716967",
+ "id": "S5:7:en/Obsidian/Community code of conduct.md|R|other-offenses",
+ "ok": true,
+ "regenerated_sha256": "f263c83507e05fbdb961a53d0b46be8bf88ad116bf4aaad0aa3771e56a716967"
+}

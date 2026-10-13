@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "c7cc209ae723cf2ad1763785798e476b31669475",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "7efda6ad036194bba6facfc28be29dde9ca8dfe30789a7e197cc73a5112cdf43",
+ "id": "S5:9:en/Editing and formatting/Basic formatting syntax.md|R|external-images",
+ "ok": true,
+ "regenerated_sha256": "7efda6ad036194bba6facfc28be29dde9ca8dfe30789a7e197cc73a5112cdf43"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "815d76f66f3daaad2cd6d9a77a0ed5c4f304873d",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "2a22b7af2e47b044d85ed59020050f9a2aacb1a5de36860a50510bcb159a6e21",
+ "id": "S25:127:content/en/docs/reference/access-authn-authz/authentication.md|R|openid-connect-tokens",
+ "ok": true,
+ "regenerated_sha256": "2a22b7af2e47b044d85ed59020050f9a2aacb1a5de36860a50510bcb159a6e21"
+}

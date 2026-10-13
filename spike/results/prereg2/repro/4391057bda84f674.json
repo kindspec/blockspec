@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "11bdae33f8427d4c884070b2c77029e940cc3add",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "96e67953d055d08867257b0c91aafe34fbe4efb7178196573c17875ab6166df2",
+ "id": "S25:6:content/en/docs/concepts/scheduling-eviction/scheduling-framework.md|R|framework-workflow",
+ "ok": true,
+ "regenerated_sha256": "96e67953d055d08867257b0c91aafe34fbe4efb7178196573c17875ab6166df2"
+}

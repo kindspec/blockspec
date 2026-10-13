@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "c3fd9270e5c11733833407ecb2fff8789af9339d",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "3a0f19ff654d4ff59856cf4e208f5088a2f95b9e2d222c321e51d1a0e4d0d709",
+ "id": "S25:15:content/en/docs/concepts/architecture/nodes.md|R|self-registration-of-nodes",
+ "ok": true,
+ "regenerated_sha256": "3a0f19ff654d4ff59856cf4e208f5088a2f95b9e2d222c321e51d1a0e4d0d709"
+}

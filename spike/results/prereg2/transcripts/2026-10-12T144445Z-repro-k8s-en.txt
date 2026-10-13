@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id M:40a6ff8ad11fca1e503e9f6a624b78e4d98e94f3:content/en/docs/concepts/architecture/nodes.md|R|non-graceful-node-shutdown-non-graceful-node-shutdown --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-qvVylx
+# start: 2026-10-12T14:44:45Z
+# blockspec HEAD: 8d38c57c17f9fb971333d200b7b3bbfcd487b775
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   ed6f9f88378356a4d82fd43afba15e4473e7c1b8735d80c6b8541f8719451165
+regenerated ed6f9f88378356a4d82fd43afba15e4473e7c1b8735d80c6b8541f8719451165
+F9 REPRODUCTION: BYTE-IDENTICAL  M:40a6ff8ad11fca1e503e9f6a624b78e4d98e94f3:content/en/docs/concepts/architecture/nodes.md|R|non-graceful-node-shutdown-non-graceful-node-shutdown
+
+# end: 2026-10-12T14:45:06Z
+# exited: exit status 0

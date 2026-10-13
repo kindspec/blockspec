@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id E:1ab93da49098aa1c57401a75078613efb59c193e:content/zh-cn/docs/tasks/configure-pod-container/create-hostprocess-pod.md|Q|43 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-SAssX0
+# start: 2026-10-12T15:45:33Z
+# blockspec HEAD: 0e156b08ae41d1fc14259c7677965f9059f40f31
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   0969ca4bcc40230a697b9c8fa942d2a66898b4c2f004dc1b6217e931e9eb2ce2
+regenerated 0969ca4bcc40230a697b9c8fa942d2a66898b4c2f004dc1b6217e931e9eb2ce2
+F9 REPRODUCTION: BYTE-IDENTICAL  E:1ab93da49098aa1c57401a75078613efb59c193e:content/zh-cn/docs/tasks/configure-pod-container/create-hostprocess-pod.md|Q|43
+
+# end: 2026-10-12T15:45:50Z
+# exited: exit status 0

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "b9656e1cfd7dbf383254374c2e493e91ec6013f3",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "916ebf5bba9259710e5ec80e8cb6137ec7769a47711641597c481efd88f47303",
+ "id": "S25:4:content/ko/docs/concepts/workloads/pods/pod-lifecycle.md|R|컨테이너-상태",
+ "ok": true,
+ "regenerated_sha256": "916ebf5bba9259710e5ec80e8cb6137ec7769a47711641597c481efd88f47303"
+}

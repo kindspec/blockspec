@@ -1,0 +1,13 @@
+# prereg2 repro obsidian-help
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm obsidian-help --id S25:3:en/Editing and formatting/Basic formatting syntax.md|R|code-blocks --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-qh5XE4
+# start: 2026-10-13T00:11:27Z
+# blockspec HEAD: 3891d21e989cb9a9fdcf198b2693aca39c62b684
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   4718908f981fea1abc2869c572e742ebaa72178b02a9a7cb15fe720dd45037d7
+regenerated 4718908f981fea1abc2869c572e742ebaa72178b02a9a7cb15fe720dd45037d7
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:3:en/Editing and formatting/Basic formatting syntax.md|R|code-blocks
+
+# end: 2026-10-13T00:11:31Z
+# exited: exit status 0

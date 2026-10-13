@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "640594c10536076e34739aaf02d36ed792cabb58",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "7f05ab93779744e9a474d88a80ed0e9fccf6b3621313a22b94ad4990bc1f23c6",
+ "id": "S25:76:content/en/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm.md|R|limitations-limitations",
+ "ok": true,
+ "regenerated_sha256": "7f05ab93779744e9a474d88a80ed0e9fccf6b3621313a22b94ad4990bc1f23c6"
+}

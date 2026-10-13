@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d8c48b8667f685c5008f5e34d1aaedf8801bc882",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "8211d75d7588161085993065dd116de58d27f002c805aa88f0ea81b7706af79b",
+ "id": "E:7b0281f178562a87bb1b3b8d60532694735f04fa:content/en/docs/reference/instrumentation/native-histograms.md|Q|23",
+ "ok": true,
+ "regenerated_sha256": "8211d75d7588161085993065dd116de58d27f002c805aa88f0ea81b7706af79b"
+}

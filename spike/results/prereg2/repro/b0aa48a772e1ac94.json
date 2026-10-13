@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "9d818735e672f81942edb4d7251babd200791c98",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "6a3287fa1e0c70124e8c1369919fbcf41df78f19017694a9502646c6550aa75f",
+ "id": "S5:0:en/Plugins/Note composer.md|R|template-file",
+ "ok": true,
+ "regenerated_sha256": "6a3287fa1e0c70124e8c1369919fbcf41df78f19017694a9502646c6550aa75f"
+}

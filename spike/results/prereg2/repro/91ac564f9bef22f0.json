@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "e1e536c47945a97140eee6d872569c0f8cff74b4",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "654ad3c2e12b948021d83276308ce1f957fb0f2a5426fbdc93cf023bae8400bb",
+ "id": "S25:12:content/en/docs/concepts/cluster-administration/flow-control.md|R|defaults",
+ "ok": true,
+ "regenerated_sha256": "654ad3c2e12b948021d83276308ce1f957fb0f2a5426fbdc93cf023bae8400bb"
+}

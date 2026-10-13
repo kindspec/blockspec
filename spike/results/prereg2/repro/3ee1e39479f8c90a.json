@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "eb7a0d385675078775a62a2fde080633205d952b",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "231635fd093f4270ce0fa1f512951f34915326289bdbfce8e6cc9ce42defb89d",
+ "id": "S25:14:content/ko/docs/concepts/containers/images.md|Q|72",
+ "ok": true,
+ "regenerated_sha256": "231635fd093f4270ce0fa1f512951f34915326289bdbfce8e6cc9ce42defb89d"
+}

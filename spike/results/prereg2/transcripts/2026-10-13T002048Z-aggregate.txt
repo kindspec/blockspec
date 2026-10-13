@@ -1,0 +1,184 @@
+# prereg2 aggregate
+# argv: prereg2.py aggregate --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --manifest /home/cam/repos_kindspec/blockspec-step5/spike/results/prereg2/sealed-manifest.json
+# start: 2026-10-13T00:20:48Z
+# blockspec HEAD: 7474dcff9c54796c2177bfb7a7b7da8049ef30db
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+tiers: run 1's tiers.jsonl binds
+  cmspec        E    Q  NO VERDICT  218 distinct decided natural-language units < 300  distinct {'decided': 218, 'undecidable': 0, 'UNKNOWN': 22}
+      beside, no verdict, anywhere: distinct {'decided': 218, 'undecidable': 0, 'UNKNOWN': 22}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 218, 'undecidable': 0, 'UNKNOWN': 22}, decided hardened mis-resolutions 0
+  cmspec        E    R  NO VERDICT  0 distinct decided natural-language units < 300  distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}
+      beside, no verdict, anywhere: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+  cmspec        M    Q  NO VERDICT  57 distinct decided natural-language units < 300  distinct {'decided': 57, 'undecidable': 0, 'UNKNOWN': 5}
+      beside, no verdict, anywhere: distinct {'decided': 57, 'undecidable': 0, 'UNKNOWN': 5}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 57, 'undecidable': 0, 'UNKNOWN': 5}, decided hardened mis-resolutions 0
+  cmspec        M    R  NO VERDICT  0 distinct decided natural-language units < 300  distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}
+      beside, no verdict, anywhere: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+  cmspec        S25  Q  NO VERDICT  97 distinct decided natural-language units < 300  distinct {'decided': 97, 'undecidable': 1, 'UNKNOWN': 81}
+      beside, no verdict, anywhere: distinct {'decided': 97, 'undecidable': 1, 'UNKNOWN': 81}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 97, 'undecidable': 1, 'UNKNOWN': 81}, decided hardened mis-resolutions 0
+  cmspec        S25  R  NO VERDICT  0 distinct decided natural-language units < 300  distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}
+      beside, no verdict, anywhere: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+  cmspec        S5   Q  NO VERDICT  186 distinct decided natural-language units < 300  distinct {'decided': 186, 'undecidable': 1, 'UNKNOWN': 45}
+      beside, no verdict, anywhere: distinct {'decided': 186, 'undecidable': 1, 'UNKNOWN': 45}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 186, 'undecidable': 1, 'UNKNOWN': 45}, decided hardened mis-resolutions 0
+  cmspec        S5   R  NO VERDICT  0 distinct decided natural-language units < 300  distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}
+      beside, no verdict, anywhere: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+  cncf-toc      E    Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 9049, 'undecidable': 16, 'UNKNOWN': 422}
+      beside, no verdict, anywhere: distinct {'decided': 9049, 'undecidable': 16, 'UNKNOWN': 422}, decided hardened mis-resolutions 4
+      beside, no verdict, none: distinct {'decided': 8667, 'undecidable': 16, 'UNKNOWN': 415}, decided hardened mis-resolutions 9
+  cncf-toc      E    R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 3219, 'undecidable': 1362, 'UNKNOWN': 88}
+      beside, no verdict, anywhere: distinct {'decided': 3219, 'undecidable': 1362, 'UNKNOWN': 88}, decided hardened mis-resolutions 9
+      beside, no verdict, none: distinct {'decided': 3213, 'undecidable': 1391, 'UNKNOWN': 97}, decided hardened mis-resolutions 7
+  cncf-toc      M    Q  NOT FOUND   n=482, bound 3/n = 0.00622 at 95%  distinct {'decided': 482, 'undecidable': 0, 'UNKNOWN': 49}
+      beside, no verdict, anywhere: distinct {'decided': 482, 'undecidable': 0, 'UNKNOWN': 49}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 482, 'undecidable': 0, 'UNKNOWN': 49}, decided hardened mis-resolutions 0
+  cncf-toc      M    R  NO VERDICT  165 distinct decided natural-language units < 300  distinct {'decided': 165, 'undecidable': 33, 'UNKNOWN': 8}
+      beside, no verdict, anywhere: distinct {'decided': 165, 'undecidable': 33, 'UNKNOWN': 8}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 165, 'undecidable': 33, 'UNKNOWN': 8}, decided hardened mis-resolutions 0
+  cncf-toc      S25  Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 593, 'undecidable': 0, 'UNKNOWN': 381}
+      beside, no verdict, anywhere: distinct {'decided': 593, 'undecidable': 0, 'UNKNOWN': 381}, decided hardened mis-resolutions 2
+      beside, no verdict, none: distinct {'decided': 593, 'undecidable': 0, 'UNKNOWN': 381}, decided hardened mis-resolutions 2
+  cncf-toc      S25  R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 475, 'undecidable': 224, 'UNKNOWN': 217}
+      beside, no verdict, anywhere: distinct {'decided': 475, 'undecidable': 224, 'UNKNOWN': 217}, decided hardened mis-resolutions 14
+      beside, no verdict, none: distinct {'decided': 475, 'undecidable': 224, 'UNKNOWN': 217}, decided hardened mis-resolutions 14
+  cncf-toc      S5   Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 2118, 'undecidable': 17, 'UNKNOWN': 376}
+      beside, no verdict, anywhere: distinct {'decided': 2118, 'undecidable': 17, 'UNKNOWN': 376}, decided hardened mis-resolutions 3
+      beside, no verdict, none: distinct {'decided': 2207, 'undecidable': 15, 'UNKNOWN': 355}, decided hardened mis-resolutions 7
+  cncf-toc      S5   R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 1115, 'undecidable': 528, 'UNKNOWN': 90}
+      beside, no verdict, anywhere: distinct {'decided': 1115, 'undecidable': 528, 'UNKNOWN': 90}, decided hardened mis-resolutions 8
+      beside, no verdict, none: distinct {'decided': 1190, 'undecidable': 524, 'UNKNOWN': 99}, decided hardened mis-resolutions 8
+  k8s-en        E    Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 24750, 'undecidable': 42, 'UNKNOWN': 841}
+      beside, no verdict, anywhere: distinct {'decided': 24750, 'undecidable': 42, 'UNKNOWN': 841}, decided hardened mis-resolutions 7
+      beside, no verdict, none: distinct {'decided': 24453, 'undecidable': 44, 'UNKNOWN': 858}, decided hardened mis-resolutions 7
+  k8s-en        E    R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 7388, 'undecidable': 1320, 'UNKNOWN': 123}
+      beside, no verdict, anywhere: distinct {'decided': 7388, 'undecidable': 1320, 'UNKNOWN': 123}, decided hardened mis-resolutions 10
+      beside, no verdict, none: distinct {'decided': 7433, 'undecidable': 1271, 'UNKNOWN': 131}, decided hardened mis-resolutions 11
+  k8s-en        M    Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 21500, 'undecidable': 46, 'UNKNOWN': 805}
+      beside, no verdict, anywhere: distinct {'decided': 21500, 'undecidable': 46, 'UNKNOWN': 805}, decided hardened mis-resolutions 31
+      beside, no verdict, none: distinct {'decided': 21726, 'undecidable': 47, 'UNKNOWN': 814}, decided hardened mis-resolutions 31
+  k8s-en        M    R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 7190, 'undecidable': 1473, 'UNKNOWN': 154}
+      beside, no verdict, anywhere: distinct {'decided': 7190, 'undecidable': 1473, 'UNKNOWN': 154}, decided hardened mis-resolutions 15
+      beside, no verdict, none: distinct {'decided': 7309, 'undecidable': 1479, 'UNKNOWN': 154}, decided hardened mis-resolutions 16
+  k8s-en        S25  Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 10579, 'undecidable': 104, 'UNKNOWN': 4004}
+      beside, no verdict, anywhere: distinct {'decided': 10579, 'undecidable': 104, 'UNKNOWN': 4004}, decided hardened mis-resolutions 25
+      beside, no verdict, none: distinct {'decided': 10491, 'undecidable': 103, 'UNKNOWN': 3922}, decided hardened mis-resolutions 22
+  k8s-en        S25  R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 4041, 'undecidable': 516, 'UNKNOWN': 1014}
+      beside, no verdict, anywhere: distinct {'decided': 4041, 'undecidable': 516, 'UNKNOWN': 1014}, decided hardened mis-resolutions 77
+      beside, no verdict, none: distinct {'decided': 3979, 'undecidable': 506, 'UNKNOWN': 972}, decided hardened mis-resolutions 75
+  k8s-en        S5   Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 17287, 'undecidable': 35, 'UNKNOWN': 1477}
+      beside, no verdict, anywhere: distinct {'decided': 17287, 'undecidable': 35, 'UNKNOWN': 1477}, decided hardened mis-resolutions 10
+      beside, no verdict, none: distinct {'decided': 16764, 'undecidable': 35, 'UNKNOWN': 1409}, decided hardened mis-resolutions 11
+  k8s-en        S5   R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 4982, 'undecidable': 822, 'UNKNOWN': 244}
+      beside, no verdict, anywhere: distinct {'decided': 4982, 'undecidable': 822, 'UNKNOWN': 244}, decided hardened mis-resolutions 13
+      beside, no verdict, none: distinct {'decided': 4839, 'undecidable': 783, 'UNKNOWN': 245}, decided hardened mis-resolutions 11
+  k8s-l10n      E    Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 31590, 'undecidable': 348, 'UNKNOWN': 1401}
+      beside, no verdict, anywhere: distinct {'decided': 29748, 'undecidable': 94, 'UNKNOWN': 1273}, decided hardened mis-resolutions 4
+      beside, no verdict, none: distinct {'decided': 31356, 'undecidable': 353, 'UNKNOWN': 1383}, decided hardened mis-resolutions 5
+  k8s-l10n      E    R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 8987, 'undecidable': 1351, 'UNKNOWN': 158}
+      beside, no verdict, anywhere: distinct {'decided': 9067, 'undecidable': 1188, 'UNKNOWN': 166}, decided hardened mis-resolutions 3
+      beside, no verdict, none: distinct {'decided': 9012, 'undecidable': 1368, 'UNKNOWN': 158}, decided hardened mis-resolutions 3
+  k8s-l10n      M    Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 10545, 'undecidable': 7, 'UNKNOWN': 501}
+      beside, no verdict, anywhere: distinct {'decided': 10532, 'undecidable': 7, 'UNKNOWN': 498}, decided hardened mis-resolutions 2
+      beside, no verdict, none: distinct {'decided': 10545, 'undecidable': 7, 'UNKNOWN': 501}, decided hardened mis-resolutions 2
+  k8s-l10n      M    R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 3027, 'undecidable': 446, 'UNKNOWN': 70}
+      beside, no verdict, anywhere: distinct {'decided': 3007, 'undecidable': 445, 'UNKNOWN': 67}, decided hardened mis-resolutions 2
+      beside, no verdict, none: distinct {'decided': 3027, 'undecidable': 446, 'UNKNOWN': 70}, decided hardened mis-resolutions 2
+  k8s-l10n      S25  Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 7747, 'undecidable': 88, 'UNKNOWN': 4037}
+      beside, no verdict, anywhere: distinct {'decided': 7747, 'undecidable': 88, 'UNKNOWN': 4037}, decided hardened mis-resolutions 44
+      beside, no verdict, none: distinct {'decided': 7747, 'undecidable': 88, 'UNKNOWN': 4037}, decided hardened mis-resolutions 44
+  k8s-l10n      S25  R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 3793, 'undecidable': 424, 'UNKNOWN': 1163}
+      beside, no verdict, anywhere: distinct {'decided': 3793, 'undecidable': 424, 'UNKNOWN': 1163}, decided hardened mis-resolutions 66
+      beside, no verdict, none: distinct {'decided': 3793, 'undecidable': 424, 'UNKNOWN': 1163}, decided hardened mis-resolutions 66
+  k8s-l10n      S5   Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 18432, 'undecidable': 172, 'UNKNOWN': 2556}
+      beside, no verdict, anywhere: distinct {'decided': 18308, 'undecidable': 97, 'UNKNOWN': 2474}, decided hardened mis-resolutions 25
+      beside, no verdict, none: distinct {'decided': 18444, 'undecidable': 172, 'UNKNOWN': 2563}, decided hardened mis-resolutions 28
+  k8s-l10n      S5   R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 5976, 'undecidable': 743, 'UNKNOWN': 444}
+      beside, no verdict, anywhere: distinct {'decided': 6064, 'undecidable': 657, 'UNKNOWN': 451}, decided hardened mis-resolutions 18
+      beside, no verdict, none: distinct {'decided': 5956, 'undecidable': 746, 'UNKNOWN': 448}, decided hardened mis-resolutions 18
+  obsidian-help E    Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 5255, 'undecidable': 4, 'UNKNOWN': 369}
+      beside, no verdict, anywhere: distinct {'decided': 5255, 'undecidable': 4, 'UNKNOWN': 369}, decided hardened mis-resolutions 3
+      beside, no verdict, none: distinct {'decided': 5255, 'undecidable': 4, 'UNKNOWN': 369}, decided hardened mis-resolutions 3
+  obsidian-help E    R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 2435, 'undecidable': 364, 'UNKNOWN': 76}
+      beside, no verdict, anywhere: distinct {'decided': 2435, 'undecidable': 364, 'UNKNOWN': 76}, decided hardened mis-resolutions 2
+      beside, no verdict, none: distinct {'decided': 2435, 'undecidable': 364, 'UNKNOWN': 76}, decided hardened mis-resolutions 2
+  obsidian-help M    Q  NO VERDICT  6 distinct decided natural-language units < 300  distinct {'decided': 6, 'undecidable': 0, 'UNKNOWN': 0}
+      beside, no verdict, anywhere: distinct {'decided': 6, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 6, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+  obsidian-help M    R  NO VERDICT  2 distinct decided natural-language units < 300  distinct {'decided': 2, 'undecidable': 0, 'UNKNOWN': 0}
+      beside, no verdict, anywhere: distinct {'decided': 2, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 2, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+  obsidian-help S25  Q  NO VERDICT  214 distinct decided natural-language units < 300  distinct {'decided': 214, 'undecidable': 4, 'UNKNOWN': 321}
+      beside, no verdict, anywhere: distinct {'decided': 214, 'undecidable': 4, 'UNKNOWN': 321}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 214, 'undecidable': 4, 'UNKNOWN': 321}, decided hardened mis-resolutions 0
+  obsidian-help S25  R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 172, 'undecidable': 18, 'UNKNOWN': 179}
+      beside, no verdict, anywhere: distinct {'decided': 172, 'undecidable': 18, 'UNKNOWN': 179}, decided hardened mis-resolutions 6
+      beside, no verdict, none: distinct {'decided': 172, 'undecidable': 18, 'UNKNOWN': 179}, decided hardened mis-resolutions 6
+  obsidian-help S5   Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 2902, 'undecidable': 9, 'UNKNOWN': 855}
+      beside, no verdict, anywhere: distinct {'decided': 2902, 'undecidable': 9, 'UNKNOWN': 855}, decided hardened mis-resolutions 2
+      beside, no verdict, none: distinct {'decided': 2902, 'undecidable': 9, 'UNKNOWN': 855}, decided hardened mis-resolutions 2
+  obsidian-help S5   R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 1425, 'undecidable': 156, 'UNKNOWN': 245}
+      beside, no verdict, anywhere: distinct {'decided': 1425, 'undecidable': 156, 'UNKNOWN': 245}, decided hardened mis-resolutions 14
+      beside, no verdict, none: distinct {'decided': 1425, 'undecidable': 156, 'UNKNOWN': 245}, decided hardened mis-resolutions 14
+  rust-book     E    Q  NOT FOUND   n=10762, bound 3/n = 0.00028 at 95%  distinct {'decided': 10762, 'undecidable': 2, 'UNKNOWN': 483}
+      beside, no verdict, anywhere: distinct {'decided': 10762, 'undecidable': 2, 'UNKNOWN': 483}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 10762, 'undecidable': 2, 'UNKNOWN': 483}, decided hardened mis-resolutions 0
+  rust-book     E    R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 3131, 'undecidable': 829, 'UNKNOWN': 55}
+      beside, no verdict, anywhere: distinct {'decided': 3131, 'undecidable': 829, 'UNKNOWN': 55}, decided hardened mis-resolutions 3
+      beside, no verdict, none: distinct {'decided': 3131, 'undecidable': 829, 'UNKNOWN': 55}, decided hardened mis-resolutions 3
+  rust-book     M    Q  NOT FOUND   n=2978, bound 3/n = 0.00101 at 95%  distinct {'decided': 2978, 'undecidable': 0, 'UNKNOWN': 90}
+      beside, no verdict, anywhere: distinct {'decided': 2978, 'undecidable': 0, 'UNKNOWN': 90}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 2978, 'undecidable': 0, 'UNKNOWN': 90}, decided hardened mis-resolutions 0
+  rust-book     M    R  NO VERDICT  undecidable 110 > 10% of 712  distinct {'decided': 602, 'undecidable': 110, 'UNKNOWN': 1}
+      beside, no verdict, anywhere: distinct {'decided': 602, 'undecidable': 110, 'UNKNOWN': 1}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 602, 'undecidable': 110, 'UNKNOWN': 1}, decided hardened mis-resolutions 0
+  rust-book     S25  Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 2786, 'undecidable': 4, 'UNKNOWN': 3261}
+      beside, no verdict, anywhere: distinct {'decided': 2786, 'undecidable': 4, 'UNKNOWN': 3261}, decided hardened mis-resolutions 2
+      beside, no verdict, none: distinct {'decided': 2786, 'undecidable': 4, 'UNKNOWN': 3261}, decided hardened mis-resolutions 2
+  rust-book     S25  R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 819, 'undecidable': 55, 'UNKNOWN': 1196}
+      beside, no verdict, anywhere: distinct {'decided': 819, 'undecidable': 55, 'UNKNOWN': 1196}, decided hardened mis-resolutions 13
+      beside, no verdict, none: distinct {'decided': 819, 'undecidable': 55, 'UNKNOWN': 1196}, decided hardened mis-resolutions 13
+  rust-book     S5   Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 6625, 'undecidable': 5, 'UNKNOWN': 1735}
+      beside, no verdict, anywhere: distinct {'decided': 6625, 'undecidable': 5, 'UNKNOWN': 1735}, decided hardened mis-resolutions 2
+      beside, no verdict, none: distinct {'decided': 6625, 'undecidable': 5, 'UNKNOWN': 1735}, decided hardened mis-resolutions 2
+  rust-book     S5   R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 1921, 'undecidable': 244, 'UNKNOWN': 261}
+      beside, no verdict, anywhere: distinct {'decided': 1921, 'undecidable': 244, 'UNKNOWN': 261}, decided hardened mis-resolutions 9
+      beside, no verdict, none: distinct {'decided': 1921, 'undecidable': 244, 'UNKNOWN': 261}, decided hardened mis-resolutions 9
+  site-policy   E    Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 3000, 'undecidable': 40, 'UNKNOWN': 209}
+      beside, no verdict, anywhere: distinct {'decided': 3000, 'undecidable': 40, 'UNKNOWN': 209}, decided hardened mis-resolutions 2
+      beside, no verdict, none: distinct {'decided': 3000, 'undecidable': 40, 'UNKNOWN': 209}, decided hardened mis-resolutions 2
+  site-policy   E    R  NOT FOUND   n=1383, bound 3/n = 0.00217 at 95%  distinct {'decided': 1383, 'undecidable': 101, 'UNKNOWN': 57}
+      beside, no verdict, anywhere: distinct {'decided': 1383, 'undecidable': 101, 'UNKNOWN': 57}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 1383, 'undecidable': 101, 'UNKNOWN': 57}, decided hardened mis-resolutions 0
+  site-policy   M    Q  NO VERDICT  0 distinct decided natural-language units < 300  distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}
+      beside, no verdict, anywhere: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+      beside, no verdict, set25: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+  site-policy   M    R  NO VERDICT  0 distinct decided natural-language units < 300  distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}
+      beside, no verdict, anywhere: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+      beside, no verdict, set25: distinct {'decided': 0, 'undecidable': 0, 'UNKNOWN': 0}, decided hardened mis-resolutions 0
+  site-policy   S25  Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 26, 'undecidable': 2, 'UNKNOWN': 27}
+      beside, no verdict, anywhere: distinct {'decided': 26, 'undecidable': 2, 'UNKNOWN': 27}, decided hardened mis-resolutions 4
+      beside, no verdict, none: distinct {'decided': 26, 'undecidable': 2, 'UNKNOWN': 27}, decided hardened mis-resolutions 4
+  site-policy   S25  R  NO VERDICT  9 distinct decided natural-language units < 300  distinct {'decided': 9, 'undecidable': 0, 'UNKNOWN': 5}
+      beside, no verdict, anywhere: distinct {'decided': 9, 'undecidable': 0, 'UNKNOWN': 5}, decided hardened mis-resolutions 0
+      beside, no verdict, none: distinct {'decided': 9, 'undecidable': 0, 'UNKNOWN': 5}, decided hardened mis-resolutions 0
+  site-policy   S5   Q  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 1670, 'undecidable': 73, 'UNKNOWN': 535}
+      beside, no verdict, anywhere: distinct {'decided': 1670, 'undecidable': 73, 'UNKNOWN': 535}, decided hardened mis-resolutions 48
+      beside, no verdict, none: distinct {'decided': 1670, 'undecidable': 73, 'UNKNOWN': 535}, decided hardened mis-resolutions 48
+  site-policy   S5   R  NO VERDICT  tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no  distinct {'decided': 957, 'undecidable': 32, 'UNKNOWN': 182}
+      beside, no verdict, anywhere: distinct {'decided': 957, 'undecidable': 32, 'UNKNOWN': 182}, decided hardened mis-resolutions 1
+      beside, no verdict, none: distinct {'decided': 957, 'undecidable': 32, 'UNKNOWN': 182}, decided hardened mis-resolutions 1
+TIERING VOID: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no
+near misses (distinct units): {'i': 43, 'ii': 99, 'iii': 372}
+OVERALL: INCONCLUSIVE
+
+# end: 2026-10-13T00:21:05Z
+# exited: exit status 0

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "1ee939d16b03663441bfd12832084bfb736c99ae",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "45bedc013280d1cc11dd7f3873928734097075259e45f6c7eedb627451cf5616",
+ "id": "E:fb0f7ee256572e2867e9d497be2c1c8c529bb62b:PRINCIPLES.md|R|be-welcoming",
+ "ok": true,
+ "regenerated_sha256": "45bedc013280d1cc11dd7f3873928734097075259e45f6c7eedb627451cf5616"
+}

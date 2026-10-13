@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id M:4312632fbe2418d9200068c8347b2fda4d881a29:content/en/docs/concepts/cluster-administration/system-metrics.md|Q|53 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-Sf8lq4
+# start: 2026-10-12T14:45:24Z
+# blockspec HEAD: a0b684dece2659b08a3086dbff568fd5fc36de2d
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   dadd944c8a48e9f665540e9cf0b1151c636d4a1a96d2f72b0d79cc65dfd23d3c
+regenerated dadd944c8a48e9f665540e9cf0b1151c636d4a1a96d2f72b0d79cc65dfd23d3c
+F9 REPRODUCTION: BYTE-IDENTICAL  M:4312632fbe2418d9200068c8347b2fda4d881a29:content/en/docs/concepts/cluster-administration/system-metrics.md|Q|53
+
+# end: 2026-10-12T14:45:41Z
+# exited: exit status 0

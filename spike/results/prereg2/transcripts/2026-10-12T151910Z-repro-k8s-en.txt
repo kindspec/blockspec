@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id S25:42:content/en/docs/tasks/tools/install-kubectl-linux.md|Q|50 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-ABn4Tq
+# start: 2026-10-12T15:19:10Z
+# blockspec HEAD: d492ddf04a091729baf1a06ac2e9672cb11fd98e
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   24df8557b4f6a698eebde784c3e7e405c8f42a0d6984d5974177884dd3a5d689
+regenerated 24df8557b4f6a698eebde784c3e7e405c8f42a0d6984d5974177884dd3a5d689
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:42:content/en/docs/tasks/tools/install-kubectl-linux.md|Q|50
+
+# end: 2026-10-12T15:19:27Z
+# exited: exit status 0

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "202c61270928313edba2c8008dae038901d1c360",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "a68a6aed1af3b87b9f63b0592bf8acb7c0687faebde4846a2ce1621d3faec5f1",
+ "id": "S5:0:projects/kyverno/kyverno-graduation-due-diligence.md|Q|104",
+ "ok": true,
+ "regenerated_sha256": "a68a6aed1af3b87b9f63b0592bf8acb7c0687faebde4846a2ce1621d3faec5f1"
+}

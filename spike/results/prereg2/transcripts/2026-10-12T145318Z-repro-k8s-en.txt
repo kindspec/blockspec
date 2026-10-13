@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id M:d118037f84d6dfe64db3fc2dad61b7c73e41d944:content/en/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes.md|Q|121 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-0feDDW
+# start: 2026-10-12T14:53:18Z
+# blockspec HEAD: 88476026a714cb524db74dec0901ebb07d69fbe8
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   42e7356faebb5c4f13be3e0f8fc8f2b1eca1965eac680f7ec9823f403068e837
+regenerated 42e7356faebb5c4f13be3e0f8fc8f2b1eca1965eac680f7ec9823f403068e837
+F9 REPRODUCTION: BYTE-IDENTICAL  M:d118037f84d6dfe64db3fc2dad61b7c73e41d944:content/en/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes.md|Q|121
+
+# end: 2026-10-12T14:53:39Z
+# exited: exit status 0

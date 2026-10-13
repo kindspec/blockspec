@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "7a0c068d892e9cdf591c69bb596961ea13e4a18c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "4deba66b94b126931ad3434ea37bd79cbbf53146e14355607d01031e38a1b863",
+ "id": "E:6224377d8796f50f4d7791112ccda89e67bf7a4b:content/en/docs/concepts/workloads/controllers/replicaset.md|R|deployment-recommended",
+ "ok": true,
+ "regenerated_sha256": "4deba66b94b126931ad3434ea37bd79cbbf53146e14355607d01031e38a1b863"
+}

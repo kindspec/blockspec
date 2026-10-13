@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id S25:6:content/en/docs/tasks/access-application-cluster/web-ui-dashboard.md|Q|60 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-wtkA1v
+# start: 2026-10-12T15:24:40Z
+# blockspec HEAD: 8099a1a6e4499842b68349ed0bd3f09514d8a7c9
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   8fe78406420052545ae6c4734537c02469fd4b910881f65a9c5d8df39b57b716
+regenerated 8fe78406420052545ae6c4734537c02469fd4b910881f65a9c5d8df39b57b716
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:6:content/en/docs/tasks/access-application-cluster/web-ui-dashboard.md|Q|60
+
+# end: 2026-10-12T15:24:59Z
+# exited: exit status 0

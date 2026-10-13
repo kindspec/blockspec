@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "b6854b2e9cf567febe9baa5969418eaafcc6182c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "f47631b40b839b188db10f82a974fba61153409e4540b05b341f938f920b6419",
+ "id": "S25:11:content/ja/docs/concepts/overview/components.md|R|ノードコンポーネント",
+ "ok": true,
+ "regenerated_sha256": "f47631b40b839b188db10f82a974fba61153409e4540b05b341f938f920b6419"
+}

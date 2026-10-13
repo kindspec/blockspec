@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d882a106a4e7eeb209b9b757246b212ae517d3d9",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "3e6f5d6c817130b6e52b3eb7435a8adab47619651265f8f2e205c433a63ff70f",
+ "id": "S5:17:content/ko/docs/concepts/configuration/secret.md|R|시크릿-파일-퍼미션",
+ "ok": true,
+ "regenerated_sha256": "3e6f5d6c817130b6e52b3eb7435a8adab47619651265f8f2e205c433a63ff70f"
+}

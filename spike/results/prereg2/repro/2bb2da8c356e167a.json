@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "468ce25e148d428467eb8aece8fc1b197077ef24",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "de86d6625d432cf66d02c4e5f465e67d70d11958f42657494b24aec4b777f94d",
+ "id": "M:4312632fbe2418d9200068c8347b2fda4d881a29:content/en/docs/concepts/cluster-administration/system-metrics.md|Q|54",
+ "ok": true,
+ "regenerated_sha256": "de86d6625d432cf66d02c4e5f465e67d70d11958f42657494b24aec4b777f94d"
+}

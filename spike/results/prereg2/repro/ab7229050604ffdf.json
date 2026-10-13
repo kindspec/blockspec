@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "c4953fdbe6bfa63d3306a7c3e4658232a5c28ba2",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "03fc4997693d34522090dcd3bba44ef12d9520074af31168dd2a1d455d7757ae",
+ "id": "S5:10:content/zh-cn/docs/concepts/overview/working-with-objects/namespaces.md|Q|19",
+ "ok": true,
+ "regenerated_sha256": "03fc4997693d34522090dcd3bba44ef12d9520074af31168dd2a1d455d7757ae"
+}

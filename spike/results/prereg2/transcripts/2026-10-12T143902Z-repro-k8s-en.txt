@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id E:ca9f211613eb858003c3e788c42fb0d46862e328:content/en/docs/concepts/scheduling-eviction/scheduling-framework.md|R|enqueueextension --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-gdP4Tz
+# start: 2026-10-12T14:39:02Z
+# blockspec HEAD: a43c7a0f8ba66422b72ece6094e9c13a1512cfaa
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   31af8a3cb7c963cbd34bd8e29d4a080e87e984ccf0a7306a2ed889466b866e8a
+regenerated 31af8a3cb7c963cbd34bd8e29d4a080e87e984ccf0a7306a2ed889466b866e8a
+F9 REPRODUCTION: BYTE-IDENTICAL  E:ca9f211613eb858003c3e788c42fb0d46862e328:content/en/docs/concepts/scheduling-eviction/scheduling-framework.md|R|enqueueextension
+
+# end: 2026-10-12T14:39:18Z
+# exited: exit status 0

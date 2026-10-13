@@ -1,0 +1,13 @@
+# prereg2 repro obsidian-help
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm obsidian-help --id S25:1:en/Import notes/Import from Notion.md|R|export-your-data-from-notion --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-oIdGzs
+# start: 2026-10-13T00:11:13Z
+# blockspec HEAD: 68c2b86e4154dd3ce18093de6a0dc5bf94c23635
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   b4a1f0ba0baefa34fd03208269bb7591aaef0324aa08edb1e3d7c43193e41f8b
+regenerated b4a1f0ba0baefa34fd03208269bb7591aaef0324aa08edb1e3d7c43193e41f8b
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:1:en/Import notes/Import from Notion.md|R|export-your-data-from-notion
+
+# end: 2026-10-13T00:11:16Z
+# exited: exit status 0

@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S5:22:content/ko/docs/concepts/overview/components.md|R|컨트롤-플레인-컴포넌트 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-eKSy1O
+# start: 2026-10-12T22:37:30Z
+# blockspec HEAD: fdc039fe83f79ed6ccd8f76b2d79b3bf2ca18fb5
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   f5b431c93f3a5718c986d4b464719f9ae2e6011dfcfa5702403aaf7d20c1652f
+regenerated f5b431c93f3a5718c986d4b464719f9ae2e6011dfcfa5702403aaf7d20c1652f
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:22:content/ko/docs/concepts/overview/components.md|R|컨트롤-플레인-컴포넌트
+
+# end: 2026-10-12T22:37:41Z
+# exited: exit status 0

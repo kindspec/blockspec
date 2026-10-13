@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S25:0:content/zh-cn/docs/setup/production-environment/container-runtimes.md|R|configuring-the-systemd-cgroup-driver-containerd-systemd --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-wfhcbW
+# start: 2026-10-12T16:50:38Z
+# blockspec HEAD: 42bf7c1b4345c919ec0c8fca473fa3a3c2fa34a9
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   c32272b5f98ab1bee1db4d0653419d8a49a2083ecf54960c9f2cecdf63451231
+regenerated c32272b5f98ab1bee1db4d0653419d8a49a2083ecf54960c9f2cecdf63451231
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:0:content/zh-cn/docs/setup/production-environment/container-runtimes.md|R|configuring-the-systemd-cgroup-driver-containerd-systemd
+
+# end: 2026-10-12T16:50:59Z
+# exited: exit status 0

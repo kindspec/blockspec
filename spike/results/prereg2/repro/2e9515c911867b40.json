@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "db0aba19a0a59de689d4d3418bdd6b17c15281c1",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1e7baccf38d5e773da3b8c045a5c6d5a4135adbcdcd20b8125b41db5dc7f50e4",
+ "id": "S25:13:content/en/docs/concepts/services-networking/service.md|R|why-not-use-round-robin-dns",
+ "ok": true,
+ "regenerated_sha256": "1e7baccf38d5e773da3b8c045a5c6d5a4135adbcdcd20b8125b41db5dc7f50e4"
+}

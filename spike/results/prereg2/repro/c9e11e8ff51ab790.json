@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "b7f149320745c9855deaec984f8e14f7d024bb3d",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "6e1f36c7ddf5240636f7df456163367f93780b4c07b5d17ea1493036d133c0bc",
+ "id": "S5:3:governance/tag-governance.md|R|subprojects",
+ "ok": true,
+ "regenerated_sha256": "6e1f36c7ddf5240636f7df456163367f93780b4c07b5d17ea1493036d133c0bc"
+}

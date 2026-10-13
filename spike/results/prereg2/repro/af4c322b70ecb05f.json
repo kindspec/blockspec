@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "174d91e5e0c14ca984af222b2a74a55335d3022c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "c846ff389a1ee9f0466887c15d4c5a28ef656b57a2dd7d3735f7fedf3cbbb7ff",
+ "id": "S25:14:src/ch13-01-closures.md|R|capturing-the-environment-with-closures",
+ "ok": true,
+ "regenerated_sha256": "c846ff389a1ee9f0466887c15d4c5a28ef656b57a2dd7d3735f7fedf3cbbb7ff"
+}

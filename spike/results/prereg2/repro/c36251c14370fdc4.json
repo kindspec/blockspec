@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "9a4ac8745c6de0b5e56ec0d311e3d09b563b565a",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "0b98fe831b02f3cdcd22e9a82dc85a1d5d9b931c0ab42ab1bc515703dadf30d9",
+ "id": "S25:127:content/en/docs/reference/access-authn-authz/authentication.md|R|user-impersonation",
+ "ok": true,
+ "regenerated_sha256": "0b98fe831b02f3cdcd22e9a82dc85a1d5d9b931c0ab42ab1bc515703dadf30d9"
+}

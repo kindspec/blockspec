@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "06c576664a173808369dd9ee210e63f0de560593",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "55943914ccf7fa29b957dbe87c7643b629f2dbb5fa5ac9a7ba267e06e18925c5",
+ "id": "E:2f9f73ec4576224f3834b7c2dc6e2cd366d9a33f:tags/tag-infrastructure/data-storage-in-cloud-native-ai/topics/training.md|R|references",
+ "ok": true,
+ "regenerated_sha256": "55943914ccf7fa29b957dbe87c7643b629f2dbb5fa5ac9a7ba267e06e18925c5"
+}

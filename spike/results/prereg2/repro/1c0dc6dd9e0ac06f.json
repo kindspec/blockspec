@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d3b52a5d49aac0818a8995b121b9fb324fd064e4",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "d626fc8be6760c00d05e38e221b7f0aecaf674a77c3afcf5798a83703f13f8b2",
+ "id": "S25:3:content/zh-cn/docs/setup/production-environment/container-runtimes.md|Q|87",
+ "ok": true,
+ "regenerated_sha256": "d626fc8be6760c00d05e38e221b7f0aecaf674a77c3afcf5798a83703f13f8b2"
+}

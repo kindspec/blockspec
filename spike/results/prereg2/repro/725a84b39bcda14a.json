@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "6523448ff16a0ff12bcd6ed290ad7e7b84ac6678",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "b5139b6adbdb235ee5eb8f278fc6b69a54e09501e6355a2c8e639ad69226fad7",
+ "id": "M:70096affc51948e3031e6cfb57ce70aca1833647:content/en/docs/reference/access-authn-authz/admission-controllers.md|R|persistentvolumeclaimresize-persistentvolumeclaimresize",
+ "ok": true,
+ "regenerated_sha256": "b5139b6adbdb235ee5eb8f278fc6b69a54e09501e6355a2c8e639ad69226fad7"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "c6825f343e94fdc16ed5737878018ac5f58a2ed0",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "368489c1514f4595e07bdc9f05a184a25d7b548c6b573fbfef3cd510be37c8f6",
+ "id": "M:54db045bb2edac9d84eb4b47f9ab680294507309:content/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins.md|R|device-plugin-examples-examples",
+ "ok": true,
+ "regenerated_sha256": "368489c1514f4595e07bdc9f05a184a25d7b548c6b573fbfef3cd510be37c8f6"
+}

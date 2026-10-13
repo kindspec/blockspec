@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "84d8e24de69e51a6601edc04f89a8d7744f24c56",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "0c7811620dfe92968d5eda3a11331011a863f7c5994405c6e29280268888c6df",
+ "id": "S25:1:content/zh-cn/docs/concepts/services-networking/service.md|R|traffic-policies",
+ "ok": true,
+ "regenerated_sha256": "0c7811620dfe92968d5eda3a11331011a863f7c5994405c6e29280268888c6df"
+}

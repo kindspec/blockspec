@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "b9d3e68449963ecc1f13fc7ee32263b80662c819",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "3e3480ad9fca18bde181471637afd72d7b175a9bb021b2988116a21b7ce76d99",
+ "id": "S5:2:content/zh-cn/docs/concepts/services-networking/gateway.md|Q|21",
+ "ok": true,
+ "regenerated_sha256": "3e3480ad9fca18bde181471637afd72d7b175a9bb021b2988116a21b7ce76d99"
+}

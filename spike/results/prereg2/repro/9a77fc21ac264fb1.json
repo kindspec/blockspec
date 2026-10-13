@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "0739183945086c99e1cb031e5d1bd272b165893e",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ec4bec25fcb0f2da84bd9a752679db8fa7ed95ec6bbb1de0aedf9a31ee4788ab",
+ "id": "S25:0:src/ch02-00-guessing-game-tutorial.md|Q|78",
+ "ok": true,
+ "regenerated_sha256": "ec4bec25fcb0f2da84bd9a752679db8fa7ed95ec6bbb1de0aedf9a31ee4788ab"
+}

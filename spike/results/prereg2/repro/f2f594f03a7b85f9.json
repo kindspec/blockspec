@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "559ced925a710d66efa5f6dde6fb06c7bdfa2591",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "930c5d97758d4dfe218d1435c504e08faf859cc9acfa8c21b8deea44f07e9d1a",
+ "id": "S25:85:content/en/docs/concepts/configuration/secret.md|R|secret-files-permissions",
+ "ok": true,
+ "regenerated_sha256": "930c5d97758d4dfe218d1435c504e08faf859cc9acfa8c21b8deea44f07e9d1a"
+}

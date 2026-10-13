@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S25:1:content/ko/docs/tutorials/hello-minikube.md|R|minikube-클러스터-만들기 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-o6rHtB
+# start: 2026-10-12T17:23:03Z
+# blockspec HEAD: 548ea68ced93ceda53b48daa4a90c352dfebedc0
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   a409b930282e62365f5f4b34f85ba6f87aa4fc9725f5e9fdbb9b41adc3b0befc
+regenerated a409b930282e62365f5f4b34f85ba6f87aa4fc9725f5e9fdbb9b41adc3b0befc
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:1:content/ko/docs/tutorials/hello-minikube.md|R|minikube-클러스터-만들기
+
+# end: 2026-10-12T17:23:22Z
+# exited: exit status 0

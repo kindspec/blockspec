@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "f94cb08b031b844b89979b6649ed715215fa0346",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "f291f62458dae0bb29b41567b83fd24f81f36fa5649ebfee50e0d93cc1068240",
+ "id": "E:f65c00799a06b201874adf1cf8b238cf33f1f554:content/zh-cn/blog/_posts/2024/consistent-read-from-cache.md|R|下一步是什么---whats-next",
+ "ok": true,
+ "regenerated_sha256": "f291f62458dae0bb29b41567b83fd24f81f36fa5649ebfee50e0d93cc1068240"
+}

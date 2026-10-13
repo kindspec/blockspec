@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "0f12559f3a20f55f6a2da5812c0445f7ea144aad",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "501fbb35479d4d372730146e0b164ab47fcc4011ac297100a73f6b9ce148244c",
+ "id": "S25:92:content/en/docs/concepts/configuration/secret.md|R|tls-secrets",
+ "ok": true,
+ "regenerated_sha256": "501fbb35479d4d372730146e0b164ab47fcc4011ac297100a73f6b9ce148244c"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "a9b381d3ef024d8a8ea70bf12e05e1a56ae13977",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "9125f48e25e35f4d9e2a4cdacfc19e4e05bd73de2d8fe3605b950ab9e2047625",
+ "id": "S25:18:content/en/docs/concepts/workloads/controllers/statefulset.md|R|pod-selector",
+ "ok": true,
+ "regenerated_sha256": "9125f48e25e35f4d9e2a4cdacfc19e4e05bd73de2d8fe3605b950ab9e2047625"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "48c0f8cc2247b414b81b597502fe9d70006b281e",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "d548ef742bb83ec2e2d6c1474eb5a067fc676da136df609e324e0592315c3a3b",
+ "id": "S5:3:content/zh-cn/docs/reference/networking/virtual-ips.md|R|ip-address-ranges-for-service-virtual-ip-addresses-service-ip-static-sub-range",
+ "ok": true,
+ "regenerated_sha256": "d548ef742bb83ec2e2d6c1474eb5a067fc676da136df609e324e0592315c3a3b"
+}

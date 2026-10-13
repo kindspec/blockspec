@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "3891d21e989cb9a9fdcf198b2693aca39c62b684",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "4718908f981fea1abc2869c572e742ebaa72178b02a9a7cb15fe720dd45037d7",
+ "id": "S25:3:en/Editing and formatting/Basic formatting syntax.md|R|code-blocks",
+ "ok": true,
+ "regenerated_sha256": "4718908f981fea1abc2869c572e742ebaa72178b02a9a7cb15fe720dd45037d7"
+}

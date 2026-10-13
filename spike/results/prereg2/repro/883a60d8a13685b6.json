@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "f63a23672b815d2dec64cdaf48c97b5044267cf4",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "75a83e182de28385d0790bc45ed1233ca1c5cd015730e9d80a59e3af4ae4c9e8",
+ "id": "M:119a085a55182b5695147e0373dfd6af9cb9a59e:content/en/docs/tasks/administer-cluster/kms-provider.md|Q|58",
+ "ok": true,
+ "regenerated_sha256": "75a83e182de28385d0790bc45ed1233ca1c5cd015730e9d80a59e3af4ae4c9e8"
+}

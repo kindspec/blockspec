@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "12500ad665adfbe7e1f504cdfda1c146e94a1fb8",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "8390c892e3a20bb185da6da0b4556fd528a2c7ef604cd1fe16723995da867384",
+ "id": "S25:0:content/ko/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough.md|Q|32",
+ "ok": true,
+ "regenerated_sha256": "8390c892e3a20bb185da6da0b4556fd528a2c7ef604cd1fe16723995da867384"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "975ef2bccdedc46c1e2ff6d7cde7b7423a1e00b7",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "b8b541621cf48a0ab9658a965c51d8f5230a06944b1155d6ba478d8975d2a0cd",
+ "id": "E:a6f2e7d26666335cd157fe6ec9f5163a632c64c2:content/zh-cn/docs/reference/access-authn-authz/kubelet-tls-bootstrapping.md|R|kube-controller-manager-配置---kube-controller-manager-configuration",
+ "ok": true,
+ "regenerated_sha256": "b8b541621cf48a0ab9658a965c51d8f5230a06944b1155d6ba478d8975d2a0cd"
+}

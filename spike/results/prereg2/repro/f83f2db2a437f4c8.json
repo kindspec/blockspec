@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "5e8ddb7b7dc2323be2a0ae5bc4aadff403d086e9",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "8a8379323c401e444fd8cf1f0794ea47eec034d4f39ba41832ea2404b104c7c3",
+ "id": "S25:15:src/ch01-01-installation.md|R|troubleshooting",
+ "ok": true,
+ "regenerated_sha256": "8a8379323c401e444fd8cf1f0794ea47eec034d4f39ba41832ea2404b104c7c3"
+}

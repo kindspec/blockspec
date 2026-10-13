@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "c5a84fb5137b7058f4875e21aecd4feb5f37085b",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "329df409dfd8df1d81fde895ef41c9b1736619c69a2f6bacb4ca941b058c7c97",
+ "id": "M:205f8ec57570fd2623ac0744b10e70f4a84002da:content/en/docs/contribute/style/hugo-shortcodes/index.md|Q|70",
+ "ok": true,
+ "regenerated_sha256": "329df409dfd8df1d81fde895ef41c9b1736619c69a2f6bacb4ca941b058c7c97"
+}

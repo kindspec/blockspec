@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d12537e7601b97fc5e9fb3561b7b2d3a81d240a2",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "abcdd39ad4cac68863ea4e659652f35d377505292458fbafc1c113fdde3f6712",
+ "id": "S25:61:content/en/docs/concepts/policy/resource-quotas.md|R|quota-scopes",
+ "ok": true,
+ "regenerated_sha256": "abcdd39ad4cac68863ea4e659652f35d377505292458fbafc1c113fdde3f6712"
+}

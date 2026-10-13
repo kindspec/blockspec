@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "535dd97f63f59aa339ff1357ea8a5a0bc32b4cac",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "d2b8f23443d902e38aa7f20ae6f6318a020f45e7bb97198ff178cfe43732caee",
+ "id": "S25:5:content/ja/docs/concepts/workloads/pods/pod-lifecycle.md|R|podのライフタイム",
+ "ok": true,
+ "regenerated_sha256": "d2b8f23443d902e38aa7f20ae6f6318a020f45e7bb97198ff178cfe43732caee"
+}

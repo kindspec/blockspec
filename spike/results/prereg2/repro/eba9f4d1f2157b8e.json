@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "f64276b172a1dfb140825b00a8f8fb67a8572801",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "d02db722c67a2d59db5d17865ccbe426c03c8b05b998848a3abe75f0dd539b61",
+ "id": "E:6e6bc258c94ad1b5245996dc1d0abfd556ac0a54:PRINCIPLES.md|R|always-do-better",
+ "ok": true,
+ "regenerated_sha256": "d02db722c67a2d59db5d17865ccbe426c03c8b05b998848a3abe75f0dd539b61"
+}

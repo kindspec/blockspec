@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id M:54db045bb2edac9d84eb4b47f9ab680294507309:content/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins.md|R|device-plugin-examples-examples --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-Ob9WEC
+# start: 2026-10-12T16:43:47Z
+# blockspec HEAD: c6825f343e94fdc16ed5737878018ac5f58a2ed0
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   368489c1514f4595e07bdc9f05a184a25d7b548c6b573fbfef3cd510be37c8f6
+regenerated 368489c1514f4595e07bdc9f05a184a25d7b548c6b573fbfef3cd510be37c8f6
+F9 REPRODUCTION: BYTE-IDENTICAL  M:54db045bb2edac9d84eb4b47f9ab680294507309:content/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins.md|R|device-plugin-examples-examples
+
+# end: 2026-10-12T16:44:01Z
+# exited: exit status 0

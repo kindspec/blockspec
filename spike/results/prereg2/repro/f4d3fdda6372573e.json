@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "664ab83c1f8827288241847f284c25786a30cb81",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "cc084900c6e829d850659e0adda074d1d0f9cc864beb438be7ee856e168a734d",
+ "id": "E:6c5b67cdfe20521b316da2984510fb9dbde73764:tags/tag-infrastructure/initiatives/infrastructure-lifecycle/05_Conclusion.md|Q|1",
+ "ok": true,
+ "regenerated_sha256": "cc084900c6e829d850659e0adda074d1d0f9cc864beb438be7ee856e168a734d"
+}

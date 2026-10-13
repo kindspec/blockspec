@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "2086ca638d0675158c9efee59ec023688d0e3cfe",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "821bc941dc70daa2d93f801b1d96997c7fbcfedf976577c3beab3a3772db19df",
+ "id": "S5:0:Policies/content-removal-policies/github-private-information-removal-policy.md|Q|21",
+ "ok": true,
+ "regenerated_sha256": "821bc941dc70daa2d93f801b1d96997c7fbcfedf976577c3beab3a3772db19df"
+}

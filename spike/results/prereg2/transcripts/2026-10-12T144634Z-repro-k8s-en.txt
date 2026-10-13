@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id M:5ea6ba08e7f3971bf4989bc84149e6809b7ed936:content/en/docs/tasks/administer-cluster/configure-upgrade-etcd.md|R|heading-prerequisites --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-j5YoS4
+# start: 2026-10-12T14:46:34Z
+# blockspec HEAD: 18c284f2836bf701908580f0a9408abe7ff8198c
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   99dc34e1037c94fac7066ecd71d81acea48bb39507453b2098ca2b4a51540bf8
+regenerated 99dc34e1037c94fac7066ecd71d81acea48bb39507453b2098ca2b4a51540bf8
+F9 REPRODUCTION: BYTE-IDENTICAL  M:5ea6ba08e7f3971bf4989bc84149e6809b7ed936:content/en/docs/tasks/administer-cluster/configure-upgrade-etcd.md|R|heading-prerequisites
+
+# end: 2026-10-12T14:46:52Z
+# exited: exit status 0

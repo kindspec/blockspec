@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "191f7f6024f143db60309dba2aa2640ab6362497",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "a7d985c8c25c571309b79c1811c4b6630a64f25466605492441ed30f0bbe6719",
+ "id": "S25:13:content/ko/docs/concepts/architecture/nodes.md|R|하트비트",
+ "ok": true,
+ "regenerated_sha256": "a7d985c8c25c571309b79c1811c4b6630a64f25466605492441ed30f0bbe6719"
+}

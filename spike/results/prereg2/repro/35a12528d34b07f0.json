@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "0943b7f3767394b88306f1621f2f27e280adc13e",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "a26116aa8b01d761e4b22e87258869a5094734e9ef8120a0b07d1ac8b1f0d33b",
+ "id": "E:b0ad9ff416ba4c8d1a9a158a393a0f31946040f3:content/en/docs/contribute/localization.md|R|add-a-localized-readme-file",
+ "ok": true,
+ "regenerated_sha256": "a26116aa8b01d761e4b22e87258869a5094734e9ef8120a0b07d1ac8b1f0d33b"
+}

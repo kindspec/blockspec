@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "1e2edb6026fec7127c1c164a7765a59d2859f2e3",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "f16c935c30b8d1014ee322ea4d0fba518c5b0fd7a6a4ed1dfdb17f488898c7af",
+ "id": "S25:1:content/zh-cn/docs/concepts/storage/persistent-volumes.md|R|pod-specification-adding-raw-block-device-path-in-container",
+ "ok": true,
+ "regenerated_sha256": "f16c935c30b8d1014ee322ea4d0fba518c5b0fd7a6a4ed1dfdb17f488898c7af"
+}

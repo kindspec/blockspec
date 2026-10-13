@@ -2194,3 +2194,85 @@ The run was not affected. No authentication error followed. The run passed
 
 Prereg 2's three plant packet names stay unpublished until the
 sealed-manifest commit.
+
+## 2026-10-13 — §31. Prereg 2's verdict: INCONCLUSIVE
+
+This is PRE-REGISTRATION-2.md §9 step 5, and PRE-REGISTRATION-3.md §7 step 5
+(second half). This entry belongs to the verdict pull request.
+
+### The sealed manifest
+
+`results/prereg2/sealed-manifest.json` is committed unchanged. Its sha256,
+`11e509133bc2603a3ff3cc64fcfabd5310b7cfe0285ea725bc937a895e299bdb`, is the
+one `VALIDATION` holds. It publishes the nonce and the three plant packet
+names with their expected answers, which §30 withheld.
+
+### Reproductions (F9)
+
+- **Which records.** Every exported real record whose packet was answered
+  q4 "no" and is not unplaceable: 454 of them. By arm: cncf-toc 32, k8s-en
+  153, k8s-l10n 160, obsidian-help 28, rust-book 30, site-policy 51. The
+  aggregate refuses a join that lacks any of them, void tiering included.
+- **How.** One bound `prereg2.py repro` per record, run in sequence, each in
+  a fresh work directory. Each result and its transcript were committed
+  before the next run, because a bound command refuses uncommitted files
+  under `results/prereg2/`.
+- **Times.** The first ran at 14:33Z on 2026-10-12 and the last ended at
+  00:20:37Z on 2026-10-13. The median took 18 s, and 111 took over 30 s.
+  These were mostly k8s-l10n records, because a reproduction re-evaluates its
+  whole instance. The longest took 3135 s.
+- **Result.** All 454 are **BYTE-IDENTICAL**, every one exiting 0. None
+  differs.
+
+### The join
+
+`prereg2.py aggregate`, bound by `d79bf2e`, ran once at 00:20:48Z on
+2026-10-13 and exited 0. It read run 1's `tiers.jsonl` and wrote
+`results/prereg2/verdict.json` (sha256
+`d4df6c272571b54f797fc30b00ef0e7a966dee67264d62d7788b9f30550e558c`), with
+`"bound": true`. Its transcript is committed.
+
+- **Tiering void.** P-A: q3 "yes", P-B: q4 "yes", P-C: q4 "yes", each where
+  "no" is expected. Every cell that exported a packet is NO VERDICT.
+- **Cells.** 56 cells: 4 NOT FOUND and 52 NO VERDICT. No cell is FOUND.
+- **NOT FOUND**, with *n* and the bound 3/*n* at 95%:
+  - cncf-toc M Q: *n* 482, bound 0.00622;
+  - rust-book E Q: *n* 10762, bound 0.00028;
+  - rust-book M Q: *n* 2978, bound 0.00101;
+  - site-policy E R: *n* 1383, bound 0.00217.
+- **Near misses** (distinct units): i 43, ii 99, iii 372.
+
+### Overall verdict
+
+**INCONCLUSIVE.** §6.7's NOT FOUND needs a Q cell in E, S5 or S25 at NOT
+FOUND in both k8s-en and cncf-toc. Neither arm has one: every such cell is
+void.
+
+§8 requires the cells that lacked coverage to be named:
+
+- **Tiering void (36 cells):** cncf-toc E, S5 and S25, Q and R; k8s-en,
+  every mode, Q and R; k8s-l10n, every mode, Q and R; obsidian-help E Q,
+  E R, S5 Q, S5 R and S25 R; rust-book E R, S5 Q, S5 R, S25 Q and S25 R;
+  site-policy E Q, S5 Q, S5 R and S25 Q.
+- **Fewer than 300 distinct decided natural-language units (15 cells),**
+  with the count: cmspec E Q 218, E R 0, S5 Q 186, S5 R 0, S25 Q 97,
+  S25 R 0, M Q 57, M R 0; cncf-toc M R 165; obsidian-help M Q 6, M R 2,
+  S25 Q 214; site-policy M Q 0, M R 0, S25 R 9.
+- **Undecidable over 10% (1 cell):** rust-book M R, 110 of 712.
+
+blockspec#2 stays open and nothing is built. As PRE-REGISTRATION-3.md
+provides, its own verdict on the same records governs next. Its tiering run
+may start on or after the first UTC day after this verdict's commit.
+
+### Addendum to §31, before merge
+
+- **Near miss (i) is not to be read at face value.** Its count of 43 comes
+  from the tier answers, so it rests on the same tiering that the plants
+  voided. Near misses (ii) and (iii) are not tiered and are unaffected.
+- **A correction to "Times" above.** Counted from the committed transcripts,
+  110 reproductions took over 30 s, and 111 took 30 s or more. The 111 above
+  came from the loop's own wall-clock timer, which also counted its overhead
+  around each run.
+- **Paths in the transcripts.** The argv in the committed reproduction and
+  aggregate transcripts holds absolute paths on the host, as earlier
+  transcripts do. Future bound runs use neutral paths.

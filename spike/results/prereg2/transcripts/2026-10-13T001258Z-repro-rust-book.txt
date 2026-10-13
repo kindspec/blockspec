@@ -1,0 +1,13 @@
+# prereg2 repro rust-book
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --id S25:0:src/ch01-02-hello-world.md|R|building-for-release --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-cQKA0r
+# start: 2026-10-13T00:12:58Z
+# blockspec HEAD: 730aa4a8a1fed061c509f791fd68e4377d840ecd
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   b4a49f100803fc235dd78e2338cc8224c2fdcbe2170ddc2aff0b50394ec22380
+regenerated b4a49f100803fc235dd78e2338cc8224c2fdcbe2170ddc2aff0b50394ec22380
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:0:src/ch01-02-hello-world.md|R|building-for-release
+
+# end: 2026-10-13T00:13:03Z
+# exited: exit status 0

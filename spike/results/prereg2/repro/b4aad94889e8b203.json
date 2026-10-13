@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "b33e25e465d9f6a44fb3ac9443ad2fd940504cea",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "771db1499c5f70729ff5db2141c2d414e8b9e25df3638c7f8b4b027c527d40ac",
+ "id": "S5:3:src/appendix-02-operators.md|R|operators",
+ "ok": true,
+ "regenerated_sha256": "771db1499c5f70729ff5db2141c2d414e8b9e25df3638c7f8b4b027c527d40ac"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "5d1b588cb6f2528116497b017e4cf8389db1747c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "f9ef0a5cc9ca4173921f7bcf98ace578001e5a2db98552a41849007680607e42",
+ "id": "S25:0:content/en/docs/contribute/style/style-guide.md|Q|87",
+ "ok": true,
+ "regenerated_sha256": "f9ef0a5cc9ca4173921f7bcf98ace578001e5a2db98552a41849007680607e42"
+}

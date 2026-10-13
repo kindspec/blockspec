@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "38861846cfbeb62bf46773f1d216951d404633d2",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "0c4eed828dcbe4e72570b77f1f68b540dad85756c0668a95c3b1cb08a02de569",
+ "id": "S5:136:content/en/docs/setup/production-environment/tools/kubeadm/install-kubeadm.md|Q|13",
+ "ok": true,
+ "regenerated_sha256": "0c4eed828dcbe4e72570b77f1f68b540dad85756c0668a95c3b1cb08a02de569"
+}

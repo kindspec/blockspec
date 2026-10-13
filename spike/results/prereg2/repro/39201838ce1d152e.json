@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "2e7b842bb36d854b57153cf2502cb396d37f9d6a",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "3b576e4b635800edd45bdeaeff5dc06950f954397930acf764759d0d97478c0c",
+ "id": "S5:12:content/zh-cn/docs/concepts/configuration/secret.md|R|secret-的类型--secret-types",
+ "ok": true,
+ "regenerated_sha256": "3b576e4b635800edd45bdeaeff5dc06950f954397930acf764759d0d97478c0c"
+}

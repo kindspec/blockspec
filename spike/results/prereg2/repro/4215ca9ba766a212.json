@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "186863995a90f14c5383c3316da0ce05726e290c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "d6d0e5a4df9ea859a0d7f841c2b6643573dd05b6b6385046d593a73930d393a1",
+ "id": "E:b773649fb2428ff41b5b68d72b413ad5893a190d:content/en/docs/concepts/security/pod-security-admission.md|Q|28",
+ "ok": true,
+ "regenerated_sha256": "d6d0e5a4df9ea859a0d7f841c2b6643573dd05b6b6385046d593a73930d393a1"
+}

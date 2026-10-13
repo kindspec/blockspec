@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S25:21:content/ko/docs/concepts/architecture/nodes.md|R|하트비트 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-H2XRIM
+# start: 2026-10-12T18:32:29Z
+# blockspec HEAD: 1c1f2a92abf4bdbb64aa385fe93a1c5cf6cc8823
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   5554efa305bd7b177842ad4603f46c645d17f8a5a366ed3db2af3abb4a6cce47
+regenerated 5554efa305bd7b177842ad4603f46c645d17f8a5a366ed3db2af3abb4a6cce47
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:21:content/ko/docs/concepts/architecture/nodes.md|R|하트비트
+
+# end: 2026-10-12T18:32:47Z
+# exited: exit status 0

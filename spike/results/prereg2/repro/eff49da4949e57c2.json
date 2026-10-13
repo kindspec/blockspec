@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "3c5a681195c2c39d2b8f56de0e0214df1ad78360",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ea209a25fdd53c4382f93454355f18cc0b880e2b213cdb92c31877dddfb77af7",
+ "id": "S25:0:content/zh-cn/docs/reference/access-authn-authz/admission-controllers.md|Q|230",
+ "ok": true,
+ "regenerated_sha256": "ea209a25fdd53c4382f93454355f18cc0b880e2b213cdb92c31877dddfb77af7"
+}

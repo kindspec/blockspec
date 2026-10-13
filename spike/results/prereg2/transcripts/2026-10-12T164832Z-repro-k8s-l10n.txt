@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S25:0:content/zh-cn/docs/reference/access-authn-authz/admission-controllers.md|Q|230 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-mw8m4w
+# start: 2026-10-12T16:48:32Z
+# blockspec HEAD: 3c5a681195c2c39d2b8f56de0e0214df1ad78360
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   ea209a25fdd53c4382f93454355f18cc0b880e2b213cdb92c31877dddfb77af7
+regenerated ea209a25fdd53c4382f93454355f18cc0b880e2b213cdb92c31877dddfb77af7
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:0:content/zh-cn/docs/reference/access-authn-authz/admission-controllers.md|Q|230
+
+# end: 2026-10-12T16:49:17Z
+# exited: exit status 0

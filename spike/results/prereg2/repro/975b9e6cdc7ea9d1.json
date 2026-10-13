@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "318cad6d42136de34bc10d01ac624e07fc0cee52",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "c0c5270d78e873d7f8fc8abfb40393a7edfdf1549e6e4775e53a5def57ff6fa9",
+ "id": "S25:10:content/en/docs/concepts/overview/components.md|R|addons",
+ "ok": true,
+ "regenerated_sha256": "c0c5270d78e873d7f8fc8abfb40393a7edfdf1549e6e4775e53a5def57ff6fa9"
+}

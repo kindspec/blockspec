@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "e5f0c65f240cf21f8bd6cf2a65f31d3b5e74cbc4",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "135bf95f8cb5ebc93bc0da4f417ce416d16dc92104cc558cbefeecf8e814b9bb",
+ "id": "S25:1:content/ko/docs/setup/production-environment/container-runtimes.md|R|containerd",
+ "ok": true,
+ "regenerated_sha256": "135bf95f8cb5ebc93bc0da4f417ce416d16dc92104cc558cbefeecf8e814b9bb"
+}

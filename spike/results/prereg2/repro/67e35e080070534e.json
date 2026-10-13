@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "f4c1da0f31e5cf2f08e3d504675120f39b32ea44",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "cae576c62254321bc39e49ba830810bc91c0d8af48ce631d8168d3cd27a64d2c",
+ "id": "M:37fa3ce8b59faee39744a20cd0cc974819d9a903:content/en/docs/concepts/storage/volumes.md|Q|73",
+ "ok": true,
+ "regenerated_sha256": "cae576c62254321bc39e49ba830810bc91c0d8af48ce631d8168d3cd27a64d2c"
+}

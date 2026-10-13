@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id S25:4:content/en/docs/concepts/extend-kubernetes/api-extension/custom-resources.md|R|advanced-features-and-flexibility --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-g6LBBz
+# start: 2026-10-12T15:20:28Z
+# blockspec HEAD: b6054582717d4a5fae886d7aa3e666584db9566f
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   7eabb21d9db4fa5c276e5f9340db452574e194c324f14bb7ac1e9b502e8541eb
+regenerated 7eabb21d9db4fa5c276e5f9340db452574e194c324f14bb7ac1e9b502e8541eb
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:4:content/en/docs/concepts/extend-kubernetes/api-extension/custom-resources.md|R|advanced-features-and-flexibility
+
+# end: 2026-10-12T15:20:46Z
+# exited: exit status 0

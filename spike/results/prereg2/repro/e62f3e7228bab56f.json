@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "b4394cca79fd744ba96f6ded32e1d6fcf3592282",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "69abb86c912e8adc72cea6c1cba09837bb1fab749917df7994008b84b6a247b0",
+ "id": "S5:21:src/ch03-05-control-flow.md|R|if-expressions",
+ "ok": true,
+ "regenerated_sha256": "69abb86c912e8adc72cea6c1cba09837bb1fab749917df7994008b84b6a247b0"
+}

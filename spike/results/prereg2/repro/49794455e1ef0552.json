@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "9fb827441b084dbdf0d2cbfd0052a77821116287",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "429d6feebb98a194461cd11b7102e50f423a24a38f9a84e396775410fd6fcee2",
+ "id": "S25:9:content/en/docs/concepts/services-networking/dual-stack.md|R|egress-traffic",
+ "ok": true,
+ "regenerated_sha256": "429d6feebb98a194461cd11b7102e50f423a24a38f9a84e396775410fd6fcee2"
+}

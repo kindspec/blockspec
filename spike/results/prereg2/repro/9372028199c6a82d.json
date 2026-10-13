@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "a0707efb0feccd26e6f836bfa15a7b47bd3a0897",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "8f010a76c1b09fb744c6dcfa4e7f078cbcaa7319364ac3424a11d84bb3a12a56",
+ "id": "S25:5:en/Obsidian Sync/Troubleshoot Obsidian Sync.md|R|conflict-resolution",
+ "ok": true,
+ "regenerated_sha256": "8f010a76c1b09fb744c6dcfa4e7f078cbcaa7319364ac3424a11d84bb3a12a56"
+}

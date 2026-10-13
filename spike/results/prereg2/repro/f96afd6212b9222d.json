@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "901f6e87bf5b883d854b619c67c24f97a52959ac",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "8ca369c6fbf49a54e06c8528f71eb16a805e6f74f2df948ee4c5110451ae3b74",
+ "id": "E:767e906d548d2275c620c57427e0397fdad3dc9e:en/Import notes/Import from Microsoft OneNote.md|Q|3",
+ "ok": true,
+ "regenerated_sha256": "8ca369c6fbf49a54e06c8528f71eb16a805e6f74f2df948ee4c5110451ae3b74"
+}

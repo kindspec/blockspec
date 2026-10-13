@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "b0a98d765274d3f8d11d8b0c4955e8c30bb8a276",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1130e09d28eccb809dfb06e691b735e192e9e0e85754e711fe9acc9a8a7aeac8",
+ "id": "S25:21:en/Obsidian/Credits.md|R|product--operations",
+ "ok": true,
+ "regenerated_sha256": "1130e09d28eccb809dfb06e691b735e192e9e0e85754e711fe9acc9a8a7aeac8"
+}

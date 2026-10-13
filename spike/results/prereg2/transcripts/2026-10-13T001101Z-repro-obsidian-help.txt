@@ -1,0 +1,13 @@
+# prereg2 repro obsidian-help
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm obsidian-help --id E:767e906d548d2275c620c57427e0397fdad3dc9e:en/Import notes/Import from Microsoft OneNote.md|Q|3 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-h0yYRJ
+# start: 2026-10-13T00:11:01Z
+# blockspec HEAD: 901f6e87bf5b883d854b619c67c24f97a52959ac
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   8ca369c6fbf49a54e06c8528f71eb16a805e6f74f2df948ee4c5110451ae3b74
+regenerated 8ca369c6fbf49a54e06c8528f71eb16a805e6f74f2df948ee4c5110451ae3b74
+F9 REPRODUCTION: BYTE-IDENTICAL  E:767e906d548d2275c620c57427e0397fdad3dc9e:en/Import notes/Import from Microsoft OneNote.md|Q|3
+
+# end: 2026-10-13T00:11:05Z
+# exited: exit status 0

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "c61660ee6a16a1963f2418a87e3992ca6184ac78",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "d37c02d3319955b146f7a95537db3a49c7f009feb0630dc32ebfbe224b1aa996",
+ "id": "S25:7:content/en/docs/concepts/architecture/nodes.md|R|node-status",
+ "ok": true,
+ "regenerated_sha256": "d37c02d3319955b146f7a95537db3a49c7f009feb0630dc32ebfbe224b1aa996"
+}

@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "2c89700c382c76a29ac424712f25c6e79197f1d9",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "6dfc4c522b0ba78ff331bc3c5526013051713da6e1521e51c87554bcd3d65694",
+ "id": "S25:57:content/en/docs/concepts/workloads/controllers/job.md|R|job-tracking-with-finalizers",
+ "ok": true,
+ "regenerated_sha256": "6dfc4c522b0ba78ff331bc3c5526013051713da6e1521e51c87554bcd3d65694"
+}

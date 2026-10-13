@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "ae2131d34b137dd45a04dcbcd95100fd79f1330e",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "8bf5d77488d231de858cbfb2a4041c12299f52b542ab069f291e4784a553304b",
+ "id": "S25:6:content/zh-cn/docs/concepts/services-networking/service.md|R|服务发现--discovering-services",
+ "ok": true,
+ "regenerated_sha256": "8bf5d77488d231de858cbfb2a4041c12299f52b542ab069f291e4784a553304b"
+}

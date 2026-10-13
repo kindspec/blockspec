@@ -1,0 +1,13 @@
+# prereg2 repro k8s-en
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-en --id S25:20:content/en/docs/concepts/workloads/pods/pod-lifecycle.md|R|container-states --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-uxCc7m
+# start: 2026-10-12T15:07:36Z
+# blockspec HEAD: c196172c6b833d029a1e972a0708bdff592f8ecb
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   e92eb2ca1ffe80e135ffd4e46e225424a62ffa316c89c382551282ad38d61355
+regenerated e92eb2ca1ffe80e135ffd4e46e225424a62ffa316c89c382551282ad38d61355
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:20:content/en/docs/concepts/workloads/pods/pod-lifecycle.md|R|container-states
+
+# end: 2026-10-12T15:07:58Z
+# exited: exit status 0
