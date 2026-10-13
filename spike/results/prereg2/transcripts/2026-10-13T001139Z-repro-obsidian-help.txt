@@ -1,0 +1,13 @@
+# prereg2 repro obsidian-help
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm obsidian-help --id S25:5:en/Obsidian Sync/Troubleshoot Obsidian Sync.md|R|conflict-resolution --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-tc0Qmn
+# start: 2026-10-13T00:11:39Z
+# blockspec HEAD: a0707efb0feccd26e6f836bfa15a7b47bd3a0897
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   8f010a76c1b09fb744c6dcfa4e7f078cbcaa7319364ac3424a11d84bb3a12a56
+regenerated 8f010a76c1b09fb744c6dcfa4e7f078cbcaa7319364ac3424a11d84bb3a12a56
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:5:en/Obsidian Sync/Troubleshoot Obsidian Sync.md|R|conflict-resolution
+
+# end: 2026-10-13T00:11:43Z
+# exited: exit status 0
