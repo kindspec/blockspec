@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "57a0473febf48eb7e4a43da959080dcb9585835a",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "347ede466c19d6f539b5f980b1790349bf302b13165c01ecf242d3733028c7f6",
+ "id": "S25:0:en/Import notes/Import from Notion.md|R|export-your-data-from-notion",
+ "ok": true,
+ "regenerated_sha256": "347ede466c19d6f539b5f980b1790349bf302b13165c01ecf242d3733028c7f6"
+}
