@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "a6d0db96ae0ad65ebbaaaa02d74151c6a8e1f48e",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ddd08815ccdace73d153463055f936c3bfd775cd13a39c6cf39fdd0feab6fca5",
+ "id": "S5:99:src/SUMMARY.md|Q|17",
+ "ok": true,
+ "regenerated_sha256": "ddd08815ccdace73d153463055f936c3bfd775cd13a39c6cf39fdd0feab6fca5"
+}
