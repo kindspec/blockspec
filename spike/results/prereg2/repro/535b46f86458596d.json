@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "72732cf91357f8e926e0ad85d877c0718bb5f2de",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "d3e4f5e0bc20f379e5ce01dc278428673202742a2359cd4cdeeeb038472152f4",
+ "id": "S5:6:Policies/github-terms/github-terms-for-additional-products-and-features.md|Q|32",
+ "ok": true,
+ "regenerated_sha256": "d3e4f5e0bc20f379e5ce01dc278428673202742a2359cd4cdeeeb038472152f4"
+}
