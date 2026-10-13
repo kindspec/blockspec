@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "9d5a711b8fa04d936e32acc26850a78437b4cdb4",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "0edf2fe36bd3fd688d94ac1c55deb59fee5cfcc490fd591d52043a10bce82101",
+ "id": "S5:5:en/Obsidian Sync/Troubleshoot Obsidian Sync.md|R|obsidian-sync-deleted-a-note-i-just-created-on-two-devices",
+ "ok": true,
+ "regenerated_sha256": "0edf2fe36bd3fd688d94ac1c55deb59fee5cfcc490fd591d52043a10bce82101"
+}
