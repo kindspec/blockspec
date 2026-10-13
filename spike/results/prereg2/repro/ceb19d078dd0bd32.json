@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "1953826909f07a26ccd1d542124048953e2098d5",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "3e5c3c061b7256e05b4f74146b3841c94523217a5296689e2e5f11b5e1dab4a6",
+ "id": "E:dc0d00215fdcd31e9ff64f664cdb9fd65e398725:src/ch14-00-more-about-cargo.md|R|cargo-workspaces",
+ "ok": true,
+ "regenerated_sha256": "3e5c3c061b7256e05b4f74146b3841c94523217a5296689e2e5f11b5e1dab4a6"
+}
