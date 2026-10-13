@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "33f69378b7ef8b64bc84985a42eea05819615c91",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "1a53be6e315e8c0318896718b4597b0b2a3ed4f1f78103eb0f982402595788a0",
+ "id": "S25:12:src/ch08-01-vectors.md|R|dropping-a-vector-drops-its-elements",
+ "ok": true,
+ "regenerated_sha256": "1a53be6e315e8c0318896718b4597b0b2a3ed4f1f78103eb0f982402595788a0"
+}
