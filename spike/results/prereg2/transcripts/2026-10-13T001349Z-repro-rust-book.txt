@@ -1,0 +1,13 @@
+# prereg2 repro rust-book
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --id S25:1:src/ch01-02-hello-world.md|R|building-and-running-a-cargo-project --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-sYEfRq
+# start: 2026-10-13T00:13:49Z
+# blockspec HEAD: bf8e4a18195fc3809a62d71242a2b2c76587663d
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   656c324f6a44e33d986774222f34bc2c9184b7285d6ef0673422876cb55d6d38
+regenerated 656c324f6a44e33d986774222f34bc2c9184b7285d6ef0673422876cb55d6d38
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:1:src/ch01-02-hello-world.md|R|building-and-running-a-cargo-project
+
+# end: 2026-10-13T00:13:53Z
+# exited: exit status 0

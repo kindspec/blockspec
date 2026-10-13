@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "bf8e4a18195fc3809a62d71242a2b2c76587663d",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "656c324f6a44e33d986774222f34bc2c9184b7285d6ef0673422876cb55d6d38",
+ "id": "S25:1:src/ch01-02-hello-world.md|R|building-and-running-a-cargo-project",
+ "ok": true,
+ "regenerated_sha256": "656c324f6a44e33d986774222f34bc2c9184b7285d6ef0673422876cb55d6d38"
+}
