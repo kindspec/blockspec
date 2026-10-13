@@ -1,0 +1,13 @@
+# prereg2 repro rust-book
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --id S5:40:src/ch14-03-cargo-workspaces.md|R|creating-the-second-package-in-the-workspace --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-8e39IZ
+# start: 2026-10-13T00:14:37Z
+# blockspec HEAD: 0e0b929c9a9b3b47d2858555a873d1a070908085
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   94c748a843c6aa6052a12a6ca260ce32ecc2d8e1d64d26aa175bf08d7830325e
+regenerated 94c748a843c6aa6052a12a6ca260ce32ecc2d8e1d64d26aa175bf08d7830325e
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:40:src/ch14-03-cargo-workspaces.md|R|creating-the-second-package-in-the-workspace
+
+# end: 2026-10-13T00:14:40Z
+# exited: exit status 0

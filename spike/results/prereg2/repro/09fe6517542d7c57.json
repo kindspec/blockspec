@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "0e0b929c9a9b3b47d2858555a873d1a070908085",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "94c748a843c6aa6052a12a6ca260ce32ecc2d8e1d64d26aa175bf08d7830325e",
+ "id": "S5:40:src/ch14-03-cargo-workspaces.md|R|creating-the-second-package-in-the-workspace",
+ "ok": true,
+ "regenerated_sha256": "94c748a843c6aa6052a12a6ca260ce32ecc2d8e1d64d26aa175bf08d7830325e"
+}
