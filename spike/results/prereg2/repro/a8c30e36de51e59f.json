@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "4e37135008111bd587d81a4ecee3488446c78010",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "ba91719fd785e73fd67fa25b49584b893f960a09d94cb6875deec97a7d4576af",
+ "id": "S25:18:src/ch10-03-lifetime-syntax.md|R|lifetime-annotations-in-struct-definitions",
+ "ok": true,
+ "regenerated_sha256": "ba91719fd785e73fd67fa25b49584b893f960a09d94cb6875deec97a7d4576af"
+}
