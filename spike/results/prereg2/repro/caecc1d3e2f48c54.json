@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "9fb36510d22ca7bc622e681274d7401c55880f7b",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "fbd1373705616dd8292272568401338593b6831bde67cbfb557bdf323f299bcf",
+ "id": "S25:31:src/ch17-01-futures-and-syntax.md|R|futures-and-the-async-syntax",
+ "ok": true,
+ "regenerated_sha256": "fbd1373705616dd8292272568401338593b6831bde67cbfb557bdf323f299bcf"
+}
