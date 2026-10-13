@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "d10e976b29160c2aaf29391212a07edafb7b4f6c",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "eb610638dbf40474126e2c43b71e7c80678245d14db02206e29fdae2ce20823b",
+ "id": "S5:5:content/zh-cn/docs/reference/node/_index.md|Q|9",
+ "ok": true,
+ "regenerated_sha256": "eb610638dbf40474126e2c43b71e7c80678245d14db02206e29fdae2ce20823b"
+}
