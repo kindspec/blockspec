@@ -1,0 +1,13 @@
+# prereg2 repro rust-book
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --id S25:14:src/ch13-01-closures.md|R|capturing-the-environment-with-closures --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-dtQHFZ
+# start: 2026-10-13T00:13:23Z
+# blockspec HEAD: 174d91e5e0c14ca984af222b2a74a55335d3022c
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   c846ff389a1ee9f0466887c15d4c5a28ef656b57a2dd7d3735f7fedf3cbbb7ff
+regenerated c846ff389a1ee9f0466887c15d4c5a28ef656b57a2dd7d3735f7fedf3cbbb7ff
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:14:src/ch13-01-closures.md|R|capturing-the-environment-with-closures
+
+# end: 2026-10-13T00:13:30Z
+# exited: exit status 0
