@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "be0554dce35f40639f5e3be47567e8cedd3a8b7b",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "c165666dc23ebc61dedb01bc4c80213fbbdb884b349880429a8c20fa0f1f3655",
+ "id": "S5:4:en/Import notes/Import from Evernote.md|R|export-your-data-from-evernote",
+ "ok": true,
+ "regenerated_sha256": "c165666dc23ebc61dedb01bc4c80213fbbdb884b349880429a8c20fa0f1f3655"
+}
