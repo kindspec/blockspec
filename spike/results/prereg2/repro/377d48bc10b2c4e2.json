@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "a6fea6ac594007272fa9924fa34921bb94542f89",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "06187d490f66c2e1a44b47b9bb39c62e97f2fb2b1d05fc54b8126318f243deb6",
+ "id": "S5:0:Policies/github-terms/github-educational-use-agreement.md|Q|24",
+ "ok": true,
+ "regenerated_sha256": "06187d490f66c2e1a44b47b9bb39c62e97f2fb2b1d05fc54b8126318f243deb6"
+}
