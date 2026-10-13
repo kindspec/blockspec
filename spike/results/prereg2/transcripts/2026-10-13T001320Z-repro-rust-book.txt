@@ -1,0 +1,13 @@
+# prereg2 repro rust-book
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --id S25:12:src/ch17-00-async-await.md|R|parallelism-and-concurrency --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-AabfDE
+# start: 2026-10-13T00:13:20Z
+# blockspec HEAD: 0b424478102f56d5906a0a5dd7aa67d37bd51234
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   692495c3f44484e80e4f2510ffd3a586e2f65a29a52fbc79fb4e257c84c148aa
+regenerated 692495c3f44484e80e4f2510ffd3a586e2f65a29a52fbc79fb4e257c84c148aa
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:12:src/ch17-00-async-await.md|R|parallelism-and-concurrency
+
+# end: 2026-10-13T00:13:23Z
+# exited: exit status 0
