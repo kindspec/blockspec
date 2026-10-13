@@ -1,0 +1,13 @@
+# prereg2 repro rust-book
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --id S25:24:src/ch10-03-lifetime-syntax.md|R|lifetime-annotations-in-struct-definitions --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-5MPVia
+# start: 2026-10-13T00:14:02Z
+# blockspec HEAD: 495cb52382c2767f6d8776c9a4f66d4de2cda00f
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   2448d4a8a01589af5a32275b73cf2db970cff3dc1947f4b1cf7c17fe6de5bf91
+regenerated 2448d4a8a01589af5a32275b73cf2db970cff3dc1947f4b1cf7c17fe6de5bf91
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:24:src/ch10-03-lifetime-syntax.md|R|lifetime-annotations-in-struct-definitions
+
+# end: 2026-10-13T00:14:10Z
+# exited: exit status 0
