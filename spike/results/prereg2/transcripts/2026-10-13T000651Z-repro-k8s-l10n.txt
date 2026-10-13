@@ -1,0 +1,13 @@
+# prereg2 repro k8s-l10n
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm k8s-l10n --id S5:3:content/zh-cn/docs/reference/networking/virtual-ips.md|R|ip-address-ranges-for-service-virtual-ip-addresses-service-ip-static-sub-range --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-p60xWL
+# start: 2026-10-13T00:06:51Z
+# blockspec HEAD: 48c0f8cc2247b414b81b597502fe9d70006b281e
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   d548ef742bb83ec2e2d6c1474eb5a067fc676da136df609e324e0592315c3a3b
+regenerated d548ef742bb83ec2e2d6c1474eb5a067fc676da136df609e324e0592315c3a3b
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:3:content/zh-cn/docs/reference/networking/virtual-ips.md|R|ip-address-ranges-for-service-virtual-ip-addresses-service-ip-static-sub-range
+
+# end: 2026-10-13T00:07:09Z
+# exited: exit status 0
