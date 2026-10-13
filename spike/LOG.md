@@ -2263,3 +2263,16 @@ void.
 blockspec#2 stays open and nothing is built. As PRE-REGISTRATION-3.md
 provides, its own verdict on the same records governs next. Its tiering run
 may start on or after the first UTC day after this verdict's commit.
+
+### Addendum to §31, before merge
+
+- **Near miss (i) is not to be read at face value.** Its count of 43 comes
+  from the tier answers, so it rests on the same tiering that the plants
+  voided. Near misses (ii) and (iii) are not tiered and are unaffected.
+- **A correction to "Times" above.** Counted from the committed transcripts,
+  110 reproductions took over 30 s, and 111 took 30 s or more. The 111 above
+  came from the loop's own wall-clock timer, which also counted its overhead
+  around each run.
+- **Paths in the transcripts.** The argv in the committed reproduction and
+  aggregate transcripts holds absolute paths on the host, as earlier
+  transcripts do. Future bound runs use neutral paths.
