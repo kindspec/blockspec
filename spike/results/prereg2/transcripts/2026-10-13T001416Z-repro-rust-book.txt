@@ -1,0 +1,13 @@
+# prereg2 repro rust-book
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --id S25:4:src/ch11-01-writing-tests.md|R|testing-equality-with-the-assert_eq-and-assert_ne-macros --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-N8S08U
+# start: 2026-10-13T00:14:16Z
+# blockspec HEAD: 1c4fb36a01786730722c7ee05ef56c1ede7738be
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   c15e34f041d9c75b6360f6418e094539d0b7c6e1b640d7d2d94e6621efef0535
+regenerated c15e34f041d9c75b6360f6418e094539d0b7c6e1b640d7d2d94e6621efef0535
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:4:src/ch11-01-writing-tests.md|R|testing-equality-with-the-assert_eq-and-assert_ne-macros
+
+# end: 2026-10-13T00:14:21Z
+# exited: exit status 0
