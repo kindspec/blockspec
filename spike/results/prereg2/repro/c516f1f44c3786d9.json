@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "67e667c704ca8c69d34fb7d2b9534754b6f1d5f9",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "89d0bc4d8ef8a1b433c834e8968a2468ea6cac344d2aa9770e6b996ba5874293",
+ "id": "S5:14:en/Obsidian Sync/Set up Obsidian Sync.md|R|regional-sync-servers",
+ "ok": true,
+ "regenerated_sha256": "89d0bc4d8ef8a1b433c834e8968a2468ea6cac344d2aa9770e6b996ba5874293"
+}
