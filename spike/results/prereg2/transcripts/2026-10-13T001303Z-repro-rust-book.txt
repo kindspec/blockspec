@@ -1,0 +1,13 @@
+# prereg2 repro rust-book
+# argv: prereg2.py repro --d8-dir /home/cam/.local/state/scratch/claude-1000/-home-cam-repos-kindspec/7438ac2c-ba6c-4cb1-a435-681b1287d5a2/scratchpad/q-prereg2/research/experiments/D8-identity --arm rust-book --id S25:0:src/ch02-00-guessing-game-tutorial.md|Q|78 --work-dir /home/cam/kindspec-data/prereg2-repro/work/r-SciNFO
+# start: 2026-10-13T00:13:03Z
+# blockspec HEAD: 0739183945086c99e1cb031e5d1bd272b165893e
+# python 3.13.5
+# harness bound: True (validation commit d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301)
+
+committed   ec4bec25fcb0f2da84bd9a752679db8fa7ed95ec6bbb1de0aedf9a31ee4788ab
+regenerated ec4bec25fcb0f2da84bd9a752679db8fa7ed95ec6bbb1de0aedf9a31ee4788ab
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:0:src/ch02-00-guessing-game-tutorial.md|Q|78
+
+# end: 2026-10-13T00:13:17Z
+# exited: exit status 0
