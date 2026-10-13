@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "a652506d3a38dc335988c0f10a339e23d99b0d22",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "7a49e2fc2b4e3a7b1a8b5d8aa87b18c8ce2262b56562ad050744f4fca17a30e6",
+ "id": "S5:8:src/ch13-00-functional-features.md|R|closures-ownership-and-borrowing",
+ "ok": true,
+ "regenerated_sha256": "7a49e2fc2b4e3a7b1a8b5d8aa87b18c8ce2262b56562ad050744f4fca17a30e6"
+}
