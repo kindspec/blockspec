@@ -1,0 +1,2567 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "7474dcff9c54796c2177bfb7a7b7da8049ef30db",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "cells": {
+  "cmspec|E|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 22,
+      "decided": 218,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 102,
+      "evaluated": 3577,
+      "undecidable": 2
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 22,
+      "decided": 218,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 102,
+      "evaluated": 3577,
+      "undecidable": 2
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 22,
+    "decided": 218,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 102,
+    "evaluated": 3577,
+    "undecidable": 2
+   },
+   "qualifying_distinct": 0,
+   "reason": "218 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cmspec|E|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 0,
+    "decided": 0,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 0,
+    "evaluated": 0,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "0 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cmspec|M|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 5,
+      "decided": 57,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 5,
+      "evaluated": 62,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 5,
+      "decided": 57,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 5,
+      "evaluated": 62,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 5,
+    "decided": 57,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 5,
+    "evaluated": 62,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "57 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cmspec|M|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 0,
+    "decided": 0,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 0,
+    "evaluated": 0,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "0 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cmspec|S25|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 81,
+      "decided": 97,
+      "undecidable": 1
+     },
+     "instances": {
+      "UNKNOWN": 971,
+      "evaluated": 2515,
+      "undecidable": 4
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 81,
+      "decided": 97,
+      "undecidable": 1
+     },
+     "instances": {
+      "UNKNOWN": 971,
+      "evaluated": 2515,
+      "undecidable": 4
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 81,
+    "decided": 97,
+    "undecidable": 1
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 971,
+    "evaluated": 2515,
+    "undecidable": 4
+   },
+   "qualifying_distinct": 0,
+   "reason": "97 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cmspec|S25|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 0,
+    "decided": 0,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 0,
+    "evaluated": 0,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "0 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cmspec|S5|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 45,
+      "decided": 186,
+      "undecidable": 1
+     },
+     "instances": {
+      "UNKNOWN": 400,
+      "evaluated": 3463,
+      "undecidable": 9
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 45,
+      "decided": 186,
+      "undecidable": 1
+     },
+     "instances": {
+      "UNKNOWN": 400,
+      "evaluated": 3463,
+      "undecidable": 9
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 45,
+    "decided": 186,
+    "undecidable": 1
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 400,
+    "evaluated": 3463,
+    "undecidable": 9
+   },
+   "qualifying_distinct": 0,
+   "reason": "186 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cmspec|S5|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 0,
+    "decided": 0,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 0,
+    "evaluated": 0,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "0 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cncf-toc|E|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 4,
+     "distinct": {
+      "UNKNOWN": 422,
+      "decided": 9049,
+      "undecidable": 16
+     },
+     "instances": {
+      "UNKNOWN": 1560,
+      "evaluated": 43931,
+      "undecidable": 43
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 9,
+     "distinct": {
+      "UNKNOWN": 415,
+      "decided": 8667,
+      "undecidable": 16
+     },
+     "instances": {
+      "UNKNOWN": 1439,
+      "evaluated": 39581,
+      "undecidable": 39
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 422,
+    "decided": 9049,
+    "undecidable": 16
+   },
+   "exported_packets": 4,
+   "instances": {
+    "UNKNOWN": 1560,
+    "evaluated": 43931,
+    "undecidable": 43
+   },
+   "qualifying_distinct": 4,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cncf-toc|E|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 9,
+     "distinct": {
+      "UNKNOWN": 88,
+      "decided": 3219,
+      "undecidable": 1362
+     },
+     "instances": {
+      "UNKNOWN": 223,
+      "evaluated": 12769,
+      "undecidable": 2128
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 7,
+     "distinct": {
+      "UNKNOWN": 97,
+      "decided": 3213,
+      "undecidable": 1391
+     },
+     "instances": {
+      "UNKNOWN": 249,
+      "evaluated": 12285,
+      "undecidable": 2098
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 88,
+    "decided": 3219,
+    "undecidable": 1362
+   },
+   "exported_packets": 9,
+   "instances": {
+    "UNKNOWN": 223,
+    "evaluated": 12769,
+    "undecidable": 2128
+   },
+   "qualifying_distinct": 9,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 5
+  },
+  "cncf-toc|M|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 49,
+      "decided": 482,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 78,
+      "evaluated": 973,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 49,
+      "decided": 482,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 78,
+      "evaluated": 973,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 49,
+    "decided": 482,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 78,
+    "evaluated": 973,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "n=482, bound 3/n = 0.00622 at 95%",
+   "verdict": "NOT FOUND",
+   "wrong_on_deleted": 0
+  },
+  "cncf-toc|M|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 8,
+      "decided": 165,
+      "undecidable": 33
+     },
+     "instances": {
+      "UNKNOWN": 10,
+      "evaluated": 294,
+      "undecidable": 45
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 8,
+      "decided": 165,
+      "undecidable": 33
+     },
+     "instances": {
+      "UNKNOWN": 10,
+      "evaluated": 294,
+      "undecidable": 45
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 8,
+    "decided": 165,
+    "undecidable": 33
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 10,
+    "evaluated": 294,
+    "undecidable": 45
+   },
+   "qualifying_distinct": 0,
+   "reason": "165 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cncf-toc|S25|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 381,
+      "decided": 593,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 3170,
+      "evaluated": 9517,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 381,
+      "decided": 593,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 3170,
+      "evaluated": 9517,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 381,
+    "decided": 593,
+    "undecidable": 0
+   },
+   "exported_packets": 2,
+   "instances": {
+    "UNKNOWN": 3170,
+    "evaluated": 9517,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 2,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cncf-toc|S25|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 14,
+     "distinct": {
+      "UNKNOWN": 217,
+      "decided": 475,
+      "undecidable": 224
+     },
+     "instances": {
+      "UNKNOWN": 852,
+      "evaluated": 3605,
+      "undecidable": 239
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 14,
+     "distinct": {
+      "UNKNOWN": 217,
+      "decided": 475,
+      "undecidable": 224
+     },
+     "instances": {
+      "UNKNOWN": 852,
+      "evaluated": 3605,
+      "undecidable": 239
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 217,
+    "decided": 475,
+    "undecidable": 224
+   },
+   "exported_packets": 15,
+   "instances": {
+    "UNKNOWN": 852,
+    "evaluated": 3605,
+    "undecidable": 239
+   },
+   "qualifying_distinct": 14,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 13
+  },
+  "cncf-toc|S5|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 3,
+     "distinct": {
+      "UNKNOWN": 376,
+      "decided": 2118,
+      "undecidable": 17
+     },
+     "instances": {
+      "UNKNOWN": 2209,
+      "evaluated": 20040,
+      "undecidable": 38
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 7,
+     "distinct": {
+      "UNKNOWN": 355,
+      "decided": 2207,
+      "undecidable": 15
+     },
+     "instances": {
+      "UNKNOWN": 1933,
+      "evaluated": 17949,
+      "undecidable": 32
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 376,
+    "decided": 2118,
+    "undecidable": 17
+   },
+   "exported_packets": 3,
+   "instances": {
+    "UNKNOWN": 2209,
+    "evaluated": 20040,
+    "undecidable": 38
+   },
+   "qualifying_distinct": 3,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "cncf-toc|S5|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 8,
+     "distinct": {
+      "UNKNOWN": 90,
+      "decided": 1115,
+      "undecidable": 528
+     },
+     "instances": {
+      "UNKNOWN": 317,
+      "evaluated": 5900,
+      "undecidable": 781
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 8,
+     "distinct": {
+      "UNKNOWN": 99,
+      "decided": 1190,
+      "undecidable": 524
+     },
+     "instances": {
+      "UNKNOWN": 365,
+      "evaluated": 5727,
+      "undecidable": 755
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 90,
+    "decided": 1115,
+    "undecidable": 528
+   },
+   "exported_packets": 8,
+   "instances": {
+    "UNKNOWN": 317,
+    "evaluated": 5900,
+    "undecidable": 781
+   },
+   "qualifying_distinct": 8,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 5
+  },
+  "k8s-en|E|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 7,
+     "distinct": {
+      "UNKNOWN": 841,
+      "decided": 24750,
+      "undecidable": 42
+     },
+     "instances": {
+      "UNKNOWN": 1524,
+      "evaluated": 71959,
+      "undecidable": 169
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 7,
+     "distinct": {
+      "UNKNOWN": 858,
+      "decided": 24453,
+      "undecidable": 44
+     },
+     "instances": {
+      "UNKNOWN": 1484,
+      "evaluated": 64094,
+      "undecidable": 232
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 841,
+    "decided": 24750,
+    "undecidable": 42
+   },
+   "exported_packets": 7,
+   "instances": {
+    "UNKNOWN": 1524,
+    "evaluated": 71959,
+    "undecidable": 169
+   },
+   "qualifying_distinct": 2,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "k8s-en|E|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 10,
+     "distinct": {
+      "UNKNOWN": 123,
+      "decided": 7388,
+      "undecidable": 1320
+     },
+     "instances": {
+      "UNKNOWN": 152,
+      "evaluated": 16011,
+      "undecidable": 1858
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 11,
+     "distinct": {
+      "UNKNOWN": 131,
+      "decided": 7433,
+      "undecidable": 1271
+     },
+     "instances": {
+      "UNKNOWN": 157,
+      "evaluated": 14467,
+      "undecidable": 1707
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 123,
+    "decided": 7388,
+    "undecidable": 1320
+   },
+   "exported_packets": 10,
+   "instances": {
+    "UNKNOWN": 152,
+    "evaluated": 16011,
+    "undecidable": 1858
+   },
+   "qualifying_distinct": 10,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 2
+  },
+  "k8s-en|M|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 31,
+     "distinct": {
+      "UNKNOWN": 805,
+      "decided": 21500,
+      "undecidable": 46
+     },
+     "instances": {
+      "UNKNOWN": 4368,
+      "evaluated": 145725,
+      "undecidable": 391
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 31,
+     "distinct": {
+      "UNKNOWN": 814,
+      "decided": 21726,
+      "undecidable": 47
+     },
+     "instances": {
+      "UNKNOWN": 4379,
+      "evaluated": 146142,
+      "undecidable": 406
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 805,
+    "decided": 21500,
+    "undecidable": 46
+   },
+   "exported_packets": 31,
+   "instances": {
+    "UNKNOWN": 4368,
+    "evaluated": 145725,
+    "undecidable": 391
+   },
+   "qualifying_distinct": 12,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "k8s-en|M|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 15,
+     "distinct": {
+      "UNKNOWN": 154,
+      "decided": 7190,
+      "undecidable": 1473
+     },
+     "instances": {
+      "UNKNOWN": 485,
+      "evaluated": 32981,
+      "undecidable": 3620
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 16,
+     "distinct": {
+      "UNKNOWN": 154,
+      "decided": 7309,
+      "undecidable": 1479
+     },
+     "instances": {
+      "UNKNOWN": 485,
+      "evaluated": 33123,
+      "undecidable": 3626
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 154,
+    "decided": 7190,
+    "undecidable": 1473
+   },
+   "exported_packets": 15,
+   "instances": {
+    "UNKNOWN": 485,
+    "evaluated": 32981,
+    "undecidable": 3620
+   },
+   "qualifying_distinct": 15,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 8
+  },
+  "k8s-en|S25|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 25,
+     "distinct": {
+      "UNKNOWN": 4004,
+      "decided": 10579,
+      "undecidable": 104
+     },
+     "instances": {
+      "UNKNOWN": 12516,
+      "evaluated": 51907,
+      "undecidable": 376
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 22,
+     "distinct": {
+      "UNKNOWN": 3922,
+      "decided": 10491,
+      "undecidable": 103
+     },
+     "instances": {
+      "UNKNOWN": 11974,
+      "evaluated": 49787,
+      "undecidable": 364
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 4004,
+    "decided": 10579,
+    "undecidable": 104
+   },
+   "exported_packets": 25,
+   "instances": {
+    "UNKNOWN": 12516,
+    "evaluated": 51907,
+    "undecidable": 376
+   },
+   "qualifying_distinct": 14,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "k8s-en|S25|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 77,
+     "distinct": {
+      "UNKNOWN": 1014,
+      "decided": 4041,
+      "undecidable": 516
+     },
+     "instances": {
+      "UNKNOWN": 1855,
+      "evaluated": 11698,
+      "undecidable": 847
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 75,
+     "distinct": {
+      "UNKNOWN": 972,
+      "decided": 3979,
+      "undecidable": 506
+     },
+     "instances": {
+      "UNKNOWN": 1737,
+      "evaluated": 11183,
+      "undecidable": 821
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 1014,
+    "decided": 4041,
+    "undecidable": 516
+   },
+   "exported_packets": 84,
+   "instances": {
+    "UNKNOWN": 1855,
+    "evaluated": 11698,
+    "undecidable": 847
+   },
+   "qualifying_distinct": 77,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 50
+  },
+  "k8s-en|S5|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 10,
+     "distinct": {
+      "UNKNOWN": 1477,
+      "decided": 17287,
+      "undecidable": 35
+     },
+     "instances": {
+      "UNKNOWN": 2908,
+      "evaluated": 41482,
+      "undecidable": 114
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 11,
+     "distinct": {
+      "UNKNOWN": 1409,
+      "decided": 16764,
+      "undecidable": 35
+     },
+     "instances": {
+      "UNKNOWN": 2750,
+      "evaluated": 39110,
+      "undecidable": 129
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 1477,
+    "decided": 17287,
+    "undecidable": 35
+   },
+   "exported_packets": 10,
+   "instances": {
+    "UNKNOWN": 2908,
+    "evaluated": 41482,
+    "undecidable": 114
+   },
+   "qualifying_distinct": 5,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "k8s-en|S5|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 13,
+     "distinct": {
+      "UNKNOWN": 244,
+      "decided": 4982,
+      "undecidable": 822
+     },
+     "instances": {
+      "UNKNOWN": 315,
+      "evaluated": 9040,
+      "undecidable": 1055
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 11,
+     "distinct": {
+      "UNKNOWN": 245,
+      "decided": 4839,
+      "undecidable": 783
+     },
+     "instances": {
+      "UNKNOWN": 309,
+      "evaluated": 8699,
+      "undecidable": 1002
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 244,
+    "decided": 4982,
+    "undecidable": 822
+   },
+   "exported_packets": 13,
+   "instances": {
+    "UNKNOWN": 315,
+    "evaluated": 9040,
+    "undecidable": 1055
+   },
+   "qualifying_distinct": 13,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 10
+  },
+  "k8s-l10n|E|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 4,
+     "distinct": {
+      "UNKNOWN": 1273,
+      "decided": 29748,
+      "undecidable": 94
+     },
+     "instances": {
+      "UNKNOWN": 1637,
+      "evaluated": 44350,
+      "undecidable": 427
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 5,
+     "distinct": {
+      "UNKNOWN": 1383,
+      "decided": 31356,
+      "undecidable": 353
+     },
+     "instances": {
+      "UNKNOWN": 1855,
+      "evaluated": 47181,
+      "undecidable": 1924
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 1401,
+    "decided": 31590,
+    "undecidable": 348
+   },
+   "exported_packets": 5,
+   "instances": {
+    "UNKNOWN": 1872,
+    "evaluated": 47657,
+    "undecidable": 1891
+   },
+   "qualifying_distinct": 3,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "k8s-l10n|E|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 3,
+     "distinct": {
+      "UNKNOWN": 166,
+      "decided": 9067,
+      "undecidable": 1188
+     },
+     "instances": {
+      "UNKNOWN": 176,
+      "evaluated": 12342,
+      "undecidable": 1310
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 3,
+     "distinct": {
+      "UNKNOWN": 158,
+      "decided": 9012,
+      "undecidable": 1368
+     },
+     "instances": {
+      "UNKNOWN": 167,
+      "evaluated": 12291,
+      "undecidable": 1478
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 158,
+    "decided": 8987,
+    "undecidable": 1351
+   },
+   "exported_packets": 3,
+   "instances": {
+    "UNKNOWN": 167,
+    "evaluated": 12254,
+    "undecidable": 1461
+   },
+   "qualifying_distinct": 3,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 1
+  },
+  "k8s-l10n|M|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 498,
+      "decided": 10532,
+      "undecidable": 7
+     },
+     "instances": {
+      "UNKNOWN": 820,
+      "evaluated": 16567,
+      "undecidable": 17
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 501,
+      "decided": 10545,
+      "undecidable": 7
+     },
+     "instances": {
+      "UNKNOWN": 823,
+      "evaluated": 16593,
+      "undecidable": 17
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 501,
+    "decided": 10545,
+    "undecidable": 7
+   },
+   "exported_packets": 2,
+   "instances": {
+    "UNKNOWN": 823,
+    "evaluated": 16593,
+    "undecidable": 17
+   },
+   "qualifying_distinct": 2,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "k8s-l10n|M|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 67,
+      "decided": 3007,
+      "undecidable": 445
+     },
+     "instances": {
+      "UNKNOWN": 77,
+      "evaluated": 4521,
+      "undecidable": 570
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 70,
+      "decided": 3027,
+      "undecidable": 446
+     },
+     "instances": {
+      "UNKNOWN": 80,
+      "evaluated": 4546,
+      "undecidable": 571
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 70,
+    "decided": 3027,
+    "undecidable": 446
+   },
+   "exported_packets": 2,
+   "instances": {
+    "UNKNOWN": 80,
+    "evaluated": 4546,
+    "undecidable": 571
+   },
+   "qualifying_distinct": 2,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "k8s-l10n|S25|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 44,
+     "distinct": {
+      "UNKNOWN": 4037,
+      "decided": 7747,
+      "undecidable": 88
+     },
+     "instances": {
+      "UNKNOWN": 19423,
+      "evaluated": 60616,
+      "undecidable": 807
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 44,
+     "distinct": {
+      "UNKNOWN": 4037,
+      "decided": 7747,
+      "undecidable": 88
+     },
+     "instances": {
+      "UNKNOWN": 19423,
+      "evaluated": 60616,
+      "undecidable": 807
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 4037,
+    "decided": 7747,
+    "undecidable": 88
+   },
+   "exported_packets": 47,
+   "instances": {
+    "UNKNOWN": 19423,
+    "evaluated": 60616,
+    "undecidable": 807
+   },
+   "qualifying_distinct": 27,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "k8s-l10n|S25|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 66,
+     "distinct": {
+      "UNKNOWN": 1163,
+      "decided": 3793,
+      "undecidable": 424
+     },
+     "instances": {
+      "UNKNOWN": 3407,
+      "evaluated": 16726,
+      "undecidable": 1135
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 66,
+     "distinct": {
+      "UNKNOWN": 1163,
+      "decided": 3793,
+      "undecidable": 424
+     },
+     "instances": {
+      "UNKNOWN": 3407,
+      "evaluated": 16726,
+      "undecidable": 1135
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 1163,
+    "decided": 3793,
+    "undecidable": 424
+   },
+   "exported_packets": 73,
+   "instances": {
+    "UNKNOWN": 3407,
+    "evaluated": 16726,
+    "undecidable": 1135
+   },
+   "qualifying_distinct": 66,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 42
+  },
+  "k8s-l10n|S5|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 25,
+     "distinct": {
+      "UNKNOWN": 2474,
+      "decided": 18308,
+      "undecidable": 97
+     },
+     "instances": {
+      "UNKNOWN": 4203,
+      "evaluated": 34184,
+      "undecidable": 359
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 28,
+     "distinct": {
+      "UNKNOWN": 2563,
+      "decided": 18444,
+      "undecidable": 172
+     },
+     "instances": {
+      "UNKNOWN": 4279,
+      "evaluated": 34779,
+      "undecidable": 999
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 2556,
+    "decided": 18432,
+    "undecidable": 172
+   },
+   "exported_packets": 29,
+   "instances": {
+    "UNKNOWN": 4333,
+    "evaluated": 34924,
+    "undecidable": 1001
+   },
+   "qualifying_distinct": 10,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "k8s-l10n|S5|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 18,
+     "distinct": {
+      "UNKNOWN": 451,
+      "decided": 6064,
+      "undecidable": 657
+     },
+     "instances": {
+      "UNKNOWN": 593,
+      "evaluated": 9550,
+      "undecidable": 824
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 18,
+     "distinct": {
+      "UNKNOWN": 448,
+      "decided": 5956,
+      "undecidable": 746
+     },
+     "instances": {
+      "UNKNOWN": 571,
+      "evaluated": 9456,
+      "undecidable": 921
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 444,
+    "decided": 5976,
+    "undecidable": 743
+   },
+   "exported_packets": 19,
+   "instances": {
+    "UNKNOWN": 581,
+    "evaluated": 9503,
+    "undecidable": 919
+   },
+   "qualifying_distinct": 18,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 9
+  },
+  "obsidian-help|E|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 3,
+     "distinct": {
+      "UNKNOWN": 369,
+      "decided": 5255,
+      "undecidable": 4
+     },
+     "instances": {
+      "UNKNOWN": 1222,
+      "evaluated": 26494,
+      "undecidable": 42
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 3,
+     "distinct": {
+      "UNKNOWN": 369,
+      "decided": 5255,
+      "undecidable": 4
+     },
+     "instances": {
+      "UNKNOWN": 1222,
+      "evaluated": 26494,
+      "undecidable": 42
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 369,
+    "decided": 5255,
+    "undecidable": 4
+   },
+   "exported_packets": 3,
+   "instances": {
+    "UNKNOWN": 1222,
+    "evaluated": 26494,
+    "undecidable": 42
+   },
+   "qualifying_distinct": 1,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "obsidian-help|E|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 76,
+      "decided": 2435,
+      "undecidable": 364
+     },
+     "instances": {
+      "UNKNOWN": 174,
+      "evaluated": 9713,
+      "undecidable": 989
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 76,
+      "decided": 2435,
+      "undecidable": 364
+     },
+     "instances": {
+      "UNKNOWN": 174,
+      "evaluated": 9713,
+      "undecidable": 989
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 76,
+    "decided": 2435,
+    "undecidable": 364
+   },
+   "exported_packets": 2,
+   "instances": {
+    "UNKNOWN": 174,
+    "evaluated": 9713,
+    "undecidable": 989
+   },
+   "qualifying_distinct": 2,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 1
+  },
+  "obsidian-help|M|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 6,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 15,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 6,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 15,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 0,
+    "decided": 6,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 0,
+    "evaluated": 15,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "6 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "obsidian-help|M|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 2,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 3,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 2,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 3,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 0,
+    "decided": 2,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 0,
+    "evaluated": 3,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "2 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "obsidian-help|S25|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 321,
+      "decided": 214,
+      "undecidable": 4
+     },
+     "instances": {
+      "UNKNOWN": 1541,
+      "evaluated": 2880,
+      "undecidable": 22
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 321,
+      "decided": 214,
+      "undecidable": 4
+     },
+     "instances": {
+      "UNKNOWN": 1541,
+      "evaluated": 2880,
+      "undecidable": 22
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 321,
+    "decided": 214,
+    "undecidable": 4
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 1541,
+    "evaluated": 2880,
+    "undecidable": 22
+   },
+   "qualifying_distinct": 0,
+   "reason": "214 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "obsidian-help|S25|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 6,
+     "distinct": {
+      "UNKNOWN": 179,
+      "decided": 172,
+      "undecidable": 18
+     },
+     "instances": {
+      "UNKNOWN": 519,
+      "evaluated": 1408,
+      "undecidable": 58
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 6,
+     "distinct": {
+      "UNKNOWN": 179,
+      "decided": 172,
+      "undecidable": 18
+     },
+     "instances": {
+      "UNKNOWN": 519,
+      "evaluated": 1408,
+      "undecidable": 58
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 179,
+    "decided": 172,
+    "undecidable": 18
+   },
+   "exported_packets": 8,
+   "instances": {
+    "UNKNOWN": 519,
+    "evaluated": 1408,
+    "undecidable": 58
+   },
+   "qualifying_distinct": 6,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 6
+  },
+  "obsidian-help|S5|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 855,
+      "decided": 2902,
+      "undecidable": 9
+     },
+     "instances": {
+      "UNKNOWN": 2381,
+      "evaluated": 13116,
+      "undecidable": 27
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 855,
+      "decided": 2902,
+      "undecidable": 9
+     },
+     "instances": {
+      "UNKNOWN": 2381,
+      "evaluated": 13116,
+      "undecidable": 27
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 855,
+    "decided": 2902,
+    "undecidable": 9
+   },
+   "exported_packets": 2,
+   "instances": {
+    "UNKNOWN": 2381,
+    "evaluated": 13116,
+    "undecidable": 27
+   },
+   "qualifying_distinct": 0,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "obsidian-help|S5|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 14,
+     "distinct": {
+      "UNKNOWN": 245,
+      "decided": 1425,
+      "undecidable": 156
+     },
+     "instances": {
+      "UNKNOWN": 456,
+      "evaluated": 4759,
+      "undecidable": 340
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 14,
+     "distinct": {
+      "UNKNOWN": 245,
+      "decided": 1425,
+      "undecidable": 156
+     },
+     "instances": {
+      "UNKNOWN": 456,
+      "evaluated": 4759,
+      "undecidable": 340
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 245,
+    "decided": 1425,
+    "undecidable": 156
+   },
+   "exported_packets": 15,
+   "instances": {
+    "UNKNOWN": 456,
+    "evaluated": 4759,
+    "undecidable": 340
+   },
+   "qualifying_distinct": 14,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 10
+  },
+  "rust-book|E|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 483,
+      "decided": 10762,
+      "undecidable": 2
+     },
+     "instances": {
+      "UNKNOWN": 1452,
+      "evaluated": 41593,
+      "undecidable": 4
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 483,
+      "decided": 10762,
+      "undecidable": 2
+     },
+     "instances": {
+      "UNKNOWN": 1452,
+      "evaluated": 41593,
+      "undecidable": 4
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 483,
+    "decided": 10762,
+    "undecidable": 2
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 1452,
+    "evaluated": 41593,
+    "undecidable": 4
+   },
+   "qualifying_distinct": 0,
+   "reason": "n=10762, bound 3/n = 0.00028 at 95%",
+   "verdict": "NOT FOUND",
+   "wrong_on_deleted": 0
+  },
+  "rust-book|E|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 3,
+     "distinct": {
+      "UNKNOWN": 55,
+      "decided": 3131,
+      "undecidable": 829
+     },
+     "instances": {
+      "UNKNOWN": 86,
+      "evaluated": 6001,
+      "undecidable": 936
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 3,
+     "distinct": {
+      "UNKNOWN": 55,
+      "decided": 3131,
+      "undecidable": 829
+     },
+     "instances": {
+      "UNKNOWN": 86,
+      "evaluated": 6001,
+      "undecidable": 936
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 55,
+    "decided": 3131,
+    "undecidable": 829
+   },
+   "exported_packets": 3,
+   "instances": {
+    "UNKNOWN": 86,
+    "evaluated": 6001,
+    "undecidable": 936
+   },
+   "qualifying_distinct": 3,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 2
+  },
+  "rust-book|M|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 90,
+      "decided": 2978,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 155,
+      "evaluated": 6517,
+      "undecidable": 7
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 90,
+      "decided": 2978,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 155,
+      "evaluated": 6517,
+      "undecidable": 7
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 90,
+    "decided": 2978,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 155,
+    "evaluated": 6517,
+    "undecidable": 7
+   },
+   "qualifying_distinct": 0,
+   "reason": "n=2978, bound 3/n = 0.00101 at 95%",
+   "verdict": "NOT FOUND",
+   "wrong_on_deleted": 0
+  },
+  "rust-book|M|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 1,
+      "decided": 602,
+      "undecidable": 110
+     },
+     "instances": {
+      "UNKNOWN": 4,
+      "evaluated": 963,
+      "undecidable": 133
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 1,
+      "decided": 602,
+      "undecidable": 110
+     },
+     "instances": {
+      "UNKNOWN": 4,
+      "evaluated": 963,
+      "undecidable": 133
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 1,
+    "decided": 602,
+    "undecidable": 110
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 4,
+    "evaluated": 963,
+    "undecidable": 133
+   },
+   "qualifying_distinct": 0,
+   "reason": "undecidable 110 > 10% of 712",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "rust-book|S25|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 3261,
+      "decided": 2786,
+      "undecidable": 4
+     },
+     "instances": {
+      "UNKNOWN": 12153,
+      "evaluated": 23409,
+      "undecidable": 17
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 3261,
+      "decided": 2786,
+      "undecidable": 4
+     },
+     "instances": {
+      "UNKNOWN": 12153,
+      "evaluated": 23409,
+      "undecidable": 17
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 3261,
+    "decided": 2786,
+    "undecidable": 4
+   },
+   "exported_packets": 2,
+   "instances": {
+    "UNKNOWN": 12153,
+    "evaluated": 23409,
+    "undecidable": 17
+   },
+   "qualifying_distinct": 0,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "rust-book|S25|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 13,
+     "distinct": {
+      "UNKNOWN": 1196,
+      "decided": 819,
+      "undecidable": 55
+     },
+     "instances": {
+      "UNKNOWN": 1813,
+      "evaluated": 3220,
+      "undecidable": 70
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 13,
+     "distinct": {
+      "UNKNOWN": 1196,
+      "decided": 819,
+      "undecidable": 55
+     },
+     "instances": {
+      "UNKNOWN": 1813,
+      "evaluated": 3220,
+      "undecidable": 70
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 1196,
+    "decided": 819,
+    "undecidable": 55
+   },
+   "exported_packets": 16,
+   "instances": {
+    "UNKNOWN": 1813,
+    "evaluated": 3220,
+    "undecidable": 70
+   },
+   "qualifying_distinct": 13,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 11
+  },
+  "rust-book|S5|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 1735,
+      "decided": 6625,
+      "undecidable": 5
+     },
+     "instances": {
+      "UNKNOWN": 3692,
+      "evaluated": 22512,
+      "undecidable": 16
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 1735,
+      "decided": 6625,
+      "undecidable": 5
+     },
+     "instances": {
+      "UNKNOWN": 3692,
+      "evaluated": 22512,
+      "undecidable": 16
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 1735,
+    "decided": 6625,
+    "undecidable": 5
+   },
+   "exported_packets": 2,
+   "instances": {
+    "UNKNOWN": 3692,
+    "evaluated": 22512,
+    "undecidable": 16
+   },
+   "qualifying_distinct": 0,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "rust-book|S5|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 9,
+     "distinct": {
+      "UNKNOWN": 261,
+      "decided": 1921,
+      "undecidable": 244
+     },
+     "instances": {
+      "UNKNOWN": 319,
+      "evaluated": 3244,
+      "undecidable": 271
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 9,
+     "distinct": {
+      "UNKNOWN": 261,
+      "decided": 1921,
+      "undecidable": 244
+     },
+     "instances": {
+      "UNKNOWN": 319,
+      "evaluated": 3244,
+      "undecidable": 271
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 261,
+    "decided": 1921,
+    "undecidable": 244
+   },
+   "exported_packets": 9,
+   "instances": {
+    "UNKNOWN": 319,
+    "evaluated": 3244,
+    "undecidable": 271
+   },
+   "qualifying_distinct": 7,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 3
+  },
+  "site-policy|E|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 209,
+      "decided": 3000,
+      "undecidable": 40
+     },
+     "instances": {
+      "UNKNOWN": 2551,
+      "evaluated": 39646,
+      "undecidable": 117
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 2,
+     "distinct": {
+      "UNKNOWN": 209,
+      "decided": 3000,
+      "undecidable": 40
+     },
+     "instances": {
+      "UNKNOWN": 2551,
+      "evaluated": 39646,
+      "undecidable": 117
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 209,
+    "decided": 3000,
+    "undecidable": 40
+   },
+   "exported_packets": 2,
+   "instances": {
+    "UNKNOWN": 2551,
+    "evaluated": 39646,
+    "undecidable": 117
+   },
+   "qualifying_distinct": 2,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "site-policy|E|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 57,
+      "decided": 1383,
+      "undecidable": 101
+     },
+     "instances": {
+      "UNKNOWN": 672,
+      "evaluated": 12887,
+      "undecidable": 475
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 57,
+      "decided": 1383,
+      "undecidable": 101
+     },
+     "instances": {
+      "UNKNOWN": 672,
+      "evaluated": 12887,
+      "undecidable": 475
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 57,
+    "decided": 1383,
+    "undecidable": 101
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 672,
+    "evaluated": 12887,
+    "undecidable": 475
+   },
+   "qualifying_distinct": 0,
+   "reason": "n=1383, bound 3/n = 0.00217 at 95%",
+   "verdict": "NOT FOUND",
+   "wrong_on_deleted": 0
+  },
+  "site-policy|M|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    },
+    "set25": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 0,
+    "decided": 0,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 0,
+    "evaluated": 0,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "0 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "site-policy|M|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    },
+    "set25": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 0,
+      "decided": 0,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 0,
+      "evaluated": 0,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 0,
+    "decided": 0,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 0,
+    "evaluated": 0,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "0 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "site-policy|S25|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 4,
+     "distinct": {
+      "UNKNOWN": 27,
+      "decided": 26,
+      "undecidable": 2
+     },
+     "instances": {
+      "UNKNOWN": 48,
+      "evaluated": 100,
+      "undecidable": 5
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 4,
+     "distinct": {
+      "UNKNOWN": 27,
+      "decided": 26,
+      "undecidable": 2
+     },
+     "instances": {
+      "UNKNOWN": 48,
+      "evaluated": 100,
+      "undecidable": 5
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 27,
+    "decided": 26,
+    "undecidable": 2
+   },
+   "exported_packets": 4,
+   "instances": {
+    "UNKNOWN": 48,
+    "evaluated": 100,
+    "undecidable": 5
+   },
+   "qualifying_distinct": 4,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "site-policy|S25|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 5,
+      "decided": 9,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 10,
+      "evaluated": 27,
+      "undecidable": 0
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 0,
+     "distinct": {
+      "UNKNOWN": 5,
+      "decided": 9,
+      "undecidable": 0
+     },
+     "instances": {
+      "UNKNOWN": 10,
+      "evaluated": 27,
+      "undecidable": 0
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 5,
+    "decided": 9,
+    "undecidable": 0
+   },
+   "exported_packets": 0,
+   "instances": {
+    "UNKNOWN": 10,
+    "evaluated": 27,
+    "undecidable": 0
+   },
+   "qualifying_distinct": 0,
+   "reason": "9 distinct decided natural-language units < 300",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "site-policy|S5|Q": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 48,
+     "distinct": {
+      "UNKNOWN": 535,
+      "decided": 1670,
+      "undecidable": 73
+     },
+     "instances": {
+      "UNKNOWN": 2499,
+      "evaluated": 11206,
+      "undecidable": 663
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 48,
+     "distinct": {
+      "UNKNOWN": 535,
+      "decided": 1670,
+      "undecidable": 73
+     },
+     "instances": {
+      "UNKNOWN": 2499,
+      "evaluated": 11206,
+      "undecidable": 663
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 535,
+    "decided": 1670,
+    "undecidable": 73
+   },
+   "exported_packets": 48,
+   "instances": {
+    "UNKNOWN": 2499,
+    "evaluated": 11206,
+    "undecidable": 663
+   },
+   "qualifying_distinct": 47,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 0
+  },
+  "site-policy|S5|R": {
+   "beside": {
+    "anywhere": {
+     "decided_hardened_misresolutions": 1,
+     "distinct": {
+      "UNKNOWN": 182,
+      "decided": 957,
+      "undecidable": 32
+     },
+     "instances": {
+      "UNKNOWN": 546,
+      "evaluated": 4044,
+      "undecidable": 95
+     }
+    },
+    "none": {
+     "decided_hardened_misresolutions": 1,
+     "distinct": {
+      "UNKNOWN": 182,
+      "decided": 957,
+      "undecidable": 32
+     },
+     "instances": {
+      "UNKNOWN": 546,
+      "evaluated": 4044,
+      "undecidable": 95
+     }
+    }
+   },
+   "distinct": {
+    "UNKNOWN": 182,
+    "decided": 957,
+    "undecidable": 32
+   },
+   "exported_packets": 1,
+   "instances": {
+    "UNKNOWN": 546,
+    "evaluated": 4044,
+    "undecidable": 95
+   },
+   "qualifying_distinct": 1,
+   "reason": "tiering void: P-A: q3=yes, expected no; P-B: q4=yes, expected no; P-C: q4=yes, expected no",
+   "verdict": "NO VERDICT",
+   "wrong_on_deleted": 1
+  }
+ },
+ "near_misses": {
+  "i": 43,
+  "ii": 99,
+  "iii": 372
+ },
+ "overall": "INCONCLUSIVE",
+ "void": [
+  "P-A: q3=yes, expected no",
+  "P-B: q4=yes, expected no",
+  "P-C: q4=yes, expected no"
+ ]
+}
