@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "7f26580719610e8c8d131b3a4257d2200f1ed5e9",
+  "validation_commit": "d79bf2e61f5f7c0bcfdde5e17d44604b0fac9301"
+ },
+ "bound": true,
+ "committed_sha256": "64cee0ff03aa8d291f74f2cb3ebbf4b1901f025610dcc8b3d586cef7c07854fc",
+ "id": "S5:2:en/Extending Obsidian/Obsidian URI.md|R|register-obsidian-uri",
+ "ok": true,
+ "regenerated_sha256": "64cee0ff03aa8d291f74f2cb3ebbf4b1901f025610dcc8b3d586cef7c07854fc"
+}
