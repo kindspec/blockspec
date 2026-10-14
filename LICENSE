@@ -17,7 +17,8 @@ deliberate, not an oversight.
   spike/harness/plant_cases/  CC0-1.0
   spike/harness3/           MIT
   spike/results/            CC-BY-4.0, except corpus text (below)
-  spike/results/prereg3/    CC-BY-4.0, except third-party excerpts (below)
+  spike/results/prereg3/    CC-BY-4.0, except corpus text and third-party
+                            excerpts (below)
 
 A path ending in "/" covers everything below it, subdirectories included. A
 "*" matches within one directory. Where two rows cover the same path, the more
@@ -31,16 +32,18 @@ lands there.
 
 CORPUS TEXT IN spike/results/
 
-The spike measures third-party corpora, and its results outside
-spike/results/prereg3/ carry their text. In
-spike/results/prereg2/export/packets/, each packet's before.md and after.md is
-a whole file copied from a corpus, and its packet.json quotes from them. The
-exception is the three plant packets, whose text the harness generates
-(spike/harness/prereg2_plants.py). Other result files quote shorter excerpts
-where they report a block, a quote or a target, merge-arm-candidates.jsonl and
-cheap-arm/anchors-silent-wrongs.txt among them. The corpora and their pins are
-named where each result was produced: spike/LOG.md and
-spike/PRE-REGISTRATION-2.md section 6.2.
+The spike measures third-party corpora, and its results carry their text,
+spike/results/prereg3/ included. In spike/results/prereg2/export/packets/ and
+spike/results/prereg3/export/packets/, every .md file in a packet other than
+QUESTIONS.md is a whole file copied from a corpus: before.md and after.md, and
+in a merge packet base.md, leg-a.md and leg-c.md. Each packet's packet.json
+quotes from them. The exception is the plant packets, whose text the harness
+generates (spike/harness/prereg2_plants.py, spike/harness3/prereg3_plants.py).
+Other result files quote shorter excerpts where they report a block, a quote
+or a target, merge-arm-candidates.jsonl and cheap-arm/anchors-silent-wrongs.txt
+among them. The corpora and their pins are named where each result was
+produced: spike/LOG.md and spike/PRE-REGISTRATION-2.md section 6.2, which
+prereg 3 keeps (spike/PRE-REGISTRATION-3.md section 1).
 
 That text is not this project's work and is not offered under CC-BY-4.0. It
 stays under its upstream terms, whatever they are at the pin it was taken
