@@ -179,8 +179,9 @@ What this settles:
   it is edited, as a list does.
 - **The only silent wrong in the run came from the coarse scope.** In
   cncf-toc gap 5, a paragraph has three identical copies in the later
-  version, in similar lists. F refused it as ambiguous. B fuzzy-matched the edited list to
-  the other copy and returned that copy's paragraph, against the oracle. F+B
+  version, in similar lists. F refused it as ambiguous. B fuzzy-matched the
+  edited list to a list holding another copy, and returned that copy's
+  paragraph, against the oracle. F+B
   inherits the same wrong, because it falls back to B exactly when F has
   correctly refused. **The fallback is a real trade, and this decision
   declines it.** F+B wins on recall: 99.6% against 97.8% in cncf-toc gap 5,
@@ -193,8 +194,8 @@ What this settles:
 - **The at-rest refusals are the leaf's real cost**, 0 to 1.5% of in-container
   anchors. They are the repeated procedure steps the leaf case identified
   (a step that opens the command palette, repeated in one file). They are
-  loud. They are also visible when the anchor is made: the anchoring client resolves the anchor against `base` before it
-  stores it, sees two matches, and can widen the context or refuse. How an
+  loud. They are also visible when the anchor is made: the anchoring client
+  resolves the anchor against `base` before it stores it, sees two matches, and can widen the context or refuse. How an
   anchor carries a disambiguator is the anchor format's question, and research
   `scope.py`'s F+Bc row measures one candidate: store the enclosing block only
   for an anchor that was already ambiguous when it was made. It clears the
