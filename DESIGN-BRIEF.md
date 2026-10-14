@@ -68,14 +68,19 @@ written into the file (D8 §6 and §7.3), so standoff does not disqualify
 markdown. An earlier version of this brief said it did, following D5 §0 item 5;
 `docs/adjudications/0001-syntax.md` §1 explains why that premise no longer
 holds. The attribute triple above is a property of the in-memory model and
-does not depend on the syntax.
+does not depend on the syntax. Under the profile below, only `id` is ever
+filled, from an authored name or a heading slug; `classes` and `key=value` are
+always empty, because the profile has no syntax for them.
 
 **The syntax is a pinned CommonMark 0.31.2 block-level profile**, not djot.
-Authored names use the region marker `<!-- #name -->` (D8 §7.2). Decided by
-`docs/adjudications/0001-syntax.md` (blockspec#3), with the owner's answer that
-a blockspec document must render and edit correctly in today's markdown tools
-as the deciding input. That document records the reversal cost and what would
-reverse it.
+Authored names use D8 §7.2's region marker: `<!-- #name -->` for the next
+block, and `<!-- #name:begin -->` / `<!-- #name:end -->` for a span. Decided
+by `docs/adjudications/0001-syntax.md` (blockspec#3), with the owner's answer
+that a blockspec document must render and edit correctly in today's markdown
+tools as the deciding input. The decision depends on blockspec#4 as that
+document states: it reverses if #4 needs typed attributes in the file, or a
+block boundary that needs new syntax. That document also records the reversal
+cost.
 
 **Do not reuse rowspec's syntax.** *"One syntax is a trap; one MODEL, several
 grammars is the sound version."* JATS learned this in 2003 and encoded the
