@@ -2480,7 +2480,8 @@ owner on 2026-10-14. It belongs to the pull request that adds
 ### The ruling
 
 Prereg 3's tier-run is run once more, as run 2. Run 2 binds whatever it
-says.
+says, even if it fails the init check or writes zero lines. No run 3 is
+allowed.
 
 ### Why
 
@@ -2491,7 +2492,8 @@ network (§32):
   Can't reach the API server — check your internet or DNS (EAI_AGAIN)";
 - the system journal shows wlan0 losing carrier and its DHCP lease at
   08:31:39Z, and `CTRL-EVENT-DISCONNECTED` at 08:31:40Z;
-- the host reconnected only at 08:37:00Z, after the agent had exited;
+- the host reconnected briefly from 08:35:18Z to 08:35:32Z, and for good at
+  08:37:00Z, after the agent had exited;
 - the credential file was unchanged across the run, and the error is not an
   authentication error.
 
@@ -2506,7 +2508,10 @@ network failure on the host, the tier-run is run once more.
   transcript, the reproductions, the sealed manifest,
   `results/prereg3/verdict.json` and §32 to §33 (#29, #30). Nothing committed
   is edited. Run 2 appends its own entries to `results/prereg3/tier-runs.txt`,
-  as the frozen harness does for any run. No existing line changes.
+  as the frozen harness does for any run. No existing line changes. Run 2 may
+  need reproductions that run 1 did not. These are written to
+  `results/prereg3/repro/` as new files, and the harness refuses to
+  overwrite one.
 - **Unchanged files.** `spike/harness3/`, `spike/harness/` and
   PRE-REGISTRATION-3.md stay byte-identical, so the binding to `a518e08`
   holds.
@@ -2516,12 +2521,67 @@ network failure on the host, the tier-run is run once more.
     holds one started run, run 1, and no run 2. Anything else is refused, so
     there is no run 3;
   - **the binding run** (`binding_run`). This is run 2 once it has started,
-    and the frozen rule otherwise;
+    even if it failed the init check or wrote nothing, and the frozen rule
+    otherwise;
   - **the bound output of `aggregate`.** This is now
     `results/prereg3/run2/verdict.json`, so `results/prereg3/verdict.json` is
-    never overwritten. This aggregate refuses until run 2 has started.
+    never overwritten. This aggregate refuses until run 2 has started. The
+    frozen `harness3/prereg3.py aggregate` would overwrite
+    `results/prereg3/verdict.json`, so only this script's aggregate is run.
 - **Checks that run as frozen.** The binding, the gate, the window (run 2 is
   on 2026-10-14, within it), the model, the init check, the credential log,
   the ledger, the reproduction rule (H7), and the order and per-name checks.
 - **What binds.** Run 2's `tiers.jsonl` binds, whatever it says. Its join
   and verdict are published beside §33, which stays as it is.
+
+### Run 2
+
+- **How it was run.** `ruling/prereg3_run2.py tier-run` ran once under
+  `python3 -I -S -B`, with `ANTHROPIC_API_KEY` and `GIT_EDITOR` unset. It ran
+  in the worktree of `prereg3/run2-ruling` at `8143e6d`, from a tmux session
+  started at 16:14:12Z. The transcript's argv is `prereg3_run2.py tier-run`,
+  and its header records "harness bound: True (validation commit
+  a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)".
+- **Preflight, as logged.**
+  - the gate found prereg 2's verdict commit `cfdf696`;
+  - verdict commit day 2026-10-13, start day 2026-10-14, run on 2026-10-14,
+    within the window;
+  - model `claude-opus-5-5`;
+  - "RERUN under the owner's ruling of 2026-10-14 (LOG §34): run 2 binds
+    whatever it says";
+  - the sandbox held `PROMPT.md`, `PACKETS.txt` and 488 packets, read-only;
+  - prompt sha256
+    `2779cd58c9c7882aad9706e2e999c87f5e7b341f14f7141282a5bda798226a0f`.
+- **The init check passed.** The tools were Edit, Glob, Grep, Read and Write,
+  and `mcp_servers` was empty.
+- **Times and result.** The run started at 16:14:13Z, and the transcript ends
+  at 17:06:33Z. The agent exited 0. Its result event has `terminal_reason`
+  `completed` after 1316 turns, and the stream holds no `api_retry` event.
+  The ledger's run-2 entries are "started", then "completed", with:
+  - `agent_exit` 0;
+  - `init_failed` false;
+  - `credential_changed` false;
+  - 488 lines;
+  - `tiers.jsonl` sha256
+    `1ad441a50ae0ec21a44e108f78d70e339cfd3439efa6a2f2e926d9ea661462b8`.
+- **Coverage.** The 488 lines parse with no problem. They cover every name in
+  `PACKETS.txt`, and no line names a packet outside it.
+- **What is committed.** The two appended ledger lines, the transcript
+  verbatim, and `tier-work-2/tiers.jsonl` as written. The work directory
+  holds nothing else. The harness removes the empty mount points it made for
+  `PROMPT.md`, `PACKETS.txt` and `packets/`, as it did for run 1.
+
+### Two disclosures about run 2
+
+- **The start time.** §0 item 10's operating rule says to start a bound run
+  just after the credential file has been rewritten. The credential was
+  rewritten at 13:52:31Z. Run 2 started 2 h 22 min later, because the alert
+  for the rewrite arrived late. The credential's mtime and sha256 were the
+  same before and after the run.
+- **Other sessions on the account.** By the owner's decision, other Claude
+  Code sessions on the account were active during run 2, doing unrelated
+  repository work. This departs from §0 item 10's operating rule, "keep
+  every other Claude session off the account during the run". It also
+  departs from §6: "For the length of a tier-run, nothing else on the host
+  may use the account whose credential the sandbox binds." The run had no
+  authentication error and no retry.
