@@ -1,0 +1,15 @@
+# prereg3 repro k8s-en
+# argv: prereg3_run2.py repro --d8-dir d8 --arm k8s-en --id M:93247c7e63286ae62ec9b38acff6efa4245d4622:content/en/docs/concepts/workloads/controllers/deployment.md|Q|49 --work-dir work/r-djZi9o
+# start: 2026-10-14T17:09:25Z
+# blockspec HEAD: 02e9692c57b4b8d2b07f42bb686b9b20b47e70dd
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T17:09:34Z
+committed   4c97d87b2086e54e279dfbc01c79fda87f0a2eacea74f6d06e5ee29aea3236a3
+regenerated 4c97d87b2086e54e279dfbc01c79fda87f0a2eacea74f6d06e5ee29aea3236a3
+F9 REPRODUCTION: BYTE-IDENTICAL  M:93247c7e63286ae62ec9b38acff6efa4245d4622:content/en/docs/concepts/workloads/controllers/deployment.md|Q|49
+
+# end: 2026-10-14T17:09:44Z
+# exited: exit status 0
