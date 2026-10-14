@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "e258ca5d517a60c646e0f4f5fbfa261ef11b4df0",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "8869549a33fadbf619bd83915ba895ae0ce458b83ff783dac6edda47f0354d64",
+ "id": "S5:0:content/zh-cn/docs/reference/kubernetes-api/workload-resources/deployment-v1.md|Q|45",
+ "ok": true,
+ "regenerated_sha256": "8869549a33fadbf619bd83915ba895ae0ce458b83ff783dac6edda47f0354d64"
+}
