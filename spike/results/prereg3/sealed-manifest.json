@@ -1,0 +1,55 @@
+{
+ "nonce": "c41fd7d59cc38c91e5084d6d4b1b407e3884401efa46873cd1165ef03779b6ed",
+ "plants": {
+  "P-A": {
+   "expected": {
+    "q1": "yes",
+    "q2": "yes",
+    "q3": "no",
+    "q4": "no",
+    "tier": "A"
+   },
+   "key": "plant:P-A"
+  },
+  "P-B": {
+   "expected": {
+    "q1": "yes",
+    "q2": "no",
+    "q3": "no",
+    "q4": "no",
+    "tier": "B"
+   },
+   "key": "plant:P-B"
+  },
+  "P-C": {
+   "expected": {
+    "q1": "no",
+    "q2": "no",
+    "q3": "no",
+    "q4": "no",
+    "tier": "C"
+   },
+   "key": "plant:P-C"
+  },
+  "P-D": {
+   "expected": {
+    "q1": "yes",
+    "q2": "yes",
+    "q3": "yes",
+    "q4": "no",
+    "tier": "A"
+   },
+   "key": "plant:P-D"
+  },
+  "P-E": {
+   "expected": {
+    "q1": "yes",
+    "q2": "yes",
+    "q3": "yes",
+    "q4": "yes",
+    "tier": "A"
+   },
+   "key": "plant:P-E"
+  }
+ }
+}
