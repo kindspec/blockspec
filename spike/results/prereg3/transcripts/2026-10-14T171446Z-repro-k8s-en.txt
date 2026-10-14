@@ -1,0 +1,15 @@
+# prereg3 repro k8s-en
+# argv: prereg3_run2.py repro --d8-dir d8 --arm k8s-en --id M:f787489ec5a41d4f2979c90f7db819b6239d41f3:content/en/docs/reference/access-authn-authz/extensible-admission-controllers.md|Q|23 --work-dir work/r-N2UcyT
+# start: 2026-10-14T17:14:46Z
+# blockspec HEAD: 3a0a2f10bad18bd44f956e024f3e1c6ea45120c3
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T17:14:55Z
+committed   d3d3879ce1575c09c38a3003151cc1a139247087108b54a3ca54273eb988f844
+regenerated d3d3879ce1575c09c38a3003151cc1a139247087108b54a3ca54273eb988f844
+F9 REPRODUCTION: BYTE-IDENTICAL  M:f787489ec5a41d4f2979c90f7db819b6239d41f3:content/en/docs/reference/access-authn-authz/extensible-admission-controllers.md|Q|23
+
+# end: 2026-10-14T17:15:02Z
+# exited: exit status 0
