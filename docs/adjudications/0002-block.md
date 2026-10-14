@@ -413,3 +413,18 @@ enclosing item is dominated by the leaf in every arm.
   one container. A dangling marker and a cross-container pair are refused.
 - **GFM pipe tables**, refused when they start on the line after a paragraph
   line or are followed by a non-blank line in the same container.
+
+## Addendum, 2026-10-14: frontmatter
+
+The owner's decision of 2026-10-14: **frontmatter is allowed.** A leading YAML
+block, opened by `---` on line 1 and closed by `---`, is opaque metadata. It is
+not a block, has no leaves and takes no names. This settles the "after
+frontmatter" in the partition rule above, which neither this document nor 0001
+had defined. Without it, under the CommonMark profile, a YAML block's opening
+`---` is a thematic break and its closing `---` a setext underline, which 0001
+refuses.
+
+`conformance/cases/frontmatter/` pins the decision. The edges it does not
+settle, and the reading taken for each (an unclosed block, `---` not on line
+1, an empty block, and conflict markers inside one), are listed in
+`conformance/cases/README.md`.
