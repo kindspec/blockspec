@@ -2276,3 +2276,87 @@ may start on or after the first UTC day after this verdict's commit.
 - **Paths in the transcripts.** The argv in the committed reproduction and
   aggregate transcripts holds absolute paths on the host, as earlier
   transcripts do. Future bound runs use neutral paths.
+
+## 2026-10-14 — §32. Prereg 3's tiering run
+
+This is PRE-REGISTRATION-3.md §7 step 6. This entry belongs to the
+`tiers.jsonl` pull request.
+
+### The run
+
+- **How it was run.** `prereg3.py tier-run`, bound by `a518e08`, ran once
+  under `python3 -I -S -B`, with `ANTHROPIC_API_KEY` and `GIT_EDITOR` unset.
+  It ran in a fresh worktree of `main` at `cfdf696` (#28's merge), on branch
+  `prereg3/tiers-run`, in a tmux session started at 08:11:52Z.
+- **Preflight, as logged.**
+  - the gate found prereg 2's verdict commit `cfdf696`, bound to `d79bf2e`;
+  - verdict commit day 2026-10-13, start day 2026-10-14, run on 2026-10-14,
+    within the window;
+  - model `claude-opus-5-5`, from `results/prereg2/tier-model.json`;
+  - the sandbox held `PROMPT.md`, `PACKETS.txt` and 488 packets, read-only.
+- **Prompt.** The transcript records "Appendix A as sent, sha256
+  2779cd58c9c7882aad9706e2e999c87f5e7b341f14f7141282a5bda798226a0f", which is
+  this document's prompt.
+- **The init check passed.** The tools were Edit, Glob, Grep, Read and Write,
+  and `mcp_servers` was empty. The claude.ai connector had been switched off
+  before the run.
+- **Times and result.** The run started at 08:11:52Z. The transcript ends at
+  08:35:50Z, and the agent exited with status 1.
+  `results/prereg3/tier-runs.txt` records "started" and then "completed",
+  with:
+  - `agent_exit` 1;
+  - `init_failed` false;
+  - `credential_changed` false;
+  - 193 lines;
+  - `tiers.jsonl` sha256
+    `3067111b828620c1d21e0dcc41fca89af3ccf577775ca232f243c8a0ff57243f`.
+
+  `tier-work-1/tiers.jsonl` is committed as written. This harness binds the
+  work copy itself and keeps no second copy.
+- **The transcript** is committed verbatim. Its argv is `prereg3.py
+  tier-run`, with no paths. Its harness lines still hold absolute host paths,
+  because the frozen harness logs the work directory, the agent binary and
+  the credential path. This qualifies §31's note that future bound runs use
+  neutral paths: only the argv is free of them.
+
+### Why the agent stopped: the host lost its network
+
+The agent's last events are 10 `api_retry` events (`max_retries` 10,
+`error_status` null). They are followed by "API Error: Can't reach the API
+server — check your internet or DNS (EAI_AGAIN)". The final result event has
+`num_turns` 403, `terminal_reason` `api_error` and `is_error` true. None of
+these is an authentication error, and the ledger does not mark the run
+`auth_aborted`.
+
+The host's system journal shows the cause. Its clock is UTC−4; the times here
+are converted to UTC.
+
+- 08:31:39Z: wlan0 lost carrier and its DHCP lease.
+- 08:31:40Z: wpa_supplicant logged `CTRL-EVENT-DISCONNECTED`, reason 8.
+- 08:35:18Z: it reconnected briefly (`CONNECTED_GLOBAL`).
+- 08:35:32Z: it disconnected again, reason 4, locally generated.
+- 08:37:00Z: it reconnected (`CONNECTED_GLOBAL`), after the agent had
+  exited.
+
+### The credential, and a disclosure
+
+- The credential file's mtime was 05:52:10Z before and after the run, with
+  the same sha256 prefix both times. The separate mtime log records no
+  rewrite after 05:52:10Z.
+- The owner confirmed that nothing else was using the account during the
+  run.
+- **Disclosure.** §0 item 10's operating rule says to start a bound run just
+  after the credential file has been rewritten. This run started 2 h 20 min
+  after the 05:52:10Z rewrite. The rule is an operating rule, and the
+  credential did not change during the run.
+
+### What the rules make of it
+
+The run wrote 193 lines, so it binds (§6, as prereg 2 §7.3). A rerun is
+allowed only if the first run wrote zero lines or failed the init check.
+Neither happened here, so there is no rerun. The harness agrees: it names
+run 1's `tiers.jsonl` as binding and refuses a second run.
+
+This entry does not say which packets were tiered, or what that does to any
+cell. Steps 7 to 9 (reproductions, the sealed manifest, and the join and
+verdict) apply the frozen rules to it.
