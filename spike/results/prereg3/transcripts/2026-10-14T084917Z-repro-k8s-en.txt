@@ -1,0 +1,15 @@
+# prereg3 repro k8s-en
+# argv: prereg3.py repro --d8-dir d8 --arm k8s-en --id M:af76e77672a36d617bfba2c9372d1a5fc3375600:content/en/docs/tutorials/stateless-application/guestbook.md|Q|79 --work-dir work/r-4BpD4X
+# start: 2026-10-14T08:49:17Z
+# blockspec HEAD: 9b39f032e2a7a586ddec973e5fe45e7a99f63f43
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T08:49:26Z
+committed   a34ba93bf348c5dd1da93c7b9158a93a881d1b01d832cfc25ebc292f27090b6f
+regenerated a34ba93bf348c5dd1da93c7b9158a93a881d1b01d832cfc25ebc292f27090b6f
+F9 REPRODUCTION: BYTE-IDENTICAL  M:af76e77672a36d617bfba2c9372d1a5fc3375600:content/en/docs/tutorials/stateless-application/guestbook.md|Q|79
+
+# end: 2026-10-14T08:49:30Z
+# exited: exit status 0
