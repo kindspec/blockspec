@@ -2,22 +2,25 @@
 # Adjudication 0001: djot or markdown
 
 blockspec#3. The brief (`DESIGN-BRIEF.md` §2) listed the question as open: the
-research says djot, *"but only if you own a parser dependency you are willing
-to maintain"* (kindspec/research `design-findings/D5-document-models.md` §0
-item 3). The question is not settled by measurement, so the org contract
-(`AGENTS.md` §4, "When measurement cannot settle it") has one case argued for
-each side from the same evidence, and an adjudication written here. The format
-follows kindspec/research `design-findings/ADJUDICATION.md`.
+research says djot, *"but only if you own a parser dependency you are willing to
+maintain"* (kindspec/research `design-findings/D5-document-models.md` §0 item
+3). The question is not settled by measurement, so the org contract
+(kindspec/.github `AGENTS.md` §4, "When measurement cannot settle it") has one
+case argued for each side from the same evidence, and an adjudication written
+here. The format follows kindspec/research `design-findings/ADJUDICATION.md`.
 
-The two positions:
+The two positions, each committed verbatim apart from an SPDX header and one
+reworded opening sentence:
 
-- **djot**: a pinned subset of djot (block structure and block attributes),
-  with a standard-library-only parser in `reference/`. Its main argument is
-  that only djot carries an authored identifier inside its grammar.
-- **markdown**: a strict block-level profile of CommonMark 0.31.2, with the
-  region marker `<!-- #name -->` from D8 §7.2 as the only convention and
-  inline content kept opaque. Its main argument is that the reason markdown was
-  disqualified has since been overturned.
+- **djot** ([`0001-syntax/djot-case.md`](0001-syntax/djot-case.md)): a pinned
+  subset of djot (block structure and block attributes), with a
+  standard-library-only parser in `reference/`. Its main argument is that only
+  djot carries an authored identifier inside its grammar.
+- **markdown** ([`0001-syntax/markdown-case.md`](0001-syntax/markdown-case.md)):
+  a strict block-level profile of CommonMark 0.31.2, with the region marker
+  `<!-- #name -->` from D8 §7.2 as the only convention and inline content kept
+  opaque. Its main argument is that the reason markdown was disqualified has
+  since been overturned.
 
 Pins: blockspec `1a969d0`; kindspec/research `d02c196`. Upstream clones made
 on 2026-10-14: `jgm/djot` `d77f8a0`, `jgm/djot.js` `9790d4d`, `jgm/djot.lua`
@@ -40,9 +43,12 @@ called markdown disqualified is amended to point here.
 The decision is conditional on blockspec#4 ("what is a block?") in one
 specific way, stated under *What would reverse it*. #4's measurement,
 kindspec/research PR #17 (`experiments/D8-block-definitions/`, head
-`8b9c33c`), already parses every file as CommonMark (markdown-it-py 3.0.0,
-preset `commonmark`), so its block definitions are CommonMark tree nodes by
-construction. It also enables GFM tables, which CommonMark 0.31.2 does not
+`8b9c33c`), parses every file as CommonMark (markdown-it-py 3.0.0, preset
+`commonmark`). Most of its candidate definitions are CommonMark tree nodes, but
+not all: `e` and `e2` (sections) are ranges between headings, and `a0` and `f0`
+are D8's blank-line chunks. Neither kind adds syntax; a section is derived
+from heading ranks the CommonMark tree already carries. The measurement also
+enables GFM tables, which CommonMark 0.31.2 does not
 have; whether the profile admits pipe tables or leaves them as paragraphs is
 left to #4 and the profile's specification.
 
@@ -50,9 +56,9 @@ left to #4 and the profile's specification.
 
 The two cases disagreed on several facts. Each was re-measured.
 
-| claim | djot case | markdown case | measured | command |
+| claim | [djot case](0001-syntax/djot-case.md) | [markdown case](0001-syntax/markdown-case.md) | measured | command |
 |---|---|---|---|---|
-| CommonMark implementations | ~45 (quoting research `DESIGN.md` §3c) | 41 under 30 language headings | **54** entries under "Recently maintained", across 30 language headings; 63 in the whole list. 15 of the 54 say they wrap or bind another library, leaving **39** that parse on their own. The count of 41 missed 13 entries indented with leading spaces. | `curl -s https://raw.githubusercontent.com/wiki/commonmark/commonmark-spec/List-of-CommonMark-Implementations.md`, then count `^[ \t]*[-*] \[` per `## ` section, and `grep -ciE 'wraps\|wrapper\|binding'` inside the first section |
+| CommonMark implementations | ~45 (quoting research `DESIGN.md` §3c) | 41 under 30 language headings | **54** entries under "Recently maintained", across 30 language headings; 63 in the whole list. 15 match the wrapper grep; by entry text at least 18 wrap, bind or compile another library (the grep misses lcmark, the PECL cmark extension and cmark-emscripten, and counts DefinitelyTyped, which is type bindings rather than a parser), so **at most 36** parse on their own. The count of 41 missed 13 entries indented with leading spaces. | `curl -s https://raw.githubusercontent.com/wiki/commonmark/commonmark-spec/List-of-CommonMark-Implementations.md`, then count `^[ \t]*[-*] \[` per `## ` section, and `grep -ciE 'wraps\|wrapper\|binding'` inside the first section |
 | djot implementations | 7 | 7, none in Python | **7** (JS, Lua, Prolog, PHP, Rust, Go, Haskell); none in Python | `jgm/djot` README, "Implementations" |
 | CommonMark spec size | 9,814 lines, 25,583 words, 655 examples | 25,411 words, 652 examples | **Both right, at different commits.** Tag `0.31.2`: 25,411 words, 652 examples. Tip `8a5f764` (17 commits later): 25,583 words, 655 examples. The 0.31.2 release is the right pin. | `git show 0.31.2:spec.txt \| wc -w`; count the lines opening an example fence (a run of backticks followed by `example`) |
 | inline vs block examples (0.31.2) | — | 357 inline, 295 block | **357 / 295**, counting the one-example "Inlines" and "Precedence" sections as inline; 132 are emphasis | `spec.json` grouped by `section` |
@@ -81,11 +87,12 @@ every probe:
     marker, then list                     -> html_block, bullet_list
     marker, then ATX heading              -> html_block, heading
 
-The second-to-last row matters: an HTML comment interrupts a paragraph (block
+The third row matters: an HTML comment interrupts a paragraph (block
 type 2 may), so a marker written on the line after a paragraph still names the
 next block. The same placement in djot (`{#a}` on the line after a paragraph)
-becomes an *inline* attribute on a soft break, and the following paragraph gets
-no id, with no warning.
+becomes an *inline* attribute on a soft break: djot 0.3.2 parses
+`One.\n{#a}\nTwo.` as a single paragraph, and no block gets the id, with no
+warning.
 
 What the marker convention adds is a **meaning** over an unchanged tree: "the
 name binds to the next sibling". That rule is blockspec's to write. It is a
@@ -101,12 +108,14 @@ them in its own grammar; CommonMark leaves more to the profile.
 **Answered by the markdown case, and this is the point that decides the
 question.**
 
-The brief's sentence (§1, "The tree is not sufficient") reads: anything
-spanning structure must live in standoff with stable anchors, *"which is the
-real reason attributes are non-negotiable, and the real reason markdown is
-disqualified"*. That derives from research D5 §0 item 5 and §5.4: *"stable
-per-block identity in the canonical text is mandatory ... Markdown cannot
-provide it. Djot can (`{#id}`)."*
+The brief's sentence (§1, "The tree is not sufficient") reads: anything spanning
+structure must live in standoff with stable anchors, *"which is the real reason
+attributes are non-negotiable, and the real reason markdown is disqualified"*.
+That derives from research D5 §0 item 5 and §5.4 item 3 (bold removed):
+*"Therefore stable per-block identity in the canonical text is mandatory, not
+optional. A standoff layer needs something to point at. Markdown cannot provide
+it (§1.1). Djot can (`{#id}`), org can (`:ID:`), TEI does (`@xml:id`), Portable
+Text does (`_key`)."*
 
 D8 measured that premise and replaced it. Its §6 table, at 25 commits of real
 editing: a stored `^id` under stock git is correct 80.0% of the time, a
@@ -171,7 +180,7 @@ What separates them:
 - **Grammar size favours djot.** About one sixth of CommonMark's prose
   (4,025 words against 25,411), and its block layer is line-local: *"The
   contribution a line makes to block-level structure never depends on a future
-  line"* (`syntax.md` lines 357–359). CommonMark's lazy continuation lines and
+  line"* (`syntax.md` lines 358–360). CommonMark's lazy continuation lines and
   setext headings break that.
 - **Code size does not separate them.** The block layers are 1,101–1,540 lines
   in the djot references and 1,159 in commonmark.js. The djot case concedes
@@ -181,8 +190,9 @@ What separates them:
   existing document processor as the second opinion" as one answer. With
   CommonMark, an implementer in nearly any language can diff their block
   splitter against a mature parser (54 listed implementations under 30
-  language headings, 39 of them not wrappers). With djot, that oracle exists in seven languages, and its two
-  reference test suites disagree with each other.
+  language headings, at most 36 of them not wrappers). With djot, that
+  oracle exists in seven languages, and its two reference test suites
+  disagree with each other.
 - **Stability favours CommonMark.** 0.31.2 has been the release since
   2024-01-28; djot says minor syntax changes are expected, and its npm package
   has not been published since 2024-12-19. A pinned djot subset makes blockspec
@@ -197,17 +207,20 @@ paragraph context. The profile shrinks the work; it does not remove it.
 
 **Conceded to djot, at a smaller weight than either case gives it.**
 
-Re-measured above: CommonMark turns git's markers into a heading and seven
-nested block quotes, and djot shows them as literal text. Neither fails loudly.
+Re-measured above: CommonMark keeps `<<<<<<< HEAD` visible but as heading text,
+hides `=======` (it becomes the setext underline), and turns `>>>>>>> br` into
+seven nested block quotes; djot shows all three as literal text. Neither fails
+loudly.
 
-The weight is smaller because blockspec's own reader is not a CommonMark or
-djot renderer. Git's markers are column-0 runs of seven `<`, `=`, `>` (and `|`
-for diff3). blockspec's validator can refuse any file containing them, as a
-line scan before any block parsing, in either format, and the case tree can
-pin that behaviour. Where djot really wins is in **third-party renderers**: a
-conflicted file shown in a forge or editor preview. Djot keeps the markers
-visible there, and CommonMark hides them. GitHub does not render djot at all,
-which makes that advantage hypothetical on the largest forge today.
+The weight is smaller because blockspec's own reader is not a CommonMark or djot
+renderer. Git's markers are column-0 runs of seven `<`, `=`, `>` (and `|` for
+diff3). blockspec's validator can refuse any file containing them, as a line
+scan before any block parsing, in either format, and the case tree can pin that
+behaviour. Where djot really wins is in **third-party renderers**: a conflicted
+file shown in a forge or editor preview. Djot keeps all three marker lines
+visible there as written; CommonMark shows the first as a heading, hides the
+second and turns the third into block quotes. GitHub does not render djot at
+all, which makes that advantage hypothetical on the largest forge today.
 
 ## 5. Ecosystem and rendering
 
@@ -284,13 +297,13 @@ what draft 0 admits.**
 - anchoring on parsed text removes the sidecar rewrite from either reversal.
 
 **Both cases** were wrong on one fact each, neither of them decisive: the
-markdown case's implementation count of 41 (54 listed, 39 not wrappers) and its
-attribution of the stability quote to the README; the djot case's parser line
-counts (4,501 and 2,571, not 4,583 and 2,636).
+markdown case's implementation count of 41 (54 listed, at most 36 not wrappers)
+and its attribution of the stability quote to the README; the djot case's parser
+line counts (4,501 and 2,571, not 4,583 and 2,636).
 
 ## What would reverse it
 
-Any one of these makes the answer djot:
+Either of 1–2 makes the answer djot; 3 reopens the question.
 
 1. **blockspec#4, or the anchor design after it, needs typed attributes in the
    file**: `classes` or `key=value` on blocks (for example, typed semantic
@@ -298,13 +311,17 @@ Any one of these makes the answer djot:
    carrier for those short of raw HTML, which would be a dialect.
 2. **blockspec#4 defines a block that is not a node of CommonMark's tree.** The
    marker binds to the next sibling node. If the unit of identity needs a
-   boundary the CommonMark tree does not draw (a `:::` fenced div is djot's
-   tool for that; CommonMark has none), the profile has to add syntax, and
-   at that point it is a dialect. The two outcomes #4 is most likely to reach
-   (a top-level node, or a node at any depth) are both CommonMark tree nodes,
-   so neither reverses this. Region spans that may *overlap* (D8 §7.2's
-   begin/end pair) need marker comments in djot as well, since djot's divs
-   nest but cannot overlap; that case does not separate the formats.
+   boundary the CommonMark tree does not draw (a `:::` fenced div is djot's tool
+   for that; CommonMark has none), the profile has to add syntax, and at that
+   point it is a dialect. Node outcomes of #4 (a top-level node, a node at any
+   depth, list items, leaf blocks) are CommonMark tree nodes and do not trigger
+   this. Neither does a **section** outcome (#17's `e` or `e2`): a section is
+   not a single node, but it is derived from heading ranks with no added syntax,
+   so the profile still adds nothing. Nor do D8's blank-line chunks (`a0`,
+   `f0`), which are a line rule over the same bytes. This item fires only if the
+   boundary needs new syntax in the file. Region spans that may *overlap* (D8
+   §7.2's begin/end pair) need marker comments in djot as well, since djot's
+   divs nest but cannot overlap; that case does not separate the formats.
 3. **The owner's answer below changes to "no"**: forge and editor rendering no
    longer matter, and the stricter syntax is preferred. The decision then rests
    on grammar size and conflict-marker visibility (djot) against stability and
@@ -335,13 +352,19 @@ correctly in today's markdown tools.
 
 - **CommonMark 0.31.2**, pinned by tag, as a block-level profile; inline
   content is opaque text.
-- **One convention:** `<!-- #name -->` on its own line names the next sibling
-  block. A name that matches zero blocks, or more than one, is `#REF!(name)`.
+- **One convention, the region marker of D8 §7.2**, in two forms:
+  `<!-- #name -->` on its own line names the next sibling block, and the
+  begin/end pair `<!-- #name:begin -->` / `<!-- #name:end -->` names a span,
+  which may nest or overlap. A name that matches zero targets, or more than
+  one, is `#REF!(name)`.
 - **Refusals**, each a fixture: setext headings, indented code blocks, link
-  reference definitions, raw HTML other than the marker, duplicate names, and
+  reference definitions, raw HTML other than the markers, duplicate names, and
   git conflict-marker lines.
-- **Heading slugs are not durable references.** The spike's 265 R units are
-  the reason.
-- **A second opinion in CI:** an off-the-shelf CommonMark parser's block tree
-  diffed against the reference's on the corpora. A test-time dependency only;
-  `reference/` stays standard-library-only.
+- **Heading slugs stay resolvable but are not durable.** Per D8 §7.2's order
+  a name is tried against region markers first, then slugs; a slug is a
+  convenience, not a reference blockspec promises to keep. The spike's 265 R
+  units are the reason.
+- **Proposed, not yet the answer to the brief's §0:** a second opinion in CI,
+  an off-the-shelf CommonMark parser's block tree diffed against the
+  reference's on the corpora. A test-time dependency only; `reference/` stays
+  standard-library-only.
