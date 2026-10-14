@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Adjudication 0001: djot or markdown
 
-blockspec#3. The brief (`DESIGN-BRIEF.md` §2) lists the question as open: the
+blockspec#3. The brief (`DESIGN-BRIEF.md` §2) listed the question as open: the
 research says djot, *"but only if you own a parser dependency you are willing
 to maintain"* (kindspec/research `design-findings/D5-document-models.md` §0
 item 3). The question is not settled by measurement, so the org contract
@@ -28,15 +28,23 @@ preset).
 
 ## Decision
 
-**Markdown: a pinned CommonMark 0.31.2 block-level profile.** This is the
-recommended default. It is **not final until the owner answers the question
-at the end of this document**, for two reasons: choosing markdown means
-amending a sentence in the brief's *Decided* section (§1, "the real reason
-markdown is disqualified"), and one input to the decision is an owner
-preference that no measurement can supply.
+**Decided, 2026-10-14: markdown, as a pinned CommonMark 0.31.2 block-level
+profile.**
+
+The evidence below leaned this way, but one input was an owner preference
+that no measurement can supply: whether a blockspec document must render and
+edit correctly in today's markdown tools. The owner answered **yes** (see *The
+owner's answer*), and that answer decides it. The brief's §1 sentence that
+called markdown disqualified is amended to point here.
 
 The decision is conditional on blockspec#4 ("what is a block?") in one
-specific way, stated under *What would reverse it*.
+specific way, stated under *What would reverse it*. #4's measurement,
+kindspec/research PR #17 (`experiments/D8-block-definitions/`, head
+`8b9c33c`), already parses every file as CommonMark (markdown-it-py 3.0.0,
+preset `commonmark`), so its block definitions are CommonMark tree nodes by
+construction. It also enables GFM tables, which CommonMark 0.31.2 does not
+have; whether the profile admits pipe tables or leaves them as paragraphs is
+left to #4 and the profile's specification.
 
 ## The factual disputes, settled
 
@@ -297,32 +305,33 @@ Any one of these makes the answer djot:
    so neither reverses this. Region spans that may *overlap* (D8 §7.2's
    begin/end pair) need marker comments in djot as well, since djot's divs
    nest but cannot overlap; that case does not separate the formats.
-3. **The owner says forge and editor rendering do not matter**, and prefers the
-   stricter syntax. The decision then rests on grammar size and conflict-marker
-   visibility (djot) against stability and the second opinion (CommonMark).
-   That is closer, and still leans markdown on the brief's §0 grounds, but it
-   becomes a preference rather than a finding.
+3. **The owner's answer below changes to "no"**: forge and editor rendering no
+   longer matter, and the stricter syntax is preferred. The decision then rests
+   on grammar size and conflict-marker visibility (djot) against stability and
+   the second opinion (CommonMark). That is closer, and still leans markdown on
+   the brief's §0 grounds, but it becomes a preference rather than a finding.
 
 The evidence that would *not* reverse it: anything about quote anchors (syntax-
 neutral) or about heading slugs (both formats derive them).
 
-## The question for the owner
+## The owner's answer
+
+The question put to the owner:
 
 > **Should a blockspec document render and edit correctly in today's markdown
 > tools (GitHub and other forge previews, Obsidian, ordinary editors), yes or
 > no?**
 >
-> - **Yes** (recommended): blockspec is a CommonMark 0.31.2 block-level
->   profile. Authored names use `<!-- #name -->`. The brief's §1 sentence "the
->   real reason markdown is disqualified" is amended to cite this adjudication.
+> - **Yes**: blockspec is a CommonMark 0.31.2 block-level profile. Authored
+>   names use `<!-- #name -->`. The brief's §1 sentence "the real reason
+>   markdown is disqualified" is amended to cite this adjudication.
 > - **No**: the decision is reopened on the narrower grounds in *What would
 >   reverse it*, item 3, with djot as a pinned block-and-block-attribute subset.
 
-Until it is answered, work that does not depend on the syntax (blockspec#4,
-the anchor design, the case-tree layout of blockspec#5) proceeds, and cases
-that need fixture bytes are written as CommonMark.
+**Answer, 2026-10-14: yes.** blockspec documents must render and edit
+correctly in today's markdown tools.
 
-## If the recommendation stands, draft 0 carries
+## What draft 0 carries
 
 - **CommonMark 0.31.2**, pinned by tag, as a block-level profile; inline
   content is opaque text.
