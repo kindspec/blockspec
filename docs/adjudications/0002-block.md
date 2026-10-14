@@ -424,6 +424,12 @@ had defined. Without it, under the CommonMark profile, a YAML block's opening
 `---` is a thematic break and its closing `---` a setext underline, which 0001
 refuses.
 
+**Line 2 must not be blank**, as pandoc reads a YAML metadata block, also
+decided on 2026-10-14. A document whose line 1 is `---` and whose line 2 is
+blank opens with a thematic break, not frontmatter, whatever `---` lines come
+later. Without this, any document opening with a thematic break and holding a
+later `---` line would turn its opening into metadata.
+
 `conformance/cases/frontmatter/` pins the decision. The edges it does not
 settle, and the reading taken for each (an unclosed block, `---` not on line
 1, an empty block, and conflict markers inside one), are listed in

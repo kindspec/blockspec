@@ -1,9 +1,9 @@
 {
   "kind": "parse",
   "accept": true,
-  "frontmatter": [1, 5],
+  "frontmatter": [1, 6],
   "blocks": [
-    {"type": "paragraph", "lines": [6, 6]}
+    {"type": "paragraph", "lines": [7, 7]}
   ],
   "leaves": [
     {"node": [0], "type": "paragraph", "content": "Text."}

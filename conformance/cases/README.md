@@ -63,7 +63,9 @@ implementation reports none (absent or `null`) where the case has none.
 Decided by the owner on 2026-10-14 (0002, *Addendum*): a leading YAML block,
 opened by `---` on line 1 and closed by `---`, is opaque metadata. It is not a
 block, has no leaves and takes no names. Its lines are in no block, and block
-line ranges still count from line 1 of the file.
+line ranges still count from line 1 of the file. As pandoc reads YAML metadata,
+line 2 must not be blank: `---` followed by a blank line is a thematic break
+(`frontmatter/a-blank-second-line-is-a-thematic-break`).
 
 ### Blocks
 
@@ -165,10 +167,10 @@ Each is marked READING in the `WHY.md` of the case that pins it.
    paragraph's and a heading's raw inline text, a code or HTML block's lines,
    and a table's cells.
 9. **Frontmatter ends at the first later line that is exactly `---`**, and may
-   be empty (`---` on lines 1 and 2). A document whose first line is a
-   thematic break and which has a later `---` line therefore opens with
-   frontmatter. `frontmatter/the-first-closing-line-ends-it`,
-   `frontmatter/empty`.
+   be empty (`---` on lines 1 and 2). `frontmatter/the-first-closing-line-ends-it`,
+   `frontmatter/empty`. Line 2 must not be blank (decided, below), so a
+   document that opens with a thematic break and a blank line is not
+   frontmatter, whatever `---` lines come later.
 10. **No blank line is needed after frontmatter.**
     `frontmatter/then-a-paragraph-directly`.
 11. **Frontmatter with no closing `---` is not frontmatter**, and its lines
