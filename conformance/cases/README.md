@@ -47,13 +47,23 @@ either refuses it or returns its structure.
 | `accept` | always | `true`: the document is in the profile. `false`: it is refused |
 | `refusal` | `accept` is `false` | the one refusal that applies, by code (below) |
 | `controls` | `accept` is `false` | ids of accepting cases on the other side of the line this refusal draws. Not an assertion about the implementation; `check_tree.py` checks they exist and accept |
+| `frontmatter` | optional, `accept` is `true` | the frontmatter's line range. Absent means the document has none |
 | `blocks` | `accept` is `true` | every block, in order: `type` and `lines` |
 | `leaves` | `accept` is `true` | every leaf, in document order: `node`, `type` and `content` |
 | `names` | `accept` is `true` | every name a marker declares, and what it binds to. `{}` when there are none |
 | `resolve` | optional | names to look up, and what each resolves to |
 
 All of `blocks`, `leaves` and `names` are compared whole: a missing or extra
-entry fails the case. `resolve` is compared for the names it lists.
+entry fails the case. `frontmatter` is compared on every accepting case, so an
+implementation reports none (absent or `null`) where the case has none.
+`resolve` is compared for the names it lists.
+
+### Frontmatter
+
+Decided by the owner on 2026-10-14 (0002, *Addendum*): a leading YAML block,
+opened by `---` on line 1 and closed by `---`, is opaque metadata. It is not a
+block, has no leaves and takes no names. Its lines are in no block, and block
+line ranges still count from line 1 of the file.
 
 ### Blocks
 
@@ -154,6 +164,23 @@ Each is marked READING in the `WHY.md` of the case that pins it.
    container prefixes removed". The table pins what that is per type: a
    paragraph's and a heading's raw inline text, a code or HTML block's lines,
    and a table's cells.
+9. **Frontmatter ends at the first later line that is exactly `---`**, and may
+   be empty (`---` on lines 1 and 2). A document whose first line is a
+   thematic break and which has a later `---` line therefore opens with
+   frontmatter. `frontmatter/the-first-closing-line-ends-it`,
+   `frontmatter/empty`.
+10. **No blank line is needed after frontmatter.**
+    `frontmatter/then-a-paragraph-directly`.
+11. **Frontmatter with no closing `---` is not frontmatter**, and its lines
+    parse under the existing rules, so the document is not refused for it.
+    `---` anywhere but line 1 is likewise a thematic break or a setext
+    underline. `frontmatter/unclosed-is-not-frontmatter`,
+    `refusal/setext-heading/refuses-frontmatter-not-on-line-one`.
+12. **Frontmatter is opaque to the block rules but not to the conflict-marker
+    scan**, which 0001 §4 runs before any parsing.
+    `frontmatter/hides-what-the-profile-refuses`,
+    `frontmatter/hides-a-marker`,
+    `refusal/conflict-marker/refuses-inside-frontmatter`.
 
 ## Not pinned yet
 
@@ -165,9 +192,6 @@ any case would decide them:
   them (an alias, which a rename would want), bind to the marker, or be
   refused is a design choice.
 - **An empty region**, a `:begin` directly followed by its `:end`.
-- **Frontmatter.** 0002 counts lines "after frontmatter", but neither
-  adjudication admits it. Read literally, a YAML block's closing `---` is a
-  setext underline and is refused.
 - **The marker name grammar.** This tree only uses names matching D8's
   pattern, `[a-z0-9][a-z0-9-]*`, and never tests a name outside it.
 - **CRLF line endings**, and which line ending a code block's content uses.

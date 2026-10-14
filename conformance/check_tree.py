@@ -22,7 +22,8 @@ checks the tree, not a format reader:
      refusal case.
   6. Each accepting case's blocks partition its input (0002): line ranges in
      order, inside the file, not overlapping, starting and ending on a
-     non-blank line, and covering every non-blank line.
+     non-blank line, and covering every non-blank line outside the
+     frontmatter, which opens on line 1 and is delimited by `---` lines.
 
 Exit codes follow kindkit's: 0 every check passed, 1 at least one failed, 2 no
 verdict (the tree is missing or empty).
@@ -71,6 +72,7 @@ def answer(expect: dict) -> dict:
         return {"accept": False, "refusal": expect["refusal"]}
     return {
         "accept": True,
+        "frontmatter": copy.deepcopy(expect.get("frontmatter")),
         "blocks": copy.deepcopy(expect["blocks"]),
         "leaves": copy.deepcopy(expect["leaves"]),
         "names": copy.deepcopy(expect["names"]),
@@ -83,6 +85,16 @@ def alterations(expect: dict):
     right = answer(expect)
     if not expect["accept"]:
         return
+    span = right["frontmatter"]
+    for label, change in (
+        ("frontmatter dropped" if span else "frontmatter added", None if span else [1, 1]),
+        ("frontmatter end", [span[0], span[1] + 1] if span else None),
+    ):
+        if label == "frontmatter end" and not span:
+            continue
+        alt = copy.deepcopy(right)
+        alt["frontmatter"] = change
+        yield label, alt
     for i, block in enumerate(right["blocks"]):
         for label, change in (
             ("dropped", None),
@@ -112,7 +124,7 @@ def alterations(expect: dict):
                 alt["leaves"][i] = change
             yield f"leaf {i} {label}", alt
     alt = copy.deepcopy(right)
-    alt["names"]["zz-not-declared"] = {"node": [0], "type": right["blocks"][0]["type"]}
+    alt["names"]["zz-not-declared"] = {"node": [0], "type": "paragraph"}
     yield "names: one extra", alt
     for field in ("names", "resolve"):
         for name in right[field]:
@@ -123,7 +135,7 @@ def alterations(expect: dict):
             alt[field][name] = (
                 "#REF!(" + name + ")"
                 if not isinstance(right[field][name], str)
-                else {"node": [0], "type": right["blocks"][0]["type"]}
+                else {"node": [0], "type": "paragraph"}
             )
             yield f"{field} {name!r} retargeted", alt
 
@@ -134,6 +146,14 @@ def partition_problems(expect: dict, text: str):
         lines.pop()
     covered = set()
     previous_end = 0
+    span = expect.get("frontmatter")
+    if span:
+        if span[0] != 1 or not span[0] < span[1] <= len(lines):
+            yield f"frontmatter {span} does not open on line 1 inside the file"
+        elif lines[0] != "---" or lines[span[1] - 1] != "---":
+            yield f"frontmatter {span} is not delimited by `---` lines"
+        covered.update(range(span[0], span[1] + 1))
+        previous_end = span[1]
     for i, block in enumerate(expect["blocks"]):
         start, end = block["lines"]
         if not (previous_end < start <= end <= len(lines)):

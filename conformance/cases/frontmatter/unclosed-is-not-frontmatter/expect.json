@@ -1,0 +1,15 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "thematic_break", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [2, 2]},
+    {"type": "paragraph", "lines": [4, 4]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "thematic_break", "content": ""},
+    {"node": [1], "type": "paragraph", "content": "title: Guide"},
+    {"node": [2], "type": "paragraph", "content": "Text."}
+  ],
+  "names": {}
+}

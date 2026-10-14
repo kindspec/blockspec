@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "conflict-marker",
+  "controls": ["refusal/conflict-marker/accepts-frontmatter-without-a-marker-line"]
+}

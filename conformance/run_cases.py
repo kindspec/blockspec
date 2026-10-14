@@ -10,7 +10,8 @@ FILE is a Python file that defines
 `text` is a case's `input.md`, exactly as its bytes decode. `queries` is the
 case's `resolve` names, in order. The returned object has the shape of the
 case's `expect.json` body (see cases/README.md): `accept`, and then either
-`refusal`, or `blocks`, `leaves`, `names` and `resolve`. An implementation in
+`refusal`, or `frontmatter` (absent or null when there is none), `blocks`,
+`leaves`, `names` and `resolve`. An implementation in
 another language needs a FILE that calls out to it.
 
 Nothing is checked without an implementation, so there is no pass to report:
@@ -44,7 +45,7 @@ CASES = os.path.join(HERE, "cases")
 #: The floor. A run that finds fewer cases than this is a tree that shrank, and
 #: is no verdict rather than a pass. Raise it when cases are added; never lower
 #: it to make a run go green.
-MIN_CASES = 115
+MIN_CASES = 127
 
 EXIT_NO_VERDICT = 2
 
@@ -65,6 +66,8 @@ def compare(expect: Mapping[str, object], got: object) -> Iterator[str]:
         if got.get("refusal") != expect["refusal"]:
             yield f"expected refusal {expect['refusal']!r}, got {got.get('refusal')!r}"
         return
+    if got.get("frontmatter") != expect.get("frontmatter"):
+        yield f"frontmatter: expected {expect.get('frontmatter')!r}, got {got.get('frontmatter')!r}"
     for field in ACCEPT_FIELDS:
         if got.get(field) != expect[field]:
             yield f"{field}: expected {expect[field]!r}, got {got.get(field)!r}"

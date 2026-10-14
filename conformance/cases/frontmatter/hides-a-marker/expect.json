@@ -1,0 +1,12 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "frontmatter": [1, 4],
+  "blocks": [
+    {"type": "paragraph", "lines": [5, 5]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "paragraph", "content": "Text."}
+  ],
+  "names": {}
+}
