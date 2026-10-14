@@ -82,15 +82,20 @@ document states: it reverses if #4 needs typed attributes in the file, or a
 block boundary that needs new syntax. That document also records the reversal
 cost.
 
+**A block is a top-level node; an anchor resolves a leaf.** A list, a block
+quote and a table are each one block, and the blocks partition the document.
+Stage 1 of a quote anchor resolves the leaf (paragraph, heading, code block,
+HTML block or table, at any depth) that holds the anchored text. A region
+marker names the next sibling node in its container. GFM pipe tables are in
+the profile. Decided by `docs/adjudications/0002-block.md` (blockspec#4), which
+measured anchoring under real edits for each choice and records the reversal
+cost of each.
+
 **Do not reuse rowspec's syntax.** *"One syntax is a trap; one MODEL, several
 grammars is the sound version."* JATS learned this in 2003 and encoded the
 lesson architecturally.
 
 ## 2. Open, and genuinely undecided
-
-**What is a block, exactly?** The unit of identity has to be defined before
-anything else can be. Paragraph? Any top-level node? Does a list count as one
-block or many?
 
 **Quote-anchoring's failure modes.** Anchoring to content means an edit to the
 content moves the anchor. The 40-character measurement says collisions are rare
