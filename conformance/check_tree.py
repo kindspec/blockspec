@@ -15,8 +15,10 @@ checks the tree, not a format reader:
      not X. So every accepting case asserts some structure, and every refusal
      case asserts one refusal, not merely "refused".
   4. Each element a case asserts is compared. One element at a time is
-     dropped or altered in the expected answer, and the altered answer must
-     fail. A field the runner stopped comparing shows up here.
+     dropped, altered, or added in the expected answer, and a line number or
+     path index is given as a float or a bool; each altered answer must fail.
+     A field the runner stopped comparing, or compared as a subset, shows up
+     here.
   5. Every refusal names at least one control, each control is an accepting
      case in this tree, and every refusal code in case-body.schema.json has a
      refusal case.
@@ -124,6 +126,24 @@ def alterations(expect: dict):
             else:
                 alt["leaves"][i] = change
             yield f"leaf {i} {label}", alt
+    alt = copy.deepcopy(right)
+    alt["blocks"].append({"type": "paragraph", "lines": [9999, 9999]})
+    yield "blocks: one extra", alt
+    alt = copy.deepcopy(right)
+    alt["leaves"].append({"node": [9999], "type": "paragraph", "content": "extra"})
+    yield "leaves: one extra", alt
+    if right["blocks"]:
+        alt = copy.deepcopy(right)
+        alt["blocks"][0]["lines"] = [float(n) for n in alt["blocks"][0]["lines"]]
+        yield "block 0 lines as floats", alt
+    if right["leaves"]:
+        alt = copy.deepcopy(right)
+        alt["leaves"][0]["node"] = [float(n) for n in alt["leaves"][0]["node"]]
+        yield "leaf 0 node as floats", alt
+    if right["blocks"] and right["blocks"][0]["lines"][0] == 1:
+        alt = copy.deepcopy(right)
+        alt["blocks"][0]["lines"][0] = True
+        yield "block 0 first line as a bool", alt
     alt = copy.deepcopy(right)
     alt["names"]["zz-not-declared"] = {"node": [0], "type": "paragraph"}
     yield "names: one extra", alt

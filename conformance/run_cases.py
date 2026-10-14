@@ -45,11 +45,24 @@ CASES = os.path.join(HERE, "cases")
 #: The floor. A run that finds fewer cases than this is a tree that shrank, and
 #: is no verdict rather than a pass. Raise it when cases are added; never lower
 #: it to make a run go green.
-MIN_CASES = 128
+MIN_CASES = 151
 
 EXIT_NO_VERDICT = 2
 
 ACCEPT_FIELDS = ("blocks", "leaves", "names")
+
+
+def _not_integers(value: object) -> Iterator[object]:
+    """Every bool or float in `value`. Python's == treats True as 1 and 1.0 as
+    1, so a line number or a path index has to be checked for its type."""
+    if isinstance(value, bool | float):
+        yield value
+    elif isinstance(value, Mapping):
+        for item in value.values():
+            yield from _not_integers(item)
+    elif isinstance(value, list | tuple):
+        for item in value:
+            yield from _not_integers(item)
 
 
 def compare(expect: Mapping[str, object], got: object) -> Iterator[str]:
@@ -71,6 +84,9 @@ def compare(expect: Mapping[str, object], got: object) -> Iterator[str]:
     for field in ACCEPT_FIELDS:
         if got.get(field) != expect[field]:
             yield f"{field}: expected {expect[field]!r}, got {got.get(field)!r}"
+    for field in ("frontmatter", *ACCEPT_FIELDS):
+        for value in _not_integers(got.get(field)):
+            yield f"{field}: {value!r} where a line number or path index must be an integer"
     wanted = expect.get("resolve", {})
     resolved = got.get("resolve")
     if not isinstance(resolved, Mapping):
@@ -78,6 +94,8 @@ def compare(expect: Mapping[str, object], got: object) -> Iterator[str]:
     for name, target in wanted.items():
         if resolved.get(name) != target:
             yield f"resolve {name!r}: expected {target!r}, got {resolved.get(name)!r}"
+        for value in _not_integers(resolved.get(name)):
+            yield f"resolve {name!r}: {value!r} where a path index must be an integer"
 
 
 def handler(conform: Callable[[str, list[str]], object]):
@@ -103,6 +121,10 @@ def load(path: str) -> Callable[[str, list[str]], object]:
 def main(argv: list[str]) -> int:
     impl = None
     rest = list(argv)
+    for at, arg in enumerate(rest):
+        if arg.startswith("--impl="):
+            rest[at : at + 1] = ["--impl", arg[len("--impl=") :]]
+            break
     if "--impl" in rest:
         at = rest.index("--impl")
         if at + 1 >= len(rest):
