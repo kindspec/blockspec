@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "7e053496d7d613df9abdcb955910c47967f46f37",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "2799d00f5a72625f971c0e045d6d097eb2d234d455dcf12396dfc25db857613b",
+ "id": "M:c9debdcacb03d84ce303db7c27e01a95b1e19d1d:content/en/docs/tasks/manage-kubernetes-objects/kustomization.md|Q|27",
+ "ok": true,
+ "regenerated_sha256": "2799d00f5a72625f971c0e045d6d097eb2d234d455dcf12396dfc25db857613b"
+}
