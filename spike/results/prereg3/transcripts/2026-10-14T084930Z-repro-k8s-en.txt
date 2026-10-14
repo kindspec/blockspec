@@ -1,0 +1,15 @@
+# prereg3 repro k8s-en
+# argv: prereg3.py repro --d8-dir d8 --arm k8s-en --id M:c996cd07102c51a4094c56c0d0124c90a07c5617:content/en/docs/tasks/tools/install-kubectl-windows.md|Q|17 --work-dir work/r-kKZqhJ
+# start: 2026-10-14T08:49:30Z
+# blockspec HEAD: 08605bf1a57d178da1d47f693b50a9fa611f5b29
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T08:49:39Z
+committed   6e3636e971f02cfbfd4719c54fb01fc5073b96fd48fc5f3adbb3295237aa0ded
+regenerated 6e3636e971f02cfbfd4719c54fb01fc5073b96fd48fc5f3adbb3295237aa0ded
+F9 REPRODUCTION: BYTE-IDENTICAL  M:c996cd07102c51a4094c56c0d0124c90a07c5617:content/en/docs/tasks/tools/install-kubectl-windows.md|Q|17
+
+# end: 2026-10-14T08:49:40Z
+# exited: exit status 0

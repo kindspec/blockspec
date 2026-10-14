@@ -1,0 +1,15 @@
+# prereg3 repro k8s-l10n
+# argv: prereg3.py repro --d8-dir d8 --arm k8s-l10n --id S5:1:content/ko/docs/reference/labels-annotations-taints/_index.md|Q|198 --work-dir work/r-ZVZFTq
+# start: 2026-10-14T09:01:35Z
+# blockspec HEAD: ae1fe4ec8f8af764dc8166c86055f55124c7b593
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T09:01:44Z
+committed   0fd5f3d7e01ed9c43379e09fb295c22e8ec872850e98ead724a786d102551f28
+regenerated 0fd5f3d7e01ed9c43379e09fb295c22e8ec872850e98ead724a786d102551f28
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:1:content/ko/docs/reference/labels-annotations-taints/_index.md|Q|198
+
+# end: 2026-10-14T09:01:55Z
+# exited: exit status 0

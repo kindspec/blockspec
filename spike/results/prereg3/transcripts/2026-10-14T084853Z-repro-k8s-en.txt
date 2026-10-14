@@ -1,0 +1,15 @@
+# prereg3 repro k8s-en
+# argv: prereg3.py repro --d8-dir d8 --arm k8s-en --id M:0e2587f7012048a66c6ce9088e1249464cb3bf3b:content/en/docs/reference/networking/virtual-ips.md|Q|41 --work-dir work/r-R79JYJ
+# start: 2026-10-14T08:48:53Z
+# blockspec HEAD: 049d7e7339042599eb2d94d1a232e9f8a3502b8a
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T08:49:03Z
+committed   5b7b03eacec3b60ad4e55765b06c8b3b6a42b3fe9c41e33e2a4aaf83a2574228
+regenerated 5b7b03eacec3b60ad4e55765b06c8b3b6a42b3fe9c41e33e2a4aaf83a2574228
+F9 REPRODUCTION: BYTE-IDENTICAL  M:0e2587f7012048a66c6ce9088e1249464cb3bf3b:content/en/docs/reference/networking/virtual-ips.md|Q|41
+
+# end: 2026-10-14T08:49:06Z
+# exited: exit status 0

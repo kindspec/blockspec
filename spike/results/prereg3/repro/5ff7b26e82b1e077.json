@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "1457638506f811a4791800a5bca2b96692e1eada",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "073e66cc11d6462fcf03ff36a52e3f45d02e8a7376b896eaf50d8fb4da038f98",
+ "id": "M:2e4c7ca994cc7fa9cca8a02c7ea2bae0c2d9f57c:content/en/docs/tasks/configure-pod-container/assign-pod-level-resources.md|Q|59",
+ "ok": true,
+ "regenerated_sha256": "073e66cc11d6462fcf03ff36a52e3f45d02e8a7376b896eaf50d8fb4da038f98"
+}

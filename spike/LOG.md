@@ -2360,3 +2360,113 @@ run 1's `tiers.jsonl` as binding and refuses a second run.
 This entry does not say which packets were tiered, or what that does to any
 cell. Steps 7 to 9 (reproductions, the sealed manifest, and the join and
 verdict) apply the frozen rules to it.
+
+## 2026-10-14 — §33. Prereg 3's verdict: INCONCLUSIVE
+
+This is PRE-REGISTRATION-3.md §7 steps 7 to 9. This entry belongs to the
+verdict pull request and sits beside prereg 2's verdict in §31.
+
+### Reproductions (§9 H7)
+
+- **Which records.** These are the records that meet F1–F6 under this
+  document's `tiers.jsonl` (run 1, §32) and have no accepted result. They were
+  listed by running `p3.aggregate3.aggregate3` itself, which calls
+  `p2.aggregate.cell()` unchanged. Every record that `cell()` asks a
+  reproduction for was recorded. Accepted results were then removed, using H7's
+  rule through `aggregate3.accept_repros`.
+  - Records meeting F1–F6 under these answers: 188.
+  - Already reproduced in `results/prereg2/repro/`, bound to `d79bf2e`: 176.
+  - Needing a reproduction here: 12 (k8s-en 5, k8s-l10n 7).
+
+  A direct count over the exported representatives also gives 188: tiered,
+  not unplaceable, and q4 "no".
+- **How.** There was one bound `prereg3.py repro` per record, in sequence,
+  each with a fresh work directory. Each result and its transcript were
+  committed before the next run. The argv uses relative paths only:
+  `--d8-dir d8`, `--work-dir work/…`.
+- **Times.** The runs went from 08:48:53Z to 09:01:55Z. Half took 14 s or
+  less, and the longest took 558 s.
+- **Result.** All 12 are **BYTE-IDENTICAL**, every one exiting 0. Afterwards
+  the listing finds 188 of 188 records with an accepted result and 0 needing
+  one.
+
+### The sealed manifest
+
+`results/prereg3/sealed-manifest.json` is committed unchanged from custody.
+Its sha256,
+`19aa710cd9962a6788369ff378cf9620815cc53d66c2c3c54a826c7857fbea50`, is the
+one `results/prereg3/VALIDATION` holds.
+
+### The join
+
+`prereg3.py aggregate`, bound by `a518e08`, ran once, from 09:02:42Z to
+09:03:02Z, and exited 0. Its argv is `prereg3.py aggregate --d8-dir d8
+--manifest sealed-manifest-3.json --manifest2 sealed-manifest-2.json`, with
+the two names linked to the committed manifests. It wrote
+`results/prereg3/verdict.json` (sha256
+`7e9a9e762b3378e21e2b84456e46714b603f34806fde1d14253c1ab93d05eea2`), with
+`"bound": true`. Its transcript is committed.
+
+- **The order check (H5)** passed:
+  - export 3 (`ee697d0`) is an ancestor of the commit that adds prereg 2's
+    `tiers.jsonl` (`a12126b`);
+  - prereg 2's tier-run started at 13:57:09Z on 2026-10-12, after export 3
+    executed at 06:28:20Z.
+- **The per-name check (§5)** passed: 483 keys were checked and 0 differ.
+- **Tiering void.** The void rule over the five plants gives:
+  - P-A: untiered;
+  - P-B: untiered;
+  - P-E: untiered.
+
+  Run 1 wrote 193 lines before the host lost its network (§32), and none of
+  them is for these three plants. Every cell that exported a packet is NO
+  VERDICT.
+- **Cells.** There are 56: 4 NOT FOUND and 52 NO VERDICT. No cell is FOUND.
+  Every cell's verdict is the same as in prereg 2's §31.
+- **NOT FOUND**, with *n* and the bound 3/*n* at 95%:
+  - cncf-toc M Q: *n* 482, bound 0.00622;
+  - rust-book E Q: *n* 10762, bound 0.00028;
+  - rust-book M Q: *n* 2978, bound 0.00101;
+  - site-policy E R: *n* 1383, bound 0.00217.
+- **Near misses** (distinct units): i 25, ii 99, iii 372. Near miss (i) comes
+  from the tier answers of the void tiering, so it is not to be read at face
+  value. As in §31, (ii) and (iii) are untiered.
+
+### Overall verdict
+
+**INCONCLUSIVE.** Prereg 2 §6.7's NOT FOUND needs a NOT FOUND Q cell in E,
+S5 or S25 for both k8s-en and cncf-toc. Every such cell is void.
+
+Prereg 2 §8 requires the cells that lacked coverage to be named. They are
+the same as in §31:
+
+- **Tiering void (36 cells):**
+  - cncf-toc E, S5 and S25, Q and R;
+  - k8s-en, every mode, Q and R;
+  - k8s-l10n, every mode, Q and R;
+  - obsidian-help E Q, E R, S5 Q, S5 R and S25 R;
+  - rust-book E R, S5 Q, S5 R, S25 Q and S25 R;
+  - site-policy E Q, S5 Q, S5 R and S25 Q.
+- **Fewer than 300 distinct decided natural-language units (15 cells),**
+  with the count:
+  - cmspec E Q 218, E R 0, S5 Q 186, S5 R 0, S25 Q 97, S25 R 0, M Q 57,
+    M R 0;
+  - cncf-toc M R 165;
+  - obsidian-help M Q 6, M R 2, S25 Q 214;
+  - site-policy M Q 0, M R 0, S25 R 9.
+- **Undecidable over 10% (1 cell):** rust-book M R, 110 of 712.
+
+### What it means for blockspec#2
+
+PRE-REGISTRATION-3.md §8 fixed the rule in advance. Prereg 2's tiering is
+void (§31), so "This document's overall verdict decides blockspec#2's next
+step, by prereg 2 §8's table." That table says: "**INCONCLUSIVE.** The
+write-up names the cells that lacked coverage. blockspec#2 stays open and
+nothing is built (`DESIGN-BRIEF.md` §2)."
+
+So blockspec#2 stays open and nothing is built.
+
+§8's final-tiering rule also applies: "This document is the final tiering of
+the records exported at `e46e320` … no later pre-registration may tier those
+records again, or re-tier them by another route. A later pre-registration may
+address blockspec#2 only with new records."

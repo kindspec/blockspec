@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "049d7e7339042599eb2d94d1a232e9f8a3502b8a",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "5b7b03eacec3b60ad4e55765b06c8b3b6a42b3fe9c41e33e2a4aaf83a2574228",
+ "id": "M:0e2587f7012048a66c6ce9088e1249464cb3bf3b:content/en/docs/reference/networking/virtual-ips.md|Q|41",
+ "ok": true,
+ "regenerated_sha256": "5b7b03eacec3b60ad4e55765b06c8b3b6a42b3fe9c41e33e2a4aaf83a2574228"
+}

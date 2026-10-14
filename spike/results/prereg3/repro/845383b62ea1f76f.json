@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "9b39f032e2a7a586ddec973e5fe45e7a99f63f43",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "a34ba93bf348c5dd1da93c7b9158a93a881d1b01d832cfc25ebc292f27090b6f",
+ "id": "M:af76e77672a36d617bfba2c9372d1a5fc3375600:content/en/docs/tutorials/stateless-application/guestbook.md|Q|79",
+ "ok": true,
+ "regenerated_sha256": "a34ba93bf348c5dd1da93c7b9158a93a881d1b01d832cfc25ebc292f27090b6f"
+}

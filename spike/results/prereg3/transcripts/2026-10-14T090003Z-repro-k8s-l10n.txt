@@ -1,0 +1,15 @@
+# prereg3 repro k8s-l10n
+# argv: prereg3.py repro --d8-dir d8 --arm k8s-l10n --id S25:1:content/zh-cn/docs/concepts/configuration/manage-resources-containers.md|Q|134 --work-dir work/r-eBYesc
+# start: 2026-10-14T09:00:03Z
+# blockspec HEAD: 40ad7851296bd68eff04bb02cb585ac5ec1bec0c
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T09:00:12Z
+committed   c3b64bceaef492124ac3fad59b1294943121500b80ede19eacd44259d34b29a9
+regenerated c3b64bceaef492124ac3fad59b1294943121500b80ede19eacd44259d34b29a9
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:1:content/zh-cn/docs/concepts/configuration/manage-resources-containers.md|Q|134
+
+# end: 2026-10-14T09:00:42Z
+# exited: exit status 0

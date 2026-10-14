@@ -1,0 +1,15 @@
+# prereg3 repro k8s-en
+# argv: prereg3.py repro --d8-dir d8 --arm k8s-en --id M:fc04dbea45c478fde7f8761b97c671667e34a60d:content/en/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade.md|Q|27 --work-dir work/r-KP0x7P
+# start: 2026-10-14T08:49:41Z
+# blockspec HEAD: ae0b7159d1e6b5e81ab6e6b6880e13d97a08ab5b
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T08:49:50Z
+committed   dcb704abfd76af2f58dfdb37be4f8e5e78910cb7535cb83b21b646369a1c359d
+regenerated dcb704abfd76af2f58dfdb37be4f8e5e78910cb7535cb83b21b646369a1c359d
+F9 REPRODUCTION: BYTE-IDENTICAL  M:fc04dbea45c478fde7f8761b97c671667e34a60d:content/en/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade.md|Q|27
+
+# end: 2026-10-14T08:49:51Z
+# exited: exit status 0
