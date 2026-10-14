@@ -2470,3 +2470,58 @@ So blockspec#2 stays open and nothing is built.
 the records exported at `e46e320` … no later pre-registration may tier those
 records again, or re-tier them by another route. A later pre-registration may
 address blockspec#2 only with new records."
+
+## 2026-10-14 — §34. Owner ruling: run 2
+
+This is a disclosed departure from PRE-REGISTRATION-3.md §6, made by the
+owner on 2026-10-14. It belongs to the pull request that adds
+`spike/ruling/prereg3_run2.py`.
+
+### The ruling
+
+Prereg 3's tier-run is run once more, as run 2. Run 2 binds whatever it
+says.
+
+### Why
+
+Run 1 did not end on anything the tierer did. It ended when the host lost its
+network (§32):
+
+- the agent's last events are 10 `api_retry` events, and then "API Error:
+  Can't reach the API server — check your internet or DNS (EAI_AGAIN)";
+- the system journal shows wlan0 losing carrier and its DHCP lease at
+  08:31:39Z, and `CTRL-EVENT-DISCONNECTED` at 08:31:40Z;
+- the host reconnected only at 08:37:00Z, after the agent had exited;
+- the credential file was unchanged across the run, and the error is not an
+  authentication error.
+
+Run 1 wrote 193 lines, so under §6 it binds, and no rerun is allowed. Its
+tiering is void because three plants are untiered, and its verdict is
+INCONCLUSIVE (§33). The owner ruled that, because run 1 was ended by a
+network failure on the host, the tier-run is run once more.
+
+### What changes, and what does not
+
+- **Kept as they are.** Run 1, its ledger entries, `tier-work-1/`, its
+  transcript, the reproductions, the sealed manifest,
+  `results/prereg3/verdict.json` and §32 to §33 (#29, #30). Nothing committed
+  is edited. Run 2 appends its own entries to `results/prereg3/tier-runs.txt`,
+  as the frozen harness does for any run. No existing line changes.
+- **Unchanged files.** `spike/harness3/`, `spike/harness/` and
+  PRE-REGISTRATION-3.md stay byte-identical, so the binding to `a518e08`
+  holds.
+- **How run 2 is run.** `spike/ruling/prereg3_run2.py` imports
+  `harness3/prereg3.py` in the same process and replaces only these:
+  - **the run cap** (`rerun_allowed`). Run 2 is allowed only when the ledger
+    holds one started run, run 1, and no run 2. Anything else is refused, so
+    there is no run 3;
+  - **the binding run** (`binding_run`). This is run 2 once it has started,
+    and the frozen rule otherwise;
+  - **the bound output of `aggregate`.** This is now
+    `results/prereg3/run2/verdict.json`, so `results/prereg3/verdict.json` is
+    never overwritten. This aggregate refuses until run 2 has started.
+- **Checks that run as frozen.** The binding, the gate, the window (run 2 is
+  on 2026-10-14, within it), the model, the init check, the credential log,
+  the ledger, the reproduction rule (H7), and the order and per-name checks.
+- **What binds.** Run 2's `tiers.jsonl` binds, whatever it says. Its join
+  and verdict are published beside §33, which stays as it is.
