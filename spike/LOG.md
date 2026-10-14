@@ -2315,8 +2315,8 @@ This is PRE-REGISTRATION-3.md §7 step 6. This entry belongs to the
   work copy itself and keeps no second copy.
 - **The transcript** is committed verbatim. Its argv is `prereg3.py
   tier-run`, with no paths. Its harness lines still hold absolute host paths,
-  because the frozen harness logs the work directory, the agent binary and
-  the credential path. This qualifies §31's note that future bound runs use
+  because the frozen harness logs the work directory, the export paths, the
+  agent binary and the credential path. This qualifies §31's note that future bound runs use
   neutral paths: only the argv is free of them.
 
 ### Why the agent stopped: the host lost its network
