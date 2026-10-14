@@ -1,0 +1,14 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "block_quote", "lines": [1, 2]}
+  ],
+  "leaves": [
+    {"node": [0, 0], "type": "html_block", "content": "<!-- #quoted -->\n"},
+    {"node": [0, 1], "type": "paragraph", "content": "Quoted text."}
+  ],
+  "names": {
+    "quoted": {"node": [0, 1], "type": "paragraph"}
+  }
+}

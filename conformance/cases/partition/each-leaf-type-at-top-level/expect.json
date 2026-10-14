@@ -1,0 +1,17 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "heading", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [3, 4]},
+    {"type": "code_block", "lines": [6, 8]},
+    {"type": "thematic_break", "lines": [10, 10]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "heading", "content": "Title"},
+    {"node": [1], "type": "paragraph", "content": "A paragraph\nover two lines."},
+    {"node": [2], "type": "code_block", "content": "code line\n"},
+    {"node": [3], "type": "thematic_break", "content": ""}
+  ],
+  "names": {}
+}

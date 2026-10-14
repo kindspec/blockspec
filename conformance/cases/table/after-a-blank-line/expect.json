@@ -1,0 +1,13 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "paragraph", "lines": [1, 1]},
+    {"type": "table", "lines": [3, 5]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "paragraph", "content": "Intro."},
+    {"node": [1], "type": "table", "content": [["a", "b"], ["1", "2"]]}
+  ],
+  "names": {}
+}

@@ -1,0 +1,16 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "block_quote", "lines": [1, 5]}
+  ],
+  "leaves": [
+    {"node": [0, 0], "type": "html_block", "content": "<!-- #q:begin -->\n"},
+    {"node": [0, 1], "type": "paragraph", "content": "One."},
+    {"node": [0, 2], "type": "paragraph", "content": "Two."},
+    {"node": [0, 3], "type": "html_block", "content": "<!-- #q:end -->\n"}
+  ],
+  "names": {
+    "q": {"region": [{"node": [0, 1], "type": "paragraph"}, {"node": [0, 2], "type": "paragraph"}]}
+  }
+}

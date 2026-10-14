@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "conflict-marker",
+  "controls": ["refusal/conflict-marker/accepts-an-indented-shape-inside-a-fence"]
+}

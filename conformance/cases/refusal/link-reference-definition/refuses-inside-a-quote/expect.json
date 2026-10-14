@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "link-reference-definition",
+  "controls": ["refusal/link-reference-definition/accepts-a-definition-shape-inside-a-paragraph"]
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "heading", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [3, 3]},
+    {"type": "heading", "lines": [5, 5]},
+    {"type": "html_block", "lines": [7, 7]},
+    {"type": "paragraph", "lines": [8, 8]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "heading", "content": "notes"},
+    {"node": [1], "type": "paragraph", "content": "One."},
+    {"node": [2], "type": "heading", "content": "notes"},
+    {"node": [3], "type": "html_block", "content": "<!-- #notes -->\n"},
+    {"node": [4], "type": "paragraph", "content": "Two."}
+  ],
+  "names": {
+    "notes": {"node": [4], "type": "paragraph"}
+  },
+  "resolve": {
+    "notes": {"node": [4], "type": "paragraph"}
+  }
+}

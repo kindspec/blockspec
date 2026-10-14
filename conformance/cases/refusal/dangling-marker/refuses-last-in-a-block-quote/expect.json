@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "dangling-marker",
+  "controls": ["refusal/dangling-marker/accepts-a-marker-with-a-next-node-in-a-quote"]
+}

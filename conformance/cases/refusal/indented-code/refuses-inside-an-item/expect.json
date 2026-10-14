@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "indented-code",
+  "controls": ["refusal/indented-code/accepts-a-second-paragraph-in-an-item"]
+}

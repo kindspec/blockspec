@@ -13,8 +13,9 @@ specific to blockspec, and wins where the two conflict.
 **Nothing is specified yet.** blockspec is the **blocks kind** — identity is
 deliberately no minted ids — alongside [rowspec](https://github.com/kindspec/rowspec) and [nodespec](https://github.com/kindspec/nodespec).
 
-There is no `SPEC.md`, no conformance suite and no implementation, and saying so
-is cheaper than being asked.
+There is no `SPEC.md` and no implementation. `conformance/cases/` holds draft
+0's conformance cases, written before any implementation existed; nothing runs
+them yet. Saying so is cheaper than being asked.
 
 ## Before writing anything
 

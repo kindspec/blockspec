@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "indented-code",
+  "controls": ["refusal/indented-code/accepts-a-lazy-indented-line", "refusal/indented-code/accepts-four-spaces-in-a-fence"]
+}

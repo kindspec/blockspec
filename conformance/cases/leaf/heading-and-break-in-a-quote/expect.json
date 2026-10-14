@@ -1,0 +1,12 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "block_quote", "lines": [1, 3]}
+  ],
+  "leaves": [
+    {"node": [0, 0], "type": "heading", "content": "Quoted heading"},
+    {"node": [0, 1], "type": "thematic_break", "content": ""}
+  ],
+  "names": {}
+}

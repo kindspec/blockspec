@@ -1,0 +1,16 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "list", "lines": [1, 4]}
+  ],
+  "leaves": [
+    {"node": [0, 0, 0], "type": "paragraph", "content": "Item text."},
+    {"node": [0, 0, 1], "type": "html_block", "content": "<!-- #named -->\n"},
+    {"node": [0, 0, 2], "type": "paragraph", "content": "Named."},
+    {"node": [0, 1, 0], "type": "paragraph", "content": "Next."}
+  ],
+  "names": {
+    "named": {"node": [0, 0, 2], "type": "paragraph"}
+  }
+}
