@@ -2738,9 +2738,12 @@ tiering run. As §2.6 states them, from the rehearsals:
 the tierer, per run, on five known shapes. They do not measure its accuracy
 on real packets."
 
-In run 2, 413 of 483 real packets would qualify. Run 1 (§32) tiered 191 real
-packets before it stopped. Its void verdict (§33) published none of their
-answers, and this entry does not compare them.
+In run 2, 413 of 483 real packets would qualify (415 of all 488, plants
+included). That is far above every rehearsal figure: 22 of 116, 0 of 117 and
+23 of 117 on the synthetic packets, and 139 of 486 for this document's
+prompt. Run 1 (§32) tiered 191 real packets before it stopped. Its void
+verdict (§33) published none of their answers, and this entry does not
+compare them.
 
 ### What it means for blockspec#2
 
@@ -2762,8 +2765,32 @@ verdict, the packet answers, and per-cell distinct qualifying and decided
 counts with the undecidable counts. blockspec then proceeds to blockspec#3,
 #4 and #5."
 
-This entry gives the packet answers and the per-cell counts. The
-reproduction part of the write-up is not written yet: the commits, `git
-show` commands, before- and after-files and oracle verdicts for the
-qualifying units. Until it is, the FOUND is published, but its write-up is
-incomplete.
+Here, "the write-up is the reproduction" means
+`results/prereg3/run2/reproduction.md`. `ruling/reproduction_run2.py`
+generates it from committed records only. For each of the 413 qualifying
+packets it gives:
+
+- the record and its cells;
+- the corpus source and pin;
+- the commits and path;
+- the exact commands for each file: `git show <commit>:<path>` for E and S,
+  and for M the base and both legs and the stock-git merge, as
+  `prose_merge.stock_merge` runs it;
+- the oracle's decided class and target block;
+- the hardened resolver's class, status and hit.
+
+It holds no file content. The before- and after-files are what the commands
+print, and the packet answers and per-cell counts are above and in
+`qualifying.md`.
+
+Three packets were checked by running the file's own commands against a
+fresh clone of each bundle at its pin. Every file the commands wrote matched
+the export's packet file by sha256 (first 16 hex digits shown):
+
+- `0f604b7e6344801e` (cncf-toc E): before `0be41cc9509bbf0a`, after
+  `31f8cb6442f6e7e7`;
+- `002f8f3a0228d8cb` (k8s-en S25): before `cb07213ae8477c83`, after
+  `095bd05029c0ac1b`;
+- `1f79a24559942008` (k8s-en M): base `05ecf4ca747e0063`, leg A
+  `406a1980fa24a5a1`, leg C `28c51e3a8c1d2eec`, merged after
+  `a4dd1f5240d90433`.
