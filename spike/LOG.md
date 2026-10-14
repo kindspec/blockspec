@@ -2473,9 +2473,14 @@ address blockspec#2 only with new records."
 
 ## 2026-10-14 — §34. Owner ruling: run 2
 
-This is a disclosed departure from PRE-REGISTRATION-3.md §6, made by the
-owner on 2026-10-14. It belongs to the pull request that adds
+This is an owner ruling of 2026-10-14 that overrides frozen rules of
+PRE-REGISTRATION-3.md, listed below. It belongs to the pull request that adds
 `spike/ruling/prereg3_run2.py`.
+
+The ruling was made after run 1's `tiers.jsonl` was committed (#29, §32),
+and after run 1's INCONCLUSIVE verdict was published (#30, §33). Run 1's
+answers have been public since #29. Run 2 changes the overall verdict from
+INCONCLUSIVE (§33) to FOUND (§35).
 
 ### The ruling
 
@@ -2501,6 +2506,22 @@ Run 1 wrote 193 lines, so under §6 it binds, and no rerun is allowed. Its
 tiering is void because three plants are untiered, and its verdict is
 INCONCLUSIVE (§33). The owner ruled that, because run 1 was ended by a
 network failure on the host, the tier-run is run once more.
+
+### What the ruling overrides
+
+It does not just depart from §6. It overrides each of these frozen rules:
+
+- **§0 item 10:** "There is no exception for it." Item 10 also rejected an
+  alternative, a rerun after a 401/403 death, because it "would be a reroll
+  the operator can trigger, which is exactly the forking path the
+  final-tiering rule (item 2) closes."
+- **§6's run cap:** "There is one rerun in total, ever", and only after a
+  first run that wrote zero lines or was `init_failed`. Run 1 wrote 193 lines
+  and passed the init check.
+- **§8's final-tiering rule:** no later pre-registration may tier the
+  records exported at `e46e320` again, "or re-tier them by another route".
+- **§11:** "After step 5, nothing in this document changes, no cell or
+  verdict computed under it changes".
 
 ### What changes, and what does not
 
@@ -2608,8 +2629,8 @@ owner's ruling of §34. It belongs to the run-2 pull request. It stands beside
   under `results/prereg3/`. Each result and transcript was committed before
   the next run, as a new file in `results/prereg3/repro/`. The argv uses
   relative paths only.
-- **Times.** The runs went from 17:08:13Z to 17:21:38Z. The longest took
-  339 s.
+- **Times.** The runs went from 17:08:14Z to 17:21:38Z. The longest took
+  338 s, from 17:15:19Z to 17:20:57Z.
 - **Result.** All 13 are **BYTE-IDENTICAL**, every one exiting 0.
   Afterwards the listing finds 474 of 474 records with an accepted result.
 
@@ -2725,7 +2746,9 @@ The answers fall into three patterns:
 ### The noise of §2.6, beside this FOUND
 
 §8 requires these figures beside a FOUND, because a FOUND rests on one
-tiering run. As §2.6 states them, from the rehearsals:
+tiering run. As §2.6 states them, from the rehearsals: every figure below
+comes from synthetic packets (§10), and "These figures compare runs. They are
+not accuracy: the synthetic packets have no answer key."
 
 - On the synthetic packets of the 120-packet export, "would qualify" came
   out 22 of 116 in `run-120`, 0 of 117 in `run-486`, and 23 of 117 in
@@ -2738,23 +2761,24 @@ tiering run. As §2.6 states them, from the rehearsals:
   - "would qualify": 1 vs 139;
   - agreement on q3 for 339 packets, and on q4 for 338.
 
-§2.6 also says: "So one tiering run is a noisy instrument. The plants check
+§2 closes: "So one tiering run is a noisy instrument. The plants check
 the tierer, per run, on five known shapes. They do not measure its accuracy
 on real packets."
 
 In run 2, 413 of 483 real packets would qualify (415 of all 488, plants
 included). That is far above every rehearsal figure: 22 of 116, 0 of 117 and
-23 of 117 on the synthetic packets, and 139 of 486 for this document's
-prompt. Run 1 (§32) tiered 191 real packets before it stopped. Its void
-verdict (§33) published none of their answers, and this entry does not
-compare them.
+23 of 117, and 139 of 486 for this document's prompt, all on synthetic
+packets. Run 1 (§32) tiered 191 real packets before it stopped. Its
+`tiers.jsonl` has been committed since #29. This entry does not compare its
+answers with run 2's.
 
 ### What it means for blockspec#2
 
 PRE-REGISTRATION-3.md §8: prereg 2's tiering is void (§31), so "This
 document's overall verdict decides blockspec#2's next step, by prereg 2 §8's
 table, whatever form it takes." Under the ruling of §34, that verdict is
-run 2's.
+run 2's. So §33's conclusion for blockspec#2, that it "stays open and
+nothing is built", is replaced by the conclusion below.
 
 Prereg 2 §8's table, for FOUND: "The write-up is the reproduction." It goes
 on:
