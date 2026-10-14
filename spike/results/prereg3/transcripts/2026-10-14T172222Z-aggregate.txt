@@ -1,0 +1,73 @@
+# prereg3 aggregate
+# argv: prereg3_run2.py aggregate --d8-dir d8 --manifest sealed-manifest-3.json --manifest2 sealed-manifest-2.json
+# start: 2026-10-14T17:22:22Z
+# blockspec HEAD: 685e02197bc42ab8eaebcc617df86e7ac5436bf4
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+order: export 3 (ee697d0c4944) is an ancestor of prereg 2's tiers.jsonl (a12126b98eda)
+order: prereg 2's first tier-run started 2026-10-12T13:57:09.948214+00:00, after export 3 executed 2026-10-12T06:28:20Z
+tiers: run 2's tiers.jsonl binds
+per-name check: 483 keys checked, 0 differ
+SAME PER NAME: PASS
+  cmspec        E    Q  NO VERDICT  218 distinct decided natural-language units < 300
+  cmspec        E    R  NO VERDICT  0 distinct decided natural-language units < 300
+  cmspec        M    Q  NO VERDICT  57 distinct decided natural-language units < 300
+  cmspec        M    R  NO VERDICT  0 distinct decided natural-language units < 300
+  cmspec        S25  Q  NO VERDICT  97 distinct decided natural-language units < 300
+  cmspec        S25  R  NO VERDICT  0 distinct decided natural-language units < 300
+  cmspec        S5   Q  NO VERDICT  186 distinct decided natural-language units < 300
+  cmspec        S5   R  NO VERDICT  0 distinct decided natural-language units < 300
+  cncf-toc      E    Q  FOUND       4 qualifying distinct unit(s)
+  cncf-toc      E    R  FOUND       6 qualifying distinct unit(s), of which 5 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  cncf-toc      M    Q  NOT FOUND   n=482, bound 3/n = 0.00622 at 95%
+  cncf-toc      M    R  NO VERDICT  165 distinct decided natural-language units < 300
+  cncf-toc      S25  Q  FOUND       2 qualifying distinct unit(s)
+  cncf-toc      S25  R  FOUND       14 qualifying distinct unit(s), of which 13 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  cncf-toc      S5   Q  FOUND       3 qualifying distinct unit(s)
+  cncf-toc      S5   R  FOUND       6 qualifying distinct unit(s), of which 5 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  k8s-en        E    Q  FOUND       2 qualifying distinct unit(s)
+  k8s-en        E    R  FOUND       9 qualifying distinct unit(s), of which 1 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  k8s-en        M    Q  FOUND       23 qualifying distinct unit(s)
+  k8s-en        M    R  FOUND       13 qualifying distinct unit(s), of which 6 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  k8s-en        S25  Q  FOUND       21 qualifying distinct unit(s)
+  k8s-en        S25  R  FOUND       74 qualifying distinct unit(s), of which 48 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  k8s-en        S5   Q  FOUND       6 qualifying distinct unit(s)
+  k8s-en        S5   R  FOUND       11 qualifying distinct unit(s), of which 8 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  k8s-l10n      E    Q  FOUND       4 qualifying distinct unit(s)
+  k8s-l10n      E    R  FOUND       3 qualifying distinct unit(s), of which 1 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  k8s-l10n      M    Q  FOUND       2 qualifying distinct unit(s)
+  k8s-l10n      M    R  FOUND       2 qualifying distinct unit(s)
+  k8s-l10n      S25  Q  FOUND       29 qualifying distinct unit(s)
+  k8s-l10n      S25  R  FOUND       64 qualifying distinct unit(s), of which 42 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  k8s-l10n      S5   Q  FOUND       14 qualifying distinct unit(s)
+  k8s-l10n      S5   R  FOUND       18 qualifying distinct unit(s), of which 9 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  obsidian-help E    Q  FOUND       1 qualifying distinct unit(s)
+  obsidian-help E    R  FOUND       2 qualifying distinct unit(s), of which 1 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  obsidian-help M    Q  NO VERDICT  6 distinct decided natural-language units < 300
+  obsidian-help M    R  NO VERDICT  2 distinct decided natural-language units < 300
+  obsidian-help S25  Q  NO VERDICT  214 distinct decided natural-language units < 300
+  obsidian-help S25  R  FOUND       6 qualifying distinct unit(s), of which 6 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  obsidian-help S5   Q  NOT FOUND   n=2902, bound 3/n = 0.00103 at 95%
+  obsidian-help S5   R  FOUND       13 qualifying distinct unit(s), of which 9 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  rust-book     E    Q  NOT FOUND   n=10762, bound 3/n = 0.00028 at 95%
+  rust-book     E    R  FOUND       3 qualifying distinct unit(s), of which 2 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  rust-book     M    Q  NOT FOUND   n=2978, bound 3/n = 0.00101 at 95%
+  rust-book     M    R  NO VERDICT  undecidable 110 > 10% of 712
+  rust-book     S25  Q  FOUND       1 qualifying distinct unit(s)
+  rust-book     S25  R  FOUND       13 qualifying distinct unit(s), of which 11 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  rust-book     S5   Q  FOUND       1 qualifying distinct unit(s)
+  rust-book     S5   R  FOUND       7 qualifying distinct unit(s), of which 3 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+  site-policy   E    Q  FOUND       2 qualifying distinct unit(s)
+  site-policy   E    R  NOT FOUND   n=1383, bound 3/n = 0.00217 at 95%
+  site-policy   M    Q  NO VERDICT  0 distinct decided natural-language units < 300
+  site-policy   M    R  NO VERDICT  0 distinct decided natural-language units < 300
+  site-policy   S25  Q  FOUND       4 qualifying distinct unit(s)
+  site-policy   S25  R  NO VERDICT  9 distinct decided natural-language units < 300
+  site-policy   S5   Q  FOUND       48 qualifying distinct unit(s)
+  site-policy   S5   R  FOUND       1 qualifying distinct unit(s), of which 1 rest on an oracle DELETED target (WRONG_on_deleted): weaker, ORACLE.md §4
+near misses (distinct units): {'i': 57, 'ii': 99, 'iii': 372}
+OVERALL: FOUND
+
+# end: 2026-10-14T17:22:42Z
+# exited: exit status 0
