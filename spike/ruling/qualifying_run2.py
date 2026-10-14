@@ -98,6 +98,10 @@ pat = collections.Counter((T.tier_of(tiers[n]),) + tuple(tiers[n][q] for q in ("
                           for n in qual)
 print("answer patterns (tier, q1, q2, q3, q4):", dict(pat))
 with open(out, "w") as f:
+    pairs = sum(len(c) for c in qual.values())
+    units = sum(c.get("qualifying_distinct", 0) for c in verdict["cells"].values())
+    f.write(f"Rows are packets, not units. Several packets can share a unit, so the per-cell row counts here "
+            f"({pairs} packet-cell pairs) exceed the verdict's distinct-unit counts ({units} units).\n\n")
     f.write("| packet | tier | q1 | q2 | q3 | q4 | unplaceable | qualifies in |\n|---|---|---|---|---|---|---|---|\n")
     for n in sorted(qual):
         a = tiers[n]

@@ -1,3 +1,5 @@
+Rows are packets, not units. Several packets can share a unit, so the per-cell row counts here (453 packet-cell pairs) exceed the verdict's distinct-unit counts (432 units).
+
 | packet | tier | q1 | q2 | q3 | q4 | unplaceable | qualifies in |
 |---|---|---|---|---|---|---|---|
 | `002f8f3a0228d8cb` | A | no | yes | no | no | false | k8s-en S25 R |

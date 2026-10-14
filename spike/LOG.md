@@ -2710,6 +2710,10 @@ in the committed `tier-work-2/tiers.jsonl`.
 each cell's count of distinct units against `verdict.json`. It found 0
 mismatches.
 
+The table lists packets, not units. Several packets can share a unit, so its
+per-cell row counts exceed the verdict's distinct-unit counts: 453
+packet-cell pairs against 432 units.
+
 The answers fall into three patterns:
 
 | tier | q1 | q2 | q3 | q4 | packets |
