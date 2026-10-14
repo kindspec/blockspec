@@ -1,0 +1,15 @@
+# prereg3 repro k8s-en
+# argv: prereg3.py repro --d8-dir d8 --arm k8s-en --id M:2e4c7ca994cc7fa9cca8a02c7ea2bae0c2d9f57c:content/en/docs/tasks/configure-pod-container/assign-pod-level-resources.md|Q|59 --work-dir work/r-bOW6pr
+# start: 2026-10-14T08:49:07Z
+# blockspec HEAD: 1457638506f811a4791800a5bca2b96692e1eada
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T08:49:16Z
+committed   073e66cc11d6462fcf03ff36a52e3f45d02e8a7376b896eaf50d8fb4da038f98
+regenerated 073e66cc11d6462fcf03ff36a52e3f45d02e8a7376b896eaf50d8fb4da038f98
+F9 REPRODUCTION: BYTE-IDENTICAL  M:2e4c7ca994cc7fa9cca8a02c7ea2bae0c2d9f57c:content/en/docs/tasks/configure-pod-container/assign-pod-level-resources.md|Q|59
+
+# end: 2026-10-14T08:49:16Z
+# exited: exit status 0
