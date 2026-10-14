@@ -10,7 +10,7 @@ deliberate, not an oversight.
   .editorconfig,
   .gitattributes,
   .gitignore                Apache-2.0 OR MIT
-  LICENSE                   CC0-1.0
+  LICENSE, NOTICE           CC0-1.0
   LICENSES/                 each text under its own terms, copied verbatim
   spike/*.md                CC-BY-4.0
   spike/harness/            MIT
@@ -35,8 +35,8 @@ CORPUS TEXT IN spike/results/
 The spike measures third-party corpora, and its results carry their text,
 spike/results/prereg3/ included. In spike/results/prereg2/export/packets/ and
 spike/results/prereg3/export/packets/, every .md file in a packet other than
-QUESTIONS.md is a whole file copied from a corpus: before.md and after.md, and
-in a merge packet base.md, leg-a.md and leg-c.md. Each packet's packet.json
+QUESTIONS.md is a whole file copied from a corpus: before.md and after.md, or
+in a merge packet base.md, leg-a.md, leg-c.md and after.md. Each packet's packet.json
 quotes from them. The exception is the plant packets, whose text the harness
 generates (spike/harness/prereg2_plants.py, spike/harness3/prereg3_plants.py).
 Other result files quote shorter excerpts where they report a block, a quote
@@ -47,7 +47,8 @@ prereg 3 keeps (spike/PRE-REGISTRATION-3.md section 1).
 
 That text is not this project's work and is not offered under CC-BY-4.0. It
 stays under its upstream terms, whatever they are at the pin it was taken
-from. The CC-BY-4.0 row covers what this project wrote around it: the records,
+from. NOTICE lists each corpus, its pins and the licence its tree holds there.
+The CC-BY-4.0 row covers what this project wrote around it: the records,
 figures, prompts, questions and plant texts.
 
 THIRD-PARTY EXCERPTS IN spike/results/prereg3/

@@ -25,8 +25,11 @@ the open questions rather than rediscovering the settled ones.
 
 The evidence it cites lives in
 [kindspec/research](https://github.com/kindspec/research) —
-`design-findings/` and `experiments/`. Cite it by path and commit. The corpora
-themselves are not redistributed; `CORPORA.md` names each one and its source.
+`design-findings/` and `experiments/`. Cite it by path and commit. Its
+`CORPORA.md` names each corpus and its source. The spike's experiment packets
+and results carry corpus excerpts, and whole corpus files in the prereg 2 and
+prereg 3 export packets, under their upstream terms; `NOTICE` lists each
+corpus, its pin and its licence.
 
 ## The constraint specific to this kind
 
