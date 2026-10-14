@@ -2585,3 +2585,185 @@ network failure on the host, the tier-run is run once more.
   departs from §6: "For the length of a tier-run, nothing else on the host
   may use the account whose credential the sandbox binds." The run had no
   authentication error and no retry.
+
+## 2026-10-14 — §35. Prereg 3's verdict under the run-2 ruling: FOUND
+
+This entry is PRE-REGISTRATION-3.md §7 steps 7 to 9 for run 2, under the
+owner's ruling of §34. It belongs to the run-2 pull request. It stands beside
+§33, run 1's verdict, which stays as published.
+
+### Reproductions (§9 H7)
+
+- **Which records.** These are the records that meet F1–F6 under run 2's
+  `tiers.jsonl` and have no accepted result. They were listed the same way as
+  in §33, with the ruling's `binding_run` installed:
+  - records meeting F1–F6: 474;
+  - already accepted, from `results/prereg2/repro/` and
+    `results/prereg3/repro/`: 461;
+  - needing a reproduction: 13 (k8s-en 8, k8s-l10n 3, rust-book 1,
+    site-policy 1).
+- **How.** There was one bound `ruling/prereg3_run2.py repro` per record,
+  which runs `prereg3.py repro` unchanged. The runs were in sequence,
+  because a bound command refuses while another run's result is uncommitted
+  under `results/prereg3/`. Each result and transcript was committed before
+  the next run, as a new file in `results/prereg3/repro/`. The argv uses
+  relative paths only.
+- **Times.** The runs went from 17:08:13Z to 17:21:38Z. The longest took
+  339 s.
+- **Result.** All 13 are **BYTE-IDENTICAL**, every one exiting 0.
+  Afterwards the listing finds 474 of 474 records with an accepted result.
+
+### The join
+
+`ruling/prereg3_run2.py aggregate`, bound by `a518e08`, ran once, from
+17:22:22Z to 17:22:42Z, and exited 0. It wrote
+`results/prereg3/run2/verdict.json` (sha256
+`4a9d1103c714ed67fb8db9c3e050b3c99dcb062466bab7d10139f0a8bedbe8ab`), with
+`"bound": true`. Its transcript is committed, and
+`results/prereg3/verdict.json` is unchanged.
+
+- **The order check (H5)** passed, as in §33.
+- **The per-name check (§5)** passed: 483 keys were checked and 0 differ.
+- **The binding run** is run 2: "tiers: run 2's tiers.jsonl binds".
+- **The plants.** All five answered as Appendix B expects, so the void list
+  is empty and the tiering is not void.
+- **Cells.** There are 56: 35 FOUND, 5 NOT FOUND and 16 NO VERDICT.
+  - The FOUND cells hold 432 qualifying distinct units in total. Of those,
+    171 rest on an oracle DELETED target, which ORACLE.md §4 marks as weaker.
+  - The NO VERDICT cells are the 15 with fewer than 300 decided units, and
+    rust-book M R, where 110 of 712 are undecidable.
+- **Near misses** (distinct units): i 57, ii 99, iii 372.
+
+**Overall: FOUND.**
+
+Each cell's verdict, its qualifying and decided counts, and its undecidable
+counts:
+
+| cell | verdict | qualifying distinct | of which on DELETED | decided | undecidable | UNKNOWN | reason |
+|---|---|---|---|---|---|---|---|
+| cmspec E Q | NO VERDICT | 0 | 0 | 218 | 0 | 22 | 218 distinct decided natural-language units < 300 |
+| cmspec E R | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| cmspec M Q | NO VERDICT | 0 | 0 | 57 | 0 | 5 | 57 distinct decided natural-language units < 300 |
+| cmspec M R | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| cmspec S25 Q | NO VERDICT | 0 | 0 | 97 | 1 | 81 | 97 distinct decided natural-language units < 300 |
+| cmspec S25 R | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| cmspec S5 Q | NO VERDICT | 0 | 0 | 186 | 1 | 45 | 186 distinct decided natural-language units < 300 |
+| cmspec S5 R | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| cncf-toc E Q | FOUND | 4 | 0 | 9049 | 16 | 422 |  |
+| cncf-toc E R | FOUND | 6 | 5 | 3219 | 1362 | 88 |  |
+| cncf-toc M Q | NOT FOUND | 0 | 0 | 482 | 0 | 49 | n=482, bound 3/n = 0.00622 at 95% |
+| cncf-toc M R | NO VERDICT | 0 | 0 | 165 | 33 | 8 | 165 distinct decided natural-language units < 300 |
+| cncf-toc S25 Q | FOUND | 2 | 0 | 593 | 0 | 381 |  |
+| cncf-toc S25 R | FOUND | 14 | 13 | 475 | 224 | 217 |  |
+| cncf-toc S5 Q | FOUND | 3 | 0 | 2118 | 17 | 376 |  |
+| cncf-toc S5 R | FOUND | 6 | 5 | 1115 | 528 | 90 |  |
+| k8s-en E Q | FOUND | 2 | 0 | 24750 | 42 | 841 |  |
+| k8s-en E R | FOUND | 9 | 1 | 7388 | 1320 | 123 |  |
+| k8s-en M Q | FOUND | 23 | 0 | 21500 | 46 | 805 |  |
+| k8s-en M R | FOUND | 13 | 6 | 7190 | 1473 | 154 |  |
+| k8s-en S25 Q | FOUND | 21 | 0 | 10579 | 104 | 4004 |  |
+| k8s-en S25 R | FOUND | 74 | 48 | 4041 | 516 | 1014 |  |
+| k8s-en S5 Q | FOUND | 6 | 0 | 17287 | 35 | 1477 |  |
+| k8s-en S5 R | FOUND | 11 | 8 | 4982 | 822 | 244 |  |
+| k8s-l10n E Q | FOUND | 4 | 0 | 31590 | 348 | 1401 |  |
+| k8s-l10n E R | FOUND | 3 | 1 | 8987 | 1351 | 158 |  |
+| k8s-l10n M Q | FOUND | 2 | 0 | 10545 | 7 | 501 |  |
+| k8s-l10n M R | FOUND | 2 | 0 | 3027 | 446 | 70 |  |
+| k8s-l10n S25 Q | FOUND | 29 | 0 | 7747 | 88 | 4037 |  |
+| k8s-l10n S25 R | FOUND | 64 | 42 | 3793 | 424 | 1163 |  |
+| k8s-l10n S5 Q | FOUND | 14 | 0 | 18432 | 172 | 2556 |  |
+| k8s-l10n S5 R | FOUND | 18 | 9 | 5976 | 743 | 444 |  |
+| obsidian-help E Q | FOUND | 1 | 0 | 5255 | 4 | 369 |  |
+| obsidian-help E R | FOUND | 2 | 1 | 2435 | 364 | 76 |  |
+| obsidian-help M Q | NO VERDICT | 0 | 0 | 6 | 0 | 0 | 6 distinct decided natural-language units < 300 |
+| obsidian-help M R | NO VERDICT | 0 | 0 | 2 | 0 | 0 | 2 distinct decided natural-language units < 300 |
+| obsidian-help S25 Q | NO VERDICT | 0 | 0 | 214 | 4 | 321 | 214 distinct decided natural-language units < 300 |
+| obsidian-help S25 R | FOUND | 6 | 6 | 172 | 18 | 179 |  |
+| obsidian-help S5 Q | NOT FOUND | 0 | 0 | 2902 | 9 | 855 | n=2902, bound 3/n = 0.00103 at 95% |
+| obsidian-help S5 R | FOUND | 13 | 9 | 1425 | 156 | 245 |  |
+| rust-book E Q | NOT FOUND | 0 | 0 | 10762 | 2 | 483 | n=10762, bound 3/n = 0.00028 at 95% |
+| rust-book E R | FOUND | 3 | 2 | 3131 | 829 | 55 |  |
+| rust-book M Q | NOT FOUND | 0 | 0 | 2978 | 0 | 90 | n=2978, bound 3/n = 0.00101 at 95% |
+| rust-book M R | NO VERDICT | 0 | 0 | 602 | 110 | 1 | undecidable 110 > 10% of 712 |
+| rust-book S25 Q | FOUND | 1 | 0 | 2786 | 4 | 3261 |  |
+| rust-book S25 R | FOUND | 13 | 11 | 819 | 55 | 1196 |  |
+| rust-book S5 Q | FOUND | 1 | 0 | 6625 | 5 | 1735 |  |
+| rust-book S5 R | FOUND | 7 | 3 | 1921 | 244 | 261 |  |
+| site-policy E Q | FOUND | 2 | 0 | 3000 | 40 | 209 |  |
+| site-policy E R | NOT FOUND | 0 | 0 | 1383 | 101 | 57 | n=1383, bound 3/n = 0.00217 at 95% |
+| site-policy M Q | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| site-policy M R | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| site-policy S25 Q | FOUND | 4 | 0 | 26 | 2 | 27 |  |
+| site-policy S25 R | NO VERDICT | 0 | 0 | 9 | 0 | 5 | 9 distinct decided natural-language units < 300 |
+| site-policy S5 Q | FOUND | 48 | 0 | 1670 | 73 | 535 |  |
+| site-policy S5 R | FOUND | 1 | 1 | 957 | 32 | 182 |  |
+
+### The qualifying packets' answers (§8)
+
+413 of the 483 real packets qualify in at least one cell. A packet qualifies
+when it has tier A or B, q3 "no" and q4 "no", and its record reproduces.
+
+`results/prereg3/run2/qualifying.md` names each one, with its tier, q1 to q4,
+`unplaceable`, and the cells it qualifies in. The tierer's free-text `why` is
+in the committed `tier-work-2/tiers.jsonl`.
+`ruling/qualifying_run2.py` derives the list as `cell()` does, and checks
+each cell's count of distinct units against `verdict.json`. It found 0
+mismatches.
+
+The answers fall into three patterns:
+
+| tier | q1 | q2 | q3 | q4 | packets |
+|---|---|---|---|---|---|
+| A | yes | yes | no | no | 234 |
+| A | no | yes | no | no | 158 |
+| B | yes | no | no | no | 21 |
+
+### The noise of §2.6, beside this FOUND
+
+§8 requires these figures beside a FOUND, because a FOUND rests on one
+tiering run. As §2.6 states them, from the rehearsals:
+
+- On the synthetic packets of the 120-packet export, "would qualify" came
+  out 22 of 116 in `run-120`, 0 of 117 in `run-486`, and 23 of 117 in
+  `run-486m`. `run-486` answered q4 "no" on all 117.
+- The same packets in `run-120` and `run-486m` agreed on q4 in 68 of 119.
+- On all 486 packets, `run-486` (prereg 2's prompt) and `run-486m` (this
+  document's prompt) gave:
+  - q3 "yes": 484 vs 337;
+  - q4 "yes": 1 vs 147;
+  - "would qualify": 1 vs 139;
+  - agreement on q3 for 339 packets, and on q4 for 338.
+
+§2.6 also says: "So one tiering run is a noisy instrument. The plants check
+the tierer, per run, on five known shapes. They do not measure its accuracy
+on real packets."
+
+In run 2, 413 of 483 real packets would qualify. Run 1 (§32) tiered 191 real
+packets before it stopped. Its void verdict (§33) published none of their
+answers, and this entry does not compare them.
+
+### What it means for blockspec#2
+
+PRE-REGISTRATION-3.md §8: prereg 2's tiering is void (§31), so "This
+document's overall verdict decides blockspec#2's next step, by prereg 2 §8's
+table, whatever form it takes." Under the ruling of §34, that verdict is
+run 2's.
+
+Prereg 2 §8's table, for FOUND: "The write-up is the reproduction." It goes
+on:
+
+- "For M: the merge base, the two legs and the stock-git command line."
+- "For E: the parent commit and the commit, with `git show <c>:<path>` for
+  each side."
+- "For S: the two endpoint commits, with the same `git show` commands."
+
+"Every write-up also gives the before- and after-files, the oracle's decided
+verdict, the packet answers, and per-cell distinct qualifying and decided
+counts with the undecidable counts. blockspec then proceeds to blockspec#3,
+#4 and #5."
+
+This entry gives the packet answers and the per-cell counts. The
+reproduction part of the write-up is not written yet: the commits, `git
+show` commands, before- and after-files and oracle verdicts for the
+qualifying units. Until it is, the FOUND is published, but its write-up is
+incomplete.
