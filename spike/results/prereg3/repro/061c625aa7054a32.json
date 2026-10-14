@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "17cd66aea69654b0aacac4f3d60a408c1838a646",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "231adfcb281fbfdd8663cc321fab523b8c703f3cfba9381a7c7b9ced7bc6f46e",
+ "id": "S5:1:content/pt-br/docs/tutorials/hello-minikube.md|Q|65",
+ "ok": true,
+ "regenerated_sha256": "231adfcb281fbfdd8663cc321fab523b8c703f3cfba9381a7c7b9ced7bc6f46e"
+}

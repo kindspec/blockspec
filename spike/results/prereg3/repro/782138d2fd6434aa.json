@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "3a0a2f10bad18bd44f956e024f3e1c6ea45120c3",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "d3d3879ce1575c09c38a3003151cc1a139247087108b54a3ca54273eb988f844",
+ "id": "M:f787489ec5a41d4f2979c90f7db819b6239d41f3:content/en/docs/reference/access-authn-authz/extensible-admission-controllers.md|Q|23",
+ "ok": true,
+ "regenerated_sha256": "d3d3879ce1575c09c38a3003151cc1a139247087108b54a3ca54273eb988f844"
+}

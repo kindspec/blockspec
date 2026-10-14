@@ -2470,3 +2470,355 @@ So blockspec#2 stays open and nothing is built.
 the records exported at `e46e320` … no later pre-registration may tier those
 records again, or re-tier them by another route. A later pre-registration may
 address blockspec#2 only with new records."
+
+## 2026-10-14 — §34. Owner ruling: run 2
+
+This is an owner ruling of 2026-10-14 that overrides frozen rules of
+PRE-REGISTRATION-3.md, listed below. It belongs to the pull request that adds
+`spike/ruling/prereg3_run2.py`.
+
+The ruling was made after run 1's `tiers.jsonl` was committed (#29, §32),
+and after run 1's INCONCLUSIVE verdict was published (#30, §33). Run 1's
+answers have been public since #29. Run 2 changes the overall verdict from
+INCONCLUSIVE (§33) to FOUND (§35).
+
+### The ruling
+
+Prereg 3's tier-run is run once more, as run 2. Run 2 binds whatever it
+says, even if it fails the init check or writes zero lines. No run 3 is
+allowed.
+
+### Why
+
+Run 1 did not end on anything the tierer did. It ended when the host lost its
+network (§32):
+
+- the agent's last events are 10 `api_retry` events, and then "API Error:
+  Can't reach the API server — check your internet or DNS (EAI_AGAIN)";
+- the system journal shows wlan0 losing carrier and its DHCP lease at
+  08:31:39Z, and `CTRL-EVENT-DISCONNECTED` at 08:31:40Z;
+- the host reconnected briefly from 08:35:18Z to 08:35:32Z, and for good at
+  08:37:00Z, after the agent had exited;
+- the credential file was unchanged across the run, and the error is not an
+  authentication error.
+
+Run 1 wrote 193 lines, so under §6 it binds, and no rerun is allowed. Its
+tiering is void because three plants are untiered, and its verdict is
+INCONCLUSIVE (§33). The owner ruled that, because run 1 was ended by a
+network failure on the host, the tier-run is run once more.
+
+### What the ruling overrides
+
+It does not just depart from §6. It overrides each of these frozen rules:
+
+- **§0 item 10:** "There is no exception for it." Item 10 also rejected an
+  alternative, a rerun after a 401/403 death, because it "would be a reroll
+  the operator can trigger, which is exactly the forking path the
+  final-tiering rule (item 2) closes."
+- **§6's run cap:** "There is one rerun in total, ever", and only after a
+  first run that wrote zero lines or was `init_failed`. Run 1 wrote 193 lines
+  and passed the init check.
+- **§8's final-tiering rule:** no later pre-registration may tier the
+  records exported at `e46e320` again, "or re-tier them by another route".
+- **§11:** "After step 5, nothing in this document changes, no cell or
+  verdict computed under it changes".
+
+### What changes, and what does not
+
+- **Kept as they are.** Run 1, its ledger entries, `tier-work-1/`, its
+  transcript, the reproductions, the sealed manifest,
+  `results/prereg3/verdict.json` and §32 to §33 (#29, #30). Nothing committed
+  is edited. Run 2 appends its own entries to `results/prereg3/tier-runs.txt`,
+  as the frozen harness does for any run. No existing line changes. Run 2 may
+  need reproductions that run 1 did not. These are written to
+  `results/prereg3/repro/` as new files, and the harness refuses to
+  overwrite one.
+- **Unchanged files.** `spike/harness3/`, `spike/harness/` and
+  PRE-REGISTRATION-3.md stay byte-identical, so the binding to `a518e08`
+  holds.
+- **How run 2 is run.** `spike/ruling/prereg3_run2.py` imports
+  `harness3/prereg3.py` in the same process and replaces only these:
+  - **the run cap** (`rerun_allowed`). Run 2 is allowed only when the ledger
+    holds one started run, run 1, and no run 2. Anything else is refused, so
+    there is no run 3;
+  - **the binding run** (`binding_run`). This is run 2 once it has started,
+    even if it failed the init check or wrote nothing, and the frozen rule
+    otherwise;
+  - **the bound output of `aggregate`.** This is now
+    `results/prereg3/run2/verdict.json`, so `results/prereg3/verdict.json` is
+    never overwritten. This aggregate refuses until run 2 has started. The
+    frozen `harness3/prereg3.py aggregate` would overwrite
+    `results/prereg3/verdict.json`, so only this script's aggregate is run.
+- **Checks that run as frozen.** The binding, the gate, the window (run 2 is
+  on 2026-10-14, within it), the model, the init check, the credential log,
+  the ledger, the reproduction rule (H7), and the order and per-name checks.
+- **What binds.** Run 2's `tiers.jsonl` binds, whatever it says. Its join
+  and verdict are published beside §33, which stays as it is.
+
+### Run 2
+
+- **How it was run.** `ruling/prereg3_run2.py tier-run` ran once under
+  `python3 -I -S -B`, with `ANTHROPIC_API_KEY` and `GIT_EDITOR` unset. It ran
+  in the worktree of `prereg3/run2-ruling` at `8143e6d`, from a tmux session
+  started at 16:14:12Z. The transcript's argv is `prereg3_run2.py tier-run`,
+  and its header records "harness bound: True (validation commit
+  a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)".
+- **Preflight, as logged.**
+  - the gate found prereg 2's verdict commit `cfdf696`;
+  - verdict commit day 2026-10-13, start day 2026-10-14, run on 2026-10-14,
+    within the window;
+  - model `claude-opus-5-5`;
+  - "RERUN under the owner's ruling of 2026-10-14 (LOG §34): run 2 binds
+    whatever it says";
+  - the sandbox held `PROMPT.md`, `PACKETS.txt` and 488 packets, read-only;
+  - prompt sha256
+    `2779cd58c9c7882aad9706e2e999c87f5e7b341f14f7141282a5bda798226a0f`.
+- **The init check passed.** The tools were Edit, Glob, Grep, Read and Write,
+  and `mcp_servers` was empty.
+- **Times and result.** The run started at 16:14:13Z, and the transcript ends
+  at 17:06:33Z. The agent exited 0. Its result event has `terminal_reason`
+  `completed` after 1316 turns, and the stream holds no `api_retry` event.
+  The ledger's run-2 entries are "started", then "completed", with:
+  - `agent_exit` 0;
+  - `init_failed` false;
+  - `credential_changed` false;
+  - 488 lines;
+  - `tiers.jsonl` sha256
+    `1ad441a50ae0ec21a44e108f78d70e339cfd3439efa6a2f2e926d9ea661462b8`.
+- **Coverage.** The 488 lines parse with no problem. They cover every name in
+  `PACKETS.txt`, and no line names a packet outside it.
+- **What is committed.** The two appended ledger lines, the transcript
+  verbatim, and `tier-work-2/tiers.jsonl` as written. The work directory
+  holds nothing else. The harness removes the empty mount points it made for
+  `PROMPT.md`, `PACKETS.txt` and `packets/`, as it did for run 1.
+
+### Two disclosures about run 2
+
+- **The start time.** §0 item 10's operating rule says to start a bound run
+  just after the credential file has been rewritten. The credential was
+  rewritten at 13:52:31Z. Run 2 started 2 h 22 min later, because the alert
+  for the rewrite arrived late. The credential's mtime and sha256 were the
+  same before and after the run.
+- **Other sessions on the account.** By the owner's decision, other Claude
+  Code sessions on the account were active during run 2, doing unrelated
+  repository work. This departs from §0 item 10's operating rule, "keep
+  every other Claude session off the account during the run". It also
+  departs from §6: "For the length of a tier-run, nothing else on the host
+  may use the account whose credential the sandbox binds." The run had no
+  authentication error and no retry.
+
+## 2026-10-14 — §35. Prereg 3's verdict under the run-2 ruling: FOUND
+
+This entry is PRE-REGISTRATION-3.md §7 steps 7 to 9 for run 2, under the
+owner's ruling of §34. It belongs to the run-2 pull request. It stands beside
+§33, run 1's verdict, which stays as published.
+
+### Reproductions (§9 H7)
+
+- **Which records.** These are the records that meet F1–F6 under run 2's
+  `tiers.jsonl` and have no accepted result. They were listed the same way as
+  in §33, with the ruling's `binding_run` installed:
+  - records meeting F1–F6: 474;
+  - already accepted, from `results/prereg2/repro/` and
+    `results/prereg3/repro/`: 461;
+  - needing a reproduction: 13 (k8s-en 8, k8s-l10n 3, rust-book 1,
+    site-policy 1).
+- **How.** There was one bound `ruling/prereg3_run2.py repro` per record,
+  which runs `prereg3.py repro` unchanged. The runs were in sequence,
+  because a bound command refuses while another run's result is uncommitted
+  under `results/prereg3/`. Each result and transcript was committed before
+  the next run, as a new file in `results/prereg3/repro/`. The argv uses
+  relative paths only.
+- **Times.** The runs went from 17:08:14Z to 17:21:38Z. The longest took
+  338 s, from 17:15:19Z to 17:20:57Z.
+- **Result.** All 13 are **BYTE-IDENTICAL**, every one exiting 0.
+  Afterwards the listing finds 474 of 474 records with an accepted result.
+
+### The join
+
+`ruling/prereg3_run2.py aggregate`, bound by `a518e08`, ran once, from
+17:22:22Z to 17:22:42Z, and exited 0. It wrote
+`results/prereg3/run2/verdict.json` (sha256
+`4a9d1103c714ed67fb8db9c3e050b3c99dcb062466bab7d10139f0a8bedbe8ab`), with
+`"bound": true`. Its transcript is committed, and
+`results/prereg3/verdict.json` is unchanged.
+
+- **The order check (H5)** passed, as in §33.
+- **The per-name check (§5)** passed: 483 keys were checked and 0 differ.
+- **The binding run** is run 2: "tiers: run 2's tiers.jsonl binds".
+- **The plants.** All five answered as Appendix B expects, so the void list
+  is empty and the tiering is not void.
+- **Cells.** There are 56: 35 FOUND, 5 NOT FOUND and 16 NO VERDICT.
+  - The FOUND cells hold 432 qualifying distinct units in total. Of those,
+    171 rest on an oracle DELETED target, which ORACLE.md §4 marks as weaker.
+  - The NO VERDICT cells are the 15 with fewer than 300 decided units, and
+    rust-book M R, where 110 of 712 are undecidable.
+- **Near misses** (distinct units): i 57, ii 99, iii 372.
+
+**Overall: FOUND.**
+
+Each cell's verdict, its qualifying and decided counts, and its undecidable
+counts:
+
+| cell | verdict | qualifying distinct | of which on DELETED | decided | undecidable | UNKNOWN | reason |
+|---|---|---|---|---|---|---|---|
+| cmspec E Q | NO VERDICT | 0 | 0 | 218 | 0 | 22 | 218 distinct decided natural-language units < 300 |
+| cmspec E R | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| cmspec M Q | NO VERDICT | 0 | 0 | 57 | 0 | 5 | 57 distinct decided natural-language units < 300 |
+| cmspec M R | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| cmspec S25 Q | NO VERDICT | 0 | 0 | 97 | 1 | 81 | 97 distinct decided natural-language units < 300 |
+| cmspec S25 R | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| cmspec S5 Q | NO VERDICT | 0 | 0 | 186 | 1 | 45 | 186 distinct decided natural-language units < 300 |
+| cmspec S5 R | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| cncf-toc E Q | FOUND | 4 | 0 | 9049 | 16 | 422 |  |
+| cncf-toc E R | FOUND | 6 | 5 | 3219 | 1362 | 88 |  |
+| cncf-toc M Q | NOT FOUND | 0 | 0 | 482 | 0 | 49 | n=482, bound 3/n = 0.00622 at 95% |
+| cncf-toc M R | NO VERDICT | 0 | 0 | 165 | 33 | 8 | 165 distinct decided natural-language units < 300 |
+| cncf-toc S25 Q | FOUND | 2 | 0 | 593 | 0 | 381 |  |
+| cncf-toc S25 R | FOUND | 14 | 13 | 475 | 224 | 217 |  |
+| cncf-toc S5 Q | FOUND | 3 | 0 | 2118 | 17 | 376 |  |
+| cncf-toc S5 R | FOUND | 6 | 5 | 1115 | 528 | 90 |  |
+| k8s-en E Q | FOUND | 2 | 0 | 24750 | 42 | 841 |  |
+| k8s-en E R | FOUND | 9 | 1 | 7388 | 1320 | 123 |  |
+| k8s-en M Q | FOUND | 23 | 0 | 21500 | 46 | 805 |  |
+| k8s-en M R | FOUND | 13 | 6 | 7190 | 1473 | 154 |  |
+| k8s-en S25 Q | FOUND | 21 | 0 | 10579 | 104 | 4004 |  |
+| k8s-en S25 R | FOUND | 74 | 48 | 4041 | 516 | 1014 |  |
+| k8s-en S5 Q | FOUND | 6 | 0 | 17287 | 35 | 1477 |  |
+| k8s-en S5 R | FOUND | 11 | 8 | 4982 | 822 | 244 |  |
+| k8s-l10n E Q | FOUND | 4 | 0 | 31590 | 348 | 1401 |  |
+| k8s-l10n E R | FOUND | 3 | 1 | 8987 | 1351 | 158 |  |
+| k8s-l10n M Q | FOUND | 2 | 0 | 10545 | 7 | 501 |  |
+| k8s-l10n M R | FOUND | 2 | 0 | 3027 | 446 | 70 |  |
+| k8s-l10n S25 Q | FOUND | 29 | 0 | 7747 | 88 | 4037 |  |
+| k8s-l10n S25 R | FOUND | 64 | 42 | 3793 | 424 | 1163 |  |
+| k8s-l10n S5 Q | FOUND | 14 | 0 | 18432 | 172 | 2556 |  |
+| k8s-l10n S5 R | FOUND | 18 | 9 | 5976 | 743 | 444 |  |
+| obsidian-help E Q | FOUND | 1 | 0 | 5255 | 4 | 369 |  |
+| obsidian-help E R | FOUND | 2 | 1 | 2435 | 364 | 76 |  |
+| obsidian-help M Q | NO VERDICT | 0 | 0 | 6 | 0 | 0 | 6 distinct decided natural-language units < 300 |
+| obsidian-help M R | NO VERDICT | 0 | 0 | 2 | 0 | 0 | 2 distinct decided natural-language units < 300 |
+| obsidian-help S25 Q | NO VERDICT | 0 | 0 | 214 | 4 | 321 | 214 distinct decided natural-language units < 300 |
+| obsidian-help S25 R | FOUND | 6 | 6 | 172 | 18 | 179 |  |
+| obsidian-help S5 Q | NOT FOUND | 0 | 0 | 2902 | 9 | 855 | n=2902, bound 3/n = 0.00103 at 95% |
+| obsidian-help S5 R | FOUND | 13 | 9 | 1425 | 156 | 245 |  |
+| rust-book E Q | NOT FOUND | 0 | 0 | 10762 | 2 | 483 | n=10762, bound 3/n = 0.00028 at 95% |
+| rust-book E R | FOUND | 3 | 2 | 3131 | 829 | 55 |  |
+| rust-book M Q | NOT FOUND | 0 | 0 | 2978 | 0 | 90 | n=2978, bound 3/n = 0.00101 at 95% |
+| rust-book M R | NO VERDICT | 0 | 0 | 602 | 110 | 1 | undecidable 110 > 10% of 712 |
+| rust-book S25 Q | FOUND | 1 | 0 | 2786 | 4 | 3261 |  |
+| rust-book S25 R | FOUND | 13 | 11 | 819 | 55 | 1196 |  |
+| rust-book S5 Q | FOUND | 1 | 0 | 6625 | 5 | 1735 |  |
+| rust-book S5 R | FOUND | 7 | 3 | 1921 | 244 | 261 |  |
+| site-policy E Q | FOUND | 2 | 0 | 3000 | 40 | 209 |  |
+| site-policy E R | NOT FOUND | 0 | 0 | 1383 | 101 | 57 | n=1383, bound 3/n = 0.00217 at 95% |
+| site-policy M Q | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| site-policy M R | NO VERDICT | 0 | 0 | 0 | 0 | 0 | 0 distinct decided natural-language units < 300 |
+| site-policy S25 Q | FOUND | 4 | 0 | 26 | 2 | 27 |  |
+| site-policy S25 R | NO VERDICT | 0 | 0 | 9 | 0 | 5 | 9 distinct decided natural-language units < 300 |
+| site-policy S5 Q | FOUND | 48 | 0 | 1670 | 73 | 535 |  |
+| site-policy S5 R | FOUND | 1 | 1 | 957 | 32 | 182 |  |
+
+### The qualifying packets' answers (§8)
+
+413 of the 483 real packets qualify in at least one cell. A packet qualifies
+when it has tier A or B, q3 "no" and q4 "no", and its record reproduces.
+
+`results/prereg3/run2/qualifying.md` names each one, with its tier, q1 to q4,
+`unplaceable`, and the cells it qualifies in. The tierer's free-text `why` is
+in the committed `tier-work-2/tiers.jsonl`.
+`ruling/qualifying_run2.py` derives the list as `cell()` does, and checks
+each cell's count of distinct units against `verdict.json`. It found 0
+mismatches.
+
+The table lists packets, not units. Several packets can share a unit, so its
+per-cell row counts exceed the verdict's distinct-unit counts: 453
+packet-cell pairs against 432 units.
+
+The answers fall into three patterns:
+
+| tier | q1 | q2 | q3 | q4 | packets |
+|---|---|---|---|---|---|
+| A | yes | yes | no | no | 234 |
+| A | no | yes | no | no | 158 |
+| B | yes | no | no | no | 21 |
+
+### The noise of §2.6, beside this FOUND
+
+§8 requires these figures beside a FOUND, because a FOUND rests on one
+tiering run. As §2.6 states them, from the rehearsals: every figure below
+comes from synthetic packets (§10), and "These figures compare runs. They are
+not accuracy: the synthetic packets have no answer key."
+
+- On the synthetic packets of the 120-packet export, "would qualify" came
+  out 22 of 116 in `run-120`, 0 of 117 in `run-486`, and 23 of 117 in
+  `run-486m`. `run-486` answered q4 "no" on all 117.
+- The same packets in `run-120` and `run-486m` agreed on q4 in 68 of 119.
+- On all 486 packets, `run-486` (prereg 2's prompt) and `run-486m` (this
+  document's prompt) gave:
+  - q3 "yes": 484 vs 337;
+  - q4 "yes": 1 vs 147;
+  - "would qualify": 1 vs 139;
+  - agreement on q3 for 339 packets, and on q4 for 338.
+
+§2 closes: "So one tiering run is a noisy instrument. The plants check
+the tierer, per run, on five known shapes. They do not measure its accuracy
+on real packets."
+
+In run 2, 413 of 483 real packets would qualify (415 of all 488, plants
+included). That is far above every rehearsal figure: 22 of 116, 0 of 117 and
+23 of 117, and 139 of 486 for this document's prompt, all on synthetic
+packets. Run 1 (§32) tiered 191 real packets before it stopped. Its
+`tiers.jsonl` has been committed since #29. This entry does not compare its
+answers with run 2's.
+
+### What it means for blockspec#2
+
+PRE-REGISTRATION-3.md §8: prereg 2's tiering is void (§31), so "This
+document's overall verdict decides blockspec#2's next step, by prereg 2 §8's
+table, whatever form it takes." Under the ruling of §34, that verdict is
+run 2's. So §33's conclusion for blockspec#2, that it "stays open and
+nothing is built", is replaced by the conclusion below.
+
+Prereg 2 §8's table, for FOUND: "The write-up is the reproduction." It goes
+on:
+
+- "For M: the merge base, the two legs and the stock-git command line."
+- "For E: the parent commit and the commit, with `git show <c>:<path>` for
+  each side."
+- "For S: the two endpoint commits, with the same `git show` commands."
+
+"Every write-up also gives the before- and after-files, the oracle's decided
+verdict, the packet answers, and per-cell distinct qualifying and decided
+counts with the undecidable counts. blockspec then proceeds to blockspec#3,
+#4 and #5."
+
+Here, "the write-up is the reproduction" means
+`results/prereg3/run2/reproduction.md`. `ruling/reproduction_run2.py`
+generates it from committed records only. For each of the 413 qualifying
+packets it gives:
+
+- the record and its cells;
+- the corpus source and pin;
+- the commits and path;
+- the exact commands for each file: `git show <commit>:<path>` for E and S,
+  and for M the base and both legs and the stock-git merge, as
+  `prose_merge.stock_merge` runs it;
+- the oracle's decided class and target block;
+- the hardened resolver's class, status and hit.
+
+It holds no file content. The before- and after-files are what the commands
+print, and the packet answers and per-cell counts are above and in
+`qualifying.md`.
+
+Three packets were checked by running the file's own commands against a
+fresh clone of each bundle at its pin. Every file the commands wrote matched
+the export's packet file by sha256 (first 16 hex digits shown):
+
+- `0f604b7e6344801e` (cncf-toc E): before `0be41cc9509bbf0a`, after
+  `31f8cb6442f6e7e7`;
+- `002f8f3a0228d8cb` (k8s-en S25): before `cb07213ae8477c83`, after
+  `095bd05029c0ac1b`;
+- `1f79a24559942008` (k8s-en M): base `05ecf4ca747e0063`, leg A
+  `406a1980fa24a5a1`, leg C `28c51e3a8c1d2eec`, merged after
+  `a4dd1f5240d90433`.

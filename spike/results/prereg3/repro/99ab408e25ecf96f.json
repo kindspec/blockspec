@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "fac327b20b1e20b77ce8eddf7869b2535cde7195",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "d60f37b772ddc0a39664de75dc107c09a0e218d04033dd95fcef803ac1567fca",
+ "id": "M:20b43d6095f6347e18fb3ffa60fd73cc10cefd4e:content/en/docs/concepts/storage/storage-classes.md|Q|58",
+ "ok": true,
+ "regenerated_sha256": "d60f37b772ddc0a39664de75dc107c09a0e218d04033dd95fcef803ac1567fca"
+}

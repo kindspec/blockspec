@@ -1,0 +1,15 @@
+# prereg3 repro k8s-l10n
+# argv: prereg3_run2.py repro --d8-dir d8 --arm k8s-l10n --id S25:4:content/zh-cn/docs/reference/labels-annotations-taints/_index.md|Q|558 --work-dir work/r-O5lD12
+# start: 2026-10-14T17:15:19Z
+# blockspec HEAD: eb23d1c45b0b7401f77738b23fb9cae27614d5fb
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T17:15:28Z
+committed   93b45fd0bd5cb889586fe7c87f1aabcb5b0dfc0cfa4b9045f2c77ff19b8fef8e
+regenerated 93b45fd0bd5cb889586fe7c87f1aabcb5b0dfc0cfa4b9045f2c77ff19b8fef8e
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:4:content/zh-cn/docs/reference/labels-annotations-taints/_index.md|Q|558
+
+# end: 2026-10-14T17:20:57Z
+# exited: exit status 0

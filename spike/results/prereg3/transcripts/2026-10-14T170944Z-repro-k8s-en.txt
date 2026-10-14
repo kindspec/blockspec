@@ -1,0 +1,15 @@
+# prereg3 repro k8s-en
+# argv: prereg3_run2.py repro --d8-dir d8 --arm k8s-en --id M:c9debdcacb03d84ce303db7c27e01a95b1e19d1d:content/en/docs/tasks/manage-kubernetes-objects/kustomization.md|Q|27 --work-dir work/r-KkI5cW
+# start: 2026-10-14T17:09:44Z
+# blockspec HEAD: 7e053496d7d613df9abdcb955910c47967f46f37
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T17:09:53Z
+committed   2799d00f5a72625f971c0e045d6d097eb2d234d455dcf12396dfc25db857613b
+regenerated 2799d00f5a72625f971c0e045d6d097eb2d234d455dcf12396dfc25db857613b
+F9 REPRODUCTION: BYTE-IDENTICAL  M:c9debdcacb03d84ce303db7c27e01a95b1e19d1d:content/en/docs/tasks/manage-kubernetes-objects/kustomization.md|Q|27
+
+# end: 2026-10-14T17:09:56Z
+# exited: exit status 0

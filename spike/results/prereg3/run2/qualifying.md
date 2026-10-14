@@ -1,0 +1,417 @@
+Rows are packets, not units. Several packets can share a unit, so the per-cell row counts here (453 packet-cell pairs) exceed the verdict's distinct-unit counts (432 units).
+
+| packet | tier | q1 | q2 | q3 | q4 | unplaceable | qualifies in |
+|---|---|---|---|---|---|---|---|
+| `002f8f3a0228d8cb` | A | no | yes | no | no | false | k8s-en S25 R |
+| `0033bdb629de189a` | A | yes | yes | no | no | false | rust-book S25 R |
+| `0077c0db3c6dc412` | A | yes | yes | no | no | false | k8s-l10n S5 Q |
+| `00b0c7cda61a8213` | A | no | yes | no | no | false | site-policy S25 Q |
+| `01700bef52f28240` | A | no | yes | no | no | false | k8s-en S25 R |
+| `01c88716a6cd4d42` | A | no | yes | no | no | false | site-policy S5 Q |
+| `02ad954e6c35e5a2` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `02b33cea8f1777d4` | A | no | yes | no | no | false | obsidian-help S5 R |
+| `03469558b145266d` | A | no | yes | no | no | false | cncf-toc S5 R |
+| `03b36a19fc2fc45e` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `03f178a3b3cdd93c` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `047cc2079b3b46db` | A | no | yes | no | no | false | k8s-en S25 R |
+| `054aaa620d5c9767` | B | yes | no | no | no | false | k8s-l10n S5 Q |
+| `069b727f5a235dfd` | A | no | yes | no | no | false | k8s-en S25 R |
+| `085c92d9c579eb0d` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `0b482a023c82aa47` | A | no | yes | no | no | false | k8s-en S25 Q |
+| `0c4aff88cf979193` | A | yes | yes | no | no | false | k8s-en S5 R |
+| `0ee0de93a934932c` | A | no | yes | no | no | false | k8s-en S25 Q |
+| `0f604b7e6344801e` | A | no | yes | no | no | false | cncf-toc E R |
+| `106a878da1c99ccc` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `10b8eeaec25d74ba` | A | yes | yes | no | no | false | rust-book S5 R |
+| `1136535cd9932f4d` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `1153b647221d1bb7` | A | yes | yes | no | no | false | k8s-en E R |
+| `116a0ee22775244f` | A | no | yes | no | no | false | site-policy S5 Q |
+| `12373b10d4105b9c` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `127e2c44efd3fcd3` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `1435d63e54310565` | A | no | yes | no | no | false | k8s-l10n S5 R |
+| `18427aee8f234398` | A | no | yes | no | no | false | k8s-en S5 Q; k8s-en S25 Q |
+| `1925db2612400340` | A | yes | yes | no | no | false | rust-book S5 R |
+| `1a25ecde097ee501` | A | no | yes | no | no | false | k8s-en S25 R |
+| `1b33a2808e510960` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `1b4af4d9d244885f` | A | no | yes | no | no | false | site-policy S5 Q |
+| `1ba221f36ddb2e01` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `1d4feed0a579c183` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `1f79a24559942008` | A | yes | yes | no | no | false | k8s-en M Q |
+| `20035e4265038299` | A | no | yes | no | no | false | k8s-l10n S5 R |
+| `201467ab4df69b9f` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `20c71ad282cfd63a` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `216df513cbc7ec15` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `21c40fb4738360e5` | B | yes | no | no | no | false | obsidian-help E Q |
+| `22cf00f85e5b4ea2` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `238e89cbd946a231` | A | no | yes | no | no | false | k8s-en S25 R |
+| `23ed49ad2e0df1aa` | A | no | yes | no | no | false | site-policy S5 Q |
+| `25f2831e297556bb` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `2871ec4561184ed9` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `2ad82314e49cbb3e` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `2c5288fdfdff667f` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `2c6379d6a8a158c4` | A | no | yes | no | no | false | k8s-l10n S5 R |
+| `2d2131c92d2df8a3` | A | no | yes | no | no | false | cncf-toc S5 R |
+| `2de8eb6fca3e4310` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `2e0a3c5b6eb772b0` | A | yes | yes | no | no | false | k8s-l10n E R |
+| `2f2fca357cb0991f` | A | no | yes | no | no | false | k8s-en S25 Q |
+| `2f322206a4174e5f` | A | yes | yes | no | no | false | k8s-l10n E Q |
+| `2f36804a2c10dfed` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `2fbf4c7d9a36aae3` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `3062f28cf1ef8ace` | A | no | yes | no | no | false | obsidian-help S5 R |
+| `30eecf768c0b2fb2` | A | yes | yes | no | no | false | rust-book S25 R |
+| `328b58c740bf5842` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `32c8d859a527d3a0` | A | no | yes | no | no | false | k8s-en S25 Q |
+| `32ef668b98f0cdaf` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `334a15289443bf6c` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `34611fd0bc8b0e58` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `34d34b164ab4293e` | A | no | yes | no | no | false | k8s-l10n S25 Q |
+| `34ded3426cc9c207` | A | no | yes | no | no | false | site-policy S5 Q |
+| `35c82db63960dfef` | B | yes | no | no | no | false | k8s-en M Q |
+| `35d58c72a99df320` | A | no | yes | no | no | false | site-policy S5 Q |
+| `363496c048b45ed8` | A | yes | yes | no | no | false | k8s-en E Q; k8s-en S25 Q |
+| `370cc94eeed174ae` | A | yes | yes | no | no | false | rust-book S25 R |
+| `3823c6c5ea2f2742` | A | no | yes | no | no | false | k8s-en S25 R |
+| `3942e6d87681313e` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `3acb8f896e45951a` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `3ae2bb2e7f4eaef9` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `3bd57b5482feee83` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `3c4d4f764863f9c5` | A | no | yes | no | no | false | site-policy S5 Q |
+| `3ca00f668358f34e` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `3cb24ea2e7396135` | A | no | yes | no | no | false | site-policy S5 Q |
+| `3d14d471fc109e09` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `3d2539ad71d8b873` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `3da96ac6164c0783` | A | yes | yes | no | no | false | rust-book S5 R |
+| `3e0702f4a521da5a` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `3edf98d01e040428` | A | yes | yes | no | no | false | k8s-en S5 R |
+| `3f3c809e2dd1b6b1` | A | no | yes | no | no | false | obsidian-help S5 R |
+| `3f4eb4c556570726` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `3f77fcea589b1587` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `413d4eb29b389229` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `419ba2cbd0f80810` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `42661673f5780e1f` | A | no | yes | no | no | false | site-policy E Q; site-policy S5 Q |
+| `4267057c0f1478da` | A | no | yes | no | no | false | k8s-en M Q |
+| `4383c14b87dec4c6` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `4391015edbf75e5e` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `43f36dfbc4fa3bef` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `440769ef7cc64b01` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `444da9f0c876f640` | A | no | yes | no | no | false | k8s-l10n S5 Q |
+| `4560679c1403a433` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `45f788c5de0f3c33` | A | yes | yes | no | no | false | obsidian-help S5 R |
+| `46b9b06075896392` | A | no | yes | no | no | false | k8s-l10n S25 Q |
+| `48772da4b0058897` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `493e999029e854dc` | A | no | yes | no | no | false | rust-book S5 R |
+| `4a0428783c0fef9a` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `4a0e406627cfb5be` | A | no | yes | no | no | false | obsidian-help S25 R |
+| `4ac1771f215dea38` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `4b8a8f61862033bc` | B | yes | no | no | no | false | k8s-en S25 Q; k8s-en M Q |
+| `4c93dbd4e4b1bb54` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `4e239fac79be1edc` | A | no | yes | no | no | false | site-policy S5 Q |
+| `4e5fc01b766e1140` | A | no | yes | no | no | false | site-policy S5 Q |
+| `50b67b5e1d14af9d` | A | yes | yes | no | no | false | obsidian-help S25 R |
+| `51558a723af8bdf7` | A | no | yes | no | no | false | k8s-en S25 Q; k8s-en M Q |
+| `51c8ceed4a723847` | B | yes | no | no | no | false | k8s-en M Q |
+| `53f5a983e07d9003` | A | no | yes | no | no | false | cncf-toc S5 R |
+| `543d2f4a494cbeec` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `554086e333a1eb4b` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `5584449946e2e447` | A | no | yes | no | no | false | cncf-toc E Q |
+| `55ec2de54d19b899` | A | no | yes | no | no | false | k8s-en S25 R |
+| `560cfd026ce48899` | A | yes | yes | no | no | false | k8s-en E R |
+| `56c73d08d456b20c` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `5804804c0e8f0217` | A | no | yes | no | no | false | k8s-l10n S25 Q |
+| `58dc07febd5f125e` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `5c72866eb53e7177` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `5d2ac3443826f6ff` | A | yes | yes | no | no | false | rust-book S25 R |
+| `5d4e7e832fb0d6b4` | A | yes | yes | no | no | false | k8s-en E R |
+| `60444ae66c4683d0` | A | no | yes | no | no | false | site-policy S5 Q |
+| `6077881d4b034afd` | A | yes | yes | no | no | false | obsidian-help S25 R |
+| `6154306a42f346ae` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `621ba1f18a9d9efd` | A | yes | yes | no | no | false | obsidian-help S25 R |
+| `63261dee3d9cda06` | A | yes | yes | no | no | false | rust-book S5 R |
+| `634a8a3484151c09` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `63ae61eb3855e292` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `643a526cfe981056` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `6476740924534a7b` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `64a27e39903e49d5` | A | no | yes | no | no | false | k8s-l10n S5 Q |
+| `64cb71ff9595c1e4` | A | no | yes | no | no | false | k8s-en M Q |
+| `655a3d7454b0ff3d` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `6594082307429ae1` | A | no | yes | no | no | false | k8s-en S25 R |
+| `65aece43b8a4a606` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `663aea3d4aafbc2c` | A | no | yes | no | no | false | site-policy S25 Q |
+| `6761fa492279ab6e` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `67b3ed3556094c33` | B | yes | no | no | no | false | k8s-en S25 Q; k8s-en M Q |
+| `694120b4a2410326` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `69a859733709a9ea` | A | yes | yes | no | no | false | k8s-en E R; k8s-en S5 R |
+| `69a8e7512048bc7b` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `69b11c54b60cb32a` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `69fc701cc1e4ebd9` | A | yes | yes | no | no | false | k8s-l10n S5 Q; k8s-l10n S25 Q |
+| `6b56897d422a2b57` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `6bb519626cbb3c26` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `6c605b9494e2be3a` | A | no | yes | no | no | false | site-policy S5 Q |
+| `6c6be3a992bcaaf9` | A | no | yes | no | no | false | k8s-en S25 R |
+| `6d870f471db21f7c` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `6d96327def8d050e` | A | yes | yes | no | no | false | cncf-toc E R; cncf-toc S25 R |
+| `6dd952cbde61925b` | A | yes | yes | no | no | false | k8s-l10n S5 Q |
+| `6e68439bb7a2b818` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `6e9e09108ff74a47` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `6ebee9367c019c81` | A | yes | yes | no | no | false | k8s-l10n S5 Q |
+| `6f61cd612153b71d` | B | yes | no | no | no | false | k8s-en M Q |
+| `6f658bfa5952defe` | A | yes | yes | no | no | false | cncf-toc E R; cncf-toc S5 R |
+| `6f7c042809aa9815` | A | no | yes | no | no | false | site-policy S5 Q |
+| `6fc30d98c2380988` | A | no | yes | no | no | false | site-policy S5 Q |
+| `6ffe058725cb909d` | A | yes | yes | no | no | false | k8s-en E R |
+| `715af801b33dc568` | A | yes | yes | no | no | false | k8s-l10n E Q |
+| `71937b4d06f13ae7` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `71bd010a5a0ade6e` | A | yes | yes | no | no | false | k8s-l10n S5 Q |
+| `724718f8a6a41f38` | A | no | yes | no | no | false | obsidian-help S5 R |
+| `72629fd521893555` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `72a71522c4afe71d` | A | yes | yes | no | no | false | site-policy S5 R |
+| `73afa2419039b321` | A | no | yes | no | no | false | site-policy S5 Q |
+| `7464d20f747fc98c` | A | no | yes | no | no | false | site-policy S5 Q |
+| `75a11b10f04cfa81` | A | yes | yes | no | no | false | k8s-en S5 R; k8s-en M R |
+| `75b70811d54543f5` | A | no | yes | no | no | false | k8s-l10n S5 Q |
+| `764b53f2bb5b3782` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `77568dfe43ee26b8` | A | no | yes | no | no | false | k8s-en S5 Q |
+| `78cdbf4f77e980ca` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `7a15200125100336` | A | no | yes | no | no | false | site-policy S5 Q |
+| `7a39ad80e7073bf0` | A | no | yes | no | no | false | k8s-l10n S5 R |
+| `7ab919e746ecb5c0` | A | yes | yes | no | no | false | rust-book S5 R |
+| `7b1d4ded4cda3166` | A | no | yes | no | no | false | site-policy S5 Q |
+| `7b5195b154eee510` | A | yes | yes | no | no | false | k8s-en E R |
+| `7b65a7c3b5697180` | A | no | yes | no | no | false | obsidian-help S5 R |
+| `7ba1b9e58625d684` | A | yes | yes | no | no | false | obsidian-help E R |
+| `7bad5b70c914eb82` | A | yes | yes | no | no | false | rust-book S5 R |
+| `7c3bcfa80ccb716b` | A | no | yes | no | no | false | obsidian-help E R; obsidian-help S5 R |
+| `7c50e3df152814c9` | A | yes | yes | no | no | false | k8s-en M R |
+| `7cb6790cf871f409` | A | no | yes | no | no | false | site-policy S5 Q |
+| `7cbd211b05f443be` | A | no | yes | no | no | false | k8s-en S25 R |
+| `7d3b69ec631785bf` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `7d7d2df38f26df8b` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `7d99cbcbfd92d124` | A | yes | yes | no | no | false | k8s-en M Q |
+| `80da25a44fb94552` | A | no | yes | no | no | false | k8s-en S25 R |
+| `816c954389279ae5` | A | yes | yes | no | no | false | obsidian-help S5 R |
+| `8268bda638f72e76` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `82efd5465ff42bbc` | A | no | yes | no | no | false | site-policy S5 Q |
+| `8386e4138395ee92` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `84547453d0d76edd` | A | no | yes | no | no | false | k8s-en M R |
+| `85768e85edfb352d` | A | yes | yes | no | no | false | rust-book S25 R |
+| `867459fbb31ed438` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `87701e49e91bf33f` | A | no | yes | no | no | false | site-policy S5 Q |
+| `87be6f4e4be796e8` | A | yes | yes | no | no | false | k8s-l10n E Q |
+| `89bec65ba6feec42` | A | no | yes | no | no | false | k8s-en S25 Q |
+| `8a1d766326d108ac` | A | no | yes | no | no | false | k8s-en S5 Q |
+| `8a264d01bc39b522` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `8a681c3a2f63b8d0` | A | no | yes | no | no | false | rust-book S25 R |
+| `8ab89a7145232563` | A | no | yes | no | no | false | site-policy S5 Q |
+| `8c0d578208940faa` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `8c5a1024610d71fb` | A | yes | yes | no | no | false | k8s-en M Q |
+| `8ceed4ec876502df` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `8d31d2f92d04fe2f` | A | no | yes | no | no | false | site-policy S5 Q |
+| `8e4e30b3fd4cdd21` | A | no | yes | no | no | false | site-policy S5 Q |
+| `8e883f6a10d3aa37` | A | yes | yes | no | no | false | rust-book S25 R |
+| `8f5d059d770ba8f1` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `8fcef61186f49d50` | A | no | yes | no | no | false | k8s-en S25 R |
+| `9124c3e05435909a` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `912bcc965cb64330` | A | yes | yes | no | no | false | k8s-l10n M R |
+| `917bd935858890e9` | A | yes | yes | no | no | false | k8s-l10n S5 R; k8s-l10n S25 R |
+| `91e4bf8c6c41f36b` | A | yes | yes | no | no | false | obsidian-help S25 R |
+| `9226b3ea8c41dc60` | B | yes | no | no | no | false | k8s-l10n S5 Q |
+| `931c5c7d37a660b2` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `932ae0fda871833e` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `9424bcadc7c7745b` | A | no | yes | no | no | false | k8s-en M Q |
+| `94c8e2fc15ed305b` | B | yes | no | no | no | false | k8s-l10n S25 Q |
+| `94ce573330b8d5a8` | A | no | yes | no | no | false | k8s-l10n S25 Q |
+| `973475dc142c2c1b` | A | no | yes | no | no | false | k8s-en S25 R |
+| `98611368a01d2c1c` | A | no | yes | no | no | false | site-policy S5 Q |
+| `98d586baf95eb485` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `994721635b6bae37` | B | yes | no | no | no | false | k8s-en M Q |
+| `99e092a57adc90c8` | A | no | yes | no | no | false | cncf-toc E R |
+| `9a06c69229716be1` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `9a328067254a570b` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `9b47ccdada5e382c` | A | yes | yes | no | no | false | k8s-l10n M Q |
+| `9b727c5a864b277d` | A | yes | yes | no | no | false | k8s-en S25 Q |
+| `9cce87f64061a233` | A | no | yes | no | no | false | k8s-l10n S25 Q |
+| `9d288b193a2c7908` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `a12c7ddd3c0f1679` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `a2166a59fe09401b` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `a27ae5f733660910` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `a2cc19b251416c1a` | A | no | yes | no | no | false | cncf-toc S5 Q |
+| `a385496ec00c77ec` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `a3cd7f37256ca9a7` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `a3d7efa1093bada6` | B | yes | no | no | no | false | k8s-en M Q |
+| `a5025329ff677c18` | A | no | yes | no | no | false | cncf-toc E R |
+| `a507c3f831856317` | A | no | yes | no | no | false | rust-book S25 R |
+| `a668a599f6e7e5b6` | A | no | yes | no | no | false | site-policy S5 Q |
+| `a66e5eb5ef46cdb2` | A | no | yes | no | no | false | k8s-l10n S25 Q |
+| `a6911a2b1c6d9019` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `a6ed028bf7a08119` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `a7a5484dfea27be4` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `a7ba06c282cf3a6a` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `a850c1c59ec72563` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `a920e4716f571d26` | A | no | yes | no | no | false | site-policy S5 Q |
+| `a952d2daae442055` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `ab10caee44f8f5a5` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `ab53c301e6ef7ed6` | A | yes | yes | no | no | false | rust-book S25 R |
+| `abf790bea9f962a8` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `ac60f8aa2eaecc79` | A | no | yes | no | no | false | site-policy S5 Q |
+| `acd7fd14f5420ce2` | A | no | yes | no | no | false | k8s-en S25 Q; k8s-en M Q |
+| `adcce0c5e0156257` | A | no | yes | no | no | false | k8s-en S25 R |
+| `ade89e42850f5fbc` | A | yes | yes | no | no | false | k8s-en S5 R |
+| `ae30276e2d3c457a` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `ae59cc011a0e14a0` | A | yes | yes | no | no | false | cncf-toc E R; cncf-toc S5 R |
+| `ae6212f15c0e9634` | A | no | yes | no | no | false | site-policy S5 Q |
+| `aeb9ab21f98636b9` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `af032c6b9b197838` | A | no | yes | no | no | false | k8s-l10n S25 Q |
+| `af08d665632f8e3a` | A | no | yes | no | no | false | site-policy S5 Q |
+| `af743e0292469dd6` | B | yes | no | no | no | false | k8s-l10n S5 Q |
+| `afe25118969fbdd8` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `aff8460336798803` | A | yes | yes | no | no | false | rust-book S25 R |
+| `b150c9fdf5263212` | A | no | yes | no | no | false | rust-book E R |
+| `b15d3dac580a13ce` | A | no | yes | no | no | false | k8s-en S25 R; k8s-en M R |
+| `b1c6522e5f11925e` | A | no | yes | no | no | false | rust-book S25 R |
+| `b1ef65eb4e99b54d` | A | no | yes | no | no | false | site-policy S5 Q |
+| `b1f3263f08f074f7` | A | no | yes | no | no | false | obsidian-help S25 R |
+| `b1fca2546ed2de29` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `b31d498e4927c66c` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `b366cc2898d4817e` | A | no | yes | no | no | false | site-policy S5 Q |
+| `b3f9cc59e253d605` | A | yes | yes | no | no | false | rust-book E R |
+| `b40e14abbd547a60` | A | no | yes | no | no | false | k8s-en E Q |
+| `b414ecf633852fae` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `b451fa6fc22d33a2` | A | no | yes | no | no | false | site-policy S5 Q |
+| `b486c9e774ddc053` | A | yes | yes | no | no | false | k8s-en S5 R; k8s-en M R |
+| `b5cd1aa1cc7120e9` | A | no | yes | no | no | false | site-policy S25 Q |
+| `b5df7d6a23610259` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `b5e3efe1566f109a` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `b66aa50c8dc92d73` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `b7399b2ceac8d8b1` | B | yes | no | no | no | false | k8s-en S25 Q; k8s-en M Q |
+| `b7927c95cc582add` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `b7d1c539d57f7571` | A | no | yes | no | no | false | k8s-l10n S5 R |
+| `b809f0e4c253d583` | A | no | yes | no | no | false | cncf-toc E Q; cncf-toc S5 Q |
+| `b81b3adbff1c6105` | A | yes | yes | no | no | false | obsidian-help S5 R |
+| `b833fb75971df1fa` | A | no | yes | no | no | false | obsidian-help S5 R |
+| `b8605152b7371af2` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `b9774601f2f398a0` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `b99f95a9361c3865` | A | yes | yes | no | no | false | k8s-l10n M Q |
+| `b9e3dbd5ecd3ac49` | A | yes | yes | no | no | false | k8s-l10n E Q; k8s-l10n S5 Q; k8s-l10n S25 Q |
+| `ba3a9ae7a32fabb9` | A | no | yes | no | no | false | k8s-en S5 Q; k8s-en S25 Q; k8s-en M Q |
+| `babd71050e2c50eb` | A | no | yes | no | no | false | k8s-en S25 R |
+| `baee3f31778cb9cd` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `baef452a12e73b86` | A | no | yes | no | no | false | site-policy S5 Q |
+| `bb825950311b06db` | A | no | yes | no | no | false | k8s-en S25 R |
+| `bbbf8aa2d9e114bb` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `bc45d23e45f55802` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `bc5156aba28eb761` | A | yes | yes | no | no | false | k8s-en M R |
+| `bcbcccaea7056c81` | A | no | yes | no | no | false | k8s-en S25 R |
+| `bce6a48b1c842e36` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `bf2718f38bb31ba5` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `bf934126c68263df` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `c13649ff1ab66431` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `c151eb228cc198af` | A | no | yes | no | no | false | cncf-toc E Q; cncf-toc S5 Q; cncf-toc S25 Q |
+| `c17a893941d237d0` | A | no | yes | no | no | false | site-policy S5 Q |
+| `c26b4364523986c8` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `c327c695d516bfe6` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `c343429f31db300c` | A | yes | yes | no | no | false | k8s-en S5 R |
+| `c39fcca2a299d3f4` | A | no | yes | no | no | false | k8s-en S25 R |
+| `c43679be6a3574ee` | A | no | yes | no | no | false | obsidian-help S5 R |
+| `c44e9490807e7a3a` | A | yes | yes | no | no | false | k8s-en S5 R |
+| `c4738fb3d28f0d26` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `c54ae1a72b9da05c` | A | yes | yes | no | no | false | k8s-l10n E R |
+| `c6b1b94079549cd5` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `c6d59c2c2e33fb95` | A | yes | yes | no | no | false | k8s-en S25 Q; k8s-en M Q |
+| `c878f9c0466e101b` | B | yes | no | no | no | false | site-policy S5 Q |
+| `c892a9e4b7aa73b8` | A | yes | yes | no | no | false | k8s-en S5 R; k8s-en M R |
+| `c8bddf7f2efd8f1b` | A | yes | yes | no | no | false | k8s-en M R |
+| `c944f2530972b59b` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `c9f40e3c237a349e` | A | yes | yes | no | no | false | rust-book S25 R |
+| `ca26ef19f8b56cf1` | A | no | yes | no | no | false | k8s-en S25 R |
+| `cadc4206a55c29f9` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `caf762b8f8d82ea6` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `caf7d6ff71bde056` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `cb60409cc07ce634` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `cc039e4151f3090a` | B | yes | no | no | no | false | k8s-en S25 Q |
+| `cc3ed1c1cdde8c22` | A | no | yes | no | no | false | k8s-en S5 Q |
+| `ccb768c041a2525a` | B | yes | no | no | no | false | rust-book S5 Q; rust-book S25 Q |
+| `ce3c9e40adc6b261` | A | yes | yes | no | no | false | k8s-l10n S5 Q; k8s-l10n S25 Q |
+| `ce6b809d27e1461c` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `cf300bdf86035a16` | A | no | yes | no | no | false | k8s-l10n S25 Q |
+| `d01378ca667f5df5` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `d044cbf42709ad7f` | B | yes | no | no | no | false | k8s-en S25 Q |
+| `d0df8cde08977b30` | A | no | yes | no | no | false | site-policy S5 Q |
+| `d0eceb91953da6a5` | A | yes | yes | no | no | false | k8s-en M R |
+| `d2a753f70cce6b53` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `d316d35f7540d9d6` | A | yes | yes | no | no | false | obsidian-help S25 R |
+| `d3431954dc89024c` | A | yes | yes | no | no | false | k8s-en E R |
+| `d37365b39a8508bc` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `d40cfbef5ad98ccd` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `d45f1ce7e53aaac2` | A | yes | yes | no | no | false | k8s-en E R |
+| `d4babd148a63deec` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `d583602e38dcddd7` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `d58b348521c01242` | A | no | yes | no | no | false | site-policy E Q; site-policy S5 Q |
+| `d598592ce973e5c2` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `d6378f0a3c09f8c6` | A | no | yes | no | no | false | obsidian-help S5 R |
+| `d697694814fa3f7d` | A | yes | yes | no | no | false | cncf-toc E Q; cncf-toc S25 Q |
+| `d6be1f42dc738c00` | A | no | yes | no | no | false | rust-book E R |
+| `d73eb6bce3264bf4` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `d767e6534dccd855` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `d7f387c375da51b1` | A | no | yes | no | no | false | site-policy S5 Q |
+| `d80f41d9396aaed6` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `d86ff7f1e2bfb3d2` | A | yes | yes | no | no | false | k8s-l10n E R |
+| `db3c19fd0f952cc7` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `dc396ff68fdb028a` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `dd169ac730d06678` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `dec82aa285034595` | B | yes | no | no | no | false | k8s-en S5 Q; k8s-en S25 Q; k8s-en M Q |
+| `df78bb88cb333251` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `dfb0e625e4f7d368` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `e0c89e1e994bef71` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `e24bf7a2700d5916` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `e3d4b54406d70c47` | A | no | yes | no | no | false | site-policy S5 Q |
+| `e4165abc0ea2e3e2` | B | yes | no | no | no | false | k8s-l10n S25 Q |
+| `e43dfe11c969e803` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `e4917c899e651079` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `e5a6e5cebab0d37a` | A | yes | yes | no | no | false | k8s-en M R |
+| `e5d5051ba2b8eefa` | A | no | yes | no | no | false | k8s-l10n S25 R |
+| `e70a1b3b6488e4ae` | A | yes | yes | no | no | false | k8s-l10n S5 R; k8s-l10n M R |
+| `e724bd12779be7a1` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `e788d927f22c2001` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `e7c57ac21df01ef4` | A | no | yes | no | no | false | rust-book S25 R |
+| `e80504d705c5998f` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `e870bd518bd173e0` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `e88b55efa8756204` | A | yes | yes | no | no | false | obsidian-help S25 R |
+| `e8c016b288f7e618` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `e90d6755365adc6d` | A | no | yes | no | no | false | site-policy S5 Q |
+| `e9df91cadec8ca35` | A | yes | yes | no | no | false | cncf-toc S5 R |
+| `ea1977e9aff8b4b2` | A | no | yes | no | no | false | k8s-en M Q |
+| `ea1a8541708acb80` | A | no | yes | no | no | false | site-policy S5 Q |
+| `eb6ede9fd1a4b2ef` | A | no | yes | no | no | false | site-policy S5 Q |
+| `eb758a51c025adb5` | A | yes | yes | no | no | false | k8s-l10n S5 R |
+| `ec3d38d6a5c6cfa8` | A | yes | yes | no | no | false | k8s-en E R |
+| `ec6cb4a6f837dd26` | A | no | yes | no | no | false | site-policy S5 Q |
+| `ec8fe144ba8586bf` | A | yes | yes | no | no | false | k8s-en S5 R |
+| `ee264e55f9be6844` | A | yes | yes | no | no | false | rust-book S25 R |
+| `f010a3a5dc0cbb9e` | A | yes | yes | no | no | false | k8s-en S25 R; k8s-en M R |
+| `f010e9273763b450` | A | no | yes | no | no | false | obsidian-help S5 R |
+| `f074aee19a34b3a0` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `f0e1d60e28d62485` | A | yes | yes | no | no | false | obsidian-help S5 R |
+| `f2034539487b0c12` | A | yes | yes | no | no | false | k8s-l10n S25 Q |
+| `f23a909da10c8446` | B | yes | no | no | no | false | k8s-en S25 Q; k8s-en M Q |
+| `f2bf18433e36c0f3` | A | no | yes | no | no | false | site-policy S5 Q |
+| `f4a9efb6bb1a9146` | A | no | yes | no | no | false | k8s-en S25 R; k8s-en M R |
+| `f4b51c6b0ba5cc03` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `f569f7ecda7d7fe7` | A | yes | yes | no | no | false | rust-book S25 R |
+| `f5d2d748ca61e948` | A | yes | yes | no | no | false | k8s-en M Q |
+| `f66a54b40527a59e` | A | no | yes | no | no | false | site-policy S5 Q; site-policy S25 Q |
+| `f6c4f15a730c46a1` | B | yes | no | no | no | false | k8s-en S25 Q; k8s-en M Q |
+| `f6ca1f096b5e0476` | A | yes | yes | no | no | false | k8s-en S25 Q |
+| `f6f3b9ef87fe84a9` | A | yes | yes | no | no | false | k8s-en M R |
+| `f738431e1a1fb772` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `f7435e721863e815` | A | no | yes | no | no | false | rust-book S25 R |
+| `f827fb7281d77df1` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `f8c0c2c4e3b7f0b1` | A | yes | yes | no | no | false | k8s-l10n S5 Q |
+| `f91d94c7d5d54366` | A | yes | yes | no | no | false | k8s-en S5 R |
+| `f9e50be06c6b0e80` | A | no | yes | no | no | false | k8s-l10n S25 Q |
+| `fa174ce6d16f5793` | A | no | yes | no | no | false | k8s-l10n S5 Q; k8s-l10n S25 Q |
+| `fa18aad618b3f94a` | A | yes | yes | no | no | false | cncf-toc S25 R |
+| `fcabcf1b7a8505c1` | A | no | yes | no | no | false | k8s-l10n S25 Q |
+| `fdea33bc68a6fed7` | A | yes | yes | no | no | false | k8s-en S25 R |
+| `fe0a34612ab5336e` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `fe9e471b80581bdd` | A | yes | yes | no | no | false | k8s-l10n S25 R |
+| `ffe263ab60be8d2f` | A | no | yes | no | no | false | site-policy S5 Q |

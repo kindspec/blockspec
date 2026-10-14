@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "bac2056abaed7a717d84d95a6318286ce59a7e75",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "a27b11854cc6221763baecd2ff8727fc474e0a7e538e9e8b74e3121fcd278ab8",
+ "id": "S5:1:content/es/docs/tasks/tools/install-kubectl-macos.md|Q|29",
+ "ok": true,
+ "regenerated_sha256": "a27b11854cc6221763baecd2ff8727fc474e0a7e538e9e8b74e3121fcd278ab8"
+}
