@@ -34,17 +34,17 @@ jobs:
       # Each gate runs even when an earlier one is red, so one failure cannot
       # hide whether the others ran.
       - name: the case tree follows kindkit's convention and case-body schema
-        if: always()
+        if: ${{ !cancelled() }}
         run: python3 .kindkit/tools/validate_case_tree.py conformance/cases
 
       - name: every case can fail, every refusal has a control, the floor holds
-        if: always()
+        if: ${{ !cancelled() }}
         run: python3 conformance/check_tree.py
 
       # There is no implementation yet. A run against nothing must be no
       # verdict, exit 2, never a pass.
       - name: the runner with no implementation reports no verdict
-        if: always()
+        if: ${{ !cancelled() }}
         run: |
           set +e
           PYTHONPATH=.kindkit python3 conformance/run_cases.py
@@ -58,7 +58,7 @@ jobs:
       # And a run against an implementation that returns nothing must fail
       # every case, not some of them.
       - name: the runner fails every case against an empty implementation
-        if: always()
+        if: ${{ !cancelled() }}
         run: |
           impl="$RUNNER_TEMP/empty_impl.py"
           report="$RUNNER_TEMP/report.json"
