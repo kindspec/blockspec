@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "ae0b7159d1e6b5e81ab6e6b6880e13d97a08ab5b",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "dcb704abfd76af2f58dfdb37be4f8e5e78910cb7535cb83b21b646369a1c359d",
+ "id": "M:fc04dbea45c478fde7f8761b97c671667e34a60d:content/en/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade.md|Q|27",
+ "ok": true,
+ "regenerated_sha256": "dcb704abfd76af2f58dfdb37be4f8e5e78910cb7535cb83b21b646369a1c359d"
+}
