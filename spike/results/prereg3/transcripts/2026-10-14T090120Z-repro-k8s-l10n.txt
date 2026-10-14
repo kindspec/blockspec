@@ -1,0 +1,15 @@
+# prereg3 repro k8s-l10n
+# argv: prereg3.py repro --d8-dir d8 --arm k8s-l10n --id S5:13:content/zh-cn/docs/concepts/services-networking/network-policies.md|Q|73 --work-dir work/r-bSL9Bp
+# start: 2026-10-14T09:01:20Z
+# blockspec HEAD: 8cddd9a014aced48ba9b19f7f4111822319ddf24
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T09:01:29Z
+committed   cc0505034fe127f46fb97d25c54993f51e4fb2987dc5bd9853f8fa482901d3cc
+regenerated cc0505034fe127f46fb97d25c54993f51e4fb2987dc5bd9853f8fa482901d3cc
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:13:content/zh-cn/docs/concepts/services-networking/network-policies.md|Q|73
+
+# end: 2026-10-14T09:01:35Z
+# exited: exit status 0
