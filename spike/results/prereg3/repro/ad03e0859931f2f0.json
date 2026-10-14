@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "72913add61a628d16b6bd005ea7e133b3f0b255a",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "0e6495da20c29bf008d541db3a102ab749c3515e37012109b2f331711808dadb",
+ "id": "S25:11:content/en/docs/reference/using-api/server-side-apply.md|Q|98",
+ "ok": true,
+ "regenerated_sha256": "0e6495da20c29bf008d541db3a102ab749c3515e37012109b2f331711808dadb"
+}
