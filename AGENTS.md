@@ -14,8 +14,8 @@ specific to blockspec, and wins where the two conflict.
 deliberately no minted ids — alongside [rowspec](https://github.com/kindspec/rowspec) and [nodespec](https://github.com/kindspec/nodespec).
 
 There is no `SPEC.md` and no implementation. `conformance/cases/` holds draft
-0's conformance cases, written before any implementation existed; nothing runs
-them yet. Saying so is cheaper than being asked.
+0's conformance cases, written before any implementation existed. CI checks the
+tree itself; no implementation runs it yet. Saying so is cheaper than being asked.
 
 ## Before writing anything
 

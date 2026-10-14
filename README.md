@@ -2,8 +2,8 @@
 
 **Status: design pass.** There is no specification and no implementation. The
 conformance cases come first: `conformance/cases/` encodes draft 0 as
-`docs/adjudications/` decides it, and nothing runs them yet. What else exists
-is a design brief and a pre-registered spike,
+`docs/adjudications/` decides it. CI checks the tree itself; no implementation
+runs it yet. What else exists is a design brief and a pre-registered spike,
 `spike/` (blockspec#2): its criterion is committed and its harness validated,
 and it has **no verdict** — whether prose has a silent-wrong-merge worth a
 format is still undecided. Start at `spike/README.md`.
