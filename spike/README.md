@@ -59,12 +59,13 @@ python3 harness/prose_merge.py \
 candidate. `--limit N` caps cases and `--max-blocks N` caps blocks per case;
 both default to 0, meaning no cap.
 
-The corpora are not committed as repositories: `harness/corpora.json` names
-each source and pins a commit, because a clone at HEAD is not the clone D8 ran
-against — and that difference turned out to matter (see `LOG.md`). The results
-do carry corpus text: the prereg 2 and prereg 3 export packets hold whole
-corpus files, and other results quote excerpts, all under their upstream
-terms. `../NOTICE` lists each corpus, its pins and its licence.
+The corpora are not committed as repositories. `harness/corpora.json` pins
+the three control-arm corpora to a commit, because a clone at HEAD is not the
+clone D8 ran against — and that difference turned out to matter (see
+`LOG.md`). The results do carry corpus text: the prereg 2 and prereg 3 export
+packets hold whole corpus files, and other results quote excerpts, all under
+their upstream terms. `../NOTICE` lists every corpus, its pins and its
+licence.
 
 ## The three gates, and why there are three
 
