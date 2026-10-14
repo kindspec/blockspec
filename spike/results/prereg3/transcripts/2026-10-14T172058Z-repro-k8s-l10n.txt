@@ -1,0 +1,15 @@
+# prereg3 repro k8s-l10n
+# argv: prereg3_run2.py repro --d8-dir d8 --arm k8s-l10n --id S5:1:content/es/docs/tasks/tools/install-kubectl-macos.md|Q|29 --work-dir work/r-azgmrJ
+# start: 2026-10-14T17:20:58Z
+# blockspec HEAD: bac2056abaed7a717d84d95a6318286ce59a7e75
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T17:21:06Z
+committed   a27b11854cc6221763baecd2ff8727fc474e0a7e538e9e8b74e3121fcd278ab8
+regenerated a27b11854cc6221763baecd2ff8727fc474e0a7e538e9e8b74e3121fcd278ab8
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:1:content/es/docs/tasks/tools/install-kubectl-macos.md|Q|29
+
+# end: 2026-10-14T17:21:09Z
+# exited: exit status 0
