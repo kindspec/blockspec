@@ -10,6 +10,7 @@ deliberate, not an oversight.
   .editorconfig,
   .gitattributes,
   .gitignore                Apache-2.0 OR MIT
+  .github/workflows/        Apache-2.0 OR MIT
   LICENSE, NOTICE           CC0-1.0
   LICENSES/                 each text under its own terms, copied verbatim
   spike/*.md                CC-BY-4.0

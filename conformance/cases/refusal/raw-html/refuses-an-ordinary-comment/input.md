@@ -1,0 +1,3 @@
+<!-- an ordinary comment -->
+
+Text.

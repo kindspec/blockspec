@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "SPDX-License-Identifier: CC0-1.0",
+  "title": "blockspec case bodies",
+  "description": "The shape of every expect.json in blockspec's conformance tree, applied alongside kindkit's case-tree/expect.schema.json. README.md in this directory says what each field means.",
+  "type": "object",
+  "required": ["kind", "accept"],
+  "properties": {
+    "kind": { "enum": ["parse"] },
+    "accept": { "type": "boolean" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "accept": { "const": true } }, "required": ["accept"] },
+      "then": {
+        "required": ["blocks", "leaves", "names"],
+        "properties": {
+          "kind": true,
+          "accept": true,
+          "frontmatter": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": { "type": "integer", "minimum": 1 }
+          },
+          "blocks": { "type": "array", "items": { "$ref": "#/$defs/block" } },
+          "leaves": { "type": "array", "items": { "$ref": "#/$defs/leaf" } },
+          "names": {
+            "type": "object",
+            "propertyNames": { "$ref": "#/$defs/name" },
+            "additionalProperties": { "$ref": "#/$defs/target" }
+          },
+          "resolve": {
+            "type": "object",
+            "minProperties": 1,
+            "propertyNames": { "$ref": "#/$defs/name" },
+            "additionalProperties": {
+              "oneOf": [
+                { "$ref": "#/$defs/target" },
+                { "type": "string", "pattern": "^#REF!\\([a-z0-9][a-z0-9-]*\\)$" }
+              ]
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "if": { "properties": { "accept": { "const": false } }, "required": ["accept"] },
+      "then": {
+        "required": ["refusal", "controls"],
+        "properties": {
+          "kind": true,
+          "accept": true,
+          "refusal": {
+            "enum": [
+              "setext-heading",
+              "indented-code",
+              "link-reference-definition",
+              "raw-html",
+              "duplicate-name",
+              "conflict-marker",
+              "dangling-marker",
+              "unpaired-region",
+              "table-not-blank-above",
+              "table-not-blank-below"
+            ]
+          },
+          "controls": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "pattern": "^[a-z0-9-]+(/[a-z0-9-]+)+$" }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "$defs": {
+    "name": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "path": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "block": {
+      "type": "object",
+      "required": ["type", "lines"],
+      "properties": {
+        "type": {
+          "enum": ["paragraph", "heading", "code_block", "html_block", "thematic_break", "table", "list", "block_quote"]
+        },
+        "lines": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "type": "integer", "minimum": 1 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "leaf": {
+      "type": "object",
+      "required": ["node", "type", "content"],
+      "properties": {
+        "node": { "$ref": "#/$defs/path" },
+        "type": { "enum": ["paragraph", "heading", "code_block", "html_block", "thematic_break", "table"] },
+        "content": true
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "table" } } },
+          "then": {
+            "properties": {
+              "content": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+              }
+            }
+          },
+          "else": { "properties": { "content": { "type": "string" } } }
+        }
+      ]
+    },
+    "node": {
+      "type": "object",
+      "required": ["node", "type"],
+      "properties": {
+        "node": { "$ref": "#/$defs/path" },
+        "type": {
+          "enum": ["paragraph", "heading", "code_block", "html_block", "thematic_break", "table", "list", "list_item", "block_quote"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "target": {
+      "oneOf": [
+        { "$ref": "#/$defs/node" },
+        {
+          "type": "object",
+          "required": ["region"],
+          "properties": {
+            "region": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/node" } }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

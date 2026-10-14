@@ -1,0 +1,17 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "thematic_break", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [3, 3]},
+    {"type": "thematic_break", "lines": [5, 5]},
+    {"type": "paragraph", "lines": [6, 6]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "thematic_break", "content": ""},
+    {"node": [1], "type": "paragraph", "content": "Intro."},
+    {"node": [2], "type": "thematic_break", "content": ""},
+    {"node": [3], "type": "paragraph", "content": "Text."}
+  ],
+  "names": {}
+}

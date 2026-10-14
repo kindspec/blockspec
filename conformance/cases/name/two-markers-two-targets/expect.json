@@ -1,0 +1,20 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "html_block", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [2, 2]},
+    {"type": "html_block", "lines": [4, 4]},
+    {"type": "paragraph", "lines": [5, 5]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "html_block", "content": "<!-- #alpha -->\n"},
+    {"node": [1], "type": "paragraph", "content": "Alpha."},
+    {"node": [2], "type": "html_block", "content": "<!-- #beta -->\n"},
+    {"node": [3], "type": "paragraph", "content": "Beta."}
+  ],
+  "names": {
+    "alpha": {"node": [1], "type": "paragraph"},
+    "beta": {"node": [3], "type": "paragraph"}
+  }
+}

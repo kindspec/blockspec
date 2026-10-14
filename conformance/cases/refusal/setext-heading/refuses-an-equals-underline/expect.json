@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "setext-heading",
+  "controls": ["refusal/setext-heading/accepts-equals-after-a-blank-line"]
+}

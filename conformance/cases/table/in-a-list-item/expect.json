@@ -1,0 +1,12 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "list", "lines": [1, 5]}
+  ],
+  "leaves": [
+    {"node": [0, 0, 0], "type": "paragraph", "content": "Item text."},
+    {"node": [0, 0, 1], "type": "table", "content": [["a", "b"], ["1", "2"]]}
+  ],
+  "names": {}
+}

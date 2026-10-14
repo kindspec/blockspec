@@ -1,0 +1,16 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "html_block", "lines": [1, 1]},
+    {"type": "list", "lines": [2, 3]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "html_block", "content": "<!-- #steps -->\n"},
+    {"node": [1, 0, 0], "type": "paragraph", "content": "one"},
+    {"node": [1, 1, 0], "type": "paragraph", "content": "two"}
+  ],
+  "names": {
+    "steps": {"node": [1], "type": "list"}
+  }
+}

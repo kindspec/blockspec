@@ -1,0 +1,11 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "list", "lines": [1, 2]}
+  ],
+  "leaves": [
+    {"node": [0, 0, 0], "type": "paragraph", "content": "Item text\ncontinues lazily."}
+  ],
+  "names": {}
+}

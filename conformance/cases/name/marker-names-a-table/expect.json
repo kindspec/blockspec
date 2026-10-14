@@ -1,0 +1,15 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "html_block", "lines": [1, 1]},
+    {"type": "table", "lines": [3, 5]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "html_block", "content": "<!-- #prices -->\n"},
+    {"node": [1], "type": "table", "content": [["item", "cost"], ["tea", "2"]]}
+  ],
+  "names": {
+    "prices": {"node": [1], "type": "table"}
+  }
+}

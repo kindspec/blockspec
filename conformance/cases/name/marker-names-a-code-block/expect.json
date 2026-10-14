@@ -1,0 +1,15 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "html_block", "lines": [1, 1]},
+    {"type": "code_block", "lines": [2, 4]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "html_block", "content": "<!-- #snippet -->\n"},
+    {"node": [1], "type": "code_block", "content": "x = 1\n"}
+  ],
+  "names": {
+    "snippet": {"node": [1], "type": "code_block"}
+  }
+}

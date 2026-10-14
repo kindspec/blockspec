@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+name: conformance
+# Pushes to main only. A pull request branch then produces each check once,
+# from the pull_request run; a bare `push` would report the same job twice on
+# a pull request's head (kindspec/.github AGENTS.md §3.2).
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  # The kindkit commit the validator and the runner come from. run_cases.py's
+  # docstring names the same commit; move them together.
+  KINDKIT_SHA: 6ebd80daba23e0d49a19e24b7ee4c85cedb926df
+
+jobs:
+  # The job id is the check's name, and a ruleset matches on it. Renaming it
+  # leaves a required check unreported (kindspec/.github AGENTS.md §3.2).
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned to commits, not tags, as rowspec does: a SHA cannot be
+      # re-pointed under us.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: kindspec/kindkit
+          ref: ${{ env.KINDKIT_SHA }}
+          path: .kindkit
+
+      # Each gate runs even when an earlier one is red, so one failure cannot
+      # hide whether the others ran.
+      - name: the case tree follows kindkit's convention and case-body schema
+        if: ${{ !cancelled() }}
+        run: python3 .kindkit/tools/validate_case_tree.py conformance/cases
+
+      - name: every case can fail, every refusal has a control, the floor holds
+        if: ${{ !cancelled() }}
+        run: python3 conformance/check_tree.py
+
+      # There is no implementation yet. A run against nothing must be no
+      # verdict, exit 2, never a pass.
+      - name: the runner with no implementation reports no verdict
+        if: ${{ !cancelled() }}
+        run: |
+          set +e
+          PYTHONPATH=.kindkit python3 conformance/run_cases.py
+          code=$?
+          set -e
+          if [ "$code" -ne 2 ]; then
+            echo "expected exit 2 (no verdict), got $code"
+            exit 1
+          fi
+
+      # And a run against an implementation that returns nothing must fail
+      # every case, not some of them.
+      - name: the runner fails every case against an empty implementation
+        if: ${{ !cancelled() }}
+        run: |
+          impl="$RUNNER_TEMP/empty_impl.py"
+          report="$RUNNER_TEMP/report.json"
+          printf 'def conform(text, queries):\n    return {"accept": True, "blocks": [], "leaves": [], "names": {}}\n' > "$impl"
+          set +e
+          PYTHONPATH=.kindkit python3 conformance/run_cases.py --impl "$impl" --report-json "$report" > /dev/null
+          code=$?
+          set -e
+          if [ "$code" -ne 1 ]; then
+            echo "expected exit 1 (cases failed), got $code"
+            exit 1
+          fi
+          python3 - "$report" <<'PY'
+          import json, sys
+          report = json.load(open(sys.argv[1]))
+          failed = {f["id"] for f in report["failures"]}
+          passed = [c for c in report["cases"] if c not in failed]
+          print(f"{len(report['cases'])} cases ran, {len(failed)} failed")
+          if passed:
+              sys.exit(f"cases that passed against an empty implementation: {passed}")
+          PY

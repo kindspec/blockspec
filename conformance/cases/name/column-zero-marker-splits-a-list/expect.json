@@ -1,0 +1,17 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "list", "lines": [1, 1]},
+    {"type": "html_block", "lines": [2, 2]},
+    {"type": "list", "lines": [3, 3]}
+  ],
+  "leaves": [
+    {"node": [0, 0, 0], "type": "paragraph", "content": "one"},
+    {"node": [1], "type": "html_block", "content": "<!-- #rest -->\n"},
+    {"node": [2, 0, 0], "type": "paragraph", "content": "two"}
+  ],
+  "names": {
+    "rest": {"node": [2], "type": "list"}
+  }
+}

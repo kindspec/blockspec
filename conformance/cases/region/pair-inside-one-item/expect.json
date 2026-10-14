@@ -1,0 +1,18 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "list", "lines": [1, 7]}
+  ],
+  "leaves": [
+    {"node": [0, 0, 0], "type": "paragraph", "content": "Intro item."},
+    {"node": [0, 1, 0], "type": "html_block", "content": "<!-- #core:begin -->\n"},
+    {"node": [0, 1, 1], "type": "paragraph", "content": "Core text."},
+    {"node": [0, 1, 2], "type": "paragraph", "content": "More core."},
+    {"node": [0, 1, 3], "type": "html_block", "content": "<!-- #core:end -->\n"},
+    {"node": [0, 2, 0], "type": "paragraph", "content": "Last item."}
+  ],
+  "names": {
+    "core": {"region": [{"node": [0, 1, 1], "type": "paragraph"}, {"node": [0, 1, 2], "type": "paragraph"}]}
+  }
+}

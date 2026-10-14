@@ -1,0 +1,20 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "heading", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [3, 3]},
+    {"type": "heading", "lines": [5, 5]},
+    {"type": "paragraph", "lines": [7, 7]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "heading", "content": "usage"},
+    {"node": [1], "type": "paragraph", "content": "One."},
+    {"node": [2], "type": "heading", "content": "usage"},
+    {"node": [3], "type": "paragraph", "content": "Two."}
+  ],
+  "names": {},
+  "resolve": {
+    "usage": "#REF!(usage)"
+  }
+}

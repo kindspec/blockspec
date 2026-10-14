@@ -1,0 +1,15 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "html_block", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [3, 3]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "html_block", "content": "<!-- #intro -->\n"},
+    {"node": [1], "type": "paragraph", "content": "Intro paragraph."}
+  ],
+  "names": {
+    "intro": {"node": [1], "type": "paragraph"}
+  }
+}

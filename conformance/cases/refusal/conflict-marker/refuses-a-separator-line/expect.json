@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "conflict-marker",
+  "controls": ["refusal/conflict-marker/accepts-a-six-character-run"]
+}

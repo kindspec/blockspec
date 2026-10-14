@@ -1,0 +1,11 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "paragraph", "lines": [1, 1]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "paragraph", "content": "Some *emphasis*, `code`, and a [link](https://example.com)."}
+  ],
+  "names": {}
+}

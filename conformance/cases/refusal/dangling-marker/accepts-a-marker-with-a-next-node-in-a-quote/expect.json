@@ -1,0 +1,17 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "block_quote", "lines": [1, 3]},
+    {"type": "paragraph", "lines": [5, 5]}
+  ],
+  "leaves": [
+    {"node": [0, 0], "type": "paragraph", "content": "Quoted."},
+    {"node": [0, 1], "type": "html_block", "content": "<!-- #named -->\n"},
+    {"node": [0, 2], "type": "paragraph", "content": "Named."},
+    {"node": [1], "type": "paragraph", "content": "After."}
+  ],
+  "names": {
+    "named": {"node": [0, 2], "type": "paragraph"}
+  }
+}

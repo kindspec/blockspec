@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "unpaired-region",
+  "controls": ["refusal/unpaired-region/accepts-a-pair-in-one-item"]
+}

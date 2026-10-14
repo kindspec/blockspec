@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "raw-html",
+  "controls": ["refusal/raw-html/accepts-a-cdata-section-inline"]
+}

@@ -1,0 +1,17 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "paragraph", "lines": [1, 1]},
+    {"type": "html_block", "lines": [2, 2]},
+    {"type": "paragraph", "lines": [3, 3]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "paragraph", "content": "First paragraph."},
+    {"node": [1], "type": "html_block", "content": "<!-- #second -->\n"},
+    {"node": [2], "type": "paragraph", "content": "Second paragraph."}
+  ],
+  "names": {
+    "second": {"node": [2], "type": "paragraph"}
+  }
+}

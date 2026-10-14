@@ -1,0 +1,15 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "thematic_break", "lines": [1, 1]},
+    {"type": "thematic_break", "lines": [3, 3]},
+    {"type": "thematic_break", "lines": [5, 5]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "thematic_break", "content": ""},
+    {"node": [1], "type": "thematic_break", "content": ""},
+    {"node": [2], "type": "thematic_break", "content": ""}
+  ],
+  "names": {}
+}

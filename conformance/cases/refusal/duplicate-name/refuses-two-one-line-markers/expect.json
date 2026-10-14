@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "duplicate-name",
+  "controls": ["refusal/duplicate-name/accepts-two-distinct-names", "refusal/duplicate-name/accepts-two-headings-with-one-text"]
+}

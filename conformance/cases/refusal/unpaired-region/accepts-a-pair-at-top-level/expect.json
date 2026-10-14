@@ -1,0 +1,17 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "html_block", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [2, 2]},
+    {"type": "html_block", "lines": [3, 3]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "html_block", "content": "<!-- #r:begin -->\n"},
+    {"node": [1], "type": "paragraph", "content": "One."},
+    {"node": [2], "type": "html_block", "content": "<!-- #r:end -->\n"}
+  ],
+  "names": {
+    "r": {"region": [{"node": [1], "type": "paragraph"}]}
+  }
+}

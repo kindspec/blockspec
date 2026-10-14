@@ -1,0 +1,26 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "html_block", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [2, 2]},
+    {"type": "html_block", "lines": [3, 3]},
+    {"type": "paragraph", "lines": [4, 4]},
+    {"type": "html_block", "lines": [5, 5]},
+    {"type": "paragraph", "lines": [6, 6]},
+    {"type": "html_block", "lines": [7, 7]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "html_block", "content": "<!-- #outer:begin -->\n"},
+    {"node": [1], "type": "paragraph", "content": "Alpha."},
+    {"node": [2], "type": "html_block", "content": "<!-- #inner:begin -->\n"},
+    {"node": [3], "type": "paragraph", "content": "Beta."},
+    {"node": [4], "type": "html_block", "content": "<!-- #inner:end -->\n"},
+    {"node": [5], "type": "paragraph", "content": "Gamma."},
+    {"node": [6], "type": "html_block", "content": "<!-- #outer:end -->\n"}
+  ],
+  "names": {
+    "outer": {"region": [{"node": [1], "type": "paragraph"}, {"node": [2], "type": "html_block"}, {"node": [3], "type": "paragraph"}, {"node": [4], "type": "html_block"}, {"node": [5], "type": "paragraph"}]},
+    "inner": {"region": [{"node": [3], "type": "paragraph"}]}
+  }
+}
