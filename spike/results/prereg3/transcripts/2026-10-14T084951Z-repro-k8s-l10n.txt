@@ -1,0 +1,15 @@
+# prereg3 repro k8s-l10n
+# argv: prereg3.py repro --d8-dir d8 --arm k8s-l10n --id E:c59484cbb4f9ff8abe6c41ea124d8edadcf22d5a:content/zh-cn/docs/reference/kubernetes-api/workload-resources/cron-job-v1.md|Q|123 --work-dir work/r-zdyhIP
+# start: 2026-10-14T08:49:51Z
+# blockspec HEAD: 9e4a141758cfdea23309bfa9ebaa701105238214
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T08:49:59Z
+committed   cc8a823e43944c85e8509381b894ba3c5a00ef8eec26d5e20d944b5b30fff778
+regenerated cc8a823e43944c85e8509381b894ba3c5a00ef8eec26d5e20d944b5b30fff778
+F9 REPRODUCTION: BYTE-IDENTICAL  E:c59484cbb4f9ff8abe6c41ea124d8edadcf22d5a:content/zh-cn/docs/reference/kubernetes-api/workload-resources/cron-job-v1.md|Q|123
+
+# end: 2026-10-14T08:50:44Z
+# exited: exit status 0

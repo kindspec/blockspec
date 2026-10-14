@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "9e4a141758cfdea23309bfa9ebaa701105238214",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "cc8a823e43944c85e8509381b894ba3c5a00ef8eec26d5e20d944b5b30fff778",
+ "id": "E:c59484cbb4f9ff8abe6c41ea124d8edadcf22d5a:content/zh-cn/docs/reference/kubernetes-api/workload-resources/cron-job-v1.md|Q|123",
+ "ok": true,
+ "regenerated_sha256": "cc8a823e43944c85e8509381b894ba3c5a00ef8eec26d5e20d944b5b30fff778"
+}
