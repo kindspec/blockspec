@@ -1,0 +1,74 @@
+# prereg3 aggregate
+# argv: prereg3.py aggregate --d8-dir d8 --manifest sealed-manifest-3.json --manifest2 sealed-manifest-2.json
+# start: 2026-10-14T09:02:42Z
+# blockspec HEAD: 8bd23680bfd4f9fab9b9ed95168342a9146be364
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+order: export 3 (ee697d0c4944) is an ancestor of prereg 2's tiers.jsonl (a12126b98eda)
+order: prereg 2's first tier-run started 2026-10-12T13:57:09.948214+00:00, after export 3 executed 2026-10-12T06:28:20Z
+tiers: run 1's tiers.jsonl binds
+per-name check: 483 keys checked, 0 differ
+SAME PER NAME: PASS
+  cmspec        E    Q  NO VERDICT  218 distinct decided natural-language units < 300
+  cmspec        E    R  NO VERDICT  0 distinct decided natural-language units < 300
+  cmspec        M    Q  NO VERDICT  57 distinct decided natural-language units < 300
+  cmspec        M    R  NO VERDICT  0 distinct decided natural-language units < 300
+  cmspec        S25  Q  NO VERDICT  97 distinct decided natural-language units < 300
+  cmspec        S25  R  NO VERDICT  0 distinct decided natural-language units < 300
+  cmspec        S5   Q  NO VERDICT  186 distinct decided natural-language units < 300
+  cmspec        S5   R  NO VERDICT  0 distinct decided natural-language units < 300
+  cncf-toc      E    Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  cncf-toc      E    R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  cncf-toc      M    Q  NOT FOUND   n=482, bound 3/n = 0.00622 at 95%
+  cncf-toc      M    R  NO VERDICT  165 distinct decided natural-language units < 300
+  cncf-toc      S25  Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  cncf-toc      S25  R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  cncf-toc      S5   Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  cncf-toc      S5   R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-en        E    Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-en        E    R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-en        M    Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-en        M    R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-en        S25  Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-en        S25  R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-en        S5   Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-en        S5   R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-l10n      E    Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-l10n      E    R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-l10n      M    Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-l10n      M    R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-l10n      S25  Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-l10n      S25  R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-l10n      S5   Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  k8s-l10n      S5   R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  obsidian-help E    Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  obsidian-help E    R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  obsidian-help M    Q  NO VERDICT  6 distinct decided natural-language units < 300
+  obsidian-help M    R  NO VERDICT  2 distinct decided natural-language units < 300
+  obsidian-help S25  Q  NO VERDICT  214 distinct decided natural-language units < 300
+  obsidian-help S25  R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  obsidian-help S5   Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  obsidian-help S5   R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  rust-book     E    Q  NOT FOUND   n=10762, bound 3/n = 0.00028 at 95%
+  rust-book     E    R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  rust-book     M    Q  NOT FOUND   n=2978, bound 3/n = 0.00101 at 95%
+  rust-book     M    R  NO VERDICT  undecidable 110 > 10% of 712
+  rust-book     S25  Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  rust-book     S25  R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  rust-book     S5   Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  rust-book     S5   R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  site-policy   E    Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  site-policy   E    R  NOT FOUND   n=1383, bound 3/n = 0.00217 at 95%
+  site-policy   M    Q  NO VERDICT  0 distinct decided natural-language units < 300
+  site-policy   M    R  NO VERDICT  0 distinct decided natural-language units < 300
+  site-policy   S25  Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  site-policy   S25  R  NO VERDICT  9 distinct decided natural-language units < 300
+  site-policy   S5   Q  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+  site-policy   S5   R  NO VERDICT  tiering void: P-A: untiered; P-B: untiered; P-E: untiered
+TIERING VOID: P-A: untiered; P-B: untiered; P-E: untiered
+near misses (distinct units): {'i': 25, 'ii': 99, 'iii': 372}
+OVERALL: INCONCLUSIVE
+
+# end: 2026-10-14T09:03:02Z
+# exited: exit status 0
