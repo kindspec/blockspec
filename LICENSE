@@ -10,7 +10,7 @@ deliberate, not an oversight.
   .editorconfig,
   .gitattributes,
   .gitignore                Apache-2.0 OR MIT
-  LICENSE                   CC0-1.0
+  LICENSE, NOTICE          CC0-1.0
   LICENSES/                 each text under its own terms, copied verbatim
   spike/*.md                CC-BY-4.0
   spike/harness/            MIT
@@ -47,7 +47,8 @@ prereg 3 keeps (spike/PRE-REGISTRATION-3.md section 1).
 
 That text is not this project's work and is not offered under CC-BY-4.0. It
 stays under its upstream terms, whatever they are at the pin it was taken
-from. The CC-BY-4.0 row covers what this project wrote around it: the records,
+from. NOTICE lists each corpus, its pins and the licence its tree holds there.
+The CC-BY-4.0 row covers what this project wrote around it: the records,
 figures, prompts, questions and plant texts.
 
 THIRD-PARTY EXCERPTS IN spike/results/prereg3/
