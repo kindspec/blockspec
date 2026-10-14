@@ -1,0 +1,15 @@
+# prereg3 repro k8s-l10n
+# argv: prereg3_run2.py repro --d8-dir d8 --arm k8s-l10n --id S5:1:content/pt-br/docs/tutorials/hello-minikube.md|Q|65 --work-dir work/r-XINrLk
+# start: 2026-10-14T17:21:09Z
+# blockspec HEAD: 17cd66aea69654b0aacac4f3d60a408c1838a646
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T17:21:17Z
+committed   231adfcb281fbfdd8663cc321fab523b8c703f3cfba9381a7c7b9ced7bc6f46e
+regenerated 231adfcb281fbfdd8663cc321fab523b8c703f3cfba9381a7c7b9ced7bc6f46e
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:1:content/pt-br/docs/tutorials/hello-minikube.md|Q|65
+
+# end: 2026-10-14T17:21:20Z
+# exited: exit status 0
