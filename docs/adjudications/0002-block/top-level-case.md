@@ -1,11 +1,14 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
-# blockspec#4: the case for (b): a block is a top-level CommonMark node, and a list is one block
+# blockspec#4: the case for (b)
 
-Pins: kindspec/research `8b9c33c` (PR #17, `experiments/D8-block-definitions/`),
+A block is a top-level CommonMark node, and a list is one block.
+
+Pins: kindspec/research `b292907` (the squash merge of PR #17,
+`experiments/D8-block-definitions/`; only its `d2` rows differ from `8b9c33c`),
 blockspec `1a969d0`, and corpus clones at the PRE-REGISTRATION-2 §6.2 pins.
 `measure.py` printed `(pin)` for all seven arms. The new measurements are in
 kindspec/research `experiments/D8-block-anchoring/cases/top-level/` (PR #18,
-`84dae5e`)
+`18506e9`)
 (`edit_b_vs_d.py`, `rest.py`, `sizes.py`, `probe.py` and their `.txt`
 output). They are new, not D8's, and they use D8's resolver
 (`anchor_eval3.reanchor2`, hard policy) unchanged.
@@ -37,8 +40,9 @@ its gap is 0.2–0.3 points: its top-level HTML captions and comments repeat at 
 The list rows are the sharpest evidence. **A top-level list duplicates in-file
 at 0.0% in obsidian-help (733 lists), against 9.0% for its items (1,990)**.
 k8s-l10n is 8.7% against 13.1% (By type, `b … list` and `d … item`). Repeats are
-procedure steps and parameter lines that recur across procedures, such as
-"Select **Import** again…" (`measure.py --show d:obsidian-help`).
+procedure steps and parameter lines that recur across procedures, such as a
+step that selects the import button a second time
+(`measure.py --show d:obsidian-help`).
 
 Content duplicates overstate loud ambiguity, because prefix and suffix context
 separates many of them. So I measured the resolver itself, resolving every

@@ -11,8 +11,16 @@ case argued for each side from the same evidence, and an adjudication written
 here. The format follows kindspec/research `design-findings/ADJUDICATION.md`
 and adjudication 0001.
 
-The two positions, each committed as argued apart from an SPDX header and
-paths that pointed at working files, which now point at kindspec/research:
+The two positions, each committed as argued, with these edits only: an SPDX
+header; paths to scripts and output that pointed at working files now point
+at kindspec/research `experiments/D8-block-anchoring/cases/`, and one output
+file was renamed to match; local clone paths and a branch name were dropped;
+the research pin moved from `8b9c33c` to `b292907`, the squash merge of the
+same PR, in which only the `d2` rows of `results.txt` differ; one process
+sentence and one "(ad hoc; not saved)" note were reworded; the top-level
+case's title was split and long lines were wrapped; and three quoted
+procedure steps from obsidian-help, which carries no licence, are
+paraphrased.
 
 - **top-level** ([`0002-block/top-level-case.md`](0002-block/top-level-case.md)):
   a block is a top-level CommonMark node, and a list is one block. It concedes
@@ -28,7 +36,7 @@ answers that per job.
 
 Pins: blockspec `3a1544a`. kindspec/research `b292907` (main, with #17), and
 the new measurement in research PR #18, `experiments/D8-block-anchoring/`, at
-`84dae5e`. Corpora at PRE-REGISTRATION-2 §6.2's pins, as
+`18506e9`. Corpora at PRE-REGISTRATION-2 §6.2's pins, as
 `D8-block-definitions/arms.json` lists them. markdown-it-py 3.0.0 (preset
 `commonmark`, GFM tables enabled where stated) and pandoc 3.1.11.1 (`-f gfm`).
 
@@ -41,15 +49,24 @@ tree, and each gets the node that the evidence picks for it:
 | job | the unit | the rule |
 |---|---|---|
 | **partition** | the **block**: a top-level node | A document is a sequence of blocks. A list is one block, and so are a block quote and a table. Every non-blank line after frontmatter is in exactly one block. |
-| **anchoring**, stage 1 | the **leaf** that contains the anchored text | A paragraph, heading, code block, HTML block or table, at any depth. Its quote is its parsed content, with container prefixes removed. There is no fallback to the enclosing block. |
+| **anchoring**, stage 1 | the **leaf** that contains the anchored text | A leaf is a paragraph, heading, code block, HTML block, table or thematic break, at any depth. Its quote is its parsed content, with container prefixes removed. There is no fallback to the enclosing block. |
 | **naming** with `<!-- #name -->` | the **next sibling node in the same container** | This is 0001's rule, unchanged, at any depth. At top level the node is a block. Inside an item or a quote it is the next node there. A marker with no next sibling is refused. |
 | **naming** with `:begin` / `:end` | the **sibling nodes between the two markers** | Both markers must be siblings in one container. That is how a single list item's content is named. |
 | **transclusion** | **what a name names** | One node with its subtree, or the nodes of one region. It is rendered as block content in the referrer. |
 | **conformance tree** | **the partition plus the leaves** | Each case pins every block (type, line range) and every leaf (type, content), and which node each name binds to. |
 
 **GFM pipe tables are in the profile** as a leaf block, from the GFM spec's
-"Tables (extension)" section (0.29-gfm). One shape is refused: a table that
-starts on the line after a paragraph line.
+"Tables (extension)" section (0.29-gfm). Two shapes are refused: a table that
+starts on the line after a paragraph line, and a table followed by a non-blank
+line in the same container. A table must have a blank line, or its
+container's edge, on both sides.
+
+**What a leaf is**, used everywhere below: a paragraph, heading, code block,
+HTML block, table or thematic break. Under 0001's profile an HTML block is
+always a region marker, since other raw HTML is refused, and a code block is
+always fenced, since indented code is refused. A marker and a thematic break
+carry no text to quote, so in practice an anchor lands in a paragraph,
+heading, fenced code block or table.
 
 **No owner question remains.** The deciding question the top-level case asked,
 *does blockspec need to transclude or name a single list item?*, is answered
@@ -68,7 +85,7 @@ oracle. Neither case had run that. It is described under §2.
 | claim | [top-level case](0002-block/top-level-case.md) | [leaf case](0002-block/leaf-case.md) | measured | command |
 |---|---|---|---|---|
 | pooled within-file duplicates, ≥40 chars, `local` column | — | (b) 0.62%, (f) 0.92% | **The arithmetic is right, and it pools two arms that must not be pooled.** Summing all seven arms gives 1,202/194,004 = 0.62% and 2,223/242,644 = 0.92%. But `D8-block-definitions/README.md` says `k8s-en` and `k8s-l10n` "are never pooled". Without `k8s-l10n` it is **0.48% against 0.69%**, and with `distinct` in place of `local` 0.53% against 0.76%. The case printed the no-l10n row too. The gap is about 0.2 points either way. | sum each column of `results.txt` "Summary, minlen=40" per definition, with and without `k8s-l10n` |
-| (b) is lowest or tied, instances dup in file, in 6 of 7 arms | 6 of 7, rust-book the exception | — | **True.** rust-book: 4.4% against 4.2% (d) and 4.1% (f). cmspec and site-policy tie. | `results.txt`, same section |
+| (b) is lowest or tied, instances dup in file, in 6 of 7 arms | 6 of 7, rust-book the exception | — | **True at one decimal, 5 of 7 at full precision.** (b) is lowest in obsidian-help, k8s-l10n, cncf-toc and site-policy (0.559% against 0.618% (d) and 0.595% (f)), and all three are 0 in cmspec. In k8s-en (d) is lower, 2.140% against (b)'s 2.147%. In rust-book (b) is highest, 4.397% against 4.235% (d) and 4.137% (f). | `results.txt`, same section, dup in file / blocks per arm |
 | stage-1 exact match under edits, obsidian-help and rust-book, gap 5 | — | (f) 80–82%, (b) 37–54% | **Reproduced byte for byte**: (f) 81.5% and 79.9%, (b) 54.0% and 36.7%. **It is a status count, not correctness.** `edits2.py` has no oracle. A whole list that resolves FUZZY is a high-entropy match, and D8 §3.2's silent wrongs were low-entropy. Graded by the oracle, (b)'s losses are loud refusals, not wrong answers (§2). The direction holds. The stated reason, that the fuzzy path is where silent wrongs live, does not. | `cases/leaf/edits2.py REPO PATHSPEC 5 MAXFILES`, `cases/leaf/edits2.txt` |
 | loud ambiguity at rest, top-level items ≥40 chars | (d) 1.81% obsidian-help, 0.45% k8s-en, 0.27% cncf-toc; (b) 0, 0.03%, 0 | — | **Reproduced byte for byte.** It comes from narrowing stage 2, not from the list being unique. Let (b)'s stage 2 search the whole file and its refusals become (d)'s: 36 of 1,990 on obsidian-help, and 66 of 14,530 on k8s-en. The same mutation in `scope.py` moves B from 0 to 46 of 3,020 leaf anchors, F's figure. | `cases/top-level/rest.py`, with stage 2 given every item in the file; `red_states.sh`, fourth case |
 | ambiguity after edits, leaf | — | AMBIGUOUS 0.0–0.3% of anchors | **Reproduced**: 0.0%, 0.2%, 0.3% at gaps 1, 5 and 25 on obsidian-help. | `cases/leaf/edits2.txt` |
@@ -161,16 +178,22 @@ What this settles:
   several paragraphs or a sub-list loses its exact match whenever any part of
   it is edited, as a list does.
 - **The only silent wrong in the run came from the coarse scope.** In
-  cncf-toc gap 5, a paragraph appears twice in the later version, inside two
-  similar lists. F refused it as ambiguous. B fuzzy-matched the edited list to
+  cncf-toc gap 5, a paragraph has three identical copies in the later
+  version, in similar lists. F refused it as ambiguous. B fuzzy-matched the edited list to
   the other copy and returned that copy's paragraph, against the oracle. F+B
   inherits the same wrong, because it falls back to B exactly when F has
-  correctly refused. D8's invariant I3 puts precision before recall, so **no
-  fallback from the leaf to the enclosing block.**
+  correctly refused. **The fallback is a real trade, and this decision
+  declines it.** F+B wins on recall: 99.6% against 97.8% in cncf-toc gap 5,
+  99.3% against 98.8% in obsidian-help gap 5, and it removes every at-rest
+  refusal that B does not also make (46 to 0 in obsidian-help). The cost is one
+  silent wrong in 3,168 graded anchors. D8's invariant I3 puts an honest
+  orphan before a confident wrong answer, so **no fallback from the leaf to
+  the enclosing block.** *What would reverse it*, item 2, names the evidence
+  that would bring one back.
 - **The at-rest refusals are the leaf's real cost**, 0 to 1.5% of in-container
   anchors. They are the repeated procedure steps the leaf case identified
-  ("Press `Ctrl+P` …"). They are loud. They are also visible when the anchor is
-  made: the anchoring client resolves the anchor against `base` before it
+  (a step that opens the command palette, repeated in one file). They are
+  loud. They are also visible when the anchor is made: the anchoring client resolves the anchor against `base` before it
   stores it, sees two matches, and can widen the context or refuse. How an
   anchor carries a disambiguator is the anchor format's question, and research
   `scope.py`'s F+Bc row measures one candidate: store the enclosing block only
@@ -261,7 +284,9 @@ sides named them, and none is a new rule:
 - leaf content with container prefixes removed: a paragraph in an item, in a
   quote in an item, with lazy continuation, with a tab after the marker; an item
   with several paragraphs;
-- the table cases of §6.
+- the table cases of §6: a table after a blank line, in a list item, and
+  without outer pipes, all admitted; a table on the line after a paragraph
+  line, and a table followed by a non-blank line, both refused.
 
 ## 6. GFM tables
 
@@ -293,10 +318,13 @@ Under GFM it is a table, and `probe.py` shows both.
   rowspec's model. Tabular data that needs identity or computation belongs in
   a rowspec file, and a document refers to it.
 
-**The refusal.** `Intro.` followed on the next line by a table is a paragraph
-and a table to markdown-it, and a single paragraph to pandoc's `gfm` reader.
-When two mature parsers draw different trees, the profile refuses the input. A
-table must follow a blank line, or start its container. Cell content is opaque
+**The refusals.** When two mature parsers draw different trees, the profile
+refuses the input, and `probe.py` finds two such shapes. `Intro.` followed on
+the next line by a table is a paragraph and a table to markdown-it, and a
+single paragraph to pandoc's `gfm` reader. A non-blank line directly after a
+table's last row is one more table row to markdown-it, and a separate
+paragraph to pandoc. So a table must have a blank line, or its container's
+edge, before and after it. Cell content is opaque
 inline text, like every other leaf's. The second-opinion parser 0001 proposes
 for CI must then implement the extension. markdown-it-py, pandoc's `gfm`
 reader and cmark-gfm do.
@@ -340,7 +368,9 @@ an anchor migration can re-cut its quote from git.
   there, so names must reach below the top level;
 - range anchors are needed under every definition.
 
-**Where each overreached:** the leaf case's headline duplicate figure pools
+**Where each overreached:** the top-level case's "lowest or tied in six of
+seven arms" holds at one decimal and is five of seven at full precision. The
+leaf case's headline duplicate figure pools
 `k8s-l10n` with `k8s-en`, and its exact-path argument reads stage-1 status as
 safety, which the oracle does not bear out. (b)'s fuzzy list matches were
 loud, not wrong, except once. The top-level case's hybrid of the smallest
@@ -352,13 +382,19 @@ enclosing item is dominated by the leaf in every arm.
    block-scoped ones are right**, at a rate above the leaf's at-rest refusal
    cost. This is the leaf case's own criterion. `scope.py` found the reverse:
    the one wrong was block-scoped.
-2. **A requirement that a one-line marker name a list item.** The item would
+2. **Evidence that a fallback to the enclosing block is safe.** An
+   oracle-graded run over more arms in which F+B, or another disambiguator,
+   makes no silent wrong while keeping its recall gain. One silent wrong in
+   3,168 anchors is a small sample in both directions. A disambiguator that
+   never searches outside the leaf's own block, such as wider context, would
+   also do.
+3. **A requirement that a one-line marker name a list item.** The item would
    need a binding rule of its own, with conformance cases. The region pair
    covers the need without one.
-3. **A second-opinion parser that disagrees with the reference on table
+4. **A second-opinion parser that disagrees with the reference on table
    boundaries** outside the refused shape. The profile would narrow its table
    rule further.
-4. 0001's reversal items still stand, and nothing here triggers them. Every
+5. 0001's reversal items still stand, and nothing here triggers them. Every
    unit above is a CommonMark (or GFM table) node, and no typed attribute was
    needed.
 
@@ -367,10 +403,11 @@ enclosing item is dominated by the leaf in every arm.
 - **Blocks**: top-level nodes. A list, a block quote and a table are each one
   block.
 - **Leaves**: paragraph, heading, code block, HTML block, table and thematic
-  break at any depth, with content as CommonMark parses it. Stage 1 of every
+  break at any depth, with content as CommonMark parses it. Under the profile
+  an HTML block is a marker and a code block is fenced. Stage 1 of every
   anchor resolves a leaf.
 - **Names**: `<!-- #name -->` binds to the next sibling node in its container.
   A `:begin` / `:end` pair binds to the sibling nodes between its markers in
   one container. A dangling marker and a cross-container pair are refused.
 - **GFM pipe tables**, refused when they start on the line after a paragraph
-  line.
+  line or are followed by a non-blank line in the same container.

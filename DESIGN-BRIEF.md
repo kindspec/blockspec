@@ -85,9 +85,10 @@ cost.
 **A block is a top-level node; an anchor resolves a leaf.** A list, a block
 quote and a table are each one block, and the blocks partition the document.
 Stage 1 of a quote anchor resolves the leaf (paragraph, heading, code block,
-HTML block or table, at any depth) that holds the anchored text. A region
-marker names the next sibling node in its container. GFM pipe tables are in
-the profile. Decided by `docs/adjudications/0002-block.md` (blockspec#4), which
+HTML block, table or thematic break, at any depth) that holds the anchored
+text. A region marker names the next sibling node in its container. GFM pipe
+tables are in the profile, with a blank line or their container's edge on both
+sides; a table touching a non-blank line above or below is refused. Decided by `docs/adjudications/0002-block.md` (blockspec#4), which
 measured anchoring under real edits for each choice and records the reversal
 cost of each.
 

@@ -2,10 +2,12 @@
 # blockspec#4: a block is a leaf node of the CommonMark tree
 
 **Position.** Definition **(f)** from research PR #17
-(`experiments/D8-block-definitions`, head `8b9c33c`). A block is every
+(`experiments/D8-block-definitions`, squash-merged as `b292907`; only its
+`d2` rows differ from the PR head `8b9c33c`). A block is every
 paragraph, heading, code block, HTML block, table or thematic break, at any
 depth. A list item's paragraphs are blocks. The list, the item and the block
-quote are containers, not blocks. Over (d2): not a partition, since a parent item contains its sub-items.
+quote are containers, not blocks. Over (d2): not a partition, since a parent
+item contains its sub-items.
 Over (d): it stops at the top level, so a nested step stays inside its parent.
 
 Short version: (b) has fewer duplicates. That edge is about 0.3 points, and every
@@ -32,10 +34,10 @@ top-level paragraphs, and (b)'s 733 lists show 0 duplicates (`results.txt`, "By
 type, minlen=40").
 
 What the duplicates are. `measure.py --show f:obsidian-help` at the pins gives
-232 instances and 89 distinct contents. Most of them are procedure steps: "Press
-`Ctrl+P` (or `Cmd+P` on macOS) to open the [[Command palette]]." appears 6 times
-in one file, and "In the side menu, select **Community plugins**." 4 times. That
-is a step that recurs within one file. It is not a template.
+232 instances and 89 distinct contents. Most of them are procedure steps: the step
+that opens the command palette with its keyboard shortcut appears 6 times in one
+file, and the step that selects the community plugins entry in the side menu 4
+times. That is a step that recurs within one file. It is not a template.
 
 Why the gap costs little:
 
@@ -62,7 +64,8 @@ list". Three facts from the corpora and the decided design point this way:
   enclosing list is a median 3.9× and p90 13.2× the length of the paragraph
   anchored inside it (`edits.py`, gap 1). Every comment and suggestion on one
   item then carries a copy of the whole list.
-- **Region markers.** Adjudication 0001's probe shows `marker inside a list item -> … paragraph,
+- **Region markers.** Adjudication 0001's probe shows
+  `marker inside a list item -> … paragraph,
   html_block, paragraph`. The marker "binds to the next sibling". Under (f) that
   sibling is a block. Under (b) it is not a block, so (b) has two options: forbid
   markers inside lists, or add a second unit of identity.
@@ -83,7 +86,7 @@ under both definitions. The anchors were the paragraphs of ≥40 characters insi
 a top-level list, each unique at the anchoring version, compared at file-version
 gap G. Under (b) the anchored block is the enclosing list. Under (f) it is the
 paragraph. Script: kindspec/research
-`experiments/D8-block-anchoring/cases/leaf/edits2.py` (PR #18, `84dae5e`).
+`experiments/D8-block-anchoring/cases/leaf/edits2.py` (PR #18, `18506e9`).
 
 | arm | G | anchors | (b) EXACT | (b) FUZZY | (b) resolves | (f) EXACT | (f) FUZZY | (f) resolves |
 |---|---|---|---|---|---|---|---|---|
@@ -106,7 +109,8 @@ What this shows:
 - **Total recall is close, except at depth.** (f) leads by 0.4 to 3 points at
   gaps 1 and 5, and by 13.5 at rust-book gap 25, where 40.4% of (b)'s anchors
   orphan against 13.9% of (f)'s. At obsidian gap 25, (b) leads by 0.5.
-  **Concession:** that is one arm, not a general recall advantage. Its losses are loud refusals: low entropy at 0.5–4.7%, margin
+  **Concession:** that is one arm, not a general recall advantage. Its losses
+  are loud refusals: low entropy at 0.5–4.7%, margin
   at 0.8–11.1%. On short items that is the trade D8 §3.2 asks for.
 - **The two definitions disagree on 0.1–3.1% of anchors.** Both resolve, but the
   leaf (f) finds is not inside the list (b) finds. One of them is wrong, or the
@@ -133,7 +137,8 @@ perhaps 10 to 20 cases. This is an estimate, not a measurement.
 - Finding where a top-level list ends already requires CommonMark's list-item
   rules: "List items" (48 examples) and "Lists" (26) (D5 §1). (b) parses items
   either way and then throws them away.
-- `measure.py` extracts (f) with six `out["f"]` appends inside the same token loop that does (b).
+- `measure.py` extracts (f) with six `out["f"]` appends inside the same token
+  loop that does (b).
 - CommonMark already defines a paragraph's content with container prefixes
   removed, so the clause can cite the spec. blockspec need not invent it.
 - 0001's reversal item 2 is not triggered: both are CommonMark tree nodes.
@@ -174,7 +179,7 @@ rate above (f)'s 0.3-point duplicate penalty.
   --porcelain -uno`).
 - `python3 -I edits.py obsidian-help/obsidian-help 'en/*.md' G 176` and
   `edits2.py`, in kindspec/research `experiments/D8-block-anchoring/cases/leaf/`,
-  with `D8-identity/` at research `8b9c33c`. Output is `edits.txt` and
+  with `D8-identity/` at research `b292907`. Output is `edits.txt` and
   `edits2.txt` beside them. Files were
   shuffled with seed 7. Version pairs follow each file's own `git log`. A block's
   offset is the start of its first line, an approximation for nested
