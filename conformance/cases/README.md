@@ -101,7 +101,7 @@ defines it. Inline content is opaque, so inline markup is kept as written.
 | `code_block` | the lines between the fences, each ending in `\n`, with the fence's indentation removed. The info string is not content |
 | `html_block` | the block's lines, each ending in `\n`. Under the profile, always one marker line |
 | `thematic_break` | `""` |
-| `table` | rows of cells, header row first, each cell's raw inline text trimmed. The delimiter row is not content |
+| `table` | rows of cells, header row first, as GFM's table extension splits them: each cell's inline text trimmed, with `\|` read as `|`; a body row shorter than the header padded with `""`, and cells past the header's width dropped. The delimiter row is not content |
 
 ### Names and resolution
 
@@ -165,7 +165,7 @@ Each is marked READING in the `WHY.md` of the case that pins it.
 8. **Leaf content, as tabled above.** 0002 says "parsed content, with
    container prefixes removed". The table pins what that is per type: a
    paragraph's and a heading's raw inline text, a code or HTML block's lines,
-   and a table's cells.
+   and a table's cells, `table/cell-escapes-and-row-widths` among them.
 9. **Frontmatter ends at the first later line that is exactly `---`**, and may
    be empty (`---` on lines 1 and 2). `frontmatter/the-first-closing-line-ends-it`,
    `frontmatter/empty`. Line 2 must not be blank (decided, below), so a
@@ -183,6 +183,17 @@ Each is marked READING in the `WHY.md` of the case that pins it.
     `frontmatter/hides-what-the-profile-refuses`,
     `frontmatter/hides-a-marker`,
     `refusal/conflict-marker/refuses-inside-frontmatter`.
+13. **Frontmatter content is not checked as YAML.** Opaque means unparsed, so
+    text that is not valid YAML is still frontmatter, and nothing in it is
+    refused but a conflict-marker line.
+    `frontmatter/the-first-closing-line-ends-it`, `frontmatter/hides-a-marker`,
+    `refusal/conflict-marker/refuses-inside-frontmatter`.
+14. **A conflict-marker line is a column-0 run of seven or more `<`, `>` or
+    `|` followed by a space or the end of the line, or of seven or more `=`
+    alone on its line.** D8 §7.2 says git emits runs of "7-or-more". A run of `=` with
+    other text after it is not a marker.
+    `refusal/conflict-marker/refuses-an-eight-character-run`,
+    `accepts-a-separator-run-with-trailing-text`.
 
 ## Not pinned yet
 
@@ -196,6 +207,9 @@ any case would decide them:
 - **An empty region**, a `:begin` directly followed by its `:end`.
 - **The marker name grammar.** This tree only uses names matching D8's
   pattern, `[a-z0-9][a-z0-9-]*`, and never tests a name outside it.
+- **Frontmatter closed by `...`**, which YAML and pandoc accept as a document
+  end marker. The owner's rule names `---` only; this tree has no case either
+  way.
 - **CRLF line endings**, and which line ending a code block's content uses.
 - **The slug algorithm**, and whether a heading inside a container has one.
 
