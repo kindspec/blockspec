@@ -35,8 +35,9 @@ is, and on whether the rest of the design should follow it. This document
 answers that per job.
 
 Pins: blockspec `3a1544a`. kindspec/research `b292907` (main, with #17), and
-the new measurement in research PR #18, `experiments/D8-block-anchoring/`, at
-`18506e9`. Corpora at PRE-REGISTRATION-2 §6.2's pins, as
+the new measurement in `experiments/D8-block-anchoring/` at research main
+`244dff0`, the squash merge of PR #18. Its files there are byte-identical to
+the PR head `18506e9`. Corpora at PRE-REGISTRATION-2 §6.2's pins, as
 `D8-block-definitions/arms.json` lists them. markdown-it-py 3.0.0 (preset
 `commonmark`, GFM tables enabled where stated) and pandoc 3.1.11.1 (`-f gfm`).
 

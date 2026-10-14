@@ -7,8 +7,8 @@ Pins: kindspec/research `b292907` (the squash merge of PR #17,
 `experiments/D8-block-definitions/`; only its `d2` rows differ from `8b9c33c`),
 blockspec `1a969d0`, and corpus clones at the PRE-REGISTRATION-2 §6.2 pins.
 `measure.py` printed `(pin)` for all seven arms. The new measurements are in
-kindspec/research `experiments/D8-block-anchoring/cases/top-level/` (PR #18,
-`18506e9`)
+kindspec/research `experiments/D8-block-anchoring/cases/top-level/` (research main
+`244dff0`)
 (`edit_b_vs_d.py`, `rest.py`, `sizes.py`, `probe.py` and their `.txt`
 output). They are new, not D8's, and they use D8's resolver
 (`anchor_eval3.reanchor2`, hard policy) unchanged.

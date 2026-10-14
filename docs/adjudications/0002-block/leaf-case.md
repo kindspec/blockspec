@@ -86,7 +86,8 @@ under both definitions. The anchors were the paragraphs of ≥40 characters insi
 a top-level list, each unique at the anchoring version, compared at file-version
 gap G. Under (b) the anchored block is the enclosing list. Under (f) it is the
 paragraph. Script: kindspec/research
-`experiments/D8-block-anchoring/cases/leaf/edits2.py` (PR #18, `18506e9`).
+`experiments/D8-block-anchoring/cases/leaf/edits2.py` (research main
+`244dff0`).
 
 | arm | G | anchors | (b) EXACT | (b) FUZZY | (b) resolves | (f) EXACT | (f) FUZZY | (f) resolves |
 |---|---|---|---|---|---|---|---|---|
@@ -178,7 +179,7 @@ rate above (f)'s 0.3-point duplicate penalty.
   their pins with no tracked changes (`git rev-parse`, `git status
   --porcelain -uno`).
 - `python3 -I edits.py obsidian-help/obsidian-help 'en/*.md' G 176` and
-  `edits2.py`, in kindspec/research `experiments/D8-block-anchoring/cases/leaf/`,
+  `edits2.py`, in kindspec/research `experiments/D8-block-anchoring/cases/leaf/` at `244dff0`,
   with `D8-identity/` at research `b292907`. Output is `edits.txt` and
   `edits2.txt` beside them. Files were
   shuffled with seed 7. Version pairs follow each file's own `git log`. A block's
