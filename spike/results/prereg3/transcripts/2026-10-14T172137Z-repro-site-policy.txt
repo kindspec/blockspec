@@ -1,0 +1,15 @@
+# prereg3 repro site-policy
+# argv: prereg3_run2.py repro --d8-dir d8 --arm site-policy --id S5:10:Policies/acceptable-use-policies/github-acceptable-use-policies.md|Q|6 --work-dir work/r-yiUSH3
+# start: 2026-10-14T17:21:37Z
+# blockspec HEAD: 1104a83ffdc4a438595d3c324bdfa4ad543b0ccf
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T17:21:37Z
+committed   3cae3dbf00b0291f862eb432be21e4789c72a51920e34f746fe841a1351ddab0
+regenerated 3cae3dbf00b0291f862eb432be21e4789c72a51920e34f746fe841a1351ddab0
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:10:Policies/acceptable-use-policies/github-acceptable-use-policies.md|Q|6
+
+# end: 2026-10-14T17:21:38Z
+# exited: exit status 0

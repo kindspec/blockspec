@@ -1,0 +1,12 @@
+{
+ "binding": {
+  "bound": true,
+  "head": "1104a83ffdc4a438595d3c324bdfa4ad543b0ccf",
+  "validation_commit": "a518e08d4d351d0dd76bb823fe0fc97186a4d5d6"
+ },
+ "bound": true,
+ "committed_sha256": "3cae3dbf00b0291f862eb432be21e4789c72a51920e34f746fe841a1351ddab0",
+ "id": "S5:10:Policies/acceptable-use-policies/github-acceptable-use-policies.md|Q|6",
+ "ok": true,
+ "regenerated_sha256": "3cae3dbf00b0291f862eb432be21e4789c72a51920e34f746fe841a1351ddab0"
+}
