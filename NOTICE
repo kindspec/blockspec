@@ -1,0 +1,133 @@
+blockspec — third-party corpus text
+
+Most of this repository is original work, licensed as LICENSE describes. The
+text listed below is not. The spike measures public documentation corpora,
+and its committed results carry their text. That text remains under
+its own upstream terms, not under LICENSE's per-directory split, and it is not
+offered under CC-BY-4.0.
+
+Where it appears
+
+  spike/results/prereg2/export/packets/
+  spike/results/prereg3/export/packets/
+    Every .md file in a packet other than QUESTIONS.md is a whole corpus
+    file as it stood at a commit in that corpus's history, up to and
+    including the pin below: before.md and after.md, or in a merge packet
+    base.md, leg-a.md, leg-c.md and after.md. Each packet's packet.json
+    quotes from them. The plant packets are the exception: the harness
+    generates their text (3 in prereg2, 5 in prereg3). Packets per corpus,
+    the same in both exports:
+      kubernetes/website  340  (k8s-en 169, k8s-l10n 171)
+      github/site-policy   52
+      cncf/toc             32
+      rust-lang/book       31
+      obsidianmd/obsidian-help  28
+      commonmark/commonmark-spec  0
+    The counts come from recomputing each packet's name from the nonce in
+    that prereg's sealed-manifest.json and the scoring units in
+    spike/results/prereg2/score/, whose export both preregs share.
+
+  elsewhere under spike/results/
+    Other result files quote shorter excerpts where they report a block, a
+    quote or a target: the score units, merge-arm-candidates.jsonl and the
+    cheap-arm/ reports among them. A few short obsidian-help fragments, a
+    file path and a heading, are also quoted in spike/LOG.md and
+    spike/PRE-REGISTRATION.md.
+
+Each corpus was read at a pinned commit. Prereg 2 and prereg 3 use the pins
+in spike/PRE-REGISTRATION-2.md section 6.2 (prereg 3 keeps prereg 2's
+corpora, PRE-REGISTRATION-3.md section 1). The earlier arms use
+spike/harness/corpora.json (spike/LOG.md section 1) for rust-lang/book,
+obsidianmd/obsidian-help and commonmark/commonmark-spec, and
+spike/PRE-REGISTRATION.md section 5.1 for the other three. Where an earlier
+pin differs from section 6.2, both are listed. The licence stated for each
+is what the repository's tree holds at that pin.
+
+The files themselves come from the history sampled up to the pin, and some
+of that history is older than the licence the pin carries. Counted over
+every commit the instances in spike/results/prereg2/score/ read files at
+(the commit, its parent, both ends of a sampled span, and a merge with its
+base and legs), by what each commit's own tree holds:
+
+  rust-lang/book      474 of 1985 commits have no licence or copyright file
+                      in their tree. LICENSE-APACHE and LICENSE-MIT were
+                      added in 6063c71 (2017-02-12); the 474 are dated
+                      2015-12-11 to 2017-03-03, the later ones on branches
+                      that did not yet contain it.
+  github/site-policy  9 of 255 commits predate the CC0 dedication: 8 carry
+                      LICENSE.md as the CC-BY-4.0 legal code, and 1
+                      (7249f63) has no LICENSE.md. 88dc965 (2017-07-11)
+                      changed LICENSE.md from CC-BY-4.0 to CC0-1.0.
+  kubernetes/website  unaffected: all 9064 commits carry LICENSE as the
+                      CC-BY-4.0 legal code.
+
+
+kubernetes/website
+  Source:     https://github.com/kubernetes/website
+  Pin:        6b27baef1e44275fd4368e14375296e1dfe5af11
+  Licence:    CC-BY-4.0 (LICENSES/CC-BY-4.0.txt). LICENSE at the pin is the
+              Creative Commons Attribution 4.0 International legal code. It
+              names no copyright holder; the text is its contributors' work.
+  Measured:   content/*.md (k8s-en: content/en/; k8s-l10n: the rest)
+
+github/site-policy
+  Source:     https://github.com/github/site-policy
+  Pin:        b9578b546d2506febda1da2cd7431644d58e512c
+  Licence:    CC0-1.0 (LICENSES/CC0-1.0.txt). LICENSE.md at the pin is the
+              CC0 1.0 Universal dedication.
+  Measured:   *.md, excluding .github/
+
+cncf/toc
+  Source:     https://github.com/cncf/toc
+  Pin:        144c2e3215884e498e744cc51e6b7cef82d654f1
+  Licence:    none. The tree at the pin holds no licence, copying or notice
+              file, and its README.md does not mention a licence.
+  Measured:   *.md, excluding .github/
+
+rust-lang/book
+  Source:     https://github.com/rust-lang/book
+  Pins:       1500248d8f230566e4ec9f27fcbb8fe9e2898ab1 (prereg 2 and 3)
+              917544888a55e4da7109bdba8c88c893c0da70f4 (control and merge arms)
+  Licence:    Apache-2.0 OR MIT, at the recipient's option
+              (LICENSES/Apache-2.0.txt, LICENSES/MIT.txt). At both pins,
+              COPYRIGHT says "This repository is licensed under the Apache
+              License, Version 2.0 ... or the MIT license ..., at your
+              option", beside LICENSE-APACHE and LICENSE-MIT.
+  Copyright:  Copyright (c) 2010 The Rust Project Developers (LICENSE-MIT)
+  Measured:   src/*.md
+
+obsidianmd/obsidian-help
+  Source:     https://github.com/obsidianmd/obsidian-help
+  Pins:       327a782e90481268361b5ccccdb0c224b2b13fe6 (prereg 2 and 3)
+              a3985b585904ddb9f109bd80849b378085308c15 (control and merge arms)
+  Licence:    none. At neither pin does the tree hold a licence, copying or
+              notice file, and README.md does not mention a licence.
+              Several help pages (e.g. en/Licenses and payment/...)
+              document Obsidian's product licences, not this repository's.
+  Measured:   en/*.md
+
+commonmark/commonmark-spec
+  Source:     https://github.com/commonmark/commonmark-spec
+  Pin:        3da939428d80f146f270cd1765e4ba462e96bb1b
+  Licence:    LICENSE at the pin covers spec.txt and CommonMark.dtd under
+              CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/),
+              Copyright (C) 2014-16 John MacFarlane, and test/ and tools/
+              under BSD-2-Clause, Copyright (c) 2014, John MacFarlane. A
+              third section puts the normalization code in runtests.py,
+              derived from the markdowntest project, under MIT, Copyright
+              (c) 2013 Karl Dubost. The files measured, README.md and
+              RELEASE_CHECKLIST.md, are in none of these.
+  Measured:   *.md. No packet comes from this corpus.
+
+
+No licence
+
+Neither cncf/toc's tree nor obsidianmd/obsidian-help's carries a licence
+file at its pin. Their excerpts and files are included only so the spike's
+results can be reproduced and checked. All rights in them remain with their
+authors, and nothing in this repository licenses them to anyone.
+
+For cncf/toc, the CNCF charter, section 11(b)(iv), says documentation is
+received and made available by the CNCF under CC-BY-4.0
+(https://github.com/cncf/foundation/blob/47613dd4aeee9861644b91382aee7dcecb334afb/charter.md).
+Whether that clause covers the TOC's own documents is not settled here.
