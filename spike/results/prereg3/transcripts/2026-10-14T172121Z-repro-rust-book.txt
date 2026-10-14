@@ -1,0 +1,15 @@
+# prereg3 repro rust-book
+# argv: prereg3_run2.py repro --d8-dir d8 --arm rust-book --id S25:24:src/ch02-00-guessing-game-tutorial.md|Q|131 --work-dir work/r-5gmaTa
+# start: 2026-10-14T17:21:21Z
+# blockspec HEAD: f0037882a2f3af77c07b843f2b2694ee0aac5588
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T17:21:22Z
+committed   ab0dcef37daf1184590aeca3a6dc34d6a5a535ad6d6f7905ec02d92a6b2ab9dc
+regenerated ab0dcef37daf1184590aeca3a6dc34d6a5a535ad6d6f7905ec02d92a6b2ab9dc
+F9 REPRODUCTION: BYTE-IDENTICAL  S25:24:src/ch02-00-guessing-game-tutorial.md|Q|131
+
+# end: 2026-10-14T17:21:37Z
+# exited: exit status 0
