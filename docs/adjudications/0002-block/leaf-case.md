@@ -179,8 +179,9 @@ rate above (f)'s 0.3-point duplicate penalty.
   their pins with no tracked changes (`git rev-parse`, `git status
   --porcelain -uno`).
 - `python3 -I edits.py obsidian-help/obsidian-help 'en/*.md' G 176` and
-  `edits2.py`, in kindspec/research `experiments/D8-block-anchoring/cases/leaf/` at `244dff0`,
-  with `D8-identity/` at research `b292907`. Output is `edits.txt` and
+  `edits2.py`, in kindspec/research
+  `experiments/D8-block-anchoring/cases/leaf/` at `244dff0`, with
+  `D8-identity/` at research `b292907`. Output is `edits.txt` and
   `edits2.txt` beside them. Files were
   shuffled with seed 7. Version pairs follow each file's own `git log`. A block's
   offset is the start of its first line, an approximation for nested
