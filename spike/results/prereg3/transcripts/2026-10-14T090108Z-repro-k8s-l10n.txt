@@ -1,0 +1,15 @@
+# prereg3 repro k8s-l10n
+# argv: prereg3.py repro --d8-dir d8 --arm k8s-l10n --id S5:11:content/zh-cn/docs/concepts/workloads/pods/user-namespaces.md|Q|34 --work-dir work/r-UqwrMg
+# start: 2026-10-14T09:01:08Z
+# blockspec HEAD: ebe87efad1ac940fa8c0d4ebcc1558df8f10a536
+# python 3.13.5
+# harness bound: True (validation commit a518e08d4d351d0dd76bb823fe0fc97186a4d5d6)
+
+
+# executed: 2026-10-14T09:01:16Z
+committed   91f7cc9c8235b65d1067df0a15d42afdc4f570bd9291727f30ca8cc06a6ffaa7
+regenerated 91f7cc9c8235b65d1067df0a15d42afdc4f570bd9291727f30ca8cc06a6ffaa7
+F9 REPRODUCTION: BYTE-IDENTICAL  S5:11:content/zh-cn/docs/concepts/workloads/pods/user-namespaces.md|Q|34
+
+# end: 2026-10-14T09:01:20Z
+# exited: exit status 0
