@@ -1,0 +1,17 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "block_quote", "lines": [1, 1]},
+    {"type": "list", "lines": [3, 3]}
+  ],
+  "leaves": [
+    {"node": [0, 0], "type": "heading", "content": "setup"},
+    {"node": [1, 0, 0], "type": "heading", "content": "install"}
+  ],
+  "names": {},
+  "resolve": {
+    "setup": {"node": [0, 0], "type": "heading"},
+    "install": {"node": [1, 0, 0], "type": "heading"}
+  }
+}

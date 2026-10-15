@@ -21,6 +21,172 @@ the brief, the two adjudications, the org contract, kindkit `6ebd80d`
 `conformance/cases/` with its README. Every fixture was written for this tree;
 none is taken from a corpus.
 
+The cases listed at the end of this paragraph were added later, against
+blockspec `926d7a1`, after an implementation existed on an unmerged branch
+(`feat/reference-parser`, kindspec/blockspec#37). Their author did not read
+that implementation, its tests or its mutation gate. They had what the first
+author had, with this tree at `926d7a1` in place of rowspec's, plus
+CommonMark 0.31.2's `spec.txt` (tag `0.31.2`), the GFM spec's tables
+section, and #37's description, which lists inputs the tree did not pin
+without saying what each should produce. Each expected outcome comes from
+the adjudications, the readings below or the cited spec passage, and was
+cross-checked against pandoc 3.1.11.1 (`-f commonmark`, `-f gfm`) and
+markdown-it-py 3.0.0 (`commonmark` preset, tables enabled); a WHY.md
+says where one of them disagrees with the spec. The cases:
+`frontmatter/the-first-of-two-closing-lines-ends-it`,
+`refusal/setext-heading/refuses-a-closing-line-with-trailing-spaces` (since
+moved, below),
+`partition/item-content-indent-counts-the-spaces-after-the-marker`,
+`partition/a-list-marker-needs-a-space-after-it`,
+`partition/an-ordered-item-must-start-at-one-to-interrupt-a-paragraph`,
+`partition/an-empty-item-does-not-interrupt-a-paragraph`,
+`leaf/tab-in-an-item-reaches-the-content-column`,
+`leaf/heading-trailing-spaces-are-stripped`,
+`leaf/fence-indent-is-removed-up-to-its-width`,
+`leaf/a-shorter-fence-is-content`,
+`leaf/the-other-fence-character-is-content`,
+`refusal/link-reference-definition/accepts-text-after-the-destination`,
+`refusal/raw-html/refuses-a-marker-with-text-after-it`,
+`table/a-header-wider-than-the-delimiter-row-is-not-a-table`,
+`refusal/duplicate-name/refuses-a-name-begun-twice`.
+
+The same author added a second set later, against the owner's rulings of
+2026-10-14: the addenda to 0001 and 0002 (the marker line, heading slugs,
+markers that name nothing, three defaults, and `ambiguous-table`), read
+from #37's branch before they reached `main`, with the schema's eleventh
+refusal code taken from the same branch. The
+implementation, its tests and its mutation gate stayed unread, and the
+same two second opinions were used. The cases:
+`frontmatter/dots-do-not-close-it`,
+`name/marker-spacing-is-free`,
+`refusal/ambiguous-table/accepts-a-one-cell-table-with-a-piped-header`,
+`refusal/ambiguous-table/accepts-a-pipeless-line-over-two-cells-in-a-quote`,
+`refusal/ambiguous-table/accepts-a-pipeless-line-over-two-cells`,
+`refusal/ambiguous-table/refuses-a-pipeless-header-over-one-cell`,
+`refusal/ambiguous-table/refuses-after-a-paragraph-line`,
+`refusal/ambiguous-table/refuses-inside-a-block-quote`,
+`refusal/ambiguous-table/refuses-inside-a-list-item`,
+`refusal/dangling-marker/refuses-a-marker-before-a-marker`,
+`refusal/dangling-marker/refuses-a-marker-before-a-region-begin`,
+`refusal/dangling-marker/refuses-an-empty-region`,
+`refusal/duplicate-name/refuses-a-second-begin-with-one-end`,
+`refusal/raw-html/refuses-an-unknown-marker-suffix`,
+`refusal/raw-html/refuses-an-upper-case-marker-name`,
+`refusal/table-not-blank-below/refuses-a-pipe-only-line-below`,
+`refusal/table-not-blank-below/refuses-a-space-and-pipe-line-below`,
+`resolve/duplicate-slug-across-depths-is-ref`,
+`resolve/slug-drops-punctuation`,
+`resolve/slug-is-lower-cased`,
+`resolve/slug-keeps-runs-of-hyphens`,
+`resolve/slug-keeps-each-of-two-spaces`,
+`resolve/slug-keeps-underscore` (since renamed, below),
+`resolve/slug-of-a-nested-heading`,
+`table/a-dash-delimiter-row-is-a-list-item`.
+
+Later the 0001 addendum was rewritten (slugs over a heading's raw content
+by github-slugger 2.0.0's own character class, no slug for a heading
+holding `*`, `_`, a backtick, `[` or `<`, and marker spacing limited to
+spaces and tabs). The existing expectations still hold, and the WHY.md files
+that quoted the earlier wording now quote the rewritten one. Slugs were checked with
+github-slugger 2.0.0's `slug()` under Node. Added then:
+`resolve/a-heading-with-inline-markup-has-no-slug`,
+`resolve/a-heading-with-inline-markup-shares-no-slug`,
+`resolve/slug-drops-a-superscript-digit`,
+`refusal/raw-html/refuses-a-marker-spaced-with-a-no-break-space`,
+`refusal/raw-html/accepts-a-tab-spaced-marker`.
+
+After an independent review of these sets and two more rulings of
+2026-10-14 (a closing `---` may carry trailing spaces or tabs, and `&`
+joins the no-slug characters), one case changed and two were renamed.
+`refusal/setext-heading/refuses-a-closing-line-with-trailing-spaces`
+became `frontmatter/a-closing-line-may-have-trailing-spaces`, and its
+expectation went from a refusal to frontmatter on lines 1 to 3.
+`resolve/slug-keeps-underscore` became
+`resolve/a-heading-with-an-underscore-has-no-slug`, with its expectations
+unchanged. `check_tree.py` now accepts trailing spaces or tabs on a
+frontmatter closing line. Added then:
+`resolve/a-heading-with-a-backtick-has-no-slug`,
+`resolve/plain-heading-slug-for-the-backtick-case`,
+`resolve/a-heading-with-a-bracket-has-no-slug`,
+`resolve/plain-heading-slug-for-the-bracket-case`,
+`resolve/a-heading-with-an-angle-bracket-has-no-slug`,
+`resolve/plain-heading-slug-for-the-angle-bracket-case`,
+`resolve/a-heading-with-an-ampersand-has-no-slug`,
+`resolve/plain-heading-slug-for-the-ampersand-case`,
+`refusal/ambiguous-table/refuses-an-escaped-pipe-header`,
+`table/two-pipe-only-lines-are-a-paragraph`,
+`table/pipe-only-lines-then-text-are-a-paragraph`,
+`frontmatter/a-closing-line-may-have-a-trailing-tab`.
+
+When both rulings reached the 0001 and 0002 addenda, the WHY.md files that
+cited them as the owner's rulings were re-pointed to the addenda, quoting
+them. Added then: `frontmatter/a-no-break-space-does-not-close-it`,
+`frontmatter/a-form-feed-does-not-close-it`.
+
+The owner widened `ambiguous-table` on 2026-10-15 (0002, addendum on
+ambiguous tables) to every paragraph's last line and line under it that
+GitHub reads as a table header and delimiter row and pandoc and
+markdown-it do not both read as one, pipe-less delimiter rows and form
+feeds or vertical tabs in a delimiter row among them. That made
+`frontmatter/a-form-feed-does-not-close-it` (`---`, `a: 1`, `---` and a
+form feed, `Text.`) wrong: lines 2 and 3 are now that shape, and `Text.`
+is a non-blank line under it, so both `ambiguous-table` and
+`table-not-blank-below` apply, an order the addenda do not fix. No single
+code is right, so the case was removed, and
+`frontmatter/a-form-feed-does-not-close-it-before-a-piped-line`, whose
+line 2 holds a pipe, keeps the form feed pinned. Added then:
+`frontmatter/a-form-feed-does-not-close-it-before-a-piped-line`,
+`refusal/ambiguous-table/accepts-a-lazy-dash-line-with-a-form-feed`,
+`refusal/ambiguous-table/accepts-a-piped-header-over-a-piped-aligned-delimiter`,
+`refusal/ambiguous-table/accepts-a-pipeless-line-over-a-two-cell-aligned-delimiter`,
+`refusal/ambiguous-table/refuses-a-centred-pipeless-delimiter`,
+`refusal/ambiguous-table/refuses-a-dash-delimiter-with-a-form-feed`,
+`refusal/ambiguous-table/refuses-a-dash-delimiter-with-a-vertical-tab`,
+`refusal/ambiguous-table/refuses-a-left-aligned-pipeless-delimiter`,
+`refusal/ambiguous-table/refuses-a-piped-header-over-a-pipeless-delimiter`,
+`refusal/ambiguous-table/refuses-a-pipeless-delimiter-in-a-block-quote`,
+`refusal/ambiguous-table/refuses-a-pipeless-delimiter-in-a-list-item`,
+`refusal/ambiguous-table/refuses-a-right-aligned-pipeless-delimiter`,
+`refusal/ambiguous-table/refuses-a-two-cell-delimiter-with-a-form-feed`,
+`refusal/setext-heading/refuses-an-opening-line-with-a-trailing-space`.
+
+Further cases from the same widened addendum: a form feed or vertical tab
+inside or before a delimiter cell, and the shapes it says are tried first
+or are no table to any reader (a setext underline with trailing spaces or
+tabs, a list item, a no-break space, a one-cell header over two cells).
+Added then:
+`refusal/ambiguous-table/accepts-a-dash-line-with-a-no-break-space`,
+`refusal/ambiguous-table/accepts-a-list-item-line-with-a-form-feed`,
+`refusal/ambiguous-table/accepts-a-one-cell-header-over-two-cells-with-a-form-feed`,
+`refusal/ambiguous-table/refuses-a-form-feed-inside-a-piped-delimiter`,
+`refusal/ambiguous-table/refuses-a-leading-form-feed-delimiter`,
+`refusal/ambiguous-table/refuses-a-leading-vertical-tab-delimiter`,
+`refusal/setext-heading/refuses-an-underline-with-a-trailing-space`,
+`refusal/setext-heading/refuses-an-underline-with-a-trailing-tab`.
+
+The owner then rewrote the ambiguous-table addendum (2026-10-15): a form
+feed or vertical tab in either line of a delimiter line and the paragraph
+line over it refuses them whatever the header holds, the two lines are
+judged without the line above, and a lazy header line is read as it
+stands. Every ambiguous-table WHY.md now quotes the rewritten text.
+`refusal/ambiguous-table/accepts-a-one-cell-header-over-two-cells-with-a-form-feed`
+became `refusal/ambiguous-table/refuses-a-one-cell-header-over-two-cells-with-a-form-feed`,
+its expectation going from a paragraph to `ambiguous-table`.
+`frontmatter/a-form-feed-does-not-close-it-before-a-piped-line` was
+removed: under the rewrite its line 2 over the form-feed line is
+`ambiguous-table` whatever line 2 holds, and the `Text.` line under them
+makes `table-not-blank-below` arguable too, an order the addenda do not
+fix. Any paragraph line over a `---` and form-feed line now meets the
+table rule, so `frontmatter/a-form-feed-does-not-close-it-after-a-heading`
+puts a heading there instead. Added then:
+`frontmatter/a-form-feed-does-not-close-it-after-a-heading`,
+`refusal/ambiguous-table/accepts-a-form-feed-line-after-a-heading`,
+`refusal/ambiguous-table/accepts-a-piped-header-with-no-form-feed`,
+`refusal/ambiguous-table/refuses-a-form-feed-delimiter-under-a-longer-paragraph`,
+`refusal/ambiguous-table/refuses-a-form-feed-in-the-header-line`,
+`refusal/table-not-blank-above/accepts-a-lazy-header-over-a-one-cell-delimiter`,
+`refusal/table-not-blank-above/refuses-a-lazy-header-over-a-two-cell-delimiter`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
@@ -116,7 +282,10 @@ name that matches zero targets, or more than one, resolves to the string
 ## Refusal codes
 
 Each refusal case asserts exactly one code, and is written so that only one
-refusal applies to it. An implementation may word its message however it
+refusal applies to it, or so that it combines only refusals whose order the
+addenda of 2026-10-14 fix (`duplicate-name` before `unpaired-region`, both
+before `dangling-marker`, and `ambiguous-table` before
+`table-not-blank-above`). An implementation may word its message however it
 likes; the code is what the case compares.
 
 | code | from | refused |
@@ -127,10 +296,14 @@ likes; the code is what the case compares.
 | `raw-html` | 0001 | an HTML block that is not a region marker |
 | `duplicate-name` | 0001 | one name declared twice in one document |
 | `conflict-marker` | 0001 | a git conflict-marker line |
-| `dangling-marker` | 0002 §3 | a one-line marker with no next sibling in its container |
+| `dangling-marker` | 0002 §3, addendum | a marker that names no node: a one-line marker with no next sibling in its container or whose next sibling is a marker, or an empty region |
 | `unpaired-region` | 0002 §3 | a `:begin` and its `:end` that are not siblings in one container |
 | `table-not-blank-above` | 0002 §6 | a table with a non-blank line directly above it in its container |
 | `table-not-blank-below` | 0002 §6 | a table with a non-blank line directly below it in its container |
+| `ambiguous-table` | 0002, addendum | a delimiter line and the paragraph line over it, judged without the line above, when either holds a form feed or vertical tab, or when they are a table candidate with no unescaped pipe in one of the two lines; at top level, in a block quote or a list item; it wins over `table-not-blank-above` |
+
+When `duplicate-name` and `unpaired-region` both apply, the code is
+`duplicate-name` (0002, addendum).
 
 ## Readings
 
@@ -159,17 +332,45 @@ Each is marked READING in the `WHY.md` of the case that pins it.
    `refusal/raw-html/refuses-an-ordinary-comment`.
 6. **The raw-HTML refusal is block-level.** Inline HTML is opaque inline
    content. `refusal/raw-html/accepts-inline-html`.
-7. **Slugs are tested only where every slug algorithm agrees.** Draft 0 names
-   no slug algorithm, so the `resolve/` cases use headings whose text is one
-   lower-case ASCII word.
+7. **Slugs are GitHub's, over the heading's raw content.** Draft 0 named no
+   slug algorithm, so the first `resolve/` cases use headings whose text is
+   one lower-case ASCII word, where every algorithm agrees. The owner has
+   since decided it (0001, addendum: github-slugger 2.0.0's character class,
+   at any depth, no `-1` suffix, and no slug for a heading whose raw content
+   holds `*`, `_`, a backtick, `[`, `<` or `&`), and later cases test where
+   slug algorithms disagree: the `resolve/slug-*` cases,
+   `resolve/duplicate-slug-across-depths-is-ref`, and the no-slug cases
+   `resolve/a-heading-with-inline-markup-has-no-slug`,
+   `resolve/a-heading-with-inline-markup-shares-no-slug`,
+   `resolve/a-heading-with-an-underscore-has-no-slug`,
+   `resolve/a-heading-with-a-backtick-has-no-slug`,
+   `resolve/a-heading-with-a-bracket-has-no-slug`,
+   `resolve/a-heading-with-an-angle-bracket-has-no-slug` and
+   `resolve/a-heading-with-an-ampersand-has-no-slug`, each with a
+   `resolve/plain-heading-slug-for-the-*-case` control.
 8. **Leaf content, as tabled above.** 0002 says "parsed content, with
    container prefixes removed". The table pins what that is per type: a
    paragraph's and a heading's raw inline text, a code or HTML block's lines,
    and a table's cells, `table/cell-escapes-and-row-widths` among them.
-9. **Frontmatter ends at the first later line that is exactly `---`**, and may
-   be empty (`---` on lines 1 and 2). `frontmatter/the-first-closing-line-ends-it`,
-   `frontmatter/empty`. Line 2 must not be blank (decided, below), so a
-   document that opens with a thematic break and a blank line is not
+9. **Frontmatter ends at the first later line that is `---`, optionally
+   followed by spaces or tabs**, and may be empty (`---` on lines 1 and 2).
+   `frontmatter/the-first-closing-line-ends-it`,
+   `frontmatter/the-first-of-two-closing-lines-ends-it`, `frontmatter/empty`,
+   `frontmatter/a-closing-line-may-have-trailing-spaces`,
+   `frontmatter/a-closing-line-may-have-a-trailing-tab`. Other whitespace
+   after the `---`, such as a no-break space or a form feed, does not close
+   it: `frontmatter/a-no-break-space-does-not-close-it`,
+   `frontmatter/a-form-feed-does-not-close-it-after-a-heading`. The
+   opening line is exactly `---`
+   (`refusal/setext-heading/refuses-an-opening-line-with-a-trailing-space`).
+   This reading first
+   said "exactly `---`", called that the narrower reading, and said relaxing
+   it later was lossless. It was not: under "exactly", the document
+   `---\na: 1\n---  \nText.\n\n---\n` closes its frontmatter on line 6 and
+   swallows the paragraph, so the relaxed reading changes an accepted
+   document's structure. The owner ruled on 2026-10-14 for pandoc's
+   reading, trailing spaces or tabs allowed. Line 2 must not be blank
+   (decided, below), so a document that opens with a thematic break and a blank line is not
    frontmatter, whatever `---` lines come later.
 10. **No blank line is needed after frontmatter.**
     `frontmatter/then-a-paragraph-directly`.
@@ -200,18 +401,15 @@ Each is marked READING in the `WHY.md` of the case that pins it.
 Questions the adjudications leave open, with no case in this tree, because
 any case would decide them:
 
-- **A marker whose next sibling is another marker.** "The next sibling node"
-  is that marker. Whether two stacked names should both reach the node after
-  them (an alias, which a rename would want), bind to the marker, or be
-  refused is a design choice.
-- **An empty region**, a `:begin` directly followed by its `:end`.
-- **The marker name grammar.** This tree only uses names matching D8's
-  pattern, `[a-z0-9][a-z0-9-]*`, and never tests a name outside it.
-- **Frontmatter closed by `...`**, which YAML and pandoc accept as a document
-  end marker. The owner's rule names `---` only; this tree has no case either
-  way.
-- **CRLF line endings**, and which line ending a code block's content uses.
-- **The slug algorithm**, and whether a heading inside a container has one.
+- **CRLF line endings.** The owner has decided that leaf content uses `\n`
+  everywhere (0002, addendum), but no fixture has CRLF bytes: the
+  repository's `.gitattributes` normalises text to LF on commit, so a CRLF
+  fixture needs an attribute that exempts it first.
+
+The marker after a marker, the empty region, the marker line grammar,
+frontmatter closed by `...` and the slug algorithm were listed here until
+the owner decided them on 2026-10-14 (0001 and 0002, addenda); each now has
+cases.
 
 ## Running it
 

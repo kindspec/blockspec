@@ -1,0 +1,15 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "heading", "lines": [1, 1]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "heading", "content": "step  one"}
+  ],
+  "names": {},
+  "resolve": {
+    "step--one": {"node": [0], "type": "heading"},
+    "step-one": "#REF!(step-one)"
+  }
+}

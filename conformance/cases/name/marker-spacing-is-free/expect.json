@@ -1,0 +1,32 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "html_block", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [2, 2]},
+    {"type": "html_block", "lines": [4, 4]},
+    {"type": "paragraph", "lines": [5, 5]},
+    {"type": "html_block", "lines": [7, 7]},
+    {"type": "paragraph", "lines": [8, 8]},
+    {"type": "html_block", "lines": [9, 9]},
+    {"type": "html_block", "lines": [11, 11]},
+    {"type": "paragraph", "lines": [12, 12]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "html_block", "content": "<!--#a-->\n"},
+    {"node": [1], "type": "paragraph", "content": "One."},
+    {"node": [2], "type": "html_block", "content": "<!--  #b  -->  \n"},
+    {"node": [3], "type": "paragraph", "content": "Two."},
+    {"node": [4], "type": "html_block", "content": "<!--\t#c:begin\t-->\n"},
+    {"node": [5], "type": "paragraph", "content": "Three."},
+    {"node": [6], "type": "html_block", "content": "<!-- #c:end -->\n"},
+    {"node": [7], "type": "html_block", "content": "  <!-- #d -->\n"},
+    {"node": [8], "type": "paragraph", "content": "Four."}
+  ],
+  "names": {
+    "a": {"node": [1], "type": "paragraph"},
+    "b": {"node": [3], "type": "paragraph"},
+    "c": {"region": [{"node": [5], "type": "paragraph"}]},
+    "d": {"node": [8], "type": "paragraph"}
+  }
+}

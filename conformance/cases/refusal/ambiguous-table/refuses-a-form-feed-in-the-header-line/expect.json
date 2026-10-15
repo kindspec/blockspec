@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "ambiguous-table",
+  "controls": ["refusal/ambiguous-table/accepts-a-piped-header-with-no-form-feed"]
+}
