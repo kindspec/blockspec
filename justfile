@@ -48,4 +48,5 @@ mutants:
 
 # Remove build artifacts
 clean:
-    rm -rf .pytest_cache .ruff_cache **/__pycache__
+    rm -rf .pytest_cache .ruff_cache
+    find . -path ./.venv -prune -o -path ./.git -prune -o -type d -name __pycache__ -prune -exec rm -rf {} +
