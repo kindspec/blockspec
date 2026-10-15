@@ -363,26 +363,39 @@ MUTANTS = {
     ),
     # --- tables: 0002 section 6, README reading 2 --------------------------
     "tables-not-recognised": (
-        """        if not _has_pipe(delimiter_text) or not delimiter or not all(
-            _DELIMITER_CELL.match(cell) for cell in delimiter
-        ):""",
+        "        if not github or not all(_DELIMITER_CELL.match(cell) for cell in github):",
         "        if True:",
     ),
     "an-empty-delimiter-row-makes-a-table": (
-        "_has_pipe(delimiter_text) or not delimiter or not all",
-        "_has_pipe(delimiter_text) or not all",
+        "        if not github or not all(_DELIMITER_CELL.match(cell) for cell in github):",
+        "        if not all(_DELIMITER_CELL.match(cell) for cell in github):",
     ),
     "a-header-width-mismatch-is-a-table": (
-        "        if len(header) != len(delimiter):",
+        "        if len(_split_row(header_text, _GFM_SPACE)) != len(github):",
         "        if False:",
     ),
-    "a-pipeless-header-row-is-a-paragraph": (
-        "            if len(delimiter) == 1:",
-        "            if False:",
+    "a-table-only-github-reads-is-a-paragraph": (
+        """            raise Refusal(
+                "ambiguous-table",
+                "a table to GitHub and a paragraph to pandoc and markdown-it",
+            )""",
+        "            return 0",
     ),
     "a-pipeless-header-row-is-a-table": (
-        "        if not _has_pipe(header_text):",
-        "        if False:",
+        "_has_pipe(delimiter_text)\n            and _has_pipe(header_text)",
+        "_has_pipe(delimiter_text)",
+    ),
+    "a-pipeless-delimiter-row-is-a-table": (
+        "_has_pipe(delimiter_text)\n            and _has_pipe(header_text)",
+        "_has_pipe(header_text)",
+    ),
+    "every-parser-trims-form-feeds-from-cells": (
+        "        delimiter = _split_row(delimiter_text)",
+        "        delimiter = _split_row(delimiter_text, _GFM_SPACE)",
+    ),
+    "github-trims-only-spaces-and-tabs": (
+        '_GFM_SPACE = " \\t\\v\\f"',
+        '_GFM_SPACE = " \\t"',
     ),
     "the-table-start-runs-before-list-items": (
         """            self.setext_heading,

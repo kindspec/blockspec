@@ -142,10 +142,15 @@ def _has_pipe(text: str) -> bool:
     return re.search(r"(?:^|[^\\])(?:\\\\)*\|", text) is not None
 
 
-def _split_row(text: str) -> list[str]:
+#: What cmark-gfm, and so GitHub, trims from a table row and its cells. pandoc
+#: and markdown-it trim spaces and tabs only.
+_GFM_SPACE = " \t\v\f"
+
+
+def _split_row(text: str, space: str = " \t") -> list[str]:
     """A table row's cells as GFM splits them: on unescaped pipes, outer pipes
-    dropped, each cell trimmed, `\\|` read as `|`."""
-    row = text.strip(" \t")
+    dropped, each cell trimmed of `space`, `\\|` read as `|`."""
+    row = text.strip(space)
     cells: list[str] = []
     cell: list[str] = []
     ends_with_pipe = False
@@ -170,7 +175,7 @@ def _split_row(text: str) -> list[str]:
         cells.pop(0)
     if ends_with_pipe and cells:
         cells.pop()
-    return [cell.strip(" \t") for cell in cells]
+    return [cell.strip(space) for cell in cells]
 
 
 def _link_reference_definition(text: str) -> bool:
@@ -505,32 +510,32 @@ class _Parser:
 
         Tried after every core block start, as cmark-gfm tries its extensions,
         so `- | -` under a paragraph line is a list item, not a delimiter row.
-        A header row with no pipe over a one-cell delimiter row is a
-        one-column table to GitHub and a paragraph to pandoc and markdown-it,
-        and is refused as ambiguous-table (0002, addendum on ambiguous
-        tables)."""
+        The lines are read twice. GitHub's reading needs no pipe in either
+        row, and trims form feeds and vertical tabs from its cells as well as
+        spaces and tabs. The reading pandoc and markdown-it agree on needs a
+        pipe in both rows and trims spaces and tabs only. A table GitHub reads
+        and that reading does not is refused as ambiguous-table (0002,
+        addendum on ambiguous tables)."""
         if self.indented or container.type != "paragraph":
             return 0
         delimiter_text = self.line[self.next_nonspace :]
-        delimiter = _split_row(delimiter_text)
-        if (
-            not _has_pipe(delimiter_text)
-            or not delimiter
-            or not all(_DELIMITER_CELL.match(cell) for cell in delimiter)
-        ):
+        github = _split_row(delimiter_text, _GFM_SPACE)
+        if not github or not all(_DELIMITER_CELL.match(cell) for cell in github):
             return 0
         header_line, header_text = container.lines[-1]
-        if not _has_pipe(header_text):
-            if len(delimiter) == 1:
-                raise Refusal(
-                    "ambiguous-table",
-                    "a header row with no pipe over a delimiter row: a table to GitHub, "
-                    "a paragraph to pandoc and markdown-it",
-                )
+        if len(_split_row(header_text, _GFM_SPACE)) != len(github):
             return 0
+        delimiter = _split_row(delimiter_text)
+        if not (
+            _has_pipe(delimiter_text)
+            and _has_pipe(header_text)
+            and all(_DELIMITER_CELL.match(cell) for cell in delimiter)
+        ):
+            raise Refusal(
+                "ambiguous-table",
+                "a table to GitHub and a paragraph to pandoc and markdown-it",
+            )
         header = _split_row(header_text)
-        if len(header) != len(delimiter):
-            return 0
         parent = container.parent
         if len(container.lines) > 1:
             raise Refusal("table-not-blank-above", "a table directly under a paragraph line")

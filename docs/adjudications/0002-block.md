@@ -477,11 +477,34 @@ for a table-like shape that GFM, as GitHub reads it, takes for a table and the
 CommonMark-profile readers do not, or the reverse. It applies §6's rule that
 the profile refuses an input two mature parsers draw differently.
 
-Draft 0 refuses one such shape: **a header line with no unescaped pipe,
-directly over a delimiter row of one cell** (`a` over `|---|`, `---|` or
-`:-:|`), in any container. GitHub reads a one-column table. pandoc and
-markdown-it read a paragraph. A pipe-less line over a delimiter row of two or
-more cells is a paragraph to all three, and is not refused.
+Which shapes that covers, as widened by the owner's decision of 2026-10-15:
+**a paragraph's last line, and the line under it in the same container, that
+GitHub reads as a table header and delimiter row and that pandoc and
+markdown-it do not both read as one.** GitHub's reading needs no pipe in
+either line, and trims form feeds and vertical tabs from cells as well as
+spaces and tabs. The reading pandoc and markdown-it share needs an unescaped
+pipe in both lines, and trims spaces and tabs only. Either way, the header's
+cells must be as many as the delimiter row's, and the delimiter row must not
+already be a setext underline, a thematic break or a list item, which are
+tried first. The shapes this refuses:
+
+- a header line with no pipe over a one-cell delimiter row: `a` over `|---|`,
+  `---|` or `:-:|`;
+- a one-cell header line, with or without a pipe, over a delimiter row with
+  no pipe that is not a setext underline: `a` over `:--`, `--:` or `:-:`,
+  `| a |` or `a|` over `:--`;
+- a delimiter row whose cells carry a form feed or a vertical tab, which stop
+  `a` over `---` followed by a form feed from being a setext underline, and
+  make `a | b` over `--- | ---` followed by a form feed a table to GitHub
+  alone.
+
+They are refused in a block quote and a list item as at top level. A line
+that reaches its container only lazily is not under the paragraph's last
+line in its container, so `> a` over an unprefixed `---` and a form feed is
+not a table to any of the three, and is not refused. Where GitHub,
+pandoc and markdown-it all read a table, it is a table. A one-cell header
+over a delimiter row of two or more cells is a table to none of them, and is
+not refused.
 
 Where the shape also follows a non-blank line in its container, it is
 `ambiguous-table`, not `table-not-blank-above`: the table exists in only one
