@@ -79,6 +79,7 @@ same two second opinions were used. The cases:
 `resolve/slug-drops-punctuation`,
 `resolve/slug-is-lower-cased`,
 `resolve/slug-keeps-runs-of-hyphens`,
+`resolve/slug-keeps-each-of-two-spaces`,
 `resolve/slug-keeps-underscore`,
 `resolve/slug-of-a-nested-heading`,
 `table/a-dash-delimiter-row-is-a-list-item`.
