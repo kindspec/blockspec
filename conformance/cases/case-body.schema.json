@@ -63,7 +63,8 @@
               "dangling-marker",
               "unpaired-region",
               "table-not-blank-above",
-              "table-not-blank-below"
+              "table-not-blank-below",
+              "ambiguous-table"
             ]
           },
           "controls": {

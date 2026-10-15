@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "setext-heading",
+  "controls": ["refusal/setext-heading/accepts-a-break-after-a-blank-line"]
+}

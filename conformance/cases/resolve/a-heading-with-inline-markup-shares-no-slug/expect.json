@@ -1,0 +1,16 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "heading", "lines": [1, 1]},
+    {"type": "heading", "lines": [3, 3]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "heading", "content": "*em*"},
+    {"node": [1], "type": "heading", "content": "em"}
+  ],
+  "names": {},
+  "resolve": {
+    "em": {"node": [1], "type": "heading"}
+  }
+}

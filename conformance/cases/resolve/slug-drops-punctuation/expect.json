@@ -1,0 +1,15 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "heading", "lines": [1, 1]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "heading", "content": "What's new?"}
+  ],
+  "names": {},
+  "resolve": {
+    "whats-new": {"node": [0], "type": "heading"},
+    "what-s-new": "#REF!(what-s-new)"
+  }
+}
