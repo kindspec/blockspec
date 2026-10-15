@@ -354,15 +354,15 @@ MUTANTS = {
         "        if len(header) != len(delimiter):",
         "        if False:",
     ),
-    "a-pipeless-header-row-is-a-table": (
-        """        if github_only:
-            return 0
-        parent.children.pop(at)""",
-        """        parent.children.pop(at)""",
+    "a-pipeless-header-row-is-a-paragraph": (
+        "            if len(delimiter) == 1:",
+        "            if False:",
     ),
-    "a-pipeless-header-row-is-never-refused": (
-        "        if len(header) != len(delimiter):",
-        "        if github_only or len(header) != len(delimiter):",
+    "a-pipeless-header-row-is-a-table": (
+        "        if header is None:",
+        "        if header is None and len(delimiter) == 1:\n"
+        '            header = [header_text.strip(" \\t")]\n'
+        "        if header is None:",
     ),
     "the-table-start-runs-before-list-items": (
         """            self.setext_heading,
