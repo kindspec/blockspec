@@ -390,10 +390,15 @@ github-slugger 2.0.0 computes it. The heading's raw content is lower-cased,
 every character in the character class of github-slugger 2.0.0's
 `regex.js` is removed, and each space becomes `-`. That class is its own, not
 a Unicode category rule: it removes `²`, and keeps `‿`, `Ⓐ`, `-` and `_`.
-Every heading has a slug, at any depth, with one exception. A
-heading whose raw content holds an inline-markup character, one of `*`, `_`,
-`` ` ``, `[` or `<`, has **no slug**, because its raw content is not the text
-GitHub slugs, and a reference to it is unresolved, `#REF!(name)`. No `-1`
+Lower-casing is the reader's runtime's own, so it follows that runtime's
+Unicode version: U+A7CB and U+A7DC lower-case under node 24 (Unicode 17) and
+not under Python 3.11 to 3.13. `tools/slugger/` holds the script that
+generates the reference's copy of the class, and a checker that compares the
+two. Every heading has a slug, at any depth, with one exception. A heading
+whose raw content holds an inline-markup character, one of `*`, `_`,
+`` ` ``, `[` or `<`, or an `&`, which may begin an entity reference, has **no
+slug**. Its raw content is not the text GitHub slugs, so a reference to it
+is unresolved, `#REF!(name)`. No `-1`
 suffix is added to tell duplicates apart, so two headings with one slug leave
 that slug unresolved, as *What draft 0 carries* already says of any name that
 matches more than one target.

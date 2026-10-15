@@ -778,7 +778,10 @@ def _slug(text: str) -> str | None:
     """GitHub's heading slug, as github-slugger 2.0.0 computes it from the
     heading's raw content: lower-cased, its removed characters dropped, each
     space turned into `-`. None for a heading whose content holds an
-    inline-markup character, whose rendered text the raw content is not."""
+    inline-markup character or `&`, whose rendered text the raw content is
+    not. Lower-casing is the runtime's: Python's Unicode tables, not node's,
+    so the two can differ where their Unicode versions do (U+A7CB and U+A7DC
+    lower-case under node 24's Unicode 17, not under Python 3.12's 15.0)."""
     if _INLINE_MARKUP.intersection(text):
         return None
     return _SLUG_REMOVED.sub("", text.lower()).replace(" ", "-")
@@ -876,7 +879,7 @@ def parse(text: str) -> Document:
     first = 0
     if len(lines) > 1 and lines[0] == "---" and not _blank(lines[1]):
         for at in range(1, len(lines)):
-            if lines[at] == "---":
+            if lines[at].rstrip(" \t") == "---":
                 frontmatter = [1, at + 1]
                 first = at + 1
                 break

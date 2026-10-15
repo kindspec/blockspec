@@ -345,6 +345,10 @@ MUTANTS = {
         "    if _INLINE_MARKUP.intersection(text):\n        return None",
         "    if False:\n        return None",
     ),
+    "a-heading-with-an-ampersand-has-a-slug": (
+        '_INLINE_MARKUP = frozenset("*_`[<&")',
+        '_INLINE_MARKUP = frozenset("*_`[<")',
+    ),
     "a-slug-collapses-runs-of-spaces": (
         '    return _SLUG_REMOVED.sub("", text.lower()).replace(" ", "-")',
         '    return re.sub(" +", "-", _SLUG_REMOVED.sub("", text.lower()))',
