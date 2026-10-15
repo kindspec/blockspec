@@ -1,9 +1,11 @@
-0002, Addendum (ambiguous tables): refused are "a paragraph's last line,
-and the line under it in the same container, that GitHub reads as a table
-header and delimiter row and that pandoc and markdown-it do not both read
-as one". "GitHub's reading needs no pipe in either line", so it reads `a
-\| b` over `|---|` as a one-cell table; "The reading pandoc and
-markdown-it share needs an unescaped pipe in both lines", and `a \| b`
-holds only an escaped one. markdown-it-py 3.0.0
+0002, Addendum (ambiguous tables), as decided on 2026-10-15: "Otherwise the
+lines are a table candidate when the delimiter row's cells, split on
+unescaped pipes and trimmed of spaces and tabs, are each `:?-+:?`, and the
+header line splits into as many cells. GitHub reads a candidate as a
+table. A candidate with no unescaped pipe in one of its two lines is
+`ambiguous-table`: `a` over `|---|`, `---|`, `:--` or `:-:`, and `| a |`
+or `a|` over `:--`. A candidate with a pipe in both lines is a table."
+Split on unescaped pipes, `a \| b` is one cell, as is `|---|`, so the lines
+are a candidate, and `a \| b` holds no unescaped pipe. markdown-it-py 3.0.0
 reads a one-cell table with the cell `a | b`, and pandoc 3.1.11.1
 (`-f gfm`) a paragraph.

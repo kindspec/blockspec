@@ -1,9 +1,8 @@
-0002, Addendum (ambiguous tables), as widened on 2026-10-15: refused are
-"a paragraph's last line, and the line under it in the same container, that
-GitHub reads as a table header and delimiter row and that pandoc and
-markdown-it do not both read as one", among them "a one-cell header line,
-with or without a pipe, over a delimiter row with no pipe that is not a
-setext underline: `a` over `:--`, `--:` or `:-:`, `| a |` or `a|` over
-`:--`", and "a delimiter row whose cells carry a form feed or a vertical
-tab". "They are refused in a block quote and a list item as at top level."
-`--:` is the right-aligned form. pandoc 3.1.11.1 (`-f gfm`) and markdown-it-py 3.0.0 read one paragraph.
+0002, Addendum (ambiguous tables), as decided on 2026-10-15: "Otherwise the
+lines are a table candidate when the delimiter row's cells, split on
+unescaped pipes and trimmed of spaces and tabs, are each `:?-+:?`, and the
+header line splits into as many cells. GitHub reads a candidate as a
+table. A candidate with no unescaped pipe in one of its two lines is
+`ambiguous-table`: `a` over `|---|`, `---|`, `:--` or `:-:`, and `| a |`
+or `a|` over `:--`. A candidate with a pipe in both lines is a table."
+`a` over `--:` is a one-cell candidate with no pipe in either line. pandoc 3.1.11.1 (`-f gfm`) and markdown-it-py 3.0.0 read one paragraph.

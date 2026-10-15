@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "table-not-blank-above",
+  "controls": ["refusal/table-not-blank-above/accepts-a-blank-line-above", "refusal/table-not-blank-above/accepts-a-lazy-header-over-a-one-cell-delimiter"]
+}

@@ -164,6 +164,29 @@ Added then:
 `refusal/setext-heading/refuses-an-underline-with-a-trailing-space`,
 `refusal/setext-heading/refuses-an-underline-with-a-trailing-tab`.
 
+The owner then rewrote the ambiguous-table addendum (2026-10-15): a form
+feed or vertical tab in either line of a delimiter line and the paragraph
+line over it refuses them whatever the header holds, the two lines are
+judged without the line above, and a lazy header line is read as it
+stands. Every ambiguous-table WHY.md now quotes the rewritten text.
+`refusal/ambiguous-table/accepts-a-one-cell-header-over-two-cells-with-a-form-feed`
+became `refusal/ambiguous-table/refuses-a-one-cell-header-over-two-cells-with-a-form-feed`,
+its expectation going from a paragraph to `ambiguous-table`.
+`frontmatter/a-form-feed-does-not-close-it-before-a-piped-line` was
+removed: under the rewrite its line 2 over the form-feed line is
+`ambiguous-table` whatever line 2 holds, and the `Text.` line under them
+makes `table-not-blank-below` arguable too, an order the addenda do not
+fix. Any paragraph line over a `---` and form-feed line now meets the
+table rule, so `frontmatter/a-form-feed-does-not-close-it-after-a-heading`
+puts a heading there instead. Added then:
+`frontmatter/a-form-feed-does-not-close-it-after-a-heading`,
+`refusal/ambiguous-table/accepts-a-form-feed-line-after-a-heading`,
+`refusal/ambiguous-table/accepts-a-piped-header-with-no-form-feed`,
+`refusal/ambiguous-table/refuses-a-form-feed-delimiter-under-a-longer-paragraph`,
+`refusal/ambiguous-table/refuses-a-form-feed-in-the-header-line`,
+`refusal/table-not-blank-above/accepts-a-lazy-header-over-a-one-cell-delimiter`,
+`refusal/table-not-blank-above/refuses-a-lazy-header-over-a-two-cell-delimiter`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
@@ -277,7 +300,7 @@ likes; the code is what the case compares.
 | `unpaired-region` | 0002 §3 | a `:begin` and its `:end` that are not siblings in one container |
 | `table-not-blank-above` | 0002 §6 | a table with a non-blank line directly above it in its container |
 | `table-not-blank-below` | 0002 §6 | a table with a non-blank line directly below it in its container |
-| `ambiguous-table` | 0002, addendum | a paragraph's last line and the line under it that GitHub reads as a table header and delimiter row and pandoc and markdown-it do not both read as one, in any container; it wins over `table-not-blank-above` |
+| `ambiguous-table` | 0002, addendum | a delimiter line and the paragraph line over it, judged without the line above, when either holds a form feed or vertical tab, or when they are a table candidate with no unescaped pipe in one of the two lines; at top level, in a block quote or a list item; it wins over `table-not-blank-above` |
 
 When `duplicate-name` and `unpaired-region` both apply, the code is
 `duplicate-name` (0002, addendum).
@@ -337,7 +360,7 @@ Each is marked READING in the `WHY.md` of the case that pins it.
    `frontmatter/a-closing-line-may-have-a-trailing-tab`. Other whitespace
    after the `---`, such as a no-break space or a form feed, does not close
    it: `frontmatter/a-no-break-space-does-not-close-it`,
-   `frontmatter/a-form-feed-does-not-close-it-before-a-piped-line`. The
+   `frontmatter/a-form-feed-does-not-close-it-after-a-heading`. The
    opening line is exactly `---`
    (`refusal/setext-heading/refuses-an-opening-line-with-a-trailing-space`).
    This reading first
