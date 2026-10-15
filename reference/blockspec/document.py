@@ -681,7 +681,8 @@ class _Parser:
 
 #: github-slugger 2.0.0's removed characters, as hex code point ranges. Generated
 #: from its regex.js by evaluating the regex on every code point with node, so
-#: it matches code point for code point rather than by reading the class.
+#: it matches code point for code point rather than by reading the class:
+#: tools/slugger/ranges.mjs makes it, and tools/slugger/check.py checks it.
 _SLUG_REMOVED_RANGES = (
     "0-1f 21-2c 2e-2f 3a-40 5b-5e 60 7b-a9 ab-b4 b6-b9 bb-bf d7 f7 2c2-2c5 2d2-2df 2e5-2eb "
     "2ed 2ef-2ff 375 378-379 37e 380-385 387 38b 38d 3a2 3f6 482 530 557-558 55a-55f 589-590 "
@@ -770,7 +771,7 @@ _SLUG_REMOVED = re.compile(
 )
 #: A heading whose content holds one of these carries inline markup, and has
 #: no slug (0001, addendum on the marker line and heading slugs).
-_INLINE_MARKUP = frozenset("*_`[<")
+_INLINE_MARKUP = frozenset("*_`[<&")
 
 
 def _slug(text: str) -> str | None:
