@@ -434,3 +434,26 @@ later `---` line would turn its opening into metadata.
 settle, and the reading taken for each (an unclosed block, `---` not on line
 1, an empty block, and conflict markers inside one), are listed in
 `conformance/cases/README.md`.
+
+## Addendum, 2026-10-14: markers that name nothing, and three defaults
+
+The owner's decisions of 2026-10-14.
+
+**A marker must name a node.** The dangling-marker refusal of §3 widens from
+"a one-line marker with no next sibling" to **a marker that names no node**.
+Two more shapes now fall under it:
+
+- an empty region, a `:begin` directly followed by its `:end`, with no
+  sibling node between them;
+- a one-line marker whose next sibling is another marker. A name binds to
+  content, never to a marker, so stacking two markers does not make an alias.
+
+Three defaults, decided the same day:
+
+- **When duplicate-name and unpaired-region both apply, the refusal is
+  duplicate-name.** A name is declared by a one-line marker or by a `:begin`.
+  An `:end` closes a region and declares nothing.
+- **Leaf content uses `\n` as its line ending everywhere**, code blocks
+  included, whatever line endings the file uses.
+- **Frontmatter is closed only by `---`**, never by YAML's `...` document end
+  marker.

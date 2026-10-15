@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import re
 import string
+import unicodedata
 
 __all__ = ["Document", "Refusal", "conform", "parse"]
 
@@ -49,7 +50,7 @@ _WS = "[ \\t\\n\\v\\f\\r]"
 _CONFLICT = re.compile(r"^(?:(?:<{7,}|>{7,}|\|{7,})(?: |$)|={7,}$)")
 
 # D8 section 7.2's region marker, in its two forms.
-_MARKER = re.compile(r"^<!--[ \t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \t]*-->[ \t]*$")
+_MARKER = re.compile(r"^\s*<!--\s*#([a-z0-9][a-z0-9-]*)(:begin|:end)?\s*-->\s*$")
 
 _ATX = re.compile(r"^#{1,6}(?:[ \t]+|$)")
 _FENCE = re.compile(r"^`{3,}(?!.*`)|^~{3,}")
@@ -670,8 +671,11 @@ class _Parser:
 
 
 def _slug(text: str) -> str:
-    text = re.sub(r"[^\w\- ]", "", text.strip().lower())
-    return text.replace(" ", "-")
+    """GitHub's heading slug (github-slugger): lower-cased; every character
+    removed but letters, marks, numbers, `-`, `_` and the space; each space
+    then `-`. No `-1` suffix: duplicates stay unresolved."""
+    kept = (c for c in text.lower() if c in " -_" or unicodedata.category(c)[0] in "LMN")
+    return "".join(kept).replace(" ", "-")
 
 
 class Document:
@@ -701,7 +705,14 @@ class Document:
             yield from self._walk(child, child.path)
 
     def _names(self) -> dict[str, dict]:
-        declared: list[tuple[str, dict]] = []
+        """What each marker names. Every problem is collected first, so that
+        when several refusals apply the one reported does not depend on
+        document order: duplicate-name, then unpaired-region, then
+        dangling-marker (0002, addendum on markers that name nothing). A name is declared by a
+        one-line marker or a `:begin`; an `:end` only closes one."""
+        declared: dict[str, list[dict]] = {}
+        unpaired: list[str] = []
+        dangling: list[str] = []
         for container in [self.root, *self.nodes]:
             if container.type not in ("document", "block_quote", "list_item"):
                 continue
@@ -712,27 +723,31 @@ class Document:
                     continue
                 name, form = node.marker
                 if form is None:
-                    if i + 1 >= len(siblings):
-                        raise Refusal("dangling-marker", f"#{name} has no next sibling")
-                    declared.append((name, siblings[i + 1].ref()))
+                    target = siblings[i + 1] if i + 1 < len(siblings) else None
+                    if target is None or target.marker is not None:
+                        dangling.append(f"#{name} names no node")
+                    else:
+                        declared.setdefault(name, []).append(target.ref())
                 elif form == ":begin":
-                    if name in begun:
-                        raise Refusal("duplicate-name", f"#{name} is declared twice")
-                    begun[name] = i
-                else:
-                    if name not in begun:
-                        raise Refusal("unpaired-region", f"#{name}:end has no :begin beside it")
+                    declared.setdefault(name, []).append({})
+                    begun.setdefault(name, i)
+                elif name in begun:
                     first = begun.pop(name)
-                    declared.append((name, {"region": [n.ref() for n in siblings[first + 1 : i]]}))
-            if begun:
-                name = next(iter(begun))
-                raise Refusal("unpaired-region", f"#{name}:begin has no :end beside it")
-        names: dict[str, dict] = {}
-        for name, target in declared:
-            if name in names:
+                    region = [n.ref() for n in siblings[first + 1 : i]]
+                    if not region:
+                        dangling.append(f"#{name}:begin and #{name}:end name no node")
+                    declared[name][declared[name].index({})] = {"region": region}
+                else:
+                    unpaired.append(f"#{name}:end has no :begin beside it")
+            unpaired += [f"#{name}:begin has no :end beside it" for name in begun]
+        for name, targets in declared.items():
+            if len(targets) > 1:
                 raise Refusal("duplicate-name", f"#{name} is declared twice")
-            names[name] = target
-        return names
+        if unpaired:
+            raise Refusal("unpaired-region", unpaired[0])
+        if dangling:
+            raise Refusal("dangling-marker", dangling[0])
+        return {name: targets[0] for name, targets in declared.items()}
 
     def resolve(self, name: str) -> dict | str:
         """Markers first, then heading slugs. Zero or several matches is

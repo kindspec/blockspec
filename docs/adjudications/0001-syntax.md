@@ -368,3 +368,23 @@ correctly in today's markdown tools.
   an off-the-shelf CommonMark parser's block tree diffed against the
   reference's on the corpora. A test-time dependency only; `reference/` stays
   standard-library-only.
+
+## Addendum, 2026-10-14: the marker line and heading slugs
+
+The owner's decisions of 2026-10-14.
+
+**The marker line.** A region marker is a line matching
+
+    ^\s*<!--\s*#[a-z0-9][a-z0-9-]*(:begin|:end)?\s*-->\s*$
+
+Spacing inside and around the comment is free, so `<!--#intro-->` and
+`<!--  #intro  -->` are both markers. Nothing else may share the line. An HTML
+comment that does not match is raw HTML, and is refused as raw HTML.
+
+**Heading slugs** follow GitHub's rule, as github-slugger implements it: the
+heading's content is lower-cased, every character other than a letter, a
+mark, a number, `-`, `_` or a space is removed, and each space becomes `-`.
+Every heading has a slug, at any depth. No `-1` suffix is added to tell
+duplicates apart, so two headings with one slug leave that slug unresolved,
+`#REF!(slug)`, as *What draft 0 carries* already says of any name that matches
+more than one target.
