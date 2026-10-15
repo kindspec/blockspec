@@ -347,7 +347,9 @@ MUTANTS = {
     ),
     # --- tables: 0002 section 6, README reading 2 --------------------------
     "tables-not-recognised": (
-        "        if not delimiter or not all(_DELIMITER_CELL.match(cell) for cell in delimiter):",
+        """        if not _has_pipe(delimiter_text) or not all(
+            _DELIMITER_CELL.match(cell) for cell in delimiter
+        ):""",
         "        if True:",
     ),
     "a-header-width-mismatch-is-a-table": (
@@ -359,10 +361,8 @@ MUTANTS = {
         "            if False:",
     ),
     "a-pipeless-header-row-is-a-table": (
-        "        if header is None:",
-        "        if header is None and len(delimiter) == 1:\n"
-        '            header = [header_text.strip(" \\t")]\n'
-        "        if header is None:",
+        "        if not _has_pipe(header_text):",
+        "        if False:",
     ),
     "the-table-start-runs-before-list-items": (
         """            self.setext_heading,
@@ -389,12 +389,12 @@ MUTANTS = {
         "        if False:",
     ),
     "a-row-needs-no-pipe": (
-        "            if self.blank or not _split_row(self.line[self.next_nonspace :]):",
-        "            if self.blank:",
+        "            if self.blank or not _has_pipe(row) or not _split_row(row):",
+        "            if self.blank or not _split_row(row):",
     ),
     "a-row-with-no-cells-continues-the-table": (
-        "            if self.blank or not _split_row(self.line[self.next_nonspace :]):",
-        "            if self.blank or _split_row(self.line[self.next_nonspace :]) is None:",
+        "            if self.blank or not _has_pipe(row) or not _split_row(row):",
+        "            if self.blank or not _has_pipe(row):",
     ),
     "an-escaped-pipe-splits-a-cell": (
         '        if c == "\\\\" and i + 1 < len(row):',

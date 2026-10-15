@@ -12,11 +12,12 @@ implementation (commonmark.js), cut down to the profile: every block the
 profile refuses raises `Refusal` where it is recognised. GFM's table extension
 is a block start tried after every core one, as cmark-gfm tries its
 extensions. Where this reader and GFM part ways on tables, it takes the
-narrower reading: a row with no unescaped pipe, or no cells, ends a table
-(GFM would make it a row), and a header row with no pipe over a one-cell
-delimiter row, a table to GitHub alone, is refused. Standard library only, and one
-file on purpose: `conformance/run_cases.py --impl FILE` loads this file by
-path, and so does the mutation gate, from a mutated copy of it.
+narrower reading: a row with no unescaped pipe ends a table, where GFM would
+make it a row, and a header row with no pipe over a one-cell delimiter row, a
+table to GitHub alone, is refused. A row that is only `|` ends a table too, as
+GitHub ends it. Standard library only, and one file on purpose:
+`conformance/run_cases.py --impl FILE` loads this file by path, and so does
+the mutation gate, from a mutated copy of it.
 """
 
 from __future__ import annotations
@@ -137,14 +138,17 @@ def _blank(line: str) -> bool:
     return not line.strip(" \t")
 
 
-def _split_row(text: str) -> list[str] | None:
+def _has_pipe(text: str) -> bool:
+    """Whether `text` holds a `|` that no backslash escapes."""
+    return re.search(r"(?:^|[^\\])(?:\\\\)*\|", text) is not None
+
+
+def _split_row(text: str) -> list[str]:
     """A table row's cells as GFM splits them: on unescaped pipes, outer pipes
-    dropped, each cell trimmed, `\\|` read as `|`. None when the row has no
-    unescaped pipe at all."""
+    dropped, each cell trimmed, `\\|` read as `|`."""
     row = text.strip(" \t")
     cells: list[str] = []
     cell: list[str] = []
-    pipes = 0
     ends_with_pipe = False
     i = 0
     while i < len(row):
@@ -157,15 +161,12 @@ def _split_row(text: str) -> list[str] | None:
         if c == "|":
             cells.append("".join(cell))
             cell = []
-            pipes += 1
             ends_with_pipe = True
         else:
             cell.append(c)
             ends_with_pipe = False
         i += 1
     cells.append("".join(cell))
-    if not pipes:
-        return None
     if row.startswith("|"):
         cells.pop(0)
     if ends_with_pipe and cells:
@@ -426,7 +427,8 @@ class _Parser:
         if kind == "paragraph":
             return 1 if self.blank else 0
         if kind == "table":
-            if self.blank or not _split_row(self.line[self.next_nonspace :]):
+            row = self.line[self.next_nonspace :]
+            if self.blank or not _has_pipe(row) or not _split_row(row):
                 return 1
             return 0
         return 1
@@ -510,12 +512,14 @@ class _Parser:
         tables)."""
         if self.indented or container.type != "paragraph":
             return 0
-        delimiter = _split_row(self.line[self.next_nonspace :])
-        if not delimiter or not all(_DELIMITER_CELL.match(cell) for cell in delimiter):
+        delimiter_text = self.line[self.next_nonspace :]
+        delimiter = _split_row(delimiter_text)
+        if not _has_pipe(delimiter_text) or not all(
+            _DELIMITER_CELL.match(cell) for cell in delimiter
+        ):
             return 0
         header_line, header_text = container.lines[-1]
-        header = _split_row(header_text)
-        if header is None:
+        if not _has_pipe(header_text):
             if len(delimiter) == 1:
                 raise Refusal(
                     "ambiguous-table",
@@ -523,6 +527,7 @@ class _Parser:
                     "a paragraph to pandoc and markdown-it",
                 )
             return 0
+        header = _split_row(header_text)
         if len(header) != len(delimiter):
             return 0
         parent = container.parent
