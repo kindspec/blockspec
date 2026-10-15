@@ -1,0 +1,14 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "heading", "lines": [1, 1]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "heading", "content": "Getting Started 2"}
+  ],
+  "names": {},
+  "resolve": {
+    "getting-started-2": {"node": [0], "type": "heading"}
+  }
+}

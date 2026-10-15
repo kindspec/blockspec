@@ -1,0 +1,18 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "heading", "lines": [1, 1]},
+    {"type": "heading", "lines": [3, 3]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "heading", "content": "snake_case"},
+    {"node": [1], "type": "heading", "content": "kebab-case"}
+  ],
+  "names": {},
+  "resolve": {
+    "kebab-case": {"node": [1], "type": "heading"},
+    "snakecase": "#REF!(snakecase)",
+    "snake-case": "#REF!(snake-case)"
+  }
+}

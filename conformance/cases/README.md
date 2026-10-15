@@ -49,6 +49,40 @@ says where one of them disagrees with the spec. The cases:
 `table/a-header-wider-than-the-delimiter-row-is-not-a-table`,
 `refusal/duplicate-name/refuses-a-name-begun-twice`.
 
+The same author added a second set later, against the owner's rulings of
+2026-10-14: the addenda to 0001 and 0002 (the marker line, heading slugs,
+markers that name nothing, three defaults, and `ambiguous-table`), read
+from #37's branch before they reached `main`, with the schema's eleventh
+refusal code taken from the same branch. Two rulings that the addenda do
+not spell out, a row of only `|` ending a table and a `- | -` row being a
+list item, came from the owner directly; their WHY.md files say so. The
+implementation, its tests and its mutation gate stayed unread, and the
+same two second opinions were used. The cases:
+`frontmatter/dots-do-not-close-it`,
+`name/marker-spacing-is-free`,
+`refusal/ambiguous-table/accepts-a-one-cell-table-with-a-piped-header`,
+`refusal/ambiguous-table/accepts-a-pipeless-line-over-two-cells-in-a-quote`,
+`refusal/ambiguous-table/accepts-a-pipeless-line-over-two-cells`,
+`refusal/ambiguous-table/refuses-a-pipeless-header-over-one-cell`,
+`refusal/ambiguous-table/refuses-after-a-paragraph-line`,
+`refusal/ambiguous-table/refuses-inside-a-block-quote`,
+`refusal/ambiguous-table/refuses-inside-a-list-item`,
+`refusal/dangling-marker/refuses-a-marker-before-a-marker`,
+`refusal/dangling-marker/refuses-a-marker-before-a-region-begin`,
+`refusal/dangling-marker/refuses-an-empty-region`,
+`refusal/duplicate-name/refuses-a-second-begin-with-one-end`,
+`refusal/raw-html/refuses-an-unknown-marker-suffix`,
+`refusal/raw-html/refuses-an-upper-case-marker-name`,
+`refusal/table-not-blank-below/refuses-a-pipe-only-line-below`,
+`refusal/table-not-blank-below/refuses-a-space-and-pipe-line-below`,
+`resolve/duplicate-slug-across-depths-is-ref`,
+`resolve/slug-drops-punctuation`,
+`resolve/slug-is-lower-cased`,
+`resolve/slug-keeps-runs-of-hyphens`,
+`resolve/slug-keeps-underscore`,
+`resolve/slug-of-a-nested-heading`,
+`table/a-dash-delimiter-row-is-a-list-item`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
@@ -155,10 +189,14 @@ likes; the code is what the case compares.
 | `raw-html` | 0001 | an HTML block that is not a region marker |
 | `duplicate-name` | 0001 | one name declared twice in one document |
 | `conflict-marker` | 0001 | a git conflict-marker line |
-| `dangling-marker` | 0002 §3 | a one-line marker with no next sibling in its container |
+| `dangling-marker` | 0002 §3, addendum | a marker that names no node: a one-line marker with no next sibling in its container or whose next sibling is a marker, or an empty region |
 | `unpaired-region` | 0002 §3 | a `:begin` and its `:end` that are not siblings in one container |
 | `table-not-blank-above` | 0002 §6 | a table with a non-blank line directly above it in its container |
 | `table-not-blank-below` | 0002 §6 | a table with a non-blank line directly below it in its container |
+| `ambiguous-table` | 0002, addendum | a header line with no unescaped pipe directly over a one-cell delimiter row, in any container; it wins over `table-not-blank-above` |
+
+When `duplicate-name` and `unpaired-region` both apply, the code is
+`duplicate-name` (0002, addendum).
 
 ## Readings
 
@@ -187,9 +225,12 @@ Each is marked READING in the `WHY.md` of the case that pins it.
    `refusal/raw-html/refuses-an-ordinary-comment`.
 6. **The raw-HTML refusal is block-level.** Inline HTML is opaque inline
    content. `refusal/raw-html/accepts-inline-html`.
-7. **Slugs are tested only where every slug algorithm agrees.** Draft 0 names
-   no slug algorithm, so the `resolve/` cases use headings whose text is one
-   lower-case ASCII word.
+7. **Slugs are tested only where every slug algorithm agrees.** Draft 0 named
+   no slug algorithm, so the first `resolve/` cases use headings whose text is
+   one lower-case ASCII word. The owner has since decided the algorithm
+   (0001, addendum: GitHub's, at any depth, no `-1` suffix), and the
+   `resolve/slug-*` cases and `resolve/duplicate-slug-across-depths-is-ref`
+   pin it.
 8. **Leaf content, as tabled above.** 0002 says "parsed content, with
    container prefixes removed". The table pins what that is per type: a
    paragraph's and a heading's raw inline text, a code or HTML block's lines,
@@ -232,18 +273,15 @@ Each is marked READING in the `WHY.md` of the case that pins it.
 Questions the adjudications leave open, with no case in this tree, because
 any case would decide them:
 
-- **A marker whose next sibling is another marker.** "The next sibling node"
-  is that marker. Whether two stacked names should both reach the node after
-  them (an alias, which a rename would want), bind to the marker, or be
-  refused is a design choice.
-- **An empty region**, a `:begin` directly followed by its `:end`.
-- **The marker name grammar.** This tree only uses names matching D8's
-  pattern, `[a-z0-9][a-z0-9-]*`, and never tests a name outside it.
-- **Frontmatter closed by `...`**, which YAML and pandoc accept as a document
-  end marker. The owner's rule names `---` only; this tree has no case either
-  way.
-- **CRLF line endings**, and which line ending a code block's content uses.
-- **The slug algorithm**, and whether a heading inside a container has one.
+- **CRLF line endings.** The owner has decided that leaf content uses `\n`
+  everywhere (0002, addendum), but no fixture has CRLF bytes: the
+  repository's `.gitattributes` normalises text to LF on commit, so a CRLF
+  fixture needs an attribute that exempts it first.
+
+The marker after a marker, the empty region, the marker line grammar,
+frontmatter closed by `...` and the slug algorithm were listed here until
+the owner decided them on 2026-10-14 (0001 and 0002, addenda); each now has
+cases.
 
 ## Running it
 

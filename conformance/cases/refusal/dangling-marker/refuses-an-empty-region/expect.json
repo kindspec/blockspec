@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "dangling-marker",
+  "controls": ["refusal/unpaired-region/accepts-a-pair-at-top-level", "region/pair-at-top-level"]
+}
