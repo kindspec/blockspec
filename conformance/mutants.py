@@ -85,6 +85,10 @@ MUTANTS = {
         'if len(lines) > 1 and lines[0] == "---" and not _blank(lines[1]):',
         'if len(lines) > 1 and lines[0] == "---":',
     ),
+    "frontmatter-opening-line-may-carry-trailing-spaces": (
+        'if len(lines) > 1 and lines[0] == "---" and not _blank(lines[1]):',
+        'if len(lines) > 1 and lines[0].rstrip(" \\t") == "---" and not _blank(lines[1]):',
+    ),
     "frontmatter-cannot-be-empty": (
         "        for at in range(1, len(lines)):",
         "        for at in range(2, len(lines)):",
