@@ -91,9 +91,10 @@ jobs:
       - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
       # `just` is not on the runner image; without it every step below dies
       # at exit 127, which looks from outside like checks that ran and failed.
+      # Pinned to a version, as the actions above are pinned to commits.
       - name: install just
         run: |
-          uv tool install rust-just
+          uv tool install rust-just==1.58.0
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: just is actually on PATH
         run: just --version
