@@ -5,6 +5,8 @@ deliberate, not an oversight.
   conformance/cases/        CC0-1.0
   conformance/*.py          MIT
   reference/, tests/        Apache-2.0 OR MIT
+  justfile, pyproject.toml,
+  uv.lock                   Apache-2.0 OR MIT
   README.md, AGENTS.md,
   DESIGN-BRIEF.md           CC-BY-4.0
   .editorconfig,

@@ -1,0 +1,45 @@
+[project]
+name = "blockspec"
+version = "0.0.0"
+description = "A specification and conformance suite for prose documents that must survive version control"
+readme = "README.md"
+requires-python = ">=3.11"
+# `reference/` is standard-library-only: a dependency there is a dependency
+# every independent implementation of the format inherits. tests/test_boundary.py
+# fails if anything under `reference/` imports outside the standard library.
+dependencies = []
+license = "Apache-2.0 OR MIT"
+
+# kindkit is the shared conformance machinery: the tree-driven runner and the
+# mutation gate. A DEV dependency, so `reference/` still imports the standard
+# library and nothing else; only `conformance/` reaches for it.
+#
+# Pinned to a COMMIT, the one conformance.yml's KINDKIT_SHA names and
+# conformance/run_cases.py's docstring quotes. Move all three together;
+# tests/test_pins.py fails when pyproject and the workflow differ.
+[dependency-groups]
+dev = [
+  "pytest>=8",
+  "ruff>=0.6",
+  "kindkit @ git+https://github.com/kindspec/kindkit@6ebd80daba23e0d49a19e24b7ee4c85cedb926df",
+]
+
+[tool.uv]
+# Nothing here is built or published yet: the reference is run from its
+# source tree, by path, as the conformance runner and the mutation gate load it.
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+# The spike has its own conventions and is not this change's to reformat.
+# And no Markdown: ruff formats code blocks in .md files, and the fixtures in
+# conformance/cases/ are exact bytes (kindspec/.github AGENTS.md section 5).
+extend-exclude = ["spike", "*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["reference", "conformance"]
