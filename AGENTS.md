@@ -14,8 +14,8 @@ specific to blockspec, and wins where the two conflict.
 the **blocks kind** — identity is deliberately no minted ids — alongside [rowspec](https://github.com/kindspec/rowspec) and [nodespec](https://github.com/kindspec/nodespec).
 
 There is no `SPEC.md`: draft 0 is what `docs/adjudications/` 0001 and 0002
-decide, and the spike's binding verdict is FOUND (`spike/README.md`, The
-verdict). `conformance/cases/` holds draft 0's conformance cases,
+decide, and the spike's binding verdict is FOUND, under an owner ruling that
+overrides frozen rules; see `spike/README.md`, The verdict. `conformance/cases/` holds draft 0's conformance cases,
 written before any implementation existed. `reference/blockspec/` is the first
 implementation, written afterwards against the tree and `docs/adjudications/`,
 with no case changed. CI checks the tree itself, and runs it against the

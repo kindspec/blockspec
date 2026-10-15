@@ -13,7 +13,9 @@ yet.
 The pre-registered spike, `spike/` (blockspec#2), asked whether prose has a
 silent-wrong-merge worth a format. Its binding verdict is **FOUND**:
 pre-registration 3's tier-run, run a second time under an owner ruling that
-overrides four of that document's frozen rules (`spike/LOG.md` §34–§35).
+overrides four of that document's frozen rules (`spike/LOG.md` §34–§35). The
+ruling was made after run 1's answers and its INCONCLUSIVE verdict were
+public, and run 2 is what turned the verdict into FOUND.
 Read the ruling, its disclosures and the noise figures beside the verdict
 before relying on it. Start at `spike/README.md`.
 

@@ -51,7 +51,8 @@ problem: *"one MODEL, several grammars."*
 
 ## 2. What the spike's FOUND implies
 
-LOG §35 reports **FOUND**: 432 qualifying distinct units in 35 cells, from
+LOG §35 reports **FOUND**: 432 qualifying units, each cell's distinct count
+summed over 35 cells (a unit in several cells counts once in each), from
 413 qualifying packets. Here is what failed, tallied from the write-up:
 
 ```
