@@ -25,8 +25,9 @@ checks the tree, not a format reader:
   6. Each accepting case's blocks partition its input (0002): line ranges in
      order, inside the file, not overlapping, starting and ending on a
      non-blank line, and covering every non-blank line outside the
-     frontmatter, which opens with a `---` line 1 and a non-blank line 2, and
-     closes with a `---` line that may carry trailing spaces or tabs.
+     frontmatter, which opens on line 1 with a non-blank line 2 and is
+     delimited by `---` lines, the closing one perhaps followed by spaces or
+     tabs.
 
 Exit codes follow kindkit's: 0 every check passed, 1 at least one failed, 2 no
 verdict (the tree is missing or empty).

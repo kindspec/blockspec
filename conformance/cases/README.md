@@ -118,6 +118,11 @@ frontmatter closing line. Added then:
 `table/pipe-only-lines-then-text-are-a-paragraph`,
 `frontmatter/a-closing-line-may-have-a-trailing-tab`.
 
+When both rulings reached the 0001 and 0002 addenda, the WHY.md files that
+cited them as the owner's rulings were re-pointed to the addenda, quoting
+them. Added then: `frontmatter/a-no-break-space-does-not-close-it`,
+`frontmatter/a-form-feed-does-not-close-it`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
@@ -288,7 +293,10 @@ Each is marked READING in the `WHY.md` of the case that pins it.
    `frontmatter/the-first-closing-line-ends-it`,
    `frontmatter/the-first-of-two-closing-lines-ends-it`, `frontmatter/empty`,
    `frontmatter/a-closing-line-may-have-trailing-spaces`,
-   `frontmatter/a-closing-line-may-have-a-trailing-tab`. This reading first
+   `frontmatter/a-closing-line-may-have-a-trailing-tab`. Other whitespace
+   after the `---`, such as a no-break space or a form feed, does not close
+   it: `frontmatter/a-no-break-space-does-not-close-it`,
+   `frontmatter/a-form-feed-does-not-close-it`. This reading first
    said "exactly `---`", called that the narrower reading, and said relaxing
    it later was lossless. It was not: under "exactly", the document
    `---\na: 1\n---  \nText.\n\n---\n` closes its frontmatter on line 6 and

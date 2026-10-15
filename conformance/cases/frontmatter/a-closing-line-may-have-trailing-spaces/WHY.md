@@ -1,6 +1,8 @@
-Owner's ruling of 2026-10-14, replacing README reading 9's "exactly
-`---`": a closing line of `---` followed only by spaces or tabs closes the
-frontmatter, as pandoc reads a YAML metadata block. Line 3 is `---` and two
+0002, Addendum (three defaults): "**Frontmatter is closed by a line of
+`---` followed only by spaces or tabs**, as pandoc reads a YAML metadata
+block, and never by YAML's `...` document end marker. The opening line is
+exactly `---`."
+This replaced README reading 9's earlier "exactly `---`". Line 3 is `---` and two
 spaces, so the frontmatter is lines 1 to 3, and line 4 is a paragraph.
 
 This case was first written under the older reading, at
