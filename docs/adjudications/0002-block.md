@@ -477,38 +477,37 @@ for a table-like shape that GFM, as GitHub reads it, takes for a table and the
 CommonMark-profile readers do not, or the reverse. It applies §6's rule that
 the profile refuses an input two mature parsers draw differently.
 
-Which shapes that covers, as widened by the owner's decision of 2026-10-15:
-**a paragraph's last line, and the line under it in the same container, that
-GitHub reads as a table header and delimiter row and that pandoc and
-markdown-it do not both read as one.** GitHub's reading needs no pipe in
-either line, and trims form feeds and vertical tabs from cells as well as
-spaces and tabs. The reading pandoc and markdown-it share needs an unescaped
-pipe in both lines, and trims spaces and tabs only. Either way, the header's
-cells must be as many as the delimiter row's, and the delimiter row must not
-already be a setext underline, a thematic break or a list item, which are
-tried first. The shapes this refuses:
+Which shapes that covers, as decided on 2026-10-15. A delimiter line and the
+paragraph line over it, in the same container, are judged as two lines,
+**without the line above them**. The delimiter row must not already be a
+setext underline, a thematic break or a list item, which are tried first.
 
-- a header line with no pipe over a one-cell delimiter row: `a` over `|---|`,
-  `---|` or `:-:|`;
-- a one-cell header line, with or without a pipe, over a delimiter row with
-  no pipe that is not a setext underline: `a` over `:--`, `--:` or `:-:`,
-  `| a |` or `a|` over `:--`;
-- a delimiter row whose cells carry a form feed or a vertical tab, which stop
-  `a` over `---` followed by a form feed from being a setext underline, and
-  make `a | b` over `--- | ---` followed by a form feed a table to GitHub
-  alone.
+- **A form feed or a vertical tab in either line refuses them.** If either
+  line holds one, and the delimiter line holds nothing but `|`, `:`, `-`,
+  spaces, tabs, form feeds and vertical tabs, with at least one `-`, the
+  lines are `ambiguous-table`, whatever the header line holds. Renderers
+  disagree on these characters in a table. The profile does not model any
+  one of them, and refuses the lot, which is lossless to relax.
+- **Otherwise the lines are a table candidate** when the delimiter row's
+  cells, split on unescaped pipes and trimmed of spaces and tabs, are each
+  `:?-+:?`, and the header line splits into as many cells. GitHub reads a
+  candidate as a table. **A candidate with no unescaped pipe in one of its
+  two lines is `ambiguous-table`**: `a` over `|---|`, `---|`, `:--` or
+  `:-:`, and `| a |` or `a|` over `:--`. A candidate with a pipe in both
+  lines is a table.
+- **A lazy header line is read as it stands**, as GitHub reads it. Whitespace
+  before its leading pipe makes an empty first cell, so `> x`, then an
+  unprefixed ` | a |`, then `> :--` is no candidate and no table, while
+  `> --|--` under the same two lines is a two-cell candidate.
 
-They are refused in a block quote and a list item as at top level. A line
-that reaches its container only lazily is not under the paragraph's last
-line in its container, so `> a` over an unprefixed `---` and a form feed is
-not a table to any of the three, and is not refused. Where GitHub,
-pandoc and markdown-it all read a table, it is a table. A one-cell header
-over a delimiter row of two or more cells is a table to none of them, and is
-not refused.
+They are refused in a block quote and a list item as at top level.
 
-Where the shape also follows a non-blank line in its container, it is
-`ambiguous-table`, not `table-not-blank-above`: the table exists in only one
-of the readings.
+Judging the two lines without the line above decides the code when the
+header line is not the paragraph's first. If the two lines alone are
+`ambiguous-table`, so is the document, which takes precedence over
+`table-not-blank-above`. If the two lines alone are a table, the paragraph
+line above them makes it `table-not-blank-above`: `x`, then `| a |`, then
+`|---|` is `table-not-blank-above`.
 
 The shapes 0002 §6 already names keep their own refusals. A non-blank line
 directly after a table, which markdown-it reads as a row and pandoc as a

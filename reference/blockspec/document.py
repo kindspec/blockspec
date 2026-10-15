@@ -101,6 +101,10 @@ class Node:
         #: non-blank line. A table's neighbours are measured with it.
         self.last_content = line
         self.lines: list[tuple[int, str]] = []  # paragraph lines, code lines
+        #: A paragraph's lazy continuation lines as they stand, leading
+        #: whitespace kept, keyed by line number. GitHub reads a table header
+        #: from a lazy line without stripping it.
+        self.lazy: dict[int, str] = {}
         self.text = ""  # heading content, or an html_block's line
         self.rows: list[list[str]] = []  # table
         self.list_data: dict = {}
@@ -142,15 +146,17 @@ def _has_pipe(text: str) -> bool:
     return re.search(r"(?:^|[^\\])(?:\\\\)*\|", text) is not None
 
 
-#: What cmark-gfm, and so GitHub, trims from a table row and its cells. pandoc
-#: and markdown-it trim spaces and tabs only.
-_GFM_SPACE = " \t\v\f"
+#: A delimiter-like line once form feeds and vertical tabs are allowed in it:
+#: only `|`, `:`, `-` and whitespace, with at least one `-`.
+_FFVT_DELIMITER = re.compile(r"^[ \t\f\v|:-]*-[ \t\f\v|:-]*$")
 
 
-def _split_row(text: str, space: str = " \t") -> list[str]:
+def _split_row(text: str, keep_lead: bool = False) -> list[str]:
     """A table row's cells as GFM splits them: on unescaped pipes, outer pipes
-    dropped, each cell trimmed of `space`, `\\|` read as `|`."""
-    row = text.strip(space)
+    dropped, each cell trimmed of spaces and tabs, `\\|` read as `|`. With
+    `keep_lead`, whitespace before a leading pipe is not stripped first, so
+    it makes an empty first cell, as GitHub reads a lazy line."""
+    row = text.rstrip(" \t") if keep_lead else text.strip(" \t")
     cells: list[str] = []
     cell: list[str] = []
     ends_with_pipe = False
@@ -175,7 +181,7 @@ def _split_row(text: str, space: str = " \t") -> list[str]:
         cells.pop(0)
     if ends_with_pipe and cells:
         cells.pop()
-    return [cell.strip(space) for cell in cells]
+    return [cell.strip(" \t") for cell in cells]
 
 
 def _link_reference_definition(text: str) -> bool:
@@ -510,32 +516,42 @@ class _Parser:
 
         Tried after every core block start, as cmark-gfm tries its extensions,
         so `- | -` under a paragraph line is a list item, not a delimiter row.
-        The lines are read twice. GitHub's reading needs no pipe in either
-        row, and trims form feeds and vertical tabs from its cells as well as
-        spaces and tabs. The reading pandoc and markdown-it agree on needs a
-        pipe in both rows and trims spaces and tabs only. A table GitHub reads
-        and that reading does not is refused as ambiguous-table (0002,
-        addendum on ambiguous tables)."""
+        A delimiter row and the paragraph line over it are judged as two
+        lines, without the line above them (0002, addendum on ambiguous
+        tables). Renderers disagree on form feeds and vertical tabs, so when
+        either line holds one and the delimiter line is only `|`, `:`, `-`
+        and whitespace with at least one `-`, the lines are refused as
+        ambiguous-table. Otherwise they are a table candidate when the
+        delimiter row's cells are `:?-+:?` and the header has as many. GitHub
+        reads every candidate as a table. pandoc and markdown-it read one
+        only when both lines hold an unescaped pipe, so a candidate without
+        one is refused as ambiguous-table. A lazy header line is read as it
+        stands, as GitHub reads it: whitespace before its leading pipe is an
+        empty first cell."""
         if self.indented or container.type != "paragraph":
             return 0
         delimiter_text = self.line[self.next_nonspace :]
-        github = _split_row(delimiter_text, _GFM_SPACE)
-        if not github or not all(_DELIMITER_CELL.match(cell) for cell in github):
-            return 0
         header_line, header_text = container.lines[-1]
-        if len(_split_row(header_text, _GFM_SPACE)) != len(github):
+        lazy = header_line in container.lazy
+        header_raw = container.lazy.get(header_line, header_text)
+        if any(c in delimiter_text or c in header_raw for c in "\f\v"):
+            if _FFVT_DELIMITER.match(delimiter_text):
+                raise Refusal(
+                    "ambiguous-table",
+                    "a table-like pair of lines holding a form feed or a vertical tab",
+                )
             return 0
         delimiter = _split_row(delimiter_text)
-        if not (
-            _has_pipe(delimiter_text)
-            and _has_pipe(header_text)
-            and all(_DELIMITER_CELL.match(cell) for cell in delimiter)
-        ):
+        if not delimiter or not all(_DELIMITER_CELL.match(cell) for cell in delimiter):
+            return 0
+        header = _split_row(header_raw, keep_lead=lazy)
+        if len(header) != len(delimiter):
+            return 0
+        if not (_has_pipe(delimiter_text) and _has_pipe(header_raw)):
             raise Refusal(
                 "ambiguous-table",
                 "a table to GitHub and a paragraph to pandoc and markdown-it",
             )
-        header = _split_row(header_text)
         parent = container.parent
         if len(container.lines) > 1:
             raise Refusal("table-not-blank-above", "a table directly under a paragraph line")
@@ -636,6 +652,7 @@ class _Parser:
                 break
         self.all_closed = container is self.oldtip
         self.last_matched = container
+        matched_offset = self.offset
         starts = (
             self.block_quote,
             self.atx_heading,
@@ -663,6 +680,7 @@ class _Parser:
                 return
             leaf = outcome == 2
         if not self.all_closed and not self.blank and self.tip.type == "paragraph":
+            self.tip.lazy[line_no] = line[matched_offset:]
             self.tip.lines.append((line_no, self.rest()))
         else:
             self.close_unmatched()

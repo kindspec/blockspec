@@ -367,15 +367,15 @@ MUTANTS = {
     ),
     # --- tables: 0002 section 6, README reading 2 --------------------------
     "tables-not-recognised": (
-        "        if not github or not all(_DELIMITER_CELL.match(cell) for cell in github):",
+        "        if not delimiter or not all(_DELIMITER_CELL.match(cell) for cell in delimiter):",
         "        if True:",
     ),
     "an-empty-delimiter-row-makes-a-table": (
-        "        if not github or not all(_DELIMITER_CELL.match(cell) for cell in github):",
-        "        if not all(_DELIMITER_CELL.match(cell) for cell in github):",
+        "        if not delimiter or not all(_DELIMITER_CELL.match(cell) for cell in delimiter):",
+        "        if not all(_DELIMITER_CELL.match(cell) for cell in delimiter):",
     ),
     "a-header-width-mismatch-is-a-table": (
-        "        if len(_split_row(header_text, _GFM_SPACE)) != len(github):",
+        "        if len(header) != len(delimiter):",
         "        if False:",
     ),
     "a-table-only-github-reads-is-a-paragraph": (
@@ -386,20 +386,36 @@ MUTANTS = {
         "            return 0",
     ),
     "a-pipeless-header-row-is-a-table": (
-        "_has_pipe(delimiter_text)\n            and _has_pipe(header_text)",
+        "_has_pipe(delimiter_text) and _has_pipe(header_raw)",
         "_has_pipe(delimiter_text)",
     ),
     "a-pipeless-delimiter-row-is-a-table": (
-        "_has_pipe(delimiter_text)\n            and _has_pipe(header_text)",
-        "_has_pipe(header_text)",
+        "_has_pipe(delimiter_text) and _has_pipe(header_raw)",
+        "_has_pipe(header_raw)",
     ),
-    "every-parser-trims-form-feeds-from-cells": (
-        "        delimiter = _split_row(delimiter_text)",
-        "        delimiter = _split_row(delimiter_text, _GFM_SPACE)",
+    "form-feeds-are-not-refused": (
+        '        if any(c in delimiter_text or c in header_raw for c in "\\f\\v"):',
+        "        if False:",
     ),
-    "github-trims-only-spaces-and-tabs": (
-        '_GFM_SPACE = " \\t\\v\\f"',
-        '_GFM_SPACE = " \\t"',
+    "vertical-tabs-are-not-refused": (
+        '        if any(c in delimiter_text or c in header_raw for c in "\\f\\v"):',
+        '        if any(c in delimiter_text or c in header_raw for c in "\\f"):',
+    ),
+    "only-a-form-feed-in-the-delimiter-row-is-refused": (
+        '        if any(c in delimiter_text or c in header_raw for c in "\\f\\v"):',
+        '        if any(c in delimiter_text for c in "\\f\\v"):',
+    ),
+    "a-form-feed-under-any-paragraph-line-is-refused": (
+        "            if _FFVT_DELIMITER.match(delimiter_text):",
+        "            if True:",
+    ),
+    "a-lazy-header-line-is-read-stripped": (
+        "        header_raw = container.lazy.get(header_line, header_text)",
+        "        header_raw = header_text",
+    ),
+    "a-lazy-header-line-keeps-no-empty-first-cell": (
+        "        lazy = header_line in container.lazy",
+        "        lazy = False",
     ),
     "the-table-start-runs-before-list-items": (
         """            self.setext_heading,
