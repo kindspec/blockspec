@@ -381,10 +381,15 @@ Spacing inside and around the comment is free, so `<!--#intro-->` and
 `<!--  #intro  -->` are both markers. Nothing else may share the line. An HTML
 comment that does not match is raw HTML, and is refused as raw HTML.
 
-**Heading slugs** follow GitHub's rule, as github-slugger implements it: the
-heading's content is lower-cased, every character other than a letter, a
-mark, a number, `-`, `_` or a space is removed, and each space becomes `-`.
-Every heading has a slug, at any depth. No `-1` suffix is added to tell
-duplicates apart, so two headings with one slug leave that slug unresolved,
-`#REF!(slug)`, as *What draft 0 carries* already says of any name that matches
-more than one target.
+**Heading slugs** follow GitHub's rule, character for character as
+github-slugger 2.0.0 computes it. The heading's raw content is lower-cased,
+every character in the character class of github-slugger 2.0.0's
+`regex.js` is removed, and each space becomes `-`. That class is its own, not
+a Unicode category rule: it removes `²`, and keeps `‿`, `Ⓐ`, `-` and `_`.
+Every heading has a slug, at any depth, with one exception. A
+heading whose raw content holds an inline-markup character, one of `*`, `_`,
+`` ` ``, `[` or `<`, has **no slug**, because its raw content is not the text
+GitHub slugs, and a reference to it is unresolved, `#REF!(name)`. No `-1`
+suffix is added to tell duplicates apart, so two headings with one slug leave
+that slug unresolved, as *What draft 0 carries* already says of any name that
+matches more than one target.

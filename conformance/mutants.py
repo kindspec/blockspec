@@ -326,20 +326,24 @@ MUTANTS = {
         'if n.type == "heading" and len(n.path) == 1 and _slug(n.text) == name',
     ),
     "a-slug-keeps-its-case": (
-        "        for c in text.lower()",
-        "        for c in text",
+        '    return _SLUG_REMOVED.sub("", text.lower()).replace(" ", "-")',
+        '    return _SLUG_REMOVED.sub("", text).replace(" ", "-")',
     ),
     "a-slug-keeps-punctuation": (
-        'if c in " -_" or unicodedata.category(c)[0] in "LMN"',
-        "if True",
+        '    return _SLUG_REMOVED.sub("", text.lower()).replace(" ", "-")',
+        '    return text.lower().replace(" ", "-")',
     ),
-    "a-slug-drops-underscores": (
-        'if c in " -_" or unicodedata.category(c)[0] in "LMN"',
-        'if c in " -" or unicodedata.category(c)[0] in "LMN"',
+    "a-slug-removes-by-unicode-category": (
+        '    return _SLUG_REMOVED.sub("", text.lower()).replace(" ", "-")',
+        '    return re.sub(r"[^\\w\\- ]", "", text.lower()).replace(" ", "-")',
+    ),
+    "a-heading-with-inline-markup-has-a-slug": (
+        "    if _INLINE_MARKUP.intersection(text):\n        return None",
+        "    if False:\n        return None",
     ),
     "a-slug-collapses-runs-of-spaces": (
-        '    return "".join(kept).replace(" ", "-")',
-        '    return re.sub(" +", "-", "".join(kept))',
+        '    return _SLUG_REMOVED.sub("", text.lower()).replace(" ", "-")',
+        '    return re.sub(" +", "-", _SLUG_REMOVED.sub("", text.lower()))',
     ),
     "an-unknown-name-resolves-to-nothing": (
         '        return f"#REF!({name})"',
