@@ -13,8 +13,8 @@ profile refuses raises `Refusal` where it is recognised. GFM's table extension
 is a block start tried after every core one, as cmark-gfm tries its
 extensions. Where this reader and GFM part ways on tables, it takes the
 narrower reading: a row with no unescaped pipe, or no cells, ends a table
-(GFM would make it a row), and a header row with no pipe is a paragraph
-(GitHub would make it a one-column table). Standard library only, and one
+(GFM would make it a row), and a header row with no pipe over a one-cell
+delimiter row, a table to GitHub alone, is refused. Standard library only, and one
 file on purpose: `conformance/run_cases.py --impl FILE` loads this file by
 path, and so does the mutation gate, from a mutated copy of it.
 """
@@ -504,10 +504,10 @@ class _Parser:
 
         Tried after every core block start, as cmark-gfm tries its extensions,
         so `- | -` under a paragraph line is a list item, not a delimiter row.
-        A header row with no pipe is a one-column table to GitHub and a
-        paragraph to pandoc and markdown-it. It stays a paragraph here, and is
-        refused where the table-not-blank-above rule would refuse the table
-        GitHub reads."""
+        A header row with no pipe over a one-cell delimiter row is a
+        one-column table to GitHub and a paragraph to pandoc and markdown-it,
+        and is refused as ambiguous-table (0002, addendum on ambiguous
+        tables)."""
         if self.indented or container.type != "paragraph":
             return 0
         delimiter = _split_row(self.line[self.next_nonspace :])
@@ -515,9 +515,14 @@ class _Parser:
             return 0
         header_line, header_text = container.lines[-1]
         header = _split_row(header_text)
-        github_only = header is None
-        if github_only:
-            header = [header_text.strip(" \t")]
+        if header is None:
+            if len(delimiter) == 1:
+                raise Refusal(
+                    "ambiguous-table",
+                    "a header row with no pipe over a delimiter row: a table to GitHub, "
+                    "a paragraph to pandoc and markdown-it",
+                )
+            return 0
         if len(header) != len(delimiter):
             return 0
         parent = container.parent
@@ -526,8 +531,6 @@ class _Parser:
         at = parent.children.index(container)
         if at and parent.children[at - 1].last_content == header_line - 1:
             raise Refusal("table-not-blank-above", "a table directly under a non-blank line")
-        if github_only:
-            return 0
         parent.children.pop(at)
         self.tip = parent
         node = self.add_child("table")

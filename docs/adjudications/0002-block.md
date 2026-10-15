@@ -457,3 +457,24 @@ Three defaults, decided the same day:
   included, whatever line endings the file uses.
 - **Frontmatter is closed only by `---`**, never by YAML's `...` document end
   marker.
+
+## Addendum, 2026-10-14: ambiguous tables
+
+The owner's decision of 2026-10-14: an eleventh refusal, **`ambiguous-table`**,
+for a table-like shape that GFM, as GitHub reads it, takes for a table and the
+CommonMark-profile readers do not, or the reverse. It applies §6's rule that
+the profile refuses an input two mature parsers draw differently.
+
+Draft 0 refuses one such shape: **a header line with no unescaped pipe,
+directly over a delimiter row of one cell** (`a` over `|---|`, `---|` or
+`:-:|`), in any container. GitHub reads a one-column table. pandoc and
+markdown-it read a paragraph. A pipe-less line over a delimiter row of two or
+more cells is a paragraph to all three, and is not refused.
+
+Where the shape also follows a non-blank line in its container, it is
+`ambiguous-table`, not `table-not-blank-above`: the table exists in only one
+of the readings.
+
+The shapes 0002 §6 already names keep their own refusals. A non-blank line
+directly after a table, which markdown-it reads as a row and pandoc as a
+paragraph, is still `table-not-blank-below`.
