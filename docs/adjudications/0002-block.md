@@ -434,3 +434,96 @@ later `---` line would turn its opening into metadata.
 settle, and the reading taken for each (an unclosed block, `---` not on line
 1, an empty block, and conflict markers inside one), are listed in
 `conformance/cases/README.md`.
+
+## Addendum, 2026-10-14: markers that name nothing, and three defaults
+
+The owner's decisions of 2026-10-14.
+
+**A marker must name a node.** The dangling-marker refusal of §3 widens from
+"a one-line marker with no next sibling" to **a marker that names no node**.
+Two more shapes now fall under it:
+
+- an empty region, a `:begin` directly followed by its `:end`, with no
+  sibling node between them;
+- a one-line marker whose next sibling is another marker. A name binds to
+  content, never to a marker, so stacking two markers does not make an alias.
+
+Three defaults, decided the same day:
+
+- **When duplicate-name and unpaired-region both apply, the refusal is
+  duplicate-name.** A name is declared by a one-line marker or by a `:begin`.
+  An `:end` closes a region and declares nothing. **dangling-marker is
+  reported after both**: a document that also has a duplicate or unpaired
+  name is refused for that.
+- **Leaf content uses `\n` as its line ending everywhere**, code blocks
+  included, whatever line endings the file uses.
+- **Frontmatter is closed by a line of `---` followed only by spaces or
+  tabs**, as pandoc reads a YAML metadata block, and never by YAML's `...`
+  document end marker. The opening line is exactly `---`.
+
+Two orders between refusals are fixed: the one above among the name
+refusals, and `ambiguous-table` before `table-not-blank-above` (addendum on
+ambiguous tables, below). Any other order is unspecified: a document to which
+two refusals apply that neither fixes, such as a setext heading and an
+indented code block, may be refused with either. A conformance case asserts
+exactly one code, so it is written so that only one refusal applies to it, as
+`conformance/cases/README.md` says, or combines only refusals whose order is
+fixed here.
+
+## Addendum, 2026-10-14: ambiguous tables
+
+The owner's decision of 2026-10-14: an eleventh refusal, **`ambiguous-table`**,
+for a table-like shape that GFM, as GitHub reads it, takes for a table and the
+CommonMark-profile readers do not, or the reverse. It applies §6's rule that
+the profile refuses an input two mature parsers draw differently.
+
+Which shapes that covers, as decided on 2026-10-15. A delimiter line and the
+paragraph line over it, in the same container, are judged as two lines,
+**without the line above them**. The delimiter row must not already be a
+setext underline, a thematic break or a list item, which are tried first.
+
+- **A form feed or a vertical tab in either line refuses them.** If either
+  line holds one, and the delimiter line holds nothing but `|`, `:`, `-`,
+  spaces, tabs, form feeds and vertical tabs, with at least one `-`, the
+  lines are `ambiguous-table`, whatever the header line holds. Renderers
+  disagree on these characters in a table. The profile does not model any
+  one of them, and refuses the lot, which is lossless to relax.
+- **Otherwise the lines are a table candidate** when the delimiter row's
+  cells, split on unescaped pipes and trimmed of spaces and tabs, are each
+  `:?-+:?`, and the header line splits into as many cells. GitHub reads a
+  candidate as a table. **A candidate with no unescaped pipe in one of its
+  two lines is `ambiguous-table`**: `a` over `|---|`, `---|`, `:--` or
+  `:-:`, and `| a |` or `a|` over `:--`. A candidate with a pipe in both
+  lines is a table.
+- **A lazy header line is read as it stands**, as GitHub reads it. Whitespace
+  before its leading pipe makes an empty first cell, so `> x`, then an
+  unprefixed ` | a |`, then `> :--` is no candidate and no table, while
+  `> --|--` under the same two lines is a two-cell candidate.
+
+They are refused in a block quote and a list item as at top level.
+
+Judging the two lines without the line above decides the code when the
+header line is not the paragraph's first. If the two lines alone are
+`ambiguous-table`, so is the document, which takes precedence over
+`table-not-blank-above`. If the two lines alone are a table, the paragraph
+line above them makes it `table-not-blank-above`: `x`, then `| a |`, then
+`|---|` is `table-not-blank-above`.
+
+The shapes 0002 §6 already names keep their own refusals. A non-blank line
+directly after a table, which markdown-it reads as a row and pandoc as a
+paragraph, is still `table-not-blank-below`.
+
+Two more table edges, settled with this decision:
+
+- **A row that is only `|`, with or without spaces around it, ends the
+  table.** The line is then a non-blank line directly below the table, and
+  is refused as `table-not-blank-below`. markdown-it reads it as an empty
+  body row. pandoc's `gfm` reader and GitHub read the table followed by a
+  paragraph `|`.
+- **The table start is tried after every core block start**, as cmark-gfm
+  tries its extensions. So `a | b` over `- | -` is a paragraph and a bullet
+  list, not a table, as GitHub, pandoc's `gfm` reader and markdown-it all
+  read it.
+
+Probed with markdown-it-py 3.0.0 (preset `commonmark`, tables enabled),
+pandoc 3.1.11.1 (`-f gfm`) and GitHub's `POST /markdown` in `gfm` mode.

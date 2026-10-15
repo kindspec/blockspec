@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-"""Check that blockspec's case tree can fail, before any implementation exists.
+"""Check that blockspec's case tree can fail, with no implementation at all.
 
     python3 conformance/check_tree.py [root]
 

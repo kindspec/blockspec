@@ -13,9 +13,16 @@ specific to blockspec, and wins where the two conflict.
 **Nothing is specified yet.** blockspec is the **blocks kind** — identity is
 deliberately no minted ids — alongside [rowspec](https://github.com/kindspec/rowspec) and [nodespec](https://github.com/kindspec/nodespec).
 
-There is no `SPEC.md` and no implementation. `conformance/cases/` holds draft
-0's conformance cases, written before any implementation existed. CI checks the
-tree itself; no implementation runs it yet. Saying so is cheaper than being asked.
+There is no `SPEC.md`. `conformance/cases/` holds draft 0's conformance cases,
+written before any implementation existed. `reference/blockspec/` is the first
+implementation, written afterwards against the tree and `docs/adjudications/`,
+with no case changed. CI checks the tree itself, and runs it against the
+reference (`just conform`). There is no second implementation.
+
+The mutation gate, `just mutants`, is not in CI: it reports mutants the tree
+does not kill, which are holes for the case author to close, not bugs in the
+reference. Run it to see the current list. Saying so is cheaper than being
+asked.
 
 ## Before writing anything
 

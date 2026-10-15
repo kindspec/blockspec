@@ -41,8 +41,8 @@ jobs:
         if: ${{ !cancelled() }}
         run: python3 conformance/check_tree.py
 
-      # There is no implementation yet. A run against nothing must be no
-      # verdict, exit 2, never a pass.
+      # A run against nothing must be no verdict, exit 2, never a pass. The
+      # `reference` job below runs the tree against the implementation.
       - name: the runner with no implementation reports no verdict
         if: ${{ !cancelled() }}
         run: |
@@ -80,3 +80,37 @@ jobs:
           if passed:
               sys.exit(f"cases that passed against an empty implementation: {passed}")
           PY
+
+  # The tree against the reference implementation, reference/blockspec/. A
+  # job of its own, so `conformance` above keeps reporting on the tree alone.
+  # The mutation gate (`just mutants`) is not here: see AGENTS.md, Status.
+  reference:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+      # `just` is not on the runner image; without it every step below dies
+      # at exit 127, which looks from outside like checks that ran and failed.
+      # Pinned to a version, as the actions above are pinned to commits.
+      - name: install just
+        run: |
+          uv tool install rust-just==1.58.0
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: just is actually on PATH
+        run: just --version
+
+      # Each step runs even when an earlier one is red, so one failure cannot
+      # hide whether the others ran.
+      - name: lint and format
+        if: ${{ !cancelled() }}
+        run: just check
+
+      - name: the reference implementation passes every case in the tree
+        if: ${{ !cancelled() }}
+        run: just conform
+
+      # The same run with its report read back, the reference/ import
+      # boundary, the kindkit pins, and the mutation gate's own checks.
+      - name: the test suite
+        if: ${{ !cancelled() }}
+        run: just test
