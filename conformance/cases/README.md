@@ -53,9 +53,7 @@ The same author added a second set later, against the owner's rulings of
 2026-10-14: the addenda to 0001 and 0002 (the marker line, heading slugs,
 markers that name nothing, three defaults, and `ambiguous-table`), read
 from #37's branch before they reached `main`, with the schema's eleventh
-refusal code taken from the same branch. Two rulings that the addenda do
-not spell out, a row of only `|` ending a table and a `- | -` row being a
-list item, came from the owner directly; their WHY.md files say so. The
+refusal code taken from the same branch. The
 implementation, its tests and its mutation gate stayed unread, and the
 same two second opinions were used. The cases:
 `frontmatter/dots-do-not-close-it`,
@@ -83,6 +81,18 @@ same two second opinions were used. The cases:
 `resolve/slug-keeps-underscore`,
 `resolve/slug-of-a-nested-heading`,
 `table/a-dash-delimiter-row-is-a-list-item`.
+
+Later the 0001 addendum was rewritten (slugs over a heading's raw content
+by github-slugger 2.0.0's own character class, no slug for a heading
+holding `*`, `_`, a backtick, `[` or `<`, and marker spacing limited to
+spaces and tabs). The existing expectations still hold, and the WHY.md files
+that quoted the earlier wording now quote the rewritten one. Slugs were checked with
+github-slugger 2.0.0's `slug()` under Node. Added then:
+`resolve/a-heading-with-inline-markup-has-no-slug`,
+`resolve/a-heading-with-inline-markup-shares-no-slug`,
+`resolve/slug-drops-a-superscript-digit`,
+`refusal/raw-html/refuses-a-marker-spaced-with-a-no-break-space`,
+`refusal/raw-html/accepts-a-tab-spaced-marker`.
 
 ## Shape
 

@@ -1,9 +1,10 @@
-0001, Addendum (heading slugs): "the heading's content is lower-cased,
-every character other than a letter, a mark, a number, `-`, `_` or a space
-is removed, and each space becomes `-`. Every heading has a slug, at any
-depth. No `-1` suffix is added to tell duplicates apart".
-`_` and `-` are both kept. The first heading's slug is `snake_case`,
-which no name in `resolve` can spell (the case schema's name pattern has no
-`_`), so this case checks that neither of the slugs a reader would get by
-dropping `_` or turning it into `-` resolves, while the second heading's
-`kebab-case` does.
+0001, Addendum (heading slugs): "The heading's raw content is lower-cased,
+every character in the character class of github-slugger 2.0.0's
+`regex.js` is removed, and each space becomes `-`." Every heading has a
+slug, at any depth, except one whose raw content holds `*`, `_`, a
+backtick, `[` or `<`, and no `-1` suffix tells duplicates apart.
+Since the addendum was rewritten, a heading whose raw content holds `_` has
+no slug at all, so `snake_case` names nothing, and neither does `snakecase`
+or `snake-case`, the slugs a reader would get by dropping `_` or turning it
+into `-`. `kebab-case` keeps its `-` and resolves to the second heading.
+(The case's expectations were written before the rewrite and still hold.)
