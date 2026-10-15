@@ -21,6 +21,34 @@ the brief, the two adjudications, the org contract, kindkit `6ebd80d`
 `conformance/cases/` with its README. Every fixture was written for this tree;
 none is taken from a corpus.
 
+The cases listed at the end of this paragraph were added later, against
+blockspec `926d7a1`, after an implementation existed on an unmerged branch
+(`feat/reference-parser`, kindspec/blockspec#37). Their author did not read
+that implementation, its tests or its mutation gate. They had what the first
+author had, with this tree at `926d7a1` in place of rowspec's, plus
+CommonMark 0.31.2's `spec.txt` (tag `0.31.2`), the GFM spec's tables
+section, and #37's description, which lists inputs the tree did not pin
+without saying what each should produce. Each expected outcome comes from
+the adjudications, the readings below or the cited spec passage, and was
+cross-checked against pandoc 3.1.11.1 (`-f commonmark`, `-f gfm`) and
+markdown-it-py 3.0.0 (`commonmark` preset, tables enabled); a WHY.md
+says where one of them disagrees with the spec. The cases:
+`frontmatter/the-first-of-two-closing-lines-ends-it`,
+`refusal/setext-heading/refuses-a-closing-line-with-trailing-spaces`,
+`partition/item-content-indent-counts-the-spaces-after-the-marker`,
+`partition/a-list-marker-needs-a-space-after-it`,
+`partition/an-ordered-item-must-start-at-one-to-interrupt-a-paragraph`,
+`partition/an-empty-item-does-not-interrupt-a-paragraph`,
+`leaf/tab-in-an-item-reaches-the-content-column`,
+`leaf/heading-trailing-spaces-are-stripped`,
+`leaf/fence-indent-is-removed-up-to-its-width`,
+`leaf/a-shorter-fence-is-content`,
+`leaf/the-other-fence-character-is-content`,
+`refusal/link-reference-definition/accepts-text-after-the-destination`,
+`refusal/raw-html/refuses-a-marker-with-text-after-it`,
+`table/a-header-wider-than-the-delimiter-row-is-not-a-table`,
+`refusal/duplicate-name/refuses-a-name-begun-twice`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
@@ -168,8 +196,12 @@ Each is marked READING in the `WHY.md` of the case that pins it.
    and a table's cells, `table/cell-escapes-and-row-widths` among them.
 9. **Frontmatter ends at the first later line that is exactly `---`**, and may
    be empty (`---` on lines 1 and 2). `frontmatter/the-first-closing-line-ends-it`,
-   `frontmatter/empty`. Line 2 must not be blank (decided, below), so a
-   document that opens with a thematic break and a blank line is not
+   `frontmatter/the-first-of-two-closing-lines-ends-it`, `frontmatter/empty`.
+   A `---` line with trailing spaces does not close it
+   (`refusal/setext-heading/refuses-a-closing-line-with-trailing-spaces`);
+   pandoc's reader accepts one, so this is the narrower reading, and
+   relaxing it later is lossless. Line 2 must not be blank (decided,
+   below), so a document that opens with a thematic break and a blank line is not
    frontmatter, whatever `---` lines come later.
 10. **No blank line is needed after frontmatter.**
     `frontmatter/then-a-paragraph-directly`.
