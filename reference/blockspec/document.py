@@ -513,8 +513,10 @@ class _Parser:
             return 0
         delimiter_text = self.line[self.next_nonspace :]
         delimiter = _split_row(delimiter_text)
-        if not _has_pipe(delimiter_text) or not all(
-            _DELIMITER_CELL.match(cell) for cell in delimiter
+        if (
+            not _has_pipe(delimiter_text)
+            or not delimiter
+            or not all(_DELIMITER_CELL.match(cell) for cell in delimiter)
         ):
             return 0
         header_line, header_text = container.lines[-1]

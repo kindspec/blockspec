@@ -355,10 +355,14 @@ MUTANTS = {
     ),
     # --- tables: 0002 section 6, README reading 2 --------------------------
     "tables-not-recognised": (
-        """        if not _has_pipe(delimiter_text) or not all(
+        """        if not _has_pipe(delimiter_text) or not delimiter or not all(
             _DELIMITER_CELL.match(cell) for cell in delimiter
         ):""",
         "        if True:",
+    ),
+    "an-empty-delimiter-row-makes-a-table": (
+        "_has_pipe(delimiter_text) or not delimiter or not all",
+        "_has_pipe(delimiter_text) or not all",
     ),
     "a-header-width-mismatch-is-a-table": (
         "        if len(header) != len(delimiter):",
