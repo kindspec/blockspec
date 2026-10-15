@@ -373,13 +373,17 @@ correctly in today's markdown tools.
 
 The owner's decisions of 2026-10-14.
 
-**The marker line.** A region marker is a line matching
+**The marker line.** A region marker is a line whose content, after any
+container prefix, matches
 
-    ^\s*<!--\s*#[a-z0-9][a-z0-9-]*(:begin|:end)?\s*-->\s*$
+    ^[ \t]*<!--[ \t]*#[a-z0-9][a-z0-9-]*(:begin|:end)?[ \t]*-->[ \t]*$
 
-Spacing inside and around the comment is free, so `<!--#intro-->` and
-`<!--  #intro  -->` are both markers. Nothing else may share the line. An HTML
-comment that does not match is raw HTML, and is refused as raw HTML.
+and is indented at most three spaces. Four or more spaces make the line an
+indented code block, which this decision refuses. The only spacing allowed is
+spaces and tabs, inside and around the comment, so `<!--#intro-->` and
+`<!--  #intro  -->` are both markers. Other whitespace, such as a no-break
+space, is not. Nothing else may share the line. An HTML comment that does not
+match is raw HTML, and is refused as raw HTML.
 
 **Heading slugs** follow GitHub's rule, character for character as
 github-slugger 2.0.0 computes it. The heading's raw content is lower-cased,

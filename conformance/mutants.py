@@ -254,16 +254,20 @@ MUTANTS = {
         "            if False:",
     ),
     "any-comment-is-a-marker": (
-        'r"^\\s*<!--\\s*#([a-z0-9][a-z0-9-]*)(:begin|:end)?\\s*-->\\s*$"',
-        'r"^\\s*<!--\\s*#?([^:]*?)(:begin|:end)?\\s*-->\\s*$"',
+        'r"^[ \\t]*<!--[ \\t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \\t]*-->[ \\t]*$"',
+        'r"^[ \\t]*<!--[ \\t]*#?([^:]*?)(:begin|:end)?[ \\t]*-->[ \\t]*$"',
     ),
     "a-marker-may-have-text-after-it": (
-        'r"^\\s*<!--\\s*#([a-z0-9][a-z0-9-]*)(:begin|:end)?\\s*-->\\s*$"',
-        'r"^\\s*<!--\\s*#([a-z0-9][a-z0-9-]*)(:begin|:end)?\\s*-->"',
+        'r"^[ \\t]*<!--[ \\t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \\t]*-->[ \\t]*$"',
+        'r"^[ \\t]*<!--[ \\t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \\t]*-->"',
     ),
     "a-marker-needs-exactly-one-space-inside": (
+        'r"^[ \\t]*<!--[ \\t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \\t]*-->[ \\t]*$"',
+        'r"^[ \\t]*<!-- #([a-z0-9][a-z0-9-]*)(:begin|:end)? -->[ \\t]*$"',
+    ),
+    "marker-spacing-is-any-whitespace": (
+        'r"^[ \\t]*<!--[ \\t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \\t]*-->[ \\t]*$"',
         'r"^\\s*<!--\\s*#([a-z0-9][a-z0-9-]*)(:begin|:end)?\\s*-->\\s*$"',
-        'r"^\\s*<!-- #([a-z0-9][a-z0-9-]*)(:begin|:end)? -->\\s*$"',
     ),
     # --- names and regions: 0001, 0002 section 3 ---------------------------
     "dangling-marker-accepted": (

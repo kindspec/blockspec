@@ -50,7 +50,7 @@ _WS = "[ \\t\\n\\v\\f\\r]"
 _CONFLICT = re.compile(r"^(?:(?:<{7,}|>{7,}|\|{7,})(?: |$)|={7,}$)")
 
 # D8 section 7.2's region marker, in its two forms.
-_MARKER = re.compile(r"^\s*<!--\s*#([a-z0-9][a-z0-9-]*)(:begin|:end)?\s*-->\s*$")
+_MARKER = re.compile(r"^[ \t]*<!--[ \t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \t]*-->[ \t]*$")
 
 _ATX = re.compile(r"^#{1,6}(?:[ \t]+|$)")
 _FENCE = re.compile(r"^`{3,}(?!.*`)|^~{3,}")
