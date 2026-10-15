@@ -1,6 +1,0 @@
-{
-  "kind": "parse",
-  "accept": false,
-  "refusal": "setext-heading",
-  "controls": ["refusal/setext-heading/accepts-frontmatter-on-line-one"]
-}

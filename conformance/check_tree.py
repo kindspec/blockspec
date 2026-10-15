@@ -25,8 +25,8 @@ checks the tree, not a format reader:
   6. Each accepting case's blocks partition its input (0002): line ranges in
      order, inside the file, not overlapping, starting and ending on a
      non-blank line, and covering every non-blank line outside the
-     frontmatter, which opens on line 1 with a non-blank line 2 and is
-     delimited by `---` lines.
+     frontmatter, which opens with a `---` line 1 and a non-blank line 2, and
+     closes with a `---` line that may carry trailing spaces or tabs.
 
 Exit codes follow kindkit's: 0 every check passed, 1 at least one failed, 2 no
 verdict (the tree is missing or empty).
@@ -171,7 +171,7 @@ def partition_problems(expect: dict, text: str):
     if span:
         if span[0] != 1 or not span[0] < span[1] <= len(lines):
             yield f"frontmatter {span} does not open on line 1 inside the file"
-        elif lines[0] != "---" or lines[span[1] - 1] != "---":
+        elif lines[0] != "---" or lines[span[1] - 1].rstrip(" \t") != "---":
             yield f"frontmatter {span} is not delimited by `---` lines"
         elif not lines[1].strip():
             yield f"frontmatter {span} has a blank line 2, which makes line 1 a thematic break"

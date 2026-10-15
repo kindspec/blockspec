@@ -34,7 +34,8 @@ cross-checked against pandoc 3.1.11.1 (`-f commonmark`, `-f gfm`) and
 markdown-it-py 3.0.0 (`commonmark` preset, tables enabled); a WHY.md
 says where one of them disagrees with the spec. The cases:
 `frontmatter/the-first-of-two-closing-lines-ends-it`,
-`refusal/setext-heading/refuses-a-closing-line-with-trailing-spaces`,
+`refusal/setext-heading/refuses-a-closing-line-with-trailing-spaces` (since
+moved, below),
 `partition/item-content-indent-counts-the-spaces-after-the-marker`,
 `partition/a-list-marker-needs-a-space-after-it`,
 `partition/an-ordered-item-must-start-at-one-to-interrupt-a-paragraph`,
@@ -78,7 +79,7 @@ same two second opinions were used. The cases:
 `resolve/slug-is-lower-cased`,
 `resolve/slug-keeps-runs-of-hyphens`,
 `resolve/slug-keeps-each-of-two-spaces`,
-`resolve/slug-keeps-underscore`,
+`resolve/slug-keeps-underscore` (since renamed, below),
 `resolve/slug-of-a-nested-heading`,
 `table/a-dash-delimiter-row-is-a-list-item`.
 
@@ -93,6 +94,29 @@ github-slugger 2.0.0's `slug()` under Node. Added then:
 `resolve/slug-drops-a-superscript-digit`,
 `refusal/raw-html/refuses-a-marker-spaced-with-a-no-break-space`,
 `refusal/raw-html/accepts-a-tab-spaced-marker`.
+
+After an independent review of these sets and two more rulings of
+2026-10-14 (a closing `---` may carry trailing spaces or tabs, and `&`
+joins the no-slug characters), one case changed and two were renamed.
+`refusal/setext-heading/refuses-a-closing-line-with-trailing-spaces`
+became `frontmatter/a-closing-line-may-have-trailing-spaces`, and its
+expectation went from a refusal to frontmatter on lines 1 to 3.
+`resolve/slug-keeps-underscore` became
+`resolve/a-heading-with-an-underscore-has-no-slug`, with its expectations
+unchanged. `check_tree.py` now accepts trailing spaces or tabs on a
+frontmatter closing line. Added then:
+`resolve/a-heading-with-a-backtick-has-no-slug`,
+`resolve/plain-heading-slug-for-the-backtick-case`,
+`resolve/a-heading-with-a-bracket-has-no-slug`,
+`resolve/plain-heading-slug-for-the-bracket-case`,
+`resolve/a-heading-with-an-angle-bracket-has-no-slug`,
+`resolve/plain-heading-slug-for-the-angle-bracket-case`,
+`resolve/a-heading-with-an-ampersand-has-no-slug`,
+`resolve/plain-heading-slug-for-the-ampersand-case`,
+`refusal/ambiguous-table/refuses-an-escaped-pipe-header`,
+`table/two-pipe-only-lines-are-a-paragraph`,
+`table/pipe-only-lines-then-text-are-a-paragraph`,
+`frontmatter/a-closing-line-may-have-a-trailing-tab`.
 
 ## Shape
 
@@ -189,7 +213,10 @@ name that matches zero targets, or more than one, resolves to the string
 ## Refusal codes
 
 Each refusal case asserts exactly one code, and is written so that only one
-refusal applies to it. An implementation may word its message however it
+refusal applies to it, or so that it combines only refusals whose order the
+addenda of 2026-10-14 fix (`duplicate-name` before `unpaired-region`, both
+before `dangling-marker`, and `ambiguous-table` before
+`table-not-blank-above`). An implementation may word its message however it
 likes; the code is what the case compares.
 
 | code | from | refused |
@@ -236,24 +263,39 @@ Each is marked READING in the `WHY.md` of the case that pins it.
    `refusal/raw-html/refuses-an-ordinary-comment`.
 6. **The raw-HTML refusal is block-level.** Inline HTML is opaque inline
    content. `refusal/raw-html/accepts-inline-html`.
-7. **Slugs are tested only where every slug algorithm agrees.** Draft 0 named
-   no slug algorithm, so the first `resolve/` cases use headings whose text is
-   one lower-case ASCII word. The owner has since decided the algorithm
-   (0001, addendum: GitHub's, at any depth, no `-1` suffix), and the
-   `resolve/slug-*` cases and `resolve/duplicate-slug-across-depths-is-ref`
-   pin it.
+7. **Slugs are GitHub's, over the heading's raw content.** Draft 0 named no
+   slug algorithm, so the first `resolve/` cases use headings whose text is
+   one lower-case ASCII word, where every algorithm agrees. The owner has
+   since decided it (0001, addendum: github-slugger 2.0.0's character class,
+   at any depth, no `-1` suffix, and no slug for a heading whose raw content
+   holds `*`, `_`, a backtick, `[`, `<` or `&`), and later cases test where
+   slug algorithms disagree: the `resolve/slug-*` cases,
+   `resolve/duplicate-slug-across-depths-is-ref`, and the no-slug cases
+   `resolve/a-heading-with-inline-markup-has-no-slug`,
+   `resolve/a-heading-with-inline-markup-shares-no-slug`,
+   `resolve/a-heading-with-an-underscore-has-no-slug`,
+   `resolve/a-heading-with-a-backtick-has-no-slug`,
+   `resolve/a-heading-with-a-bracket-has-no-slug`,
+   `resolve/a-heading-with-an-angle-bracket-has-no-slug` and
+   `resolve/a-heading-with-an-ampersand-has-no-slug`, each with a
+   `resolve/plain-heading-slug-for-the-*-case` control.
 8. **Leaf content, as tabled above.** 0002 says "parsed content, with
    container prefixes removed". The table pins what that is per type: a
    paragraph's and a heading's raw inline text, a code or HTML block's lines,
    and a table's cells, `table/cell-escapes-and-row-widths` among them.
-9. **Frontmatter ends at the first later line that is exactly `---`**, and may
-   be empty (`---` on lines 1 and 2). `frontmatter/the-first-closing-line-ends-it`,
-   `frontmatter/the-first-of-two-closing-lines-ends-it`, `frontmatter/empty`.
-   A `---` line with trailing spaces does not close it
-   (`refusal/setext-heading/refuses-a-closing-line-with-trailing-spaces`);
-   pandoc's reader accepts one, so this is the narrower reading, and
-   relaxing it later is lossless. Line 2 must not be blank (decided,
-   below), so a document that opens with a thematic break and a blank line is not
+9. **Frontmatter ends at the first later line that is `---`, optionally
+   followed by spaces or tabs**, and may be empty (`---` on lines 1 and 2).
+   `frontmatter/the-first-closing-line-ends-it`,
+   `frontmatter/the-first-of-two-closing-lines-ends-it`, `frontmatter/empty`,
+   `frontmatter/a-closing-line-may-have-trailing-spaces`,
+   `frontmatter/a-closing-line-may-have-a-trailing-tab`. This reading first
+   said "exactly `---`", called that the narrower reading, and said relaxing
+   it later was lossless. It was not: under "exactly", the document
+   `---\na: 1\n---  \nText.\n\n---\n` closes its frontmatter on line 6 and
+   swallows the paragraph, so the relaxed reading changes an accepted
+   document's structure. The owner ruled on 2026-10-14 for pandoc's
+   reading, trailing spaces or tabs allowed. Line 2 must not be blank
+   (decided, below), so a document that opens with a thematic break and a blank line is not
    frontmatter, whatever `---` lines come later.
 10. **No blank line is needed after frontmatter.**
     `frontmatter/then-a-paragraph-directly`.
