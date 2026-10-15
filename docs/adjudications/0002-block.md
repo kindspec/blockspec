@@ -452,11 +452,19 @@ Three defaults, decided the same day:
 
 - **When duplicate-name and unpaired-region both apply, the refusal is
   duplicate-name.** A name is declared by a one-line marker or by a `:begin`.
-  An `:end` closes a region and declares nothing.
+  An `:end` closes a region and declares nothing. **dangling-marker is
+  reported after both**: a document that also has a duplicate or unpaired
+  name is refused for that.
 - **Leaf content uses `\n` as its line ending everywhere**, code blocks
   included, whatever line endings the file uses.
 - **Frontmatter is closed only by `---`**, never by YAML's `...` document end
   marker.
+
+No other order between refusals is specified. A document to which two or more
+other refusals apply, two block-level ones say, may be refused with any one
+of them. A conformance case asserts exactly one code, so it is written so
+that only one refusal applies to it, as `conformance/cases/README.md` says,
+or combines only refusals whose order the addenda of 2026-10-14 fix.
 
 ## Addendum, 2026-10-14: ambiguous tables
 
