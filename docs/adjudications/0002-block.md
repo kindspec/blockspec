@@ -478,3 +478,18 @@ of the readings.
 The shapes 0002 §6 already names keep their own refusals. A non-blank line
 directly after a table, which markdown-it reads as a row and pandoc as a
 paragraph, is still `table-not-blank-below`.
+
+Two more table edges, settled with this decision:
+
+- **A row that is only `|`, with or without spaces around it, ends the
+  table.** The line is then a non-blank line directly below the table, and
+  is refused as `table-not-blank-below`. markdown-it reads it as an empty
+  body row. pandoc's `gfm` reader and GitHub read the table followed by a
+  paragraph `|`.
+- **The table start is tried after every core block start**, as cmark-gfm
+  tries its extensions. So `a | b` over `- | -` is a paragraph and a bullet
+  list, not a table, as GitHub, pandoc's `gfm` reader and markdown-it all
+  read it.
+
+Probed with markdown-it-py 3.0.0 (preset `commonmark`, tables enabled),
+pandoc 3.1.11.1 (`-f gfm`) and GitHub's `POST /markdown` in `gfm` mode.
