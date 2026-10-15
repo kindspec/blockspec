@@ -254,39 +254,61 @@ MUTANTS = {
         "            if False:",
     ),
     "any-comment-is-a-marker": (
-        'r"^<!--[ \\t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \\t]*-->[ \\t]*$"',
-        'r"^<!--[ \\t]*#?([^:]*?)(:begin|:end)?[ \\t]*-->[ \\t]*$"',
+        'r"^\\s*<!--\\s*#([a-z0-9][a-z0-9-]*)(:begin|:end)?\\s*-->\\s*$"',
+        'r"^\\s*<!--\\s*#?([^:]*?)(:begin|:end)?\\s*-->\\s*$"',
     ),
     "a-marker-may-have-text-after-it": (
-        'r"^<!--[ \\t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \\t]*-->[ \\t]*$"',
-        'r"^<!--[ \\t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \\t]*-->"',
+        'r"^\\s*<!--\\s*#([a-z0-9][a-z0-9-]*)(:begin|:end)?\\s*-->\\s*$"',
+        'r"^\\s*<!--\\s*#([a-z0-9][a-z0-9-]*)(:begin|:end)?\\s*-->"',
+    ),
+    "a-marker-needs-exactly-one-space-inside": (
+        'r"^\\s*<!--\\s*#([a-z0-9][a-z0-9-]*)(:begin|:end)?\\s*-->\\s*$"',
+        'r"^\\s*<!-- #([a-z0-9][a-z0-9-]*)(:begin|:end)? -->\\s*$"',
     ),
     # --- names and regions: 0001, 0002 section 3 ---------------------------
     "dangling-marker-accepted": (
-        '                        raise Refusal("dangling-marker", f"#{name} has no next sibling")',
-        "                        continue",
+        "        if dangling:",
+        "        if False:",
+    ),
+    "a-marker-may-name-a-marker": (
+        "if target is None or target.marker is not None:",
+        "if target is None:",
+    ),
+    "an-empty-region-is-accepted": (
+        "                    if not region:",
+        "                    if False:",
     ),
     "a-marker-names-the-previous-sibling": (
-        "                    declared.append((name, siblings[i + 1].ref()))",
-        "                    declared.append((name, siblings[i - 1].ref()))",
+        "target = siblings[i + 1] if i + 1 < len(siblings) else None",
+        "target = siblings[i - 1] if i + 1 < len(siblings) else None",
     ),
     "a-region-leaves-out-markers": (
-        'declared.append((name, {"region": [n.ref() for n in siblings[first + 1 : i]]}))',
-        'declared.append((name, {"region": '
-        "[n.ref() for n in siblings[first + 1 : i] if n.marker is None]}))",
+        "region = [n.ref() for n in siblings[first + 1 : i]]",
+        "region = [n.ref() for n in siblings[first + 1 : i] if n.marker is None]",
     ),
     "an-end-with-no-begin-is-ignored": (
-        '                        raise Refusal("unpaired-region", '
-        'f"#{name}:end has no :begin beside it")',
-        "                        continue",
+        '                    unpaired.append(f"#{name}:end has no :begin beside it")',
+        "                    pass",
     ),
     "a-begin-with-no-end-is-ignored": (
-        "            if begun:",
-        "            if False:",
+        '            unpaired += [f"#{name}:begin has no :end beside it" for name in begun]',
+        "            pass",
     ),
     "duplicate-names-accepted": (
-        "            if name in names:",
+        "            if len(targets) > 1:",
         "            if False:",
+    ),
+    "unpaired-region-before-duplicate-name": (
+        """        for name, targets in declared.items():
+            if len(targets) > 1:
+                raise Refusal("duplicate-name", f"#{name} is declared twice")
+        if unpaired:
+            raise Refusal("unpaired-region", unpaired[0])""",
+        """        if unpaired:
+            raise Refusal("unpaired-region", unpaired[0])
+        for name, targets in declared.items():
+            if len(targets) > 1:
+                raise Refusal("duplicate-name", f"#{name} is declared twice")""",
     ),
     # --- resolution: 0001, D8 section 7.2's order --------------------------
     "slugs-before-markers": (
@@ -299,6 +321,26 @@ MUTANTS = {
         "        if len(headings) == 1:",
         "        if headings:",
     ),
+    "only-top-level-headings-have-slugs": (
+        'if n.type == "heading" and _slug(n.text) == name',
+        'if n.type == "heading" and len(n.path) == 1 and _slug(n.text) == name',
+    ),
+    "a-slug-keeps-its-case": (
+        "        for c in text.lower()",
+        "        for c in text",
+    ),
+    "a-slug-keeps-punctuation": (
+        'if c in " -_" or unicodedata.category(c)[0] in "LMN"',
+        "if True",
+    ),
+    "a-slug-drops-underscores": (
+        'if c in " -_" or unicodedata.category(c)[0] in "LMN"',
+        'if c in " -" or unicodedata.category(c)[0] in "LMN"',
+    ),
+    "a-slug-collapses-runs-of-spaces": (
+        '    return "".join(kept).replace(" ", "-")',
+        '    return re.sub(" +", "-", "".join(kept))',
+    ),
     "an-unknown-name-resolves-to-nothing": (
         '        return f"#REF!({name})"',
         "        return None",
@@ -309,8 +351,30 @@ MUTANTS = {
         "        if True:",
     ),
     "a-header-width-mismatch-is-a-table": (
-        "        if header is None or len(header) != len(delimiter):",
-        "        if header is None:",
+        "        if len(header) != len(delimiter):",
+        "        if False:",
+    ),
+    "a-pipeless-header-row-is-a-table": (
+        """        if github_only:
+            return 0
+        parent.children.pop(at)""",
+        """        parent.children.pop(at)""",
+    ),
+    "a-pipeless-header-row-is-never-refused": (
+        "        if len(header) != len(delimiter):",
+        "        if github_only or len(header) != len(delimiter):",
+    ),
+    "the-table-start-runs-before-list-items": (
+        """            self.setext_heading,
+            self.thematic_break,
+            self.list_item,
+            self.indented_code,
+            self.table""",
+        """            self.setext_heading,
+            self.table,
+            self.thematic_break,
+            self.list_item,
+            self.indented_code""",
     ),
     "a-paragraph-line-above-a-table-accepted": (
         "        if len(container.lines) > 1:",
@@ -325,8 +389,12 @@ MUTANTS = {
         "        if False:",
     ),
     "a-row-needs-no-pipe": (
-        "            if self.blank or _split_row(self.line[self.next_nonspace :]) is None:",
+        "            if self.blank or not _split_row(self.line[self.next_nonspace :]):",
         "            if self.blank:",
+    ),
+    "a-row-with-no-cells-continues-the-table": (
+        "            if self.blank or not _split_row(self.line[self.next_nonspace :]):",
+        "            if self.blank or _split_row(self.line[self.next_nonspace :]) is None:",
     ),
     "an-escaped-pipe-splits-a-cell": (
         '        if c == "\\\\" and i + 1 < len(row):',
