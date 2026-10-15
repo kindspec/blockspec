@@ -41,7 +41,9 @@ is written in.
 
 ## 2. The spike's FOUND points at markdown's own naming mechanism
 
-LOG.md §35 reports FOUND: 432 qualifying distinct units across 35 FOUND cells.
+LOG.md §35 reports FOUND: 432 qualifying units, each cell's distinct count
+summed over the 35 FOUND cells (a unit that qualifies in several cells counts
+once in each).
 Split by mechanism:
 
     sed -n '2610,$p' LOG.md | grep '^| [a-z].* [QR] |' | awk -F'|' ...

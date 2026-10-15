@@ -9,8 +9,9 @@ maintain"* (kindspec/research `design-findings/D5-document-models.md` §0 item
 case argued for each side from the same evidence, and an adjudication written
 here. The format follows kindspec/research `design-findings/ADJUDICATION.md`.
 
-The two positions, each committed verbatim apart from an SPDX header and one
-reworded opening sentence:
+The two positions, each committed verbatim apart from an SPDX header, one
+reworded opening sentence, and one later correction to how each describes
+the spike's 432 units (a sum over cells, not a count of distinct units):
 
 - **djot** ([`0001-syntax/djot-case.md`](0001-syntax/djot-case.md)): a pinned
   subset of djot (block structure and block attributes), with a
@@ -66,7 +67,7 @@ The two cases disagreed on several facts. Each was re-measured.
 | djot examples | djot.js 318, djot.lua 255, diverged | ~318 | **318 and 255**; 22 differing or one-sided entries between the two `test/` directories | `cat test/*.test \| grep -c '^\.$'`; `diff -rq` |
 | parser size | djot.js 4,583 (zero deps); djot.lua 1,780; commonmark.js 2,636 plus `entities`, `mdurl` | — | djot.js `attributes+block+inline+parse+ast` = **4,501**, `"dependencies": {}`; djot.lua `attributes+block+inline` = **1,780**; commonmark.js `blocks+inlines+common+node` = **2,571**, depends on `entities`, `mdurl`, `minimist`. Both djot.js figures and the commonmark.js figure in the djot case are slightly off; the direction is unchanged. The block layers alone: djot.js 1,540, djot.lua 1,101, commonmark.js 1,045 (+114 `common.js`). Both block layers import their inline parser. | `wc -l` at the pins above |
 | djot stability | "isn't completely stable yet" (djot.net) | same quote, attributed to the README | The quote is on **djot.net**; the `jgm/djot` README does not contain "stable". `@djot/djot` 0.3.2, `time.modified` 2024-12-19. | `curl -sL https://djot.net/ \| grep -i 'completely stable'`; `npm view @djot/djot time.modified` |
-| spike FOUND units | 167 Q units, 270 `R:slug`, 265 R units, 171 R on DELETED | 143 Q, 270 R, all `R:slug` | **Both right; they count different things.** `verdict.json` FOUND cells: **432 distinct units, 167 Q and 265 R**; `wrong_on_deleted` is **0 Q and 171 R**. `reproduction.md` records **413 packets: 143 Q and 270 R**. Every R record is `R:slug`; none is a region marker. Block types of the 143 Q records: 76 heading, 64 prose, 3 list. | `spike/results/prereg3/run2/verdict.json`, summing `qualifying_distinct` and `wrong_on_deleted` over cells whose `verdict` is `FOUND`, keyed by the cell's last field; `grep -o 'mechanism [QR], unit' reproduction.md \| sort \| uniq -c`; the same tally of each record's `block type` field |
+| spike FOUND units | 167 Q units, 270 `R:slug`, 265 R units, 171 R on DELETED | 143 Q, 270 R, all `R:slug` | **Both right; they count different things.** `verdict.json` FOUND cells: **432 units, 167 Q and 265 R**, each cell's distinct count summed over the cells, so a unit that qualifies in several cells counts once in each; `wrong_on_deleted` is **0 Q and 171 R**. `reproduction.md` records **413 packets: 143 Q and 270 R**. Every R record is `R:slug`; none is a region marker. Block types of the 143 Q records: 76 heading, 64 prose, 3 list. | `spike/results/prereg3/run2/verdict.json`, summing `qualifying_distinct` and `wrong_on_deleted` over cells whose `verdict` is `FOUND`, keyed by the cell's last field; `grep -o 'mechanism [QR], unit' reproduction.md \| sort \| uniq -c`; the same tally of each record's `block type` field |
 | region markers in the corpora | — | "no author-chosen name failed" | **0** lines matching D8's `REGION` pattern in the 1,564 `.md` files of the 488 exported prereg 3 packets. The corpora contain no authored names, so the spike measured none. | `grep -rlP '^\s*<!--\s*#[a-z0-9][a-z0-9-]*\s*-->\s*$' --include=*.md spike/results/prereg3/export/packets` (the pattern of research `experiments/D8-identity/e6_transclude.py` at `d51ce09`), with a positive control on `<!-- #scram-threshold -->`, which matches |
 | conflict markers | CommonMark consumes them; djot keeps them | CommonMark turns `=======` into a setext heading | **Both right.** A real `git merge` conflict (exit 1) under CommonMark (pandoc and markdown-it agree): `<<<<<<< HEAD` plus the first side become one `<h1>`, `=======` disappears into it, and `>>>>>>> br` becomes seven nested `<blockquote>`s. Under djot 0.3.2: one paragraph, all three marker lines kept as literal text, no warning. Neither parser fails. | a two-branch repository that edits the same line; `pandoc -f commonmark -t html`, markdown-it `commonmark`, `djot.parse` |
 | `{#id}` silent failures in djot | duplicate ids pass silently; trailing heading attribute dropped | — | **Duplicate `{#x}` on two blocks: both get `id="x"`, no warning.** `# Heading {#intro}`: id dropped, and the `warn` callback reports "Ignoring unattached attribute"; the HTML output is silent about it. | `djot.parse(src, {warn})` |
@@ -147,8 +148,8 @@ has no carrier for those short of raw HTML. Both cases agree on this.
 
 **Partly conceded; it does not separate the two formats.**
 
-The figures are settled above: 432 qualifying units in the FOUND cells,
-167 Q and 265 R. Every R record in `reproduction.md` is a heading slug. The
+The figures are settled above: 432 qualifying units summed over the FOUND
+cells, 167 Q and 265 R. Every R record in `reproduction.md` is a heading slug. The
 djot case is right that the silent mis-resolutions concentrate in derived names,
 and that in 171 of 265 R units the oracle says the target was deleted and the
 slug resolved to something else.

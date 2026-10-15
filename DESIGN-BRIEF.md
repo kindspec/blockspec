@@ -110,6 +110,11 @@ not be built until it does.** If prose has no silent-wrong-merge of comparable
 severity, that is a finding, and the honest response is a smaller format or
 none.
 
+The spike (blockspec#2) has since returned a binding FOUND, under an owner
+ruling that overrides frozen rules of its pre-registration (`spike/LOG.md`
+§34–§35). blockspec#2 stays open. `spike/README.md` says what the verdict
+rests on.
+
 ## 3. The method that must carry over
 
 - The **conformance suite is the deliverable**; the spec exists so the suite has
