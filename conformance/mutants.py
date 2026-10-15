@@ -93,8 +93,12 @@ MUTANTS = {
         "        for at in range(1, len(lines)):",
         "        for at in reversed(range(1, len(lines))):",
     ),
-    "frontmatter-closing-line-may-carry-trailing-spaces": (
+    "frontmatter-closing-line-must-be-exactly-three-dashes": (
+        '            if lines[at].rstrip(" \\t") == "---":',
         '            if lines[at] == "---":',
+    ),
+    "frontmatter-closing-line-may-carry-any-whitespace": (
+        '            if lines[at].rstrip(" \\t") == "---":',
         '            if lines[at].rstrip() == "---":',
     ),
     "frontmatter-range-is-one-short": (
@@ -106,8 +110,8 @@ MUTANTS = {
         "                first = 0",
     ),
     "frontmatter-unclosed-runs-to-the-end": (
-        '            if lines[at] == "---":',
-        '            if lines[at] == "---" or at == len(lines) - 1:',
+        '            if lines[at].rstrip(" \\t") == "---":',
+        '            if lines[at].rstrip(" \\t") == "---" or at == len(lines) - 1:',
     ),
     # --- the partition: 0002 section 1 -------------------------------------
     "block-range-keeps-trailing-blank-lines": (

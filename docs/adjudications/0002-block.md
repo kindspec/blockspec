@@ -457,8 +457,9 @@ Three defaults, decided the same day:
   name is refused for that.
 - **Leaf content uses `\n` as its line ending everywhere**, code blocks
   included, whatever line endings the file uses.
-- **Frontmatter is closed only by `---`**, never by YAML's `...` document end
-  marker.
+- **Frontmatter is closed by a line of `---` followed only by spaces or
+  tabs**, as pandoc reads a YAML metadata block, and never by YAML's `...`
+  document end marker. The opening line is exactly `---`.
 
 No other order between refusals is specified. A document to which two or more
 other refusals apply, two block-level ones say, may be refused with any one
