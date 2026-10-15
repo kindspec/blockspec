@@ -150,6 +150,20 @@ line 2 holds a pipe, keeps the form feed pinned. Added then:
 `refusal/ambiguous-table/refuses-a-two-cell-delimiter-with-a-form-feed`,
 `refusal/setext-heading/refuses-an-opening-line-with-a-trailing-space`.
 
+Further cases from the same widened addendum: a form feed or vertical tab
+inside or before a delimiter cell, and the shapes it says are tried first
+or are no table to any reader (a setext underline with trailing spaces or
+tabs, a list item, a no-break space, a one-cell header over two cells).
+Added then:
+`refusal/ambiguous-table/accepts-a-dash-line-with-a-no-break-space`,
+`refusal/ambiguous-table/accepts-a-list-item-line-with-a-form-feed`,
+`refusal/ambiguous-table/accepts-a-one-cell-header-over-two-cells-with-a-form-feed`,
+`refusal/ambiguous-table/refuses-a-form-feed-inside-a-piped-delimiter`,
+`refusal/ambiguous-table/refuses-a-leading-form-feed-delimiter`,
+`refusal/ambiguous-table/refuses-a-leading-vertical-tab-delimiter`,
+`refusal/setext-heading/refuses-an-underline-with-a-trailing-space`,
+`refusal/setext-heading/refuses-an-underline-with-a-trailing-tab`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit

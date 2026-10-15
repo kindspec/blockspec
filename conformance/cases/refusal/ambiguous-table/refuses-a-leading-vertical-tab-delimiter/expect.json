@@ -1,0 +1,6 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "ambiguous-table",
+  "controls": ["refusal/ambiguous-table/accepts-a-dash-line-with-a-no-break-space", "refusal/ambiguous-table/accepts-a-one-cell-header-over-two-cells-with-a-form-feed", "refusal/ambiguous-table/accepts-a-list-item-line-with-a-form-feed"]
+}
