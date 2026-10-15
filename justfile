@@ -27,7 +27,8 @@ lint:
 check: fmt-check lint
 
 # Everything under tests/: the tree against the reference, the runner's
-# no-verdict exit, the reference/ import boundary, and the kindkit pins.
+# no-verdict exit, the reference/ import boundary, the kindkit pins, and the
+# gate's own checks. Not the gate's verdict: that is `just mutants`.
 test:
     uv run --exact pytest -q
 
@@ -39,6 +40,11 @@ conform:
 # fail, and that every refusal has a control
 tree:
     python3 conformance/check_tree.py
+
+# The mutation gate: the tree must be able to FAIL a broken implementation.
+# Exit 1 names each surviving mutant, which is a hole in the suite.
+mutants:
+    uv run python conformance/mutants.py
 
 # Remove build artifacts
 clean:
