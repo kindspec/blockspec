@@ -461,11 +461,14 @@ Three defaults, decided the same day:
   tabs**, as pandoc reads a YAML metadata block, and never by YAML's `...`
   document end marker. The opening line is exactly `---`.
 
-No other order between refusals is specified. A document to which two or more
-other refusals apply, two block-level ones say, may be refused with any one
-of them. A conformance case asserts exactly one code, so it is written so
-that only one refusal applies to it, as `conformance/cases/README.md` says,
-or combines only refusals whose order the addenda of 2026-10-14 fix.
+Two orders between refusals are fixed: the one above among the name
+refusals, and `ambiguous-table` before `table-not-blank-above` (addendum on
+ambiguous tables, below). Any other order is unspecified: a document to which
+two refusals apply that neither fixes, such as a setext heading and an
+indented code block, may be refused with either. A conformance case asserts
+exactly one code, so it is written so that only one refusal applies to it, as
+`conformance/cases/README.md` says, or combines only refusals whose order is
+fixed here.
 
 ## Addendum, 2026-10-14: ambiguous tables
 
