@@ -7,7 +7,7 @@
   ],
   "leaves": [
     {"node": [0], "type": "thematic_break", "content": ""},
-    {"node": [1], "type": "paragraph", "content": "a: 1\n---\f\nText."}
+    {"node": [1], "type": "paragraph", "content": "a | b\n---\f\nText."}
   ],
   "names": {}
 }

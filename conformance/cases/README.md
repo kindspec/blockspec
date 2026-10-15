@@ -123,6 +123,33 @@ cited them as the owner's rulings were re-pointed to the addenda, quoting
 them. Added then: `frontmatter/a-no-break-space-does-not-close-it`,
 `frontmatter/a-form-feed-does-not-close-it`.
 
+The owner widened `ambiguous-table` on 2026-10-15 (0002, addendum on
+ambiguous tables) to every paragraph's last line and line under it that
+GitHub reads as a table header and delimiter row and pandoc and
+markdown-it do not both read as one, pipe-less delimiter rows and form
+feeds or vertical tabs in a delimiter row among them. That made
+`frontmatter/a-form-feed-does-not-close-it` (`---`, `a: 1`, `---` and a
+form feed, `Text.`) wrong: lines 2 and 3 are now that shape, and `Text.`
+is a non-blank line under it, so both `ambiguous-table` and
+`table-not-blank-below` apply, an order the addenda do not fix. No single
+code is right, so the case was removed, and
+`frontmatter/a-form-feed-does-not-close-it-before-a-piped-line`, whose
+line 2 holds a pipe, keeps the form feed pinned. Added then:
+`frontmatter/a-form-feed-does-not-close-it-before-a-piped-line`,
+`refusal/ambiguous-table/accepts-a-lazy-dash-line-with-a-form-feed`,
+`refusal/ambiguous-table/accepts-a-piped-header-over-a-piped-aligned-delimiter`,
+`refusal/ambiguous-table/accepts-a-pipeless-line-over-a-two-cell-aligned-delimiter`,
+`refusal/ambiguous-table/refuses-a-centred-pipeless-delimiter`,
+`refusal/ambiguous-table/refuses-a-dash-delimiter-with-a-form-feed`,
+`refusal/ambiguous-table/refuses-a-dash-delimiter-with-a-vertical-tab`,
+`refusal/ambiguous-table/refuses-a-left-aligned-pipeless-delimiter`,
+`refusal/ambiguous-table/refuses-a-piped-header-over-a-pipeless-delimiter`,
+`refusal/ambiguous-table/refuses-a-pipeless-delimiter-in-a-block-quote`,
+`refusal/ambiguous-table/refuses-a-pipeless-delimiter-in-a-list-item`,
+`refusal/ambiguous-table/refuses-a-right-aligned-pipeless-delimiter`,
+`refusal/ambiguous-table/refuses-a-two-cell-delimiter-with-a-form-feed`,
+`refusal/setext-heading/refuses-an-opening-line-with-a-trailing-space`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
@@ -236,7 +263,7 @@ likes; the code is what the case compares.
 | `unpaired-region` | 0002 §3 | a `:begin` and its `:end` that are not siblings in one container |
 | `table-not-blank-above` | 0002 §6 | a table with a non-blank line directly above it in its container |
 | `table-not-blank-below` | 0002 §6 | a table with a non-blank line directly below it in its container |
-| `ambiguous-table` | 0002, addendum | a header line with no unescaped pipe directly over a one-cell delimiter row, in any container; it wins over `table-not-blank-above` |
+| `ambiguous-table` | 0002, addendum | a paragraph's last line and the line under it that GitHub reads as a table header and delimiter row and pandoc and markdown-it do not both read as one, in any container; it wins over `table-not-blank-above` |
 
 When `duplicate-name` and `unpaired-region` both apply, the code is
 `duplicate-name` (0002, addendum).
@@ -296,7 +323,10 @@ Each is marked READING in the `WHY.md` of the case that pins it.
    `frontmatter/a-closing-line-may-have-a-trailing-tab`. Other whitespace
    after the `---`, such as a no-break space or a form feed, does not close
    it: `frontmatter/a-no-break-space-does-not-close-it`,
-   `frontmatter/a-form-feed-does-not-close-it`. This reading first
+   `frontmatter/a-form-feed-does-not-close-it-before-a-piped-line`. The
+   opening line is exactly `---`
+   (`refusal/setext-heading/refuses-an-opening-line-with-a-trailing-space`).
+   This reading first
    said "exactly `---`", called that the narrower reading, and said relaxing
    it later was lossless. It was not: under "exactly", the document
    `---\na: 1\n---  \nText.\n\n---\n` closes its frontmatter on line 6 and
