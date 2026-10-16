@@ -897,6 +897,18 @@ ANCHOR_MUTANTS = {
         "r'(?:[ \\t]+(?:\\n[ \\t]*)?|\\n[ \\t]*)\"transclude\"[ \\t]*(?:\\n[ \\t]*)?\\)'",
         "r'(?:[ \\t]+(?:\\n[ \\t]*)?|\\n[ \\t]*)\"transclude\"[ \\t]*\\)'",
     ),
+    "code block's final line ending written": (
+        'if leaf.node.type == "code_block" and b == len(content):',
+        "if False:",
+    ),
+    "reply's document unchecked": (
+        (
+            "            if document not in tree:\n"
+            '                raise _Refused("document-missing")\n'
+            "            _read(reader, tree[document])"
+        ),
+        "            pass",
+    ),
 }
 
 ANCHOR_EQUIVALENT = {
