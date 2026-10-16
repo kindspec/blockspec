@@ -8,6 +8,7 @@ mutation that changed nothing.
 """
 
 import os
+import shutil
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -50,6 +51,8 @@ def test_the_probe_reads_the_unmutated_source_after_the_baseline_as_no_verdict(t
     source = _source()
     path = tmp_path / "under_test.py"
     path.write_text(source, encoding="utf-8")
+    # The reader's resolve loads anchor.py from its own directory.
+    shutil.copyfile(mutants.ANCHOR, tmp_path / "anchor.py")
     probe = mutants.make_probe(mutants._sha(source))
     baseline = probe(str(path))
     assert baseline.reached and not baseline.failures
@@ -62,3 +65,24 @@ def test_a_mutated_reader_can_reach_the_anchor_resolver():
     against the unmutated baseline."""
     assert os.path.dirname(mutants.SCRATCH) == os.path.dirname(mutants.IMPL)
     assert os.path.isfile(os.path.join(os.path.dirname(mutants.SCRATCH), "anchor.py"))
+
+
+def test_the_resolvers_probe_runs_the_scratch_file_beside_a_copy_of_the_reader(tmp_path):
+    with open(mutants.ANCHOR, encoding="utf-8", newline="") as handle:
+        anchor = handle.read()
+    impl = tmp_path / "document.py"
+    shutil.copyfile(mutants.IMPL, impl)
+    scratch = tmp_path / "anchor.py"
+    scratch.write_text(anchor, encoding="utf-8")
+    probe = mutants.make_anchor_probe(mutants._sha(anchor), str(impl))
+    baseline = probe(str(scratch))
+    assert baseline.reached and not baseline.failures
+    assert not probe(str(scratch)).reached  # the unmutated source again: no verdict
+    scratch.write_text(anchor.replace("if near(True):", "if False:"), encoding="utf-8")
+    assert probe(str(scratch)).failures  # a mutant the anchor cases kill
+
+
+def test_the_resolvers_mutants_change_the_source_and_differ():
+    with open(mutants.ANCHOR, encoding="utf-8", newline="") as handle:
+        anchor = handle.read()
+    assert mutants.preflight(anchor, mutants.ANCHOR_MUTANTS) == []

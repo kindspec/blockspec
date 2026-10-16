@@ -473,7 +473,7 @@ def check_pair(corr: Correspondence, k: int) -> tuple[int, str]:
             raise _Refused("exact-copy")
         if any(u in gap_current for u in unmatched):
             raise _Refused("crowded-gap")
-        if near(also_exact=True):
+        if near(True):
             raise _Refused("near-copy")
     return c, kind
 
