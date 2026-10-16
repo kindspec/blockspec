@@ -800,14 +800,19 @@ last line, when the file has no final line ending.
 2026-10-16, items 3 and 4). The suggestion is stale, as `unmappable-offset`,
 when:
 
-- a code point of the span comes from no single raw character: the rest of
-  a tab only partly consumed by container indentation, which CommonMark
-  keeps as spaces in the content. A span that only begins or ends next to
-  such a character maps (that reading of "crosses" is the addendum's
-  precision);
-- the span ends at a code block's final line ending, the `\n` that ends its
-  last content line, since writing it back would join the closing fence to
-  the line before it. That holds whatever `replace` ends with (the
+- a code point of the span comes from no single raw character, or the
+  span ends right before one: the rest of a tab only partly consumed by
+  indentation, which CommonMark keeps as spaces in the content. That is
+  container indentation (item 3) or any other, such as a fenced code
+  block's own indentation (the addendum's precision, extending item 3). A
+  span that begins right after such a character maps; one that ends right
+  before it ends with a `\n`, and step 2 carries `b` into the tab (the
+  addendum's precision);
+- the span's last code point is the `\n` that ends a code block's last
+  content line. That `\n` marks where the block's content ends: writing
+  over it would join the closing fence to the line before it, and in a
+  fence left unclosed at the end of its container or the file it may come
+  from no raw character. That holds whatever `replace` ends with (the
   addendum's precision).
 
 ### 11.8 Replies, deletion and document identity
@@ -994,7 +999,8 @@ order beyond items 2, 3, 6 and 7, and the leaves' order, are the
 addendum's precision.)
 
 A stale suggestion carries `unmappable-offset` when §11.7's mapping fails.
-A reply with no parent renders `#REF!(reply-to)`.
+A reply with no parent renders `#REF!(reply-to)`, once its document
+checks pass (above; §11.8).
 
 ### 11.11 What a tool MAY add
 

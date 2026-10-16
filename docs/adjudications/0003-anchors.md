@@ -981,7 +981,10 @@ occurrence is a start position, and two overlapping hits are two, so
 
 **2. Replies are records.** A reply whose notes directory's document is
 missing, or refused by the profile, is `REFUSED(document-missing)` or
-`REFUSED(not-in-profile)`, as any record is.
+`REFUSED(not-in-profile)`, as any record is. This narrows Q8's row in the
+*Decision* table and the last sentence of §2: a reply whose parent is
+missing renders `#REF!(reply-to)` only once its document is found and
+accepted. Both texts stay as first written.
 
 **(precision, not the owner's)** Where it sits in the order of the second
 addendum's item 2: a reply goes through steps 1 to 3, its grammar, then
@@ -999,14 +1002,33 @@ come from no single raw character. A span that crosses one makes the
 suggestion stale, as `unmappable-offset`.
 
 **(precision, not the owner's)** "Crosses" is read as: at least one code
-point of the span is such a character. A span that only begins or ends
-next to one maps. *Reason*: the write-back maps each code point of the span
-to one raw character, and only a code point inside the span needs one.
+point of the span is such a character, or the span ends right before one.
+A span that begins right after one maps. *Reason*: §11.7 maps two
+positions, `a` where the span begins and `b` where it ends, through the
+parse to raw positions. A span that begins right after the leftover spaces
+has its `a` on the raw character after the tab. A span that ends right
+before them ends with the line's `\n`, and step 2 carries `b` to where the
+next line's content begins, which is inside the partly consumed tab, not a
+raw position.
 
-**4. A code block's final line ending.** A span that ends at a code block's
-final line ending, the `\n` that ends its last content line, makes the
-suggestion stale, as `unmappable-offset`: writing it back would join the
-closing fence to the line before it.
+**(precision, not the owner's, extending item 3)** The same holds for a
+tab partly consumed by any indentation, not only a container's: a fenced
+code block's own indentation, removed from each content line (a fence
+indented two spaces, then a content line that is a tab and `foo`, leaves
+two spaces of the tab in the content), and any other indentation
+CommonMark removes from a line by columns. *Reason*: item
+3's principle is that a character of `leaf.text` that comes from no single
+raw character cannot be written back, and that is so whatever indentation
+consumed the rest of the tab. An indented code block would be another
+instance, but the profile refuses one (`SPEC.md` §4.1).
+
+**4. A code block's final line ending.** A span whose last code point is
+the `\n` that ends a code block's last content line makes the suggestion
+stale, as `unmappable-offset`. That `\n` stands for where the block's
+content ends, not for text: writing over it would join the closing fence
+to the line before it, and in a fence left unclosed at the end of its
+container or of the file, where reading 8 still ends the last line in
+`\n`, it may come from no raw character at all.
 
 **(precision, not the owner's)** That holds whatever `replace` ends with,
 including a `\n`. *Reason*: the rule as decided names the span alone, and
