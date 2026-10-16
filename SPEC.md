@@ -879,9 +879,8 @@ second addendum of 2026-10-16, item 6).
 0. **The referrer.** A referrer the profile refuses is refused as a whole,
    `REFUSED(not-in-profile)`, and its transclusions are not enumerated: a
    refused file has no tree to find them in. A conflict-marker line
-   anywhere in it counts, in its frontmatter (overriding reading 12) and in
-   a fenced code block (overriding reading 4) alike (same addendum,
-   item 7).
+   anywhere in it counts, in its frontmatter and in a fenced code block
+   alike, whatever readings 4 and 12 say (same addendum, item 7).
 1. **The inputs**, checked in this order; the first that fails decides
    (same addendum, items 2 and 3, with its precision):
    1. the path must resolve, or `REFUSED(unresolvable-path)`;

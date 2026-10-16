@@ -938,8 +938,8 @@ referrer. Two further points, also the owner's:
   find a transclusion paragraph. The anchor case kind gives such a referrer
   one referrer-level status instead of a list.
 - **A conflict-marker line anywhere in the referrer counts**: in its
-  frontmatter, overriding the suite's reading 12 for a referrer, and in a
-  fenced code block, overriding reading 4. The pins sit in the frontmatter.
+  frontmatter and in a fenced code block alike, whatever the suite's
+  readings 12 and 4 say. The pins sit in the frontmatter.
 
 This closes the first addendum's open item on a conflict among the pin
 lines.
