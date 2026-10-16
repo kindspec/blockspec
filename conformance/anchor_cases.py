@@ -227,6 +227,10 @@ def compare(expect: Mapping, got: object, files: Mapping[str, str]) -> Iterator[
     lists = lists if isinstance(lists, Mapping) else {}
     for path, want in expect.get("transclusions", {}).items():
         have = lists.get(path)
+        if isinstance(want, str):
+            if have != want:
+                yield f"referrer {path!r}: expected {want!r}, got {have!r}"
+            continue
         if not isinstance(have, list):
             yield f"transclusions in {path!r}: no list reported"
             continue
@@ -354,6 +358,15 @@ def alterations(expect: Mapping, files: Mapping[str, str]) -> Iterator[tuple[str
             yield f"{where} {label}", alt
     for path, entries in right["transclusions"].items():
         where = f"transclusions in {path!r}"
+        if isinstance(entries, str):
+            for label, change in (("dropped", None), ("as an empty list", [])):
+                alt = copy.deepcopy(right)
+                if change is None:
+                    del alt["transclusions"][path]
+                else:
+                    alt["transclusions"][path] = change
+                yield f"referrer {path!r} {label}", alt
+            continue
         alt = copy.deepcopy(right)
         alt["transclusions"][path].append(
             {"leaf": {"node": [9999], "type": "paragraph"}, "status": "RESOLVED", "unit": None}
@@ -398,5 +411,9 @@ def refuses(expect: Mapping) -> bool:
     """Whether the case expects any `REFUSED(...)` outcome, so that it must
     name a control."""
     statuses = [o["status"] for o in expect.get("records", {}).values()]
-    statuses += [e["status"] for es in expect.get("transclusions", {}).values() for e in es]
+    for entries in expect.get("transclusions", {}).values():
+        if isinstance(entries, str):
+            statuses.append(entries)
+        else:
+            statuses += [e["status"] for e in entries]
     return any(s.startswith("REFUSED(") for s in statuses)
