@@ -1,7 +1,7 @@
 # blockspec
 
 **Status: draft 0, defined by its decisions and its conformance cases.**
-There is no `SPEC.md` yet. Draft 0 is what `docs/adjudications/` decides:
+Draft 0 is what `docs/adjudications/` decides, and `SPEC.md` writes it up:
 0001, a pinned CommonMark 0.31.2 block-level profile with `<!-- #name -->`
 region markers, and 0002, what a block is, each with addenda.
 `conformance/cases/` encodes those decisions and came first, before any

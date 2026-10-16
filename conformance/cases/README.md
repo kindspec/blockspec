@@ -6,7 +6,7 @@ needs is in the files.
 
 This tree was written before any blockspec implementation existed. It encodes
 draft 0 as `docs/adjudications/0001-syntax.md` and `0002-block.md` state it
-(each section's *What draft 0 carries*). There is no `SPEC.md` yet. Where the
+(each section's *What draft 0 carries*). There was no `SPEC.md` then. Where the
 two adjudications leave a question open, the case's `WHY.md` says
 **READING**, and the readings are listed below. A failing case is a finding,
 not a bug in the case. **Add, do not edit**: changing a case to match an
@@ -402,9 +402,10 @@ Questions the adjudications leave open, with no case in this tree, because
 any case would decide them:
 
 - **CRLF line endings.** The owner has decided that leaf content uses `\n`
-  everywhere (0002, addendum), but no fixture has CRLF bytes: the
-  repository's `.gitattributes` normalises text to LF on commit, so a CRLF
-  fixture needs an attribute that exempts it first.
+  everywhere (0002, addendum), but no fixture has CRLF bytes yet. The
+  repository's `.gitattributes` already exempts this tree from line-ending
+  normalisation (`conformance/cases/** -text`), so a CRLF fixture keeps its
+  bytes.
 
 The marker after a marker, the empty region, the marker line grammar,
 frontmatter closed by `...` and the slug algorithm were listed here until
