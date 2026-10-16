@@ -18,7 +18,7 @@ import html
 import json
 import re
 import unicodedata
-from collections.abc import Callable, Iterator, Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from types import SimpleNamespace
 
@@ -74,12 +74,17 @@ def canonical_string(value: str) -> str:
     return "".join(out)
 
 
+class _Object(list):
+    """A JSON object, as its list of (key, value) pairs: told apart from a
+    JSON array, which stays a plain list."""
+
+
 def _pairs(text: str):
     """`text` read as JSON, every object as its list of (key, value) pairs,
     so that key order and a repeated key stay visible. None if it is not
     JSON."""
     try:
-        return json.loads(text, object_pairs_hook=lambda pairs: pairs)
+        return json.loads(text, object_pairs_hook=_Object)
     except (ValueError, RecursionError):
         return None
 
@@ -125,7 +130,7 @@ def read_anchor(value: str, object_format: str) -> Anchor | None:
     """The anchor a line value holds, or None when it is not in the canonical
     form, or holds a value section 11.1 does not allow."""
     pairs = _pairs(value)
-    if not isinstance(pairs, list):
+    if not isinstance(pairs, _Object):
         return None
     keys = [k for k, _ in pairs]
     if keys not in (
@@ -135,7 +140,7 @@ def read_anchor(value: str, object_format: str) -> Anchor | None:
         return None
     got = dict(pairs)
     leaf = got["leaf"]
-    if not isinstance(leaf, list) or [k for k, _ in leaf] != ["type", "nth", "text"]:
+    if not isinstance(leaf, _Object) or [k for k, _ in leaf] != ["type", "nth", "text"]:
         return None
     leaf = dict(leaf)
     strings = [got["base"], leaf["type"], leaf["text"], got["span"], got["prefix"], got["suffix"]]
@@ -833,10 +838,54 @@ class Transclusion:
     name: str
 
 
+class _NotALink(Exception):
+    """CommonMark reads the paragraph's opening bracket as no link."""
+
+
+_QUOTED_TITLE = re.compile(r""""(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\((?:[^()\\]|\\.)*\)""")
+
+
+def _skip_space(content: str, at: int) -> int:
+    """Past spaces and tabs, with at most one line ending among them."""
+    newline = False
+    while at < len(content) and content[at] in " \t\n":
+        if content[at] == "\n":
+            if newline:
+                break
+            newline = True
+        at += 1
+    return at
+
+
+def _inline_link_tail(content: str, at: int) -> int | None:
+    """Where an inline link's `(destination "title")` that starts at `at`,
+    just after `(`, ends, or None when it is no link tail (CommonMark
+    0.31.2, *Links*)."""
+    at = _skip_space(content, at)
+    if content[at : at + 1] == "<":
+        end = at + 1
+        while end < len(content) and content[end] not in "<>\n":
+            end += 2 if content[end] == "\\" else 1
+        if end >= len(content) or content[end] != ">":
+            return None
+        at = end + 1
+    else:
+        at = _destination_end(content, at)
+    gap = _skip_space(content, at)
+    if content[gap : gap + 1] == ")":
+        return gap + 1
+    title = _QUOTED_TITLE.match(content, gap) if gap > at else None
+    if title is None:
+        return None
+    end = _skip_space(content, title.end())
+    return end + 1 if content[end : end + 1] == ")" else None
+
+
 def _link_text_end(content: str) -> int | None:
     """Where a link's text ends, after `[`, or None. Brackets nest and a
     backslash escapes; text a code span or raw HTML could reshape is left
-    undecided."""
+    undecided. A link inside the text means the outer brackets are no link
+    (CommonMark 0.31.2, example 518): `_NotALink`."""
     depth = 0
     at = 1
     while at < len(content):
@@ -846,6 +895,11 @@ def _link_text_end(content: str) -> int | None:
             continue
         if ch in "`<":
             raise Undecided("a transclusion link whose text holds a code span or HTML")
+        if ch == "[" and content[at - 1] != "!":
+            inner = _link_text_end(content[at:])
+            if inner is not None and content[at + inner + 1 : at + inner + 2] == "(":
+                if _inline_link_tail(content, at + inner + 2) is not None:
+                    raise _NotALink()
         if ch == "[":
             depth += 1
         elif ch == "]":
@@ -876,17 +930,43 @@ def _destination_end(content: str, at: int) -> int:
     return at
 
 
+_ENTITY = re.compile(r"&(?:#[0-9]{1,7}|#[xX][0-9a-fA-F]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});")
+
+
 def _reads_transclude(title: str) -> bool:
     """Whether a link title, with its delimiters, reads as `transclude` once
-    its backslash escapes and entity references are decoded."""
+    its backslash escapes and entity references are decoded. CommonMark
+    decodes an entity only with its closing `;`."""
     inner = re.sub(r"\\([!-/:-@\[-`{-~])", r"\1", title[1:-1])
-    return html.unescape(inner) == "transclude"
+    return _ENTITY.sub(lambda m: html.unescape(m.group()), inner) == "transclude"
+
+
+def _link_destination(content: str) -> str | None:
+    """The destination of a paragraph that is exactly one inline link titled
+    `"transclude"`, or None when it is not that shape."""
+    if not content.startswith("["):
+        return None
+    close = _link_text_end(content)
+    if close is None or content[close : close + 2] != "](":
+        return None
+    at = close + 2
+    if content[at : at + 1] == "<":
+        raise Undecided("a transclusion destination in angle brackets")
+    end = _destination_end(content, at)
+    title = re.fullmatch(
+        r'(?:[ \t]+(?:\n[ \t]*)?|\n[ \t]*)"transclude"[ \t]*(?:\n[ \t]*)?\)', content[end:]
+    )
+    if end == at or title is None:
+        return None
+    return content[at:end]
 
 
 def classify(leaf: Leaf) -> Transclusion | None:
     """Whether a paragraph is a transclusion (section 11.9): None, or the
     transclusion, or `Undecided` for a shape section 12 leaves open."""
     content = leaf.node.content()
+    if "](" not in content:
+        return None  # no inline link at all
     titles = [m.group(1) for m in _TITLE.finditer(content) if _reads_transclude(m.group(1))]
     if not titles:
         return None
@@ -895,25 +975,16 @@ def classify(leaf: Leaf) -> Transclusion | None:
             "a link title that reads as `transclude` but is written another way: "
             "another quoting form, a backslash escape or an entity reference"
         )
+    try:
+        if content.startswith("![") and _link_destination(content[1:]) is not None:
+            return None  # an image, which is no link
+        destination = _link_destination(content)
+    except _NotALink:
+        return None
+    if destination is None:
+        raise Undecided("a `transclude` link in a paragraph that holds other text")
     if len(leaf.node.path) > 1:
         raise Undecided("a transclusion paragraph inside a list item or a block quote")
-    shape = Undecided("a `transclude` link in a paragraph that holds other text")
-    if not content.startswith("["):
-        raise shape
-    close = _link_text_end(content)
-    if close is None or content[close : close + 2] != "](":
-        raise shape
-    at = close + 2
-    if content[at : at + 1] == "<":
-        raise Undecided("a transclusion destination in angle brackets")
-    end = _destination_end(content, at)
-    destination = content[at:end]
-    rest = content[end:]
-    title = re.fullmatch(
-        r'[ \t]+(?:\n[ \t]*)?"transclude"[ \t]*\)|\n[ \t]*"transclude"[ \t]*\)', rest
-    )
-    if not destination or title is None:
-        raise shape
     path, hash_, name = destination.partition("#")
     if not hash_:
         raise Undecided("a transclusion destination with no `#name`")
@@ -957,7 +1028,7 @@ def read_pins(lines: list[str] | None, object_format: str) -> dict[str, str] | N
     while at < len(lines) and lines[at].startswith("  - "):
         value = lines[at][len("  - ") :]
         pairs = _pairs(value)
-        if not isinstance(pairs, list) or [k for k, _ in pairs] != ["path", "blob"]:
+        if not isinstance(pairs, _Object) or [k for k, _ in pairs] != ["path", "blob"]:
             return None
         got = dict(pairs)
         if not isinstance(got["path"], str) or not _hex_id(got["blob"], object_format):
@@ -987,27 +1058,24 @@ def _bound_leaves(snapshot: Snapshot, binding: Mapping) -> list[Leaf]:
     ]
 
 
-def _transclusions(reader, text: str) -> Iterator[Transclusion]:
-    snapshot = Snapshot(reader, text)
-    for leaf in snapshot.leaves:
-        if leaf.node.type == "paragraph":
-            found = classify(leaf)
-            if found is not None:
-                yield found
-
-
 def _reaches(reader, tree: Mapping, start: str, goal: str, seen: set[str]) -> bool:
     """Whether `start`'s transclusions lead back to `goal`, in the current
-    tree. Shapes that are themselves undecided are not followed."""
+    tree. A paragraph whose shape is itself undecided is not followed, and
+    the rest of its document still is."""
     if start in seen or start not in tree:
         return False
     seen.add(start)
     try:
-        found = list(_transclusions(reader, tree[start]))
-    except (reader.Refusal, Undecided):
+        snapshot = Snapshot(reader, tree[start])
+    except reader.Refusal:
         return False
-    for one in found:
+    for leaf in snapshot.leaves:
+        if leaf.node.type != "paragraph":
+            continue
         try:
+            one = classify(leaf)
+            if one is None:
+                continue
             target = resolve_path(start, one.path)
         except (_Refused, Undecided):
             continue

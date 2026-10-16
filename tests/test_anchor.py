@@ -1186,3 +1186,78 @@ def test_of_several_pinned_reasons_the_first_leaf_in_the_pinned_blob_decides():
         current = doc(ALPHA) + "\n" + region(*current_leaves) + "\n" + doc(CHARLIE)
         tree = {"policy.md": current, "guide.md": referrer(link, blob=oid(pinned))}
         assert transclude(tree, [pinned])[0]["status"] == want, pinned_leaves
+
+
+# --- found in review ---------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "value",
+    ["[1]", "[[1, 2, 3]]", "[]", "1", "null", '"x"'],
+)
+def test_json_that_is_not_an_object_is_not_an_anchor_or_a_pin(value):
+    assert A.read_anchor(value, "sha1") is None
+    assert A.read_pins(["pins:", f"  - {value}"], "sha1") is None
+    rec = f"---\nanchor: {value}\nkind: comment\nstatus: open\n---\n"
+    got = run({"doc.md": doc(ALPHA), R: rec})["records"][R]
+    assert got["status"] == "REFUSED(record-inconsistent)"
+
+
+def test_a_leaf_that_is_an_array_is_inconsistent():
+    line = A.write_anchor(make_anchor(doc(SCRAM), SCRAM, "4.2 sigma"))
+    start = line.index('{"type"')
+    broken = line[:start] + "[1]" + line[line.index("}", start) + 1 :]
+    assert A.read_anchor(broken, "sha1") is None
+
+
+def test_link_text_holding_a_link_is_no_link():
+    # CommonMark 0.31.2, example 518: the inner link wins.
+    nested = '[a [b](c.md) d](policy.md#scram "transclude")'
+    tree = {"policy.md": TARGET, "guide.md": referrer(nested, blob=oid(TARGET))}
+    assert transclude(tree) == []
+    # Brackets that are not a link leave the outer link standing.
+    plain = '[a [b] (c d) e](policy.md#scram "transclude")'
+    tree = {"policy.md": TARGET, "guide.md": referrer(plain, blob=oid(TARGET))}
+    assert transclude(tree, [TARGET])[0]["status"] == "RESOLVED"
+
+
+def test_a_self_transclusion_behind_an_undecided_paragraph_is_found():
+    back = '[Back](guide.md#me "transclude")'
+    undecided = "[X](policy.md#scram 'transclude')"
+    tree = {
+        "policy.md": referrer(
+            "<!-- #scram -->\n" + SCRAM, undecided, back, path="guide.md", blob="0" * 40
+        ),
+        "guide.md": referrer("<!-- #me -->\n" + ALPHA, LINK, blob=oid(TARGET)),
+    }
+    assert "transcludes itself" in transclude(tree)[0]["question"]
+
+
+def test_a_moved_leaf_stays_out_of_its_gap_for_the_lcs():
+    """Leaving the MOVED leaf in the current gap would let the LCS skip the
+    first twin and pair the second, swapping the two outcomes."""
+    moved, one, twin, two = SCRAM, ALPHA, BRAVO, CHARLIE
+    base = doc(moved, one, twin, twin, two)
+    current = doc(one, moved, twin, two)
+    assert resolve_one(base, current, twin, "coolant", nth=0)["status"] == "REFUSED(repeat)"
+    got = resolve_one(base, current, twin, "coolant", nth=1)
+    assert got["status"] == "REFUSED(unaccounted-copy)"
+
+
+@pytest.mark.parametrize(
+    "paragraph",
+    [
+        '![Scram](policy.md#scram "transclude")',  # an image, no link
+        'Prose that says (see "transclude") with no link.',
+        '[Scram](policy.md#scram "&#116ransclude")',  # no `;`: not decoded
+    ],
+)
+def test_shapes_commonmark_reads_as_no_transclusion(paragraph):
+    tree = {"policy.md": TARGET, "guide.md": referrer(paragraph, blob=oid(TARGET))}
+    assert transclude(tree) == []
+
+
+def test_a_title_may_be_followed_by_a_line_ending():
+    link = '[Scram](policy.md#scram "transclude"\n)'
+    tree = {"policy.md": TARGET, "guide.md": referrer(link, blob=oid(TARGET))}
+    assert transclude(tree, [TARGET])[0]["status"] == "RESOLVED"
