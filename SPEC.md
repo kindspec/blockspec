@@ -872,27 +872,41 @@ Two branches that add or re-pin different targets merge cleanly when an
 unchanged line lies between their changes, and conflict when the changes
 touch (0003, addendum, detail 2).
 
-**Resolution**, against the target's current text:
+**Resolution**, against the target's current text. A name **binds** only
+through a region marker (§7.2, §7.3); a heading slug never binds (0003,
+second addendum of 2026-10-16, item 6).
 
-0. The referrer must pass the profile, or every transclusion in it is
-   `REFUSED(not-in-profile)`; a conflict-marker line anywhere in it, its
-   frontmatter included, counts (0003, second addendum of 2026-10-16,
-   item 7). The path must resolve, or `REFUSED(unresolvable-path)`, which
-   is reported before a broken pins block (item 3). The target document
-   must exist, or `REFUSED(document-missing)`, and the
-   pinned blob must be readable, or `REFUSED(base-unavailable)`. Both the
-   pinned blob and the current target must pass the profile, or
-   `REFUSED(not-in-profile)`. The name must bind in the pinned blob, or
-   `REFUSED(record-inconsistent)`.
-1. The name resolves as §8.1 says, against markers only. No match is
-   `#REF!(name)`, and so is a heading slug used as the name (item 6). There
-   is never more than one match: step 0 requires the current target to pass
-   the profile, which refuses a name declared twice (§7.4) (item 9).
-2. For each text-bearing leaf the name bound in the pinned blob, §11.3 and
+0. **The referrer.** A referrer the profile refuses is refused as a whole,
+   `REFUSED(not-in-profile)`, and its transclusions are not enumerated: a
+   refused file has no tree to find them in. A conflict-marker line
+   anywhere in it counts, in its frontmatter (overriding reading 12) and in
+   a fenced code block (overriding reading 4) alike (same addendum,
+   item 7).
+1. **The inputs**, checked in this order; the first that fails decides
+   (same addendum, items 2 and 3, with its precision):
+   1. the path must resolve, or `REFUSED(unresolvable-path)`;
+   2. the referrer's pins must follow the grammar above, or
+      `REFUSED(record-inconsistent)`;
+   3. the target document must exist, or `REFUSED(document-missing)`;
+   4. the current target must pass the profile, or
+      `REFUSED(not-in-profile)`;
+   5. a name that only a heading slug matches in the current target is
+      `#REF!(name)` (item 6). A marker name that is also some heading's
+      slug resolves to the marker (§8.1);
+   6. the pinned blob must be readable, or `REFUSED(base-unavailable)`;
+   7. the pinned blob must pass the profile, or `REFUSED(not-in-profile)`;
+   8. a marker must bind the name in the pinned blob, or
+      `REFUSED(record-inconsistent)`.
+2. **The name** resolves as §8.1 says, against markers only. No match is
+   `#REF!(name)`. There is never more than one: step 1 requires the current
+   target to pass the profile, which refuses a name declared twice (§7.4;
+   same addendum, item 9).
+3. For each text-bearing leaf the name binds in the pinned blob, §11.3 and
    §11.4 run with that blob as `base`. A refusal, or no pair, refuses the
    transclusion, as `REFUSED(pinned-<reason>)`, where `<reason>` is §11.4's
-   reason or `orphaned`.
-3. Each pair must lie inside what the name binds now. Otherwise the
+   reason or `orphaned`. Where several leaves refuse, the first in the
+   pinned blob's document order is reported.
+4. Each pair must lie inside what the name binds now. Otherwise the
    transclusion is `REFUSED(name-rebound)`.
 
 A refused transclusion stays refused until the referrer re-pins, recording
@@ -909,7 +923,7 @@ are not in §9's list.
 | `unresolvable-path` | a transclusion's path is absolute, or a `..` in it goes above the repository's root (§11.9) |
 | `document-missing` | the notes directory's document, or a transclusion's target, does not exist |
 | `base-unavailable` | the `base` blob, or a pin's blob, cannot be read |
-| `not-in-profile` | `base`, the current text, a pinned blob, a transclusion's current target or its referrer is refused under §9, a file committed with conflict markers included |
+| `not-in-profile` | `base`, the current text, a pinned blob or a transclusion's current target is refused under §9, a file committed with conflict markers included; or the referrer is, which refuses it as a whole (§11.9, step 0) |
 | `record-inconsistent` | §11.1's consistency rules fail, an entry of a notes directory is not a record, the referrer's pins break §11.9's grammar, or a pinned name binds nothing in its pinned blob |
 | `unaccounted-copy` | §11.4, no pair |
 | `repeat` | §11.4, `EXACT` |
@@ -918,11 +932,11 @@ are not in §9's list.
 | `exact-copy` | §11.4, `EDITED` |
 | `crowded-gap` | §11.4, `EDITED` |
 | `span-ambiguous` | §11.5 |
-| `name-rebound` | §11.9, step 3 |
-| `pinned-<reason>` | §11.9, step 2 |
+| `name-rebound` | §11.9, step 4 |
+| `pinned-<reason>` | §11.9, step 3 |
 
-A transclusion whose name binds no target in the current target renders
-`#REF!(name)` (§11.9, step 1).
+A transclusion whose name no marker binds in the current target renders
+`#REF!(name)` (§11.9, steps 1 and 2).
 
 **Which reason is reported** (0003, second addendum of 2026-10-16, item 2).
 When a record has several input problems, the first in data-dependency order
@@ -935,21 +949,22 @@ is reported:
 5. `base` refused under the profile (`not-in-profile`);
 6. the leaf at `nth` inconsistent with `base` (`record-inconsistent`).
 
-Step 1 holds every check that reads only the record: its file name and
-directory entry, its frontmatter, its body, an empty `span` and a context
-longer than 32 code points. Step 6 holds every check that needs `base`'s
-leaves: the leaf at `nth` missing, `prefix + span + suffix` not occurring
-exactly once, and a short context whose edge is further away. (That split
-is the addendum's precision, not the owner's ruling.)
+Step 1 holds every check that reads only the record, `leaf.text` included:
+its file name and directory entry, its frontmatter, its body, an empty
+`span`, a context longer than 32 code points, `prefix + span + suffix` not
+occurring exactly once in `leaf.text`, and a short context whose edge in
+`leaf.text` is further away. Step 6 holds the one check that needs `base`'s
+leaves: no leaf of `base` with `leaf`'s type and text at ordinal `nth`. So
+a record whose triple occurs twice in its `leaf.text`, and whose `base`
+cannot be read, is `record-inconsistent`. (That split is the addendum's
+precision, not the owner's ruling.)
 
-A transclusion's order is the same, with the pin in the place of `base` and
-the referrer first: the referrer refused under the profile;
-`unresolvable-path`; a broken pins block; `document-missing`; the current
-target refused under the profile; the pinned blob unreadable, then refused
-under the profile; the name binding nothing in the pinned blob; then §11.9's
-steps 1 to 3. Several `pinned-<reason>`s are ordered by their leaves in the
-pinned blob's document order, and the first is reported. (The full
-transclusion order, beyond items 2, 3 and 7, is the addendum's precision.)
+A transclusion's order is §11.9's steps 0 to 4, read in order: the referrer
+first, then the inputs in step 1's order, with the pin in the place of
+`base`. Several `pinned-<reason>`s are ordered by their leaves in the
+pinned blob's document order, and the first is reported. (The transclusion
+order beyond items 2, 3, 6 and 7, and the leaves' order, are the
+addendum's precision.)
 
 A stale suggestion carries `unmappable-offset` when §11.7's mapping fails.
 A reply with no parent renders `#REF!(reply-to)`.

@@ -836,8 +836,8 @@ link, a submodule or a file that is not markdown.
 
 ## Addendum, 2026-10-16: input problems, and two unreachable clauses
 
-The owner's decisions of 2026-10-16, on nine gaps a review of the first
-addendum found. Each numbered item is the owner's. Where this write-up adds
+The owner's decisions of 2026-10-16, on nine gaps §11 left open. Each
+numbered item is the owner's. Where this write-up adds
 precision of its own, it says so, marked **(precision, not the owner's)**,
 with the reason. `SPEC.md` §11 carries the rules.
 
@@ -855,32 +855,52 @@ problems, the first in data-dependency order is reported:
 5. `base` refused under the profile (`not-in-profile`);
 6. the leaf at `nth` inconsistent with `base` (`record-inconsistent`).
 
-Several `pinned-<reason>`s on one transclusion are ordered the same way,
-with the pinned leaves in base order: the reason reported is the first
-leaf's, in the pinned blob's document order, that refuses.
+Several `pinned-<reason>`s on one transclusion are ordered the same way.
+
+**(precision, not the owner's)** Among several `pinned-<reason>`s, the one
+reported is the first leaf's that refuses, in the pinned blob's document
+order. *Reason*: that is the order in which `SPEC.md` §11.9's leaf step
+visits the pinned leaves, and every implementation computes it the same
+way.
 
 **(precision, not the owner's)** What each `record-inconsistent` step
-holds. Step 1 is every check that reads only the record: its file name and
-directory entry (item 5), its frontmatter's grammar, its body (item 8), an
-empty `span`, and a context longer than 32 code points (item 1). Step 6 is
-every check that needs `base`'s leaves: the leaf at `nth` missing,
-`prefix + span + suffix` not occurring exactly once, and a short context
-whose edge is further away. *Reason*: each check sits at the first step
-whose data it reads, which is the order the owner chose.
+holds. Step 1 is every check that reads only the record, `leaf.text`
+included: its file name and directory entry (item 5), its frontmatter's
+grammar, its body (item 8), an empty `span`, a context longer than 32 code
+points (item 1), `prefix + span + suffix` not occurring exactly once in
+`leaf.text`, and a short context whose edge in `leaf.text` is further away.
+Step 6 is the one check that needs `base`'s leaves: no leaf of `base` with
+`leaf`'s type and text at ordinal `nth`. *Reason*: each check sits at the
+first step whose data it reads, which is the principle the owner's order
+follows. So a record whose triple occurs twice in its own `leaf.text`, and
+whose `base` cannot be read, is `record-inconsistent`, not
+`base-unavailable`.
 
 **(precision, not the owner's)** The transclusion's order, from the same
-rule and items 3 and 7: the referrer refused under the profile
-(`not-in-profile`); `unresolvable-path`; the referrer's pins block broken
-(`record-inconsistent`); `document-missing`; the current target refused
-under the profile (`not-in-profile`); the pinned blob unreadable
-(`base-unavailable`); the pinned blob refused under the profile
-(`not-in-profile`); the name binding nothing in the pinned blob
-(`record-inconsistent`); then §11.9's steps 1 to 3 in order. *Reason*: the
-path and the pins are read out of the referrer, so the referrer comes
-first; the rest is the record's order with the pin standing in for `base`.
+rule and items 3, 6 and 7:
+
+1. the referrer refused under the profile (`not-in-profile`, item 7);
+2. `unresolvable-path`;
+3. the referrer's pins block broken (`record-inconsistent`);
+4. `document-missing`;
+5. the current target refused under the profile (`not-in-profile`);
+6. a name that only a heading slug matches in the current target
+   (`#REF!(name)`, item 6);
+7. the pinned blob unreadable (`base-unavailable`);
+8. the pinned blob refused under the profile (`not-in-profile`);
+9. no marker binding the name in the pinned blob (`record-inconsistent`);
+10. then `SPEC.md` §11.9's name, leaf and rebinding steps, in order.
+
+*Reason*: the path and the pins are read out of the referrer, so the
+referrer comes first; the rest is the record's order with the pin standing
+in for `base`, and item 6 needs only the current target. Here, and
+throughout §11.9, a name **binds** only through a region marker (§7.2,
+§7.3); a heading slug never binds.
 
 **3. `unresolvable-path` before a broken pins block.** The path is checked
-first, as the first addendum's detail 7 already says.
+before the pins. This addendum supersedes the first addendum's detail 7,
+"checked before everything else in step 0": a referrer the profile refuses
+comes first (item 7), then the path.
 
 **4. A line break that cannot be written back.** A `\n` in `replace` that
 cannot be re-emitted unambiguously makes the suggestion stale, as
@@ -903,20 +923,26 @@ string is not a ULID in that form. *Reason*: one spelling per id, so that
 ids, file names and `reply-to` compare byte for byte, and a lower-case
 spelling of the same ULID is not a second id.
 
-**6. A heading slug as a transclusion name** is `#REF!(name)`. §11.9
-resolves the name against markers only, so a slug matches nothing there.
+**6. A name that only a heading slug matches**, in the current target, is
+`#REF!(name)`, and is checked before the name's binding in the pinned blob.
+A marker name that is also some heading's slug resolves to the marker, by
+§8.1's order, so this is only a name no marker declares.
 
-**7. A referrer holding conflict markers** refuses every transclusion in
-it, as `not-in-profile`. `SPEC.md` §11.10's row for `not-in-profile` names
-the referrer.
+**7. A referrer holding conflict markers** refuses its transclusions, as
+`not-in-profile`. `SPEC.md` §11.10's row for `not-in-profile` names the
+referrer. Two further points, also the owner's:
 
-**(precision, not the owner's)** A conflict-marker line anywhere in the
-referrer counts, in its frontmatter included, whatever the suite's reading
-12 says about the parse scan; and a referrer the profile refuses for any
-other reason refuses its transclusions the same way. *Reason*: the pins sit
-in the frontmatter, and a document the profile refuses has no tree in
-which to find a transclusion paragraph. This closes the first addendum's
-open item on a conflict among the pin lines.
+- **A referrer the profile refuses is refused as a whole**, as
+  `not-in-profile`, whatever the profile refuses it for, and its
+  transclusions are not enumerated: a refused file has no tree in which to
+  find a transclusion paragraph. The anchor case kind gives such a referrer
+  one referrer-level status instead of a list.
+- **A conflict-marker line anywhere in the referrer counts**: in its
+  frontmatter, overriding the suite's reading 12 for a referrer, and in a
+  fenced code block, overriding reading 4. The pins sit in the frontmatter.
+
+This closes the first addendum's open item on a conflict among the pin
+lines.
 
 **8. A record whose body the profile refuses** is `record-inconsistent`. A
 record is a blockspec document (§3), so its body is one.
@@ -924,10 +950,10 @@ record is a blockspec document (§3), so its body is one.
 **9. Two clauses that can never apply are removed.**
 
 - **`#REF!(name)` for a name that binds more than one target** (§7, step 1,
-  and *Details this document fixes*). Proof: step 0 requires the current
-  target to pass the profile, which refuses a name declared twice
-  (`duplicate-name`), and step 1 matches markers only, so a name matches at
-  most one target.
+  and *Details this document fixes*). Proof: `SPEC.md` §11.9 requires the
+  current target to pass the profile before the name resolves, the profile
+  refuses a name declared twice (`duplicate-name`), and the name is matched
+  against markers only, so it matches at most one target.
 - **"The pair must lie in that gap"**, in §4's rule for an `EXACT` leaf with
   repeated text. Proof: the rule fires only when the key is repeated, a
   repeated key is never on the chain, so the pair comes from step 2's

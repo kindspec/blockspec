@@ -538,7 +538,7 @@ and `[]` for a referrer with none:
 | field | value |
 | --- | --- |
 | `leaf` | the transclusion paragraph, `{"node": path, "type": "paragraph"}`, over the referrer |
-| `status` | `RESOLVED`; `REFUSED(<reason>)` with a reason from §11.10's table, `pinned-<reason>` written out (`REFUSED(pinned-orphaned)`, `REFUSED(pinned-near-copy)`); or, for §11.9's step 1, `#REF!(<name>)` with the name as the destination writes it after its `#`, as `resolve` writes it for a `parse` case |
+| `status` | `RESOLVED`; `REFUSED(<reason>)` with a reason from §11.10's table, `pinned-<reason>` written out (`REFUSED(pinned-orphaned)`, `REFUSED(pinned-near-copy)`); or, for §11.9's steps 1 and 2, `#REF!(<name>)` with the name as the destination writes it after its `#`, as `resolve` writes it for a `parse` case |
 | `unit` | for `RESOLVED`, what is transcluded: `{"document": path, "target": target}`, where `path` is the target document's path in the repository, after §11.9 resolves the link's path from the referrer's directory, and `target` is what the name binds in the current target, written as `names` writes it (a node, or `{"region": [...]}`). `null` for every other status |
 
 Each listed record and each listed referrer's list is compared whole: a
