@@ -170,9 +170,11 @@ list item, which are tried first (0002, addendum on ambiguous tables):
 3. A lazy header line is read as it stands: whitespace before its leading
    pipe makes an empty first cell.
 
-A **lazy delimiter line**, one that continues a paragraph inside a block
-quote or a list item without that container's prefix, starts no table: it is
-paragraph text, as CommonMark reads a lazy continuation line.
+A **lazy line** under a paragraph in a block quote or a list item, one
+without that container's prefix, starts no table. If it starts another
+block, that block begins: `- | -` starts a list item, as it does after any
+paragraph line. Otherwise it is paragraph text, as CommonMark reads a lazy
+continuation line, delimiter-shaped or not.
 
 If the two lines alone are `ambiguous-table`, so is the document, and that
 takes precedence over `table-not-blank-above`. If the two lines alone are a
@@ -283,8 +285,8 @@ matches**
 
 **and is indented at most three spaces** (0001, addendum). Where the line
 would start a block, four or more make it an indented code block, which §4.1
-refuses. In paragraph context the same line is a lazy continuation line, so
-it is paragraph text, as CommonMark reads it. **(read as)** 0001's addendum
+refuses. In paragraph context the same line is a paragraph continuation
+line, so it is paragraph text, as CommonMark reads it. **(read as)** 0001's addendum
 says four or more make an indented code block; this document reads that as
 applying where a block can start. The only spacing allowed
 is spaces and tabs, inside and around the comment, so `<!--#intro-->` and
@@ -660,7 +662,9 @@ in one commit.
 content comes from one raw character of its lines. Container prefixes (`>`
 markers and list-item indentation), the indentation a paragraph line loses,
 and line endings, carriage returns included, are raw characters no content
-code point comes from; a `\n` in the content stands for the line ending.
+code point comes from; a `\n` in the content stands for the line ending,
+whichever it is. In a file whose lines end in a bare CR, that `\n` comes
+from the CR.
 
 1. Let `a` and `b` be the positions in the leaf's content, before NFC, such
    that the NFC form of the content before `a` is `leaf.text` before the
@@ -669,9 +673,11 @@ code point comes from; a `\n` in the content stands for the line ending.
 2. Map `a` and `b` through the parse to raw positions, skipping the
    characters above. The raw text between them is the span's raw range.
 3. Replace the range with `replace`, written exactly as stored and never
-   normalised. Where `replace` holds `\n`, each new line is preceded by the
-   container prefixes the parse gives the line it continues. Nothing outside
-   the range changes.
+   normalised, except at its line breaks. Each `\n` in `replace` is written
+   as the line ending of the line it breaks (CRLF in a CRLF file, CR in a
+   bare-CR file), and each new line is preceded by the container prefixes
+   the parse gives the line it continues. Nothing outside the range
+   changes.
 
 Only the span's own text must match after NFC; the rest of the leaf may be
 in any normalisation form and may span several prefixed or CRLF lines.
