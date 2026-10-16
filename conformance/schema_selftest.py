@@ -76,6 +76,7 @@ GOOD = {
             {"leaf": LEAF, "status": "#REF!(gone)", "unit": None},
         ],
         "empty.md": [],
+        "refused.md": "REFUSED(not-in-profile)",
     },
     "controls": ["anchor/x/y"],
 }
@@ -182,6 +183,14 @@ def _broken():
         edit(lambda b: b["transclusions"]["dir/ref.md"][0].pop("unit")),
     )
     yield "empty controls", edit(lambda b: b.__setitem__("controls", []))
+    yield (
+        "a referrer-level status other than not-in-profile",
+        edit(lambda b: b["transclusions"].__setitem__("refused.md", "REFUSED(document-missing)")),
+    )
+    yield (
+        "a referrer-level status inside a list",
+        edit(lambda b: b["transclusions"].__setitem__("refused.md", ["REFUSED(not-in-profile)"])),
+    )
 
 
 def _validate(validator: str, body: dict, workdir: str) -> int:
