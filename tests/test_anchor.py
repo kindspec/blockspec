@@ -1261,3 +1261,49 @@ def test_a_title_may_be_followed_by_a_line_ending():
     link = '[Scram](policy.md#scram "transclude"\n)'
     tree = {"policy.md": TARGET, "guide.md": referrer(link, blob=oid(TARGET))}
     assert transclude(tree, [TARGET])[0]["status"] == "RESOLVED"
+
+
+# --- the third addendum ------------------------------------------------------
+
+
+def test_overlapping_hits_are_two_and_ambiguous():
+    base_leaf = "Za" * 33  # the triple is the whole leaf, so it occurs once
+    base = doc(ALPHA, base_leaf, BRAVO)
+    anchor = A.Anchor(
+        oid(base), "p", 0, base_leaf, base_leaf[32:34], base_leaf[:32], base_leaf[34:], None
+    )
+    current = doc(ALPHA, "Za" * 34, BRAVO)  # the triple starts at 0 and at 2
+    got = run({"doc.md": current, R: record(anchor)}, blobs=[base])["records"][R]
+    assert got["status"] == "REFUSED(span-ambiguous)"
+
+
+def test_a_reply_goes_through_its_documents_checks():
+    reply = '---\nreply-to: "01J9Z3M8Q4X7V2K6T0R5N1B8CD"\nkind: comment\n---\n\nAgreed.\n'
+    got = run({R2: reply}, records=[R2])["records"][R2]
+    assert got["status"] == "REFUSED(document-missing)"
+    got = run({"doc.md": "Title\n=====\n", R2: reply}, records=[R2])["records"][R2]
+    assert got["status"] == "REFUSED(not-in-profile)"
+    bad = reply.replace("kind: comment", "kind: other")
+    got = run({R2: bad}, records=[R2])["records"][R2]
+    assert got["status"] == "REFUSED(record-inconsistent)"  # grammar first
+
+
+def test_a_span_ending_with_a_code_blocks_final_line_ending_is_unmappable():
+    base = "```\nlimit = 4.2\n```\n"
+    stale = {"gate": "stale", "reason": "unmappable-offset"}
+    for replace in ("5.0", "5.0\n"):
+        got = suggest(base, base, "limit = 4.2\n", "4.2\n", replace, kind="code")
+        assert got["suggestion"] == stale, replace
+    got = suggest(base, base, "limit = 4.2\n", "4.2", "5.0", kind="code")
+    assert got["suggestion"]["gate"] == "apply"
+
+
+def test_a_fences_own_indentation_leaves_tab_spaces_that_do_not_map():
+    base = "  ```\nx = 1\n\tfoo = 2\n  ```\n"
+    text = "x = 1\n  foo = 2\n"
+    stale = {"gate": "stale", "reason": "unmappable-offset"}
+    assert suggest(base, base, text, " foo", "bar", kind="code")["suggestion"] == stale
+    # Ending right before the leftover spaces: the span ends with a line ending.
+    assert suggest(base, base, text, "1\n", "1;", kind="code")["suggestion"] == stale
+    got = suggest(base, base, text, "foo", "bar", kind="code")
+    assert got["suggestion"] == {"gate": "apply", "written": base.replace("foo", "bar")}

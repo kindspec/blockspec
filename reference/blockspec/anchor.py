@@ -664,6 +664,8 @@ def write_back(snapshot: Snapshot, leaf: Leaf, span: list[int], replace: str) ->
         )
     content, positions = _content_positions(snapshot, leaf)
     a, b = _map_span(content, leaf.text, *span)
+    if leaf.node.type == "code_block" and b == len(content):
+        raise _Unmappable()  # the block's final line ending (third addendum, item 4)
     if any(p is None for p in positions[a:b]) or a == b:
         raise _Unmappable()
     if b < len(positions) and positions[b] is None:
@@ -739,6 +741,11 @@ def resolve_record(reader, repo: Mapping, path: str) -> dict:
         document = _record_location(path)
         record = _read_record(reader, tree[path], fm, repo["object_format"])
         if record.anchor is None:
+            # A reply is a record: steps 2 and 3 of the order apply to it,
+            # and steps 4 to 6 read an anchor (third addendum, item 2).
+            if document not in tree:
+                raise _Refused("document-missing")
+            _read(reader, tree[document])
             directory = path.rpartition("/")[0]
             found = f"{directory}/{record.reply_to}.md" in tree
             outcome["status"] = "REPLY" if found else "#REF!(reply-to)"
