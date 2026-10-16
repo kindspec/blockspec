@@ -6,7 +6,7 @@ needs is in the files.
 
 This tree was written before any blockspec implementation existed. It encodes
 draft 0 as `docs/adjudications/0001-syntax.md` and `0002-block.md` state it
-(each section's *What draft 0 carries*). There is no `SPEC.md` yet. Where the
+(each section's *What draft 0 carries*). There was no `SPEC.md` then. Where the
 two adjudications leave a question open, the case's `WHY.md` says
 **READING**, and the readings are listed below. A failing case is a finding,
 not a bug in the case. **Add, do not edit**: changing a case to match an

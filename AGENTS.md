@@ -10,11 +10,11 @@ specific to blockspec, and wins where the two conflict.
 
 ## Status
 
-**Draft 0 is decided, not yet written up as a specification.** blockspec is
+**Draft 0 is decided, and `SPEC.md` writes it up.** blockspec is
 the **blocks kind** — identity is deliberately no minted ids — alongside [rowspec](https://github.com/kindspec/rowspec) and [nodespec](https://github.com/kindspec/nodespec).
 
-There is no `SPEC.md`: draft 0 is what `docs/adjudications/` 0001 and 0002
-decide, and the spike's binding verdict is FOUND, under an owner ruling that
+Draft 0 is what `docs/adjudications/` 0001 and 0002 decide; `SPEC.md`
+restates it, defers to them, and lists what they leave open. The spike's binding verdict is FOUND, under an owner ruling that
 overrides frozen rules; see `spike/README.md`, The verdict. `conformance/cases/` holds draft 0's conformance cases,
 written before any implementation existed. `reference/blockspec/` is the first
 implementation, written afterwards against the tree and `docs/adjudications/`,
