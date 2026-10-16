@@ -961,3 +961,75 @@ record is a blockspec document (§3), so its body is one.
 
 The body of this document keeps both clauses as first written. This
 addendum removes them, and `SPEC.md` does not carry them.
+
+## Addendum, 2026-10-16: overlaps, replies, and two write-back edges
+
+The owner's decisions of 2026-10-16. Each numbered item is the owner's.
+Where this write-up adds precision of its own, it says so, marked
+**(precision, not the owner's)**, with the reason. `SPEC.md` §11 carries
+the rules.
+
+**1. Overlapping occurrences count.** Occurrences of
+`prefix + span + suffix` in `leaf.text` are counted by start position, so
+two that overlap are two, and the triple does not occur exactly once. That
+applies at creation and in the consistency check alike.
+
+**(precision, not the owner's)** §11.5's hits are counted the same way: an
+occurrence is a start position, and two overlapping hits are two, so
+`span-ambiguous`. *Reason*: one way of counting occurrences everywhere
+§11 counts them.
+
+**2. Replies are records.** A reply whose notes directory's document is
+missing, or refused by the profile, is `REFUSED(document-missing)` or
+`REFUSED(not-in-profile)`, as any record is. This narrows Q8's row in the
+*Decision* table and the last sentence of §2: a reply whose parent is
+missing renders `#REF!(reply-to)` only once its document is found and
+accepted. Both texts stay as first written.
+
+**(precision, not the owner's)** Where it sits in the order of the second
+addendum's item 2: a reply goes through steps 1 to 3, its grammar, then
+`document-missing`, then the document refused under the profile. Steps 4
+to 6 read an anchor, which a reply does not have. Only a reply that passes
+steps 1 to 3 is looked up by its `reply-to`, and renders `#REF!(reply-to)`
+when that names no record. *Reason*: the data-dependency rule puts every
+check on the document before anything rendered on it, and `#REF!(reply-to)`
+is how a reply renders, not an input problem.
+
+**3. A character that comes from no single raw character.** Where a tab is
+only partly consumed by container indentation, CommonMark keeps the rest of
+its width as spaces in the content, and those characters of `leaf.text`
+come from no single raw character. A span that crosses one makes the
+suggestion stale, as `unmappable-offset`.
+
+**(precision, not the owner's)** "Crosses" is read as: at least one code
+point of the span is such a character, or the span ends right before one.
+A span that begins right after one maps. *Reason*: §11.7 maps two
+positions, `a` where the span begins and `b` where it ends, through the
+parse to raw positions. A span that begins right after the leftover spaces
+has its `a` on the raw character after the tab. A span that ends right
+before them ends with the line's `\n`, and step 2 carries `b` to where the
+next line's content begins, which is inside the partly consumed tab, not a
+raw position.
+
+**(precision, not the owner's, extending item 3)** The same holds for a
+tab partly consumed by any indentation, not only a container's: a fenced
+code block's own indentation, removed from each content line (a fence
+indented two spaces, then a content line that is a tab and `foo`, leaves
+two spaces of the tab in the content), and any other indentation
+CommonMark removes from a line by columns. *Reason*: item
+3's principle is that a character of `leaf.text` that comes from no single
+raw character cannot be written back, and that is so whatever indentation
+consumed the rest of the tab. An indented code block would be another
+instance, but the profile refuses one (`SPEC.md` §4.1).
+
+**4. A code block's final line ending.** A span whose last code point is
+the `\n` that ends a code block's last content line makes the suggestion
+stale, as `unmappable-offset`. That `\n` stands for where the block's
+content ends, not for text: writing over it would join the closing fence
+to the line before it, and in a fence left unclosed at the end of its
+container or of the file, where reading 8 still ends the last line in
+`\n`, it may come from no raw character at all.
+
+**(precision, not the owner's)** That holds whatever `replace` ends with,
+including a `\n`. *Reason*: the rule as decided names the span alone, and
+read literally it stays a fact about where the span ends.
