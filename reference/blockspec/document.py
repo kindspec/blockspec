@@ -17,15 +17,21 @@ make it a row, and a header row with no pipe over a one-cell delimiter row, a
 table to GitHub alone, is refused. A row that is only `|` ends a table too, as
 GitHub ends it. Standard library only, and one file on purpose:
 `conformance/run_cases.py --impl FILE` loads this file by path, and so does
-the mutation gate, from a mutated copy of it.
+the mutation gate, from a mutated copy of it. The anchor resolver of section
+11 is `anchor.py` beside it, which `resolve` loads by path in turn and hands
+this file's reader.
 """
 
 from __future__ import annotations
 
+import importlib.util
+import os
 import re
 import string
+import sys
+from types import SimpleNamespace
 
-__all__ = ["Document", "Refusal", "conform", "parse"]
+__all__ = ["Document", "Refusal", "conform", "parse", "resolve"]
 
 
 class Refusal(Exception):
@@ -939,3 +945,21 @@ def conform(text: str, queries: list[str]) -> dict:
         "names": doc.names,
         "resolve": {name: doc.resolve(name) for name in queries},
     }
+
+
+def resolve(repo: dict, queries: dict) -> dict:
+    """The interface `conformance/run_cases.py --impl FILE` calls for the
+    `anchor` kind. The resolver is `anchor.py`, beside this file, loaded by
+    path as this file is, and handed this file's reader, so that a mutated
+    copy of the reader is the one it runs."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "anchor.py")
+    anchor = sys.modules.get("blockspec_anchor")
+    if anchor is None or anchor.__file__ != path:
+        spec = importlib.util.spec_from_file_location("blockspec_anchor", path)
+        if spec is None or spec.loader is None:
+            raise ImportError(f"cannot load {path!r}")
+        anchor = importlib.util.module_from_spec(spec)
+        sys.modules["blockspec_anchor"] = anchor
+        spec.loader.exec_module(anchor)
+    reader = SimpleNamespace(parse=parse, Refusal=Refusal, split_lines=_split_lines)
+    return anchor.resolve(repo, queries, reader)
