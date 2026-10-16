@@ -23,13 +23,12 @@ owner decided all thirteen on 2026-10-16. This document records each
 decision with its reasoning, the rules that follow, and what the design does
 not prevent.
 
-**What the evidence is.** Each rule below exists for an edit shape that a
-simpler rule gets silently wrong. The shapes were built and run under stock
-git while the design was drafted. Those runs are not published with this
-document. The conformance cases that follow it are where each shape becomes a
-public case that can fail, and they will be written by an author who has not
-read the resolver. **No figure in this document measures these rules on real
-history.** That measurement is the first item under *What would reverse it*.
+**What the evidence is.** Each rule below is argued from the edit shape it
+exists for, and the sources cited are public. The conformance cases that
+follow this document are where each shape becomes a case that can fail, and
+they will be written by an author who has not read the resolver. **No figure
+in this document measures these rules on real history.** That measurement is
+the first item under *What would reverse it*.
 
 Pins: blockspec `26e00f2` with `SPEC.md` from kindspec/blockspec#40;
 kindspec/research `244dff0`.
