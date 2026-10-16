@@ -4,10 +4,13 @@
 Status: draft. This document writes up draft 0 as
 `docs/adjudications/0001-syntax.md`, `0002-block.md` and
 `0003-anchors.md` decide it, with their addenda. It answers nothing the
-adjudications leave open; 0003 and its addendum name the details §11 fixes
-beyond its thirteen answers. Where an adjudication's wording had to be
+adjudications leave open; 0003 names the details §11 fixes beyond its
+thirteen answers, and its addendum of 2026-10-16 decides the grammar and
+the precision §11 states, the owner's decisions on the precision
+included. Where an adjudication's wording had to be
 scoped or read to give one answer, the text says so where it uses it,
-marked **(read as)**. **Where this document and an adjudication disagree, the adjudication wins
+marked **(read as)**. **Where this document and an adjudication disagree,
+the adjudication wins
 and this document is in error.** Where the adjudications are silent, this
 document says so (§12) instead of choosing.
 
@@ -793,7 +796,11 @@ is a region marker's name in it (§7). A heading slug is not a target. The
 link renders as a link in any markdown tool.
 
 **The path** (0003, addendum, detail 7) is the destination's part before the
-`#` (CommonMark 0.31.2, *Links*). It resolves relative to the directory that
+`#` (CommonMark 0.31.2, *Links*), **as raw text**: character for character
+as the file writes it, with no backslash escape, entity reference or
+percent-encoding decoded. That is also the text a pin's `path` holds, and
+this definition governs both. So `my%20doc.md` names a file called
+`my%20doc.md`. It resolves relative to the directory that
 holds the referrer, as a renderer resolves a relative link, in the tree of
 the snapshot being resolved: it is split at `/`, a `.` segment is dropped,
 and a `..` segment removes the segment before it.
@@ -822,21 +829,25 @@ object in §11.1's canonical form and string escaping:
     pins:
       - {"path": "policy.md", "blob": "9b1c4e0d2f7a6385c1e0b4d9a8f7263514c0e9ab"}
 
-- `path` is the path part of a transclusion's destination, character for
-  character as the link writes it. A transclusion uses the pin whose `path`
+- `path` is the path part of a transclusion's destination, as raw text
+  (above). A transclusion uses the pin whose `path`
   is equal to its own.
 - `blob` is the target document's blob when it was pinned, in lower-case hex
   as §11.1's `B`.
 - The pins end at the first frontmatter line that does not begin with
   `  - `. They are sorted by `path`, ascending, code point by code point, and
   no `path` appears twice.
+- A line that begins with `  - ` after the pins have ended is refused when
+  every line between them is blank or begins with a space or `#`: a YAML
+  reader would read it as one more pin, across a blank or comment line.
 
 The rest of the frontmatter stays opaque (§5): the resolver reads the pin
 lines as text, not through a YAML reader. **Every transclusion in the
 referrer is `REFUSED(record-inconsistent)`** when the frontmatter has more
 than one line that begins with `pins:`, a line that begins with `pins:` and
 is not exactly `pins:`, a pin line not in the canonical form, pins out of
-order, or one `path` twice.
+order, one `path` twice, or such a `  - ` line after the pins have
+ended.
 
 Two branches that add or re-pin different targets merge cleanly when an
 unchanged line lies between their changes, and conflict when the changes
@@ -1017,8 +1028,9 @@ listed: 0002's *Decision* text decides it (§4.3).
   edge when a context is short. A triple that occurs once at the edge and
   again elsewhere is not created, and a record holding it is
   `record-inconsistent`, though under the edge rule it is unambiguous.
-- **Other keys in a record's frontmatter**, such as an author or a time, and
-  **whether a reply carries a status**. The grammar admits neither (§11.1).
+- **Whether a later version admits further keys in a record's
+  frontmatter**, such as an author or a time. Draft 0 refuses them
+  (§11.1).
 - **A pin that no transclusion uses.** §11.9 says which pin a transclusion
   uses, and nothing about a pin left over.
 - **Frontmatter that hides the pins line.** The resolver reads the pin lines
@@ -1031,7 +1043,10 @@ listed: 0002's *Decision* text decides it (§4.3).
   separators, escapes and padding that no single raw character gives, so
   §11.7's mapping does not say how a span in a table, or one that crosses a
   cell, maps to the file.
-- **Other spellings of a path**: percent-encoding, backslash escapes, entity
-  references and empty segments in a transclusion's path.
+- **Whether a renderer-style decoding of a path is wanted later.** §11.9
+  reads a path as raw text, so a percent-encoded, backslash-escaped or
+  entity-encoded path names the file spelled that way, or is
+  `document-missing`. How an empty segment (`a//b.md`) is read is not
+  decided.
 - **A path that names a symbolic link, a submodule, or a file that is not
   markdown.**

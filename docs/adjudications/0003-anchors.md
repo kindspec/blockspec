@@ -679,13 +679,17 @@ followed by an object in detail 1's canonical form and escaping:
       - {"path": "policy.md", "blob": "9b1c4e0d2f7a6385c1e0b4d9a8f7263514c0e9ab"}
 
 - `path` is the path part of a transclusion's link destination, everything
-  before the `#`, character for character as the link writes it. A
-  transclusion uses the pin whose `path` is equal to its own.
+  before the `#`, character for character as the link writes it (detail 7).
+  A transclusion uses the pin whose `path` is equal to its own.
 - `blob` is the target document's blob when it was pinned, in lower-case
   hex as `B` above.
 - The pins end at the first line of the frontmatter that does not begin with
   `  - `. They are sorted by `path`, ascending, comparing code point by code
   point, and no `path` appears twice.
+- A line that begins with `  - ` after the pins have ended is refused when
+  every line between them is blank or begins with a space or `#`. A YAML
+  reader would read it as one more pin, across a blank or comment line, and
+  the resolver would not.
 
 The rest of the referrer's frontmatter stays opaque. The resolver reads the
 pin lines as text and does not run a YAML reader over the frontmatter; they
@@ -695,7 +699,8 @@ mapping reads `pins` as a list of mappings with the same values.
 **Every transclusion in the referrer is refused as `record-inconsistent`**
 when the frontmatter has more than one line that begins with `pins:`, a line
 that begins with `pins:` and is not exactly `pins:`, a pin line not in the
-canonical form, pins out of order, or one `path` twice.
+canonical form, pins out of order, one `path` twice, or such a `  - ` line
+after the pins have ended.
 
 What one line per target buys, probed with git 2.47 on a stock `git merge`:
 a pin that two branches change differently is one line, and conflicts, which
@@ -747,7 +752,8 @@ and U+001F:
 
 Each keeps the sense `SPEC.md` §11 gives it: "at least" stays `≥`, and
 "below" stays `<`. Each is the stated comparison multiplied through by a
-positive integer: `2·T`, `T` and `20·T₁·T₂`. Checked against exact rationals on 200,000
+positive integer: `2·T`, `T` and `20·T₁·T₂`. Checked against exact rationals
+on 200,000
 random draws with `T` up to 120. Floating point does differ:
 `22/30 − 42/72` is exactly 0.15, and IEEE 754 doubles compute 0.1499…,
 below the margin.
@@ -763,8 +769,12 @@ the same `suffix` follows.
 
 **7. A transclusion's path** resolves relative to the directory that holds
 the referring document, as a renderer resolves a relative link. The path is
-the link destination's part before the `#` (CommonMark 0.31.2, *Links*). It
-is read in the tree of the snapshot being resolved, from the referrer's
+the link destination's part before the `#` (CommonMark 0.31.2, *Links*),
+**as raw text**: character for character as the file writes it, with no
+backslash escape, entity reference or percent-encoding decoded, the same
+text a pin's `path` holds. So `my%20doc.md` names a file called
+`my%20doc.md`, and is `document-missing` where there is none. It is read in
+the tree of the snapshot being resolved, from the referrer's
 directory: split at `/`, a `.` segment is dropped, and a `..` segment
 removes the segment before it.
 
@@ -784,13 +794,42 @@ removes the segment before it.
 `unresolvable-path` is a new resolution reason. The path is checked before
 everything else in `SPEC.md` §11.9's step 0.
 
+**The owner's decisions on the precision**, also of 2026-10-16. The seven
+rulings above left these choices to the write-up, and the owner ratified
+each as decided:
+
+- **Byte-exact canonical JSON**, with its key order, spacing and escape set,
+  `base` as lower-case hex of 40 or 64 digits, and `nth` as plain decimal:
+  one form means two tools write the same bytes, and a reader can refuse
+  anything else by comparing them.
+- **The exact set of record lines**: a reader that knows every line can
+  refuse a record that holds anything else, rather than guess at it.
+- **`reply-to` as a JSON string, and a reply carrying `kind: comment` and no
+  `status`**: an id of digits stays a string under YAML 1.2, and a reply's
+  status has no meaning to carry.
+- **Pins sorted, unique, as `  - ` lines, and a malformed block refusing the
+  referrer's transclusions**: sorting spreads concurrent additions apart, a
+  duplicate would give one target two blobs, and a pin that cannot be read
+  must not be skipped silently.
+- **The `\|` escape in a table's text**: without it two different tables
+  can be copies.
+- **The new reason `unresolvable-path`**: an absolute path, or one that
+  leaves the repository, is a different failure from a missing file, and
+  says what to fix.
+- **"Leftmost" as the lexicographically smallest sequence of current
+  indices**: one tie-break that every implementation computes the same way.
+  It differs from a reading in base order: when two leaves swap, the leaf
+  now first is `EXACT`, where a base-order reading would make the leaf that
+  was first `EXACT`.
+
 **What these leave open**, listed in `SPEC.md` §12: whether creation and the
 consistency check count occurrences under detail 6's edge rule; whether a
-record's frontmatter may carry other keys, and whether a reply carries a
-status; a pin that no transclusion uses; a frontmatter whose other content
+later version admits further keys in a record's frontmatter; a pin that no
+transclusion uses; a frontmatter whose other content
 makes a YAML reader read the `pins:` line as something else; what a
 conflict among the pin lines does if reading 12 is reversed; how a span is
 written back into a table, whose text holds separators and escapes no single
-raw character gives; how a path's percent-encoding, backslash escapes, entity
-references and empty segments are read; and a path that names a symbolic
+raw character gives; whether a renderer-style decoding of a path's
+percent-encoding, backslash escapes and entity references is wanted later,
+and how empty segments are read; and a path that names a symbolic
 link, a submodule or a file that is not markdown.
