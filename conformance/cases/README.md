@@ -522,7 +522,7 @@ putting it straight into `tree/`, where git would have merged it cleanly.
 | `object_format` | optional | above |
 | `merge` | optional | above |
 | `records` | at least one of the two | for each record named, by its path in the repository, its outcome (below) |
-| `transclusions` | at least one of the two | for each referrer named, by its path in the repository, every transclusion in it, in document order (below) |
+| `transclusions` | at least one of the two | for each referrer named, by its path in the repository, every transclusion in it, in document order, or the referrer's own status when it is refused as a whole (below) |
 | `controls` | when any outcome is `REFUSED(...)` | ids of `anchor` cases on the other side of the line the refusal draws, as for a `parse` refusal. Not an assertion about the implementation; `check_tree.py` checks they exist and are `anchor` cases |
 
 A record's path is `<document>.notes/<file>` (§11.1), so the document it
@@ -548,26 +548,40 @@ possible with `RESOLVED` or `EDITED`. For `"gate": "stale"`, `R` is
 `RESOLVED` or `EDITED`, and the span does not map (§11.7); it is `null` for
 every other stale suggestion, whatever made it stale.
 
-**A transclusion's outcome** has three fields, all required. The list holds
-one per transclusion paragraph (§11.9) of the referrer, in document order,
-and `[]` for a referrer with none:
+**A referrer refused as a whole.** A referrer the profile refuses is
+refused as a whole, and its transclusions are not enumerated (§11.9, step
+0). Its entry is then not a list but the one string
+`"REFUSED(not-in-profile)"`, the referrer-level status, and the
+implementation reports the same string. A conflict-marker line anywhere in
+the referrer, in its frontmatter or in a fenced code block, refuses it this
+way.
+
+**A transclusion's outcome** has three fields, all required. For a referrer
+the profile accepts, the list holds one per transclusion paragraph (§11.9)
+of the referrer, in document order, and `[]` for a referrer with none:
 
 | field | value |
 | --- | --- |
 | `leaf` | the transclusion paragraph, `{"node": path, "type": "paragraph"}`, over the referrer |
-| `status` | `RESOLVED`; `REFUSED(<reason>)` with a reason from §11.10's table, `pinned-<reason>` written out (`REFUSED(pinned-orphaned)`, `REFUSED(pinned-near-copy)`); or, for §11.9's step 1, `#REF!(<name>)` with the name as the destination writes it after its `#`, as `resolve` writes it for a `parse` case |
+| `status` | `RESOLVED`; `REFUSED(<reason>)` with a reason from §11.10's table, `pinned-<reason>` written out (`REFUSED(pinned-orphaned)`, `REFUSED(pinned-near-copy)`); or, for §11.9's steps 1 and 2, `#REF!(<name>)` with the name as the destination writes it after its `#`, as `resolve` writes it for a `parse` case |
 | `unit` | for `RESOLVED`, what is transcluded: `{"document": path, "target": target}`, where `path` is the target document's path in the repository, after §11.9 resolves the link's path from the referrer's directory, and `target` is what the name binds in the current target, written as `names` writes it (a node, or `{"region": [...]}`). `null` for every other status |
 
-Each listed record and each listed referrer's list is compared whole: a
-field that differs, or a transclusion missing or extra, fails the case. An
+Each listed record and each listed referrer's entry is compared whole: a
+field that differs, a transclusion missing or extra, or a list where a
+referrer-level status is expected or the reverse, fails the case. An
 implementation may add fields of its own, such as a message, and they are
 ignored. A path index or an offset must be an integer, not a float or a
 bool.
 
-**One outcome per record.** Where `SPEC.md` does not fix which of two
-reasons is reported, write the case so that only one applies, as a `parse`
-refusal case does (§9). §11.4 fixes an order inside each kind of pair ("the
-first rule that applies decides"), and §11.9 orders its steps.
+**Cases that set up several reasons.** §11.10, *Which reason is reported*, fixes the
+order among a record's or a transclusion's input problems, and among several
+`pinned-<reason>`s. §11.4 fixes an order inside each kind of pair ("the
+first rule that applies decides"), and §11.9 orders its steps. Where one of
+these orders applies, a case may set up several reasons and expect the first
+by that order; §11.10's order needs such cases to be pinned at all. To pin
+one reason on its own, a case where only that reason applies is still the
+clearest. Where `SPEC.md` fixes no order between two reasons, write the case
+so that only one applies, as a `parse` refusal case does (§9).
 
 ### An example
 
@@ -616,6 +630,9 @@ the blobs and run the merges.
 - Bytes that are not UTF-8, a symbolic link, a submodule and an empty
   directory: every fixture is a UTF-8 file.
 - A merge of more than one file in one repository, or a rename.
+- A subfolder in a notes directory, which §11.1 refuses as
+  `record-inconsistent`: a key of `records` names one file directly in a
+  notes directory, so a subfolder cannot be named as a record.
 - What a tool writes: a re-anchored record (§11.1), the creation of a new
   anchor, including the refusal to create one when `prefix + span + suffix`
   does not occur exactly once, and a referrer's re-pin (§11.9). A case asserts
