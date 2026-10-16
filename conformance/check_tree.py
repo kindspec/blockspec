@@ -29,6 +29,16 @@ checks the tree, not a format reader:
      delimited by `---` lines, the closing one perhaps followed by spaces or
      tabs.
 
+Checks 1 to 5 above are the `parse` kind's. An `anchor` case
+(cases/README.md, *The kind `anchor`*) gets the same three in its own terms:
+its right answer passes; an implementation that reports nothing fails it;
+and each element it asserts is compared, one alteration at a time. Its files
+are checked too: every `{{blob:PATH}}` names a file of the case that holds no
+placeholder itself, every record and referrer it lists is a file under
+`tree/` or the result of its merge, a merge has its three sides, and a
+suggestion's written file exists. A case that expects a `REFUSED(...)`
+outcome names at least one control, an other `anchor` case of this tree.
+
 Exit codes follow kindkit's: 0 every check passed, 1 at least one failed, 2 no
 verdict (the tree is missing or empty).
 """
@@ -42,6 +52,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import anchor_cases  # noqa: E402
 from run_cases import CASES, MIN_CASES, compare  # noqa: E402
 
 CONTAINERS = ("list", "block_quote")
@@ -57,6 +68,9 @@ def load_tree(root: str) -> dict[str, dict]:
         cid = os.path.relpath(dirpath, root).replace(os.sep, "/")
         with open(os.path.join(dirpath, "expect.json"), encoding="utf-8") as handle:
             expect = json.load(handle)
+        if expect.get("kind") == "anchor":
+            cases[cid] = {"expect": expect, "files": anchor_cases.read_case_files(dirpath)}
+            continue
         with open(os.path.join(dirpath, "input.md"), encoding="utf-8", newline="") as handle:
             text = handle.read()
         cases[cid] = {"expect": expect, "input": text}
@@ -204,7 +218,7 @@ def refusal_codes(root: str) -> list[str]:
     with open(os.path.join(root, "case-body.schema.json"), encoding="utf-8") as handle:
         schema = json.load(handle)
     for branch in schema["allOf"]:
-        refusal = branch["then"]["properties"].get("refusal")
+        refusal = branch.get("then", {}).get("properties", {}).get("refusal")
         if refusal:
             return refusal["enum"]
     raise SystemExit(_no_verdict("case-body.schema.json lists no refusal codes"))
@@ -225,6 +239,9 @@ def check(root: str) -> list[str]:
     seen_codes = set()
     for cid, case in cases.items():
         expect = case["expect"]
+        if expect.get("kind") == "anchor":
+            problems += [f"{cid}: {p}" for p in check_anchor(cid, case, cases)]
+            continue
         misses = list(compare(expect, answer(expect)))
         if misses:
             problems.append(f"{cid}: fails its own right answer: {misses[0]}")
@@ -251,9 +268,45 @@ def check(root: str) -> list[str]:
     for code in codes:
         if code not in seen_codes:
             problems.append(f"refusal code {code!r} has no refusal case")
-    accepting = sum(1 for case in cases.values() if case["expect"]["accept"])
-    print(f"{len(cases)} cases: {accepting} accept, {len(cases) - accepting} refuse")
+    parse = [case for case in cases.values() if case["expect"].get("kind") != "anchor"]
+    accepting = sum(1 for case in parse if case["expect"]["accept"])
+    print(
+        f"{len(cases)} cases: {accepting} accept, {len(parse) - accepting} refuse, "
+        f"{len(cases) - len(parse)} anchor"
+    )
     return problems
+
+
+def check_anchor(cid: str, case: dict, cases: dict[str, dict]):
+    """Checks 2 to 5, and the files, for one `anchor` case."""
+    expect, files = case["expect"], case["files"]
+    fixture = list(anchor_cases.fixture_problems(expect, files))
+    yield from fixture
+    if fixture:
+        return
+    # Placeholders stand for object ids, which need git; any stand-in keeps
+    # each file's text distinct enough for the comparisons below.
+    files = anchor_cases.substitute(files, lambda text: "0" * 40)
+    misses = list(anchor_cases.compare(expect, anchor_cases.answer(expect, files), files))
+    if misses:
+        yield f"fails its own right answer: {misses[0]}"
+    if not list(anchor_cases.compare(expect, {"records": {}, "transclusions": {}}, files)):
+        yield "an implementation that reports nothing passes it"
+    for label, got in anchor_cases.alterations(expect, files):
+        if not list(anchor_cases.compare(expect, got, files)):
+            yield f"an answer with {label} still passes"
+    if anchor_cases.refuses(expect):
+        controls = expect.get("controls", [])
+        if not controls:
+            yield "expects a REFUSED outcome and names no control"
+        for control in controls:
+            other = cases.get(control)
+            if control == cid:
+                yield "names itself as its control"
+            elif other is None:
+                yield f"control {control!r} is not a case in this tree"
+            elif other["expect"].get("kind") != "anchor":
+                yield f"control {control!r} is not an anchor case"
 
 
 def main(argv: list[str]) -> int:
