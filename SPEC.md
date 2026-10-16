@@ -503,9 +503,14 @@ reading only those snapshots can prevent.
 `policy.md.notes/`. The directory is authoritative for which document a
 record belongs to, and a record holds no path (0003 Q9).
 
-- **A record's file name is `<id>.md`**, where `<id>` is a ULID (D8 §7.4).
-  Ids are unique within a notes directory. An id is never written into the
-  document.
+- **A record's file name is `<id>.md`**, where `<id>` is a ULID (D8 §7.4):
+  26 characters of Crockford's base 32 in upper case, `[0-9A-HJKMNP-TV-Z]`,
+  the first of them `0` to `7`. Ids are unique within a notes directory. An
+  id is never written into the document.
+- **Everything in a notes directory is a record.** A file whose name is not
+  `<id>.md` in that form, and a subfolder, are each
+  `REFUSED(record-inconsistent)` (0003, second addendum of 2026-10-16,
+  item 5).
 - **A record is a blockspec document.** Its frontmatter holds the anchor and
   the metadata. Its body is the comment.
 - **The anchor is one line**, `anchor:` followed by a JSON object, and **at
@@ -581,16 +586,20 @@ not occur exactly once, the anchor is not created.
 
 **Consistency.** A record is `REFUSED(record-inconsistent)` when `leaf` at
 `nth` is not in `base`; when `prefix + span + suffix` does not occur exactly
-once in `leaf.text`; when `prefix` or `suffix` is shorter than 32 code points
-while the leaf's edge is further away; or when `span` is empty (0003, the
-details it fixes). It is also `REFUSED(record-inconsistent)` (0003,
+once in `leaf.text`; when `prefix` or `suffix` is shorter than 32 code
+points while the leaf's edge is further away; or when `span` is empty (0003,
+the details it fixes). It is also `REFUSED(record-inconsistent)` (0003,
 addendum, detail 1) when it has no frontmatter; when the frontmatter's lines
 are not exactly those above, in that order, with nothing added; when the
 anchor or the `reply-to` id is not in the canonical form, including a value
 that is valid JSON or YAML and reads to the same values written another way
 (other spacing, key order or escapes, a duplicate key, an unquoted key);
 when `B` or `T` is not a value the list above allows; or when `replace` is
-present on a comment or missing on a suggestion.
+present on a comment or missing on a suggestion. And it is
+`REFUSED(record-inconsistent)` (0003, second addendum of 2026-10-16) when
+`prefix` or `suffix` is longer than 32 code points (item 1); when its
+`reply-to` string is not a ULID in the form above (item 5); or when the
+profile refuses its body (item 8), since a record is a blockspec document.
 
 **Re-anchoring** replaces the whole anchor line with one made against a
 newer blob of the document, at the position the current resolution gives. It
@@ -684,8 +693,11 @@ decides (0003 §4):
   `k`, and `ORPHANED` otherwise.
 - **`EXACT`**:
   - if `base` or the current text holds more than one copy of `k`, the
-    number of copies in `k`'s gap must be equal on both sides, and the pair
-    must lie in the gap, or `REFUSED(repeat)`;
+    number of copies in `k`'s gap must be equal on both sides, or
+    `REFUSED(repeat)`. The pair always lies in the gap: a repeated key is
+    never on the chain, so `k`'s `EXACT` pair comes from §11.3 step 2's
+    alignment inside `k`'s own gap (0003, second addendum of 2026-10-16,
+    item 9);
   - an unmatched leaf with similarity to `k` of at least 0.5 and below 1:
     `REFUSED(near-copy)`.
 - **`MOVED`**:
@@ -771,6 +783,13 @@ in any normalisation form and may span several prefixed or CRLF lines.
 Where the span does not map, the suggestion is stale, with the reason
 `unmappable-offset`.
 
+**A line break that cannot be written back** (0003, second addendum of
+2026-10-16, item 4). A `\n` in `replace` makes the suggestion stale, as
+`unmappable-offset`, when the line it breaks is a list item's first line,
+whose container prefix is the list marker; a lazy line, which has no
+container prefix; a line whose container prefix holds a tab; or the file's
+last line, when the file has no final line ending.
+
 ### 11.8 Replies, deletion and document identity
 
 - **Records are not deleted in normal use** (0003 Q8). A suggestion is
@@ -855,14 +874,20 @@ touch (0003, addendum, detail 2).
 
 **Resolution**, against the target's current text:
 
-0. The path must resolve, or `REFUSED(unresolvable-path)`. The target
-   document must exist, or `REFUSED(document-missing)`, and the
+0. The referrer must pass the profile, or every transclusion in it is
+   `REFUSED(not-in-profile)`; a conflict-marker line anywhere in it, its
+   frontmatter included, counts (0003, second addendum of 2026-10-16,
+   item 7). The path must resolve, or `REFUSED(unresolvable-path)`, which
+   is reported before a broken pins block (item 3). The target document
+   must exist, or `REFUSED(document-missing)`, and the
    pinned blob must be readable, or `REFUSED(base-unavailable)`. Both the
    pinned blob and the current target must pass the profile, or
    `REFUSED(not-in-profile)`. The name must bind in the pinned blob, or
    `REFUSED(record-inconsistent)`.
-1. The name resolves as §8.1 says, against markers only. Zero matches, or
-   more than one, is `#REF!(name)`.
+1. The name resolves as §8.1 says, against markers only. No match is
+   `#REF!(name)`, and so is a heading slug used as the name (item 6). There
+   is never more than one match: step 0 requires the current target to pass
+   the profile, which refuses a name declared twice (§7.4) (item 9).
 2. For each text-bearing leaf the name bound in the pinned blob, §11.3 and
    §11.4 run with that blob as `base`. A refusal, or no pair, refuses the
    transclusion, as `REFUSED(pinned-<reason>)`, where `<reason>` is §11.4's
@@ -884,8 +909,8 @@ are not in §9's list.
 | `unresolvable-path` | a transclusion's path is absolute, or a `..` in it goes above the repository's root (§11.9) |
 | `document-missing` | the notes directory's document, or a transclusion's target, does not exist |
 | `base-unavailable` | the `base` blob, or a pin's blob, cannot be read |
-| `not-in-profile` | `base`, the current text, a pinned blob or a transclusion's current target is refused under §9, a file committed with conflict markers included |
-| `record-inconsistent` | §11.1's consistency rules fail, the referrer's pins break §11.9's grammar, or a pinned name binds nothing in its pinned blob |
+| `not-in-profile` | `base`, the current text, a pinned blob, a transclusion's current target or its referrer is refused under §9, a file committed with conflict markers included |
+| `record-inconsistent` | §11.1's consistency rules fail, an entry of a notes directory is not a record, the referrer's pins break §11.9's grammar, or a pinned name binds nothing in its pinned blob |
 | `unaccounted-copy` | §11.4, no pair |
 | `repeat` | §11.4, `EXACT` |
 | `near-copy` | §11.4, `EXACT`, `MOVED` or `EDITED` |
@@ -896,8 +921,35 @@ are not in §9's list.
 | `name-rebound` | §11.9, step 3 |
 | `pinned-<reason>` | §11.9, step 2 |
 
-A transclusion whose name binds zero or several targets in the current
-target renders `#REF!(name)` (§11.9, step 1).
+A transclusion whose name binds no target in the current target renders
+`#REF!(name)` (§11.9, step 1).
+
+**Which reason is reported** (0003, second addendum of 2026-10-16, item 2).
+When a record has several input problems, the first in data-dependency order
+is reported:
+
+1. the record's grammar (`record-inconsistent`);
+2. `document-missing`;
+3. the current document refused under the profile (`not-in-profile`);
+4. `base-unavailable`;
+5. `base` refused under the profile (`not-in-profile`);
+6. the leaf at `nth` inconsistent with `base` (`record-inconsistent`).
+
+Step 1 holds every check that reads only the record: its file name and
+directory entry, its frontmatter, its body, an empty `span` and a context
+longer than 32 code points. Step 6 holds every check that needs `base`'s
+leaves: the leaf at `nth` missing, `prefix + span + suffix` not occurring
+exactly once, and a short context whose edge is further away. (That split
+is the addendum's precision, not the owner's ruling.)
+
+A transclusion's order is the same, with the pin in the place of `base` and
+the referrer first: the referrer refused under the profile;
+`unresolvable-path`; a broken pins block; `document-missing`; the current
+target refused under the profile; the pinned blob unreadable, then refused
+under the profile; the name binding nothing in the pinned blob; then §11.9's
+steps 1 to 3. Several `pinned-<reason>`s are ordered by their leaves in the
+pinned blob's document order, and the first is reported. (The full
+transclusion order, beyond items 2, 3 and 7, is the addendum's precision.)
 
 A stale suggestion carries `unmappable-offset` when §11.7's mapping fails.
 A reply with no parent renders `#REF!(reply-to)`.
@@ -1036,9 +1088,6 @@ listed: 0002's *Decision* text decides it (§4.3).
 - **Frontmatter that hides the pins line.** The resolver reads the pin lines
   as text. Other frontmatter content, such as a multi-line scalar, could make
   a YAML reader read a `pins:` line differently.
-- **A conflict among the pin lines, if reading 12 is reversed.** Under
-  reading 12 the referrer is refused as `conflict-marker`. Without it, a
-  marker line would end the pins, and the pins after it would not be read.
 - **Writing a suggestion back into a table.** A table's text holds
   separators, escapes and padding that no single raw character gives, so
   §11.7's mapping does not say how a span in a table, or one that crosses a
