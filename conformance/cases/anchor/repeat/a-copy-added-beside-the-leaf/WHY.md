@@ -8,8 +8,11 @@ SPEC.md §11.4:
 
 > - **`EXACT`**:
 >   - if `base` or the current text holds more than one copy of `k`, the
->     number of copies in `k`'s gap must be equal on both sides, and the pair
->     must lie in the gap, or `REFUSED(repeat)`;
+>     number of copies in `k`'s gap must be equal on both sides, or
+>     `REFUSED(repeat)`. The pair always lies in the gap: a repeated key is
+>     never on the chain, so `k`'s `EXACT` pair comes from §11.3 step 2's
+>     alignment inside `k`'s own gap (0003, second addendum of 2026-10-16,
+>     item 9);
 
 0003 §4:
 
