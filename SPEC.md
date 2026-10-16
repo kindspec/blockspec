@@ -4,10 +4,10 @@
 Status: draft. This document writes up draft 0 as
 `docs/adjudications/0001-syntax.md`, `0002-block.md` and
 `0003-anchors.md` decide it, with their addenda. It answers nothing the
-adjudications leave open; 0003 names the details §11 fixes beyond its
-thirteen answers. Where an adjudication's wording had to be scoped or read
-to give one answer, the text says so where it uses it, marked **(read as)**.
-**Where this document and an adjudication disagree, the adjudication wins
+adjudications leave open; 0003 and its addendum name the details §11 fixes
+beyond its thirteen answers. Where an adjudication's wording had to be
+scoped or read to give one answer, the text says so where it uses it,
+marked **(read as)**. **Where this document and an adjudication disagree, the adjudication wins
 and this document is in error.** Where the adjudications are silent, this
 document says so (§12) instead of choosing.
 
@@ -505,11 +505,11 @@ record belongs to, and a record holds no path (0003 Q9).
   document.
 - **A record is a blockspec document.** Its frontmatter holds the anchor and
   the metadata. Its body is the comment.
-- **The anchor is one line**, `anchor:` followed by a YAML flow mapping, and
-  **at least one line that is not edited freely separates it from any line
-  that is**, such as `kind:` before `status:`.
-- **A reply is its own record**, with `reply-to: <id>` naming a record in the
-  same directory, and no anchor.
+- **The anchor is one line**, `anchor:` followed by a JSON object, and **at
+  least one line that is not edited freely separates it from any line that
+  is**, such as `kind:` before `status:`.
+- **A reply is its own record**, with a `reply-to` line naming a record in
+  the same directory, and no anchor.
 
 The anchor's fields:
 
@@ -517,13 +517,56 @@ The anchor's fields:
 | --- | --- |
 | `base` | the full object id of the document's blob that the anchor was made against |
 | `leaf.type` | `p`, `h1` to `h6`, `code` or `table`: a paragraph, a heading with its level, a code block or a table |
-| `leaf.text` | the leaf's content (§6.3), normalised to Unicode NFC, with `\n` line endings |
+| `leaf.text` | the leaf's content (§6.3), normalised to Unicode NFC, with `\n` line endings; for a table, the string §11.2 defines |
 | `leaf.nth` | the 0-based ordinal of the leaf among the leaves of `base` with the same type and text |
 | `span`, `prefix`, `suffix` | a W3C TextQuoteSelector inside `leaf.text`. `prefix` is the 32 code points before `span`, and `suffix` the 32 after it, or fewer where the leaf's edge is nearer. Neither crosses the leaf's edge |
 | `replace` | a suggestion's replacement text; absent on a comment |
 
 The other fields: `kind` is `comment` or `suggestion`, and `status` is
 `open`, `accepted`, `rejected` or `resolved`.
+
+**The frontmatter's grammar** (0003, addendum of 2026-10-16, detail 1). The
+lines between the record's opening and closing `---` (§5) are exactly these,
+in this order, each with nothing before or after it:
+
+- a comment or a suggestion: `anchor: ` followed by the anchor, then
+  `kind: comment` or `kind: suggestion`, then `status: ` followed by one of
+  the four statuses;
+- a reply: `reply-to: ` followed by the parent's id as a JSON string, then
+  `kind: comment`.
+
+The anchor is a JSON object (RFC 8259), which is also a YAML 1.2 flow
+mapping, written in one canonical form:
+
+    {"base": B, "leaf": {"type": T, "nth": N, "text": S}, "span": S, "prefix": S, "suffix": S}
+
+with `, "replace": S` before the final `}` for a suggestion, and never for a
+comment. The keys are in the order shown.
+
+- `B` is a string holding `base` in lower-case hex: 40 digits in a SHA-1
+  repository, 64 in a SHA-256 one.
+- `T` is a string, one of `p`, `h1` to `h6`, `code` and `table`.
+- `N` is decimal digits, `0` or with no leading zero, and no sign, fraction
+  or exponent.
+- **Strings.** Each `S`, and the `reply-to` id, is `"`, its code points, then
+  `"`. `"` is written `\"`, `\` is written `\\`, and a line feed is written
+  `\n`. Every other code point in U+0000 to U+001F, in U+007F to U+009F, and
+  U+2028, U+2029, U+FEFF, U+FFFE and U+FFFF is written `\u` followed by four
+  lower-case hex digits. Every other code point is written as itself, in
+  UTF-8. No other escape is used.
+- **Spacing.** One space after each `:` and after each `,` between members,
+  and none anywhere else.
+
+For example, with an illustrative `base`:
+
+    ---
+    anchor: {"base": "9b1c4e0d2f7a6385c1e0b4d9a8f7263514c0e9ab", "leaf": {"type": "p", "nth": 0, "text": "The reactor scram threshold is 4.2 sigma above baseline, measured over a rolling 30-second window."}, "span": "4.2 sigma", "prefix": "The reactor scram threshold is ", "suffix": " above baseline, measured over a"}
+    kind: comment
+    status: open
+    ---
+
+A reader that parses the value as JSON and writes it back in this form can
+compare the bytes.
 
 **Offsets are code points of `leaf.text`**, the NFC-normalised parsed
 content, never offsets into the file.
@@ -537,7 +580,14 @@ not occur exactly once, the anchor is not created.
 `nth` is not in `base`; when `prefix + span + suffix` does not occur exactly
 once in `leaf.text`; when `prefix` or `suffix` is shorter than 32 code points
 while the leaf's edge is further away; or when `span` is empty (0003, the
-details it fixes).
+details it fixes). It is also `REFUSED(record-inconsistent)` (0003,
+addendum, detail 1) when it has no frontmatter; when the frontmatter's lines
+are not exactly those above, in that order, with nothing added; when the
+anchor or the `reply-to` id is not in the canonical form, including a value
+that is valid JSON or YAML and reads to the same values written another way
+(other spacing, key order or escapes, a duplicate key, an unquoted key);
+when `B` or `T` is not a value the list above allows; or when `replace` is
+present on a comment or missing on a suggestion.
 
 **Re-anchoring** replaces the whole anchor line with one made against a
 newer blob of the document, at the position the current resolution gives. It
@@ -552,6 +602,16 @@ and thematic breaks take no part.
 A leaf's **key** is its `leaf.type` and its `leaf.text`. Two leaves are
 **copies** when their keys are equal. A heading that changes level changes
 its key.
+
+**A table's text** is one string (0003, addendum, detail 3). Its cells, as
+the suite's reading 8 normalises them (header row first, each cell trimmed
+of spaces and tabs, `\|` read as `|`, a short row padded with `""`, cells past
+the header's width dropped), each have every `|` written as `\|`; they are
+joined by ` | ` within a row and the rows by `\n`; and the result is
+normalised to NFC. The escape keeps the string unambiguous: a `|` from a
+cell follows a `\`, and a separator's follows a space, which a trimmed cell
+never ends in. Without it, a one-cell row `a | b` and a two-cell row `a`,
+`b` would be copies.
 
 The **similarity** of two leaves is `2·L/(m+n)`, where `m` and `n` are the
 lengths in code points of their keys, each written as the type, U+001F and
@@ -572,7 +632,12 @@ Correspondence pairs base leaves with current leaves (0003 §4):
    exactly once in the current text, as a pair of positions. The longest
    subsequence of those pairs, in base order, whose current positions
    increase is the **chain**. Its pairs are `EXACT`. Every other such pair
-   is `MOVED`.
+   is `MOVED`. **When several subsequences are longest, the chain is the
+   leftmost** (0003, addendum, detail 4): number the current text-bearing
+   leaves from 0 in document order; the chain is the one whose sequence of
+   current indices, in base order, is lexicographically smallest, so at the
+   first position where two differ, the smaller index wins. The sequence
+   identifies the chain, since its keys are unique in the current text.
 2. **Gaps.** The chain cuts each snapshot into gaps: the leaves between two
    consecutive chain pairs, before the first, or after the last, leaving out
    leaves paired as `MOVED`. Inside each gap, the longest common subsequence
@@ -585,6 +650,20 @@ Correspondence pairs base leaves with current leaves (0003 §4):
    every other leftover base leaf in the gap by at least 0.15.
 
 A current leaf that is no base leaf's pair is **unmatched**.
+
+**Thresholds compare exactly, in integer arithmetic** (0003, addendum,
+detail 5). With a similarity written `2·L/T`, where `T = m+n` is at least 2:
+
+| §11 states | compare |
+| --- | --- |
+| similarity at least 0.5 | `4·L ≥ T` |
+| similarity below 1 | `2·L < T` |
+| `2·L₁/T₁` exceeds `2·L₂/T₂` by at least 0.15 | `40·L₁·T₂ − 40·L₂·T₁ ≥ 3·T₁·T₂` |
+
+These apply wherever §11.3 and §11.4 compare a similarity with 0.5, 1 or a
+margin of 0.15. A floating-point comparison is not conforming:
+`22/30 − 42/72` is exactly 0.15, and IEEE 754 doubles compute it as just
+below.
 
 ### 11.4 The anchored leaf
 
@@ -626,11 +705,16 @@ text is unchanged.
 
 For `EDITED`, the span is searched **inside the paired leaf only**. A hit is
 an occurrence of `span` with `prefix` ending where it starts and `suffix`
-starting where it ends. With no hit the anchor is `DETACHED`; with more than
-one, `REFUSED(span-ambiguous)`. With one hit, the longest common subsequence
-alignment (§11.2) of the base leaf's text onto the paired leaf's text must
-pair every code point of the span with the code point at the same position in
-the hit, or the anchor is `DETACHED` (0003 §5).
+starting where it ends. **A short context must sit at the leaf's edge**
+(0003, addendum, detail 6): when `prefix` is shorter than 32 code points,
+the hit's `prefix` starts at the start of the paired leaf's text, and when
+`suffix` is shorter than 32, the hit's `suffix` ends at its end. An
+occurrence that does not is not a hit. With no hit the anchor is
+`DETACHED`; with more than one, `REFUSED(span-ambiguous)`. With one hit, the
+longest common subsequence alignment (§11.2) of the base leaf's text onto
+the paired leaf's text must pair every code point of the span with the code
+point at the same position in the hit, or the anchor is `DETACHED` (0003
+§5).
 
 There is no fallback that places a comment without its context (0003 Q13).
 
@@ -708,6 +792,19 @@ destination is `path#name`, where `path` is the target document and `name`
 is a region marker's name in it (§7). A heading slug is not a target. The
 link renders as a link in any markdown tool.
 
+**The path** (0003, addendum, detail 7) is the destination's part before the
+`#` (CommonMark 0.31.2, *Links*). It resolves relative to the directory that
+holds the referrer, as a renderer resolves a relative link, in the tree of
+the snapshot being resolved: it is split at `/`, a `.` segment is dropped,
+and a `..` segment removes the segment before it.
+
+- A path that begins with `/`, or whose first segment holds a `:`, is
+  absolute, and is `REFUSED(unresolvable-path)`.
+- A `..` that would go above the repository's root is
+  `REFUSED(unresolvable-path)`.
+- A path that names no file in that tree is `REFUSED(document-missing)`.
+  Names compare exactly, case included.
+
 **The unit transcluded is what the name binds** (0002 §4): one node with its
 subtree, or the nodes of one region. It renders as block content in the
 referrer, and it is never copied into the referrer's file (D8 §8.1, D8's
@@ -717,9 +814,38 @@ R3).
 it transcludes, the target document's blob at the time it was pinned (0003
 §7; D8 §7.3).
 
+**How pins are written** (0003, addendum, detail 2): a line of the
+referrer's frontmatter that is exactly `pins:`, directly followed by one
+line per pin, each `  - ` (two spaces, a hyphen and a space) followed by an
+object in §11.1's canonical form and string escaping:
+
+    pins:
+      - {"path": "policy.md", "blob": "9b1c4e0d2f7a6385c1e0b4d9a8f7263514c0e9ab"}
+
+- `path` is the path part of a transclusion's destination, character for
+  character as the link writes it. A transclusion uses the pin whose `path`
+  is equal to its own.
+- `blob` is the target document's blob when it was pinned, in lower-case hex
+  as §11.1's `B`.
+- The pins end at the first frontmatter line that does not begin with
+  `  - `. They are sorted by `path`, ascending, code point by code point, and
+  no `path` appears twice.
+
+The rest of the frontmatter stays opaque (§5): the resolver reads the pin
+lines as text, not through a YAML reader. **Every transclusion in the
+referrer is `REFUSED(record-inconsistent)`** when the frontmatter has more
+than one line that begins with `pins:`, a line that begins with `pins:` and
+is not exactly `pins:`, a pin line not in the canonical form, pins out of
+order, or one `path` twice.
+
+Two branches that add or re-pin different targets merge cleanly when an
+unchanged line lies between their changes, and conflict when the changes
+touch (0003, addendum, detail 2).
+
 **Resolution**, against the target's current text:
 
-0. The target document must exist, or `REFUSED(document-missing)`, and the
+0. The path must resolve, or `REFUSED(unresolvable-path)`. The target
+   document must exist, or `REFUSED(document-missing)`, and the
    pinned blob must be readable, or `REFUSED(base-unavailable)`. Both the
    pinned blob and the current target must pass the profile, or
    `REFUSED(not-in-profile)`. The name must bind in the pinned blob, or
@@ -744,10 +870,11 @@ are not in §9's list.
 
 | reason | applies when |
 | --- | --- |
+| `unresolvable-path` | a transclusion's path is absolute, or a `..` in it goes above the repository's root (§11.9) |
 | `document-missing` | the notes directory's document, or a transclusion's target, does not exist |
 | `base-unavailable` | the `base` blob, or a pin's blob, cannot be read |
 | `not-in-profile` | `base`, the current text, a pinned blob or a transclusion's current target is refused under §9, a file committed with conflict markers included |
-| `record-inconsistent` | §11.1's consistency rules fail, or a pinned name binds nothing in its pinned blob |
+| `record-inconsistent` | §11.1's consistency rules fail, the referrer's pins break §11.9's grammar, or a pinned name binds nothing in its pinned blob |
 | `unaccounted-copy` | §11.4, no pair |
 | `repeat` | §11.4, `EXACT` |
 | `near-copy` | §11.4, `EXACT`, `MOVED` or `EDITED` |
@@ -828,7 +955,9 @@ listed: 0002's *Decision* text decides it (§4.3).
   string; an HTML block's lines, each ending in `\n`; `""` for a thematic
   break; and for a table, its rows of cells, header first, each cell's text
   trimmed with `\|` read as `|`, a short row padded with `""` and cells past
-  the header's width dropped.
+  the header's width dropped. 0003's addendum builds a table's text for §11
+  from those cells (§11.2), so changing this reading changes every table's
+  key.
 - **Reading 9, in part.** That frontmatter ends at the **first** closing
   line, and that it may be empty (`---` on lines 1 and 2).
 - **Reading 10.** That no blank line is needed after frontmatter.
@@ -866,29 +995,8 @@ listed: 0002's *Decision* text decides it (§4.3).
 
 **Left open by 0003:**
 
-- **The exact syntax of a record's frontmatter**: which YAML the anchor's
-  flow mapping is read as, how its strings are quoted, and where `reply-to`
-  sits. 0003 fixes the fields and the one-line rule, not the grammar.
-- **How a referrer's pins are written** in its frontmatter: the key, and one
-  line per target or not.
-- **A table's text as one string.** §6.3 leaves per-type content to the
-  suite's reading 8, which pins a table's content as rows of cells. The key
-  and the similarity of §11.2 need it as one string, so this affects every
-  table's correspondence and near-copy checks, not only anchors placed in a
-  table.
-- **Which chain, when several are longest** (§11.3, step 1). Which pairs
-  are `EXACT` and which `MOVED` depends on it, so two implementations must
-  pick the same one.
-- **Whether the thresholds compare exactly.** Similarity is a ratio of
-  integers, and a floating-point comparison at exactly 0.5 or a margin of
-  exactly 0.15 can differ between implementations.
-- **Whether a hit must reach the leaf's edge** when the stored `prefix` or
-  `suffix` is shorter than 32 code points because the edge was nearer
-  (§11.5).
-- **Transclusion details**: how `path` resolves (from the referrer's
-  directory, as a renderer resolves a relative link, is the reading Q5's
-  reason suggests), a destination with no path, a destination in angle
-  brackets, the title's other quoting forms (`'transclude'`,
+- **Transclusion details**: a destination with no path, a destination in
+  angle brackets, the title's other quoting forms (`'transclude'`,
   `(transclude)`), a title written with backslash escapes or entity
   references, a `transclude` link in a paragraph
   that holds other text, a transclusion paragraph inside a list item or a
@@ -900,3 +1008,30 @@ listed: 0002's *Decision* text decides it (§4.3).
 - **Thresholds.** 0.5 and 0.15 are borrowed from D8's `difflib` ratios and
   applied here to `2·L/(m+n)`, a different measure. They are untested for
   this resolver (0003 §4).
+
+**Raised by 0003's addendum of 2026-10-16:**
+
+- **Whether creation and the consistency check count under the edge rule.**
+  §11.1 requires `prefix + span + suffix` to occur exactly once in
+  `leaf.text`, counting every occurrence; §11.5 counts a hit only at the
+  edge when a context is short. A triple that occurs once at the edge and
+  again elsewhere is not created, and a record holding it is
+  `record-inconsistent`, though under the edge rule it is unambiguous.
+- **Other keys in a record's frontmatter**, such as an author or a time, and
+  **whether a reply carries a status**. The grammar admits neither (§11.1).
+- **A pin that no transclusion uses.** §11.9 says which pin a transclusion
+  uses, and nothing about a pin left over.
+- **Frontmatter that hides the pins line.** The resolver reads the pin lines
+  as text. Other frontmatter content, such as a multi-line scalar, could make
+  a YAML reader read a `pins:` line differently.
+- **A conflict among the pin lines, if reading 12 is reversed.** Under
+  reading 12 the referrer is refused as `conflict-marker`. Without it, a
+  marker line would end the pins, and the pins after it would not be read.
+- **Writing a suggestion back into a table.** A table's text holds
+  separators, escapes and padding that no single raw character gives, so
+  §11.7's mapping does not say how a span in a table, or one that crosses a
+  cell, maps to the file.
+- **Other spellings of a path**: percent-encoding, backslash escapes, entity
+  references and empty segments in a transclusion's path.
+- **A path that names a symbolic link, a submodule, or a file that is not
+  markdown.**

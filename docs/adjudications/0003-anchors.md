@@ -591,3 +591,206 @@ git while `base` is reachable.
   addressing a marker's name, pinned by the referrer, refused when the name
   is rebound, until re-pinned.
 - **Documented residuals**: R1 to R4.
+
+## Addendum, 2026-10-16: the record's grammar, and six details
+
+The owner's decisions of 2026-10-16, on seven details that `SPEC.md` §12
+listed as left open by this document. `SPEC.md` §11 carries the rules. Where
+this addendum and the body disagree, the addendum wins: §3's example is
+rewritten below in the grammar decided here.
+
+**1. A record's frontmatter.** The anchor is one frontmatter line whose value
+is a JSON object (RFC 8259). JSON is valid YAML 1.2 flow syntax, so the
+frontmatter stays YAML; its quoting is unambiguous; and every key inside it
+is quoted, so YAML 1.1's reading of `on` as a boolean cannot reach one.
+`reply-to` sits on its own line.
+
+The lines between the record's opening and closing `---` (`SPEC.md` §5) are
+exactly these, in this order, each with nothing before or after it:
+
+- a comment or a suggestion: `anchor: ` followed by the anchor, then
+  `kind: comment` or `kind: suggestion`, then `status: ` followed by `open`,
+  `accepted`, `rejected` or `resolved`;
+- a reply: `reply-to: ` followed by the parent's id as a JSON string, then
+  `kind: comment`.
+
+The anchor is written in one canonical form:
+
+    {"base": B, "leaf": {"type": T, "nth": N, "text": S}, "span": S, "prefix": S, "suffix": S}
+
+with `, "replace": S` before the final `}` for a suggestion, and never for a
+comment.
+
+- `B` is a string holding the blob's full object id in lower-case hex: 40
+  digits in a SHA-1 repository, 64 in a SHA-256 one.
+- `T` is a string, one of `p`, `h1` to `h6`, `code` and `table`.
+- `N` is a JSON number written as decimal digits, `0` or with no leading
+  zero, and no sign, fraction or exponent. A YAML 1.1 reader takes `010` for
+  the octal 8.
+- Each `S` is a string. A string is `"`, its code points, then `"`. `"` is
+  written `\"`, `\` is written `\\`, and a line feed is written `\n`. Every
+  other code point in U+0000 to U+001F, in U+007F to U+009F, and U+2028,
+  U+2029, U+FEFF, U+FFFE and U+FFFF is written `\u` followed by four
+  lower-case hex digits. Every other code point is written as itself, in
+  UTF-8, and no other escape is used: no `\/`, no `\t`, no surrogate pair.
+  The escaped set keeps the value on one line, keeps out the characters YAML
+  1.2 does not allow unescaped, and keeps out U+0085, U+2028 and U+2029,
+  which YAML 1.1 reads as line breaks.
+- The spacing is exactly as shown: one space after each `:` and after each
+  `,` between members, and none anywhere else.
+
+The keys are in the order shown. With one canonical form, two tools that
+write the same anchor write the same bytes, and a reader that parses the
+value as JSON and writes it back in this form can compare the bytes.
+
+`reply-to` is a JSON string, not a plain scalar, because a YAML 1.2 reader
+under its core schema reads an id made only of digits as an integer. `kind`
+and `status` stay plain words. None of their values is a YAML 1.1 boolean,
+and `status` is the line people edit by hand.
+
+The record of §3, in this form, with an illustrative `base`:
+
+    ---
+    anchor: {"base": "9b1c4e0d2f7a6385c1e0b4d9a8f7263514c0e9ab", "leaf": {"type": "p", "nth": 0, "text": "The reactor scram threshold is 4.2 sigma above baseline, measured over a rolling 30-second window."}, "span": "4.2 sigma", "prefix": "The reactor scram threshold is ", "suffix": " above baseline, measured over a"}
+    kind: comment
+    status: open
+    ---
+
+    Is this still right after the recalibration?
+
+Its `prefix` is 31 code points, because the leaf's start is 31 code points
+before the span (detail 6).
+
+**A reader refuses the record as `record-inconsistent`** when it has no
+frontmatter; when the frontmatter's lines are not exactly those above, in
+that order, with nothing added; when the anchor, or the `reply-to` string, is
+not in the canonical form, including a value that is valid JSON or valid YAML
+and reads to the same values written another way: other spacing, key order
+or escapes, a duplicate key, or an unquoted key; when `B` or `T` is not a
+value the list above allows; or when `replace` is present on a comment or
+missing on a suggestion. The rules 0003 already fixes still apply on top.
+
+**2. A referrer's pins.** A referrer's pins are written one per line under a
+`pins:` key in its frontmatter: a line that is exactly `pins:`, directly
+followed by one line per pin, each `  - ` (two spaces, a hyphen and a space)
+followed by an object in detail 1's canonical form and escaping:
+
+    pins:
+      - {"path": "policy.md", "blob": "9b1c4e0d2f7a6385c1e0b4d9a8f7263514c0e9ab"}
+
+- `path` is the path part of a transclusion's link destination, everything
+  before the `#`, character for character as the link writes it. A
+  transclusion uses the pin whose `path` is equal to its own.
+- `blob` is the target document's blob when it was pinned, in lower-case
+  hex as `B` above.
+- The pins end at the first line of the frontmatter that does not begin with
+  `  - `. They are sorted by `path`, ascending, comparing code point by code
+  point, and no `path` appears twice.
+
+The rest of the referrer's frontmatter stays opaque. The resolver reads the
+pin lines as text and does not run a YAML reader over the frontmatter; they
+are written so that a YAML 1.2 reader of a frontmatter that is a block
+mapping reads `pins` as a list of mappings with the same values.
+
+**Every transclusion in the referrer is refused as `record-inconsistent`**
+when the frontmatter has more than one line that begins with `pins:`, a line
+that begins with `pins:` and is not exactly `pins:`, a pin line not in the
+canonical form, pins out of order, or one `path` twice.
+
+What one line per target buys, probed with git 2.47 on a stock `git merge`:
+a pin that two branches change differently is one line, and conflicts, which
+is loud. Two branches that add or re-pin different targets merge cleanly
+when at least one unchanged line lies between their changes. When their
+changes touch, as two additions in the same place in the list or re-pins of
+two adjacent lines do, git reports a conflict. That is loud, not wrong, as
+long as a referrer committed with its markers is refused as
+`conflict-marker`, which is the suite's reading 12, not a decision. Sorting
+by `path` spreads additions across the list where appending would put every
+addition in the same place.
+
+**3. A table's text.** A table's text, as one string, is its cells joined by
+` | ` and its rows by `\n`, after the suite's reading 8 normalisation: header
+row first, each cell trimmed of spaces and tabs, `\|` read as `|`, a short
+row padded with `""`, cells past the header's width dropped. The string is
+then normalised to NFC, as every leaf's text is.
+
+**A cell's `|` is written `\|` before the cells are joined**, and nothing
+else is escaped. That keeps the string unambiguous, and it matters: without
+it, a one-column table whose cell is `a | b` and a two-column table whose
+cells are `a` and `b` would have one key, so they would be copies (`SPEC.md`
+§11.2), and a correspondence could pair them as `EXACT`. With it, every `|`
+from a cell follows a `\`, and every `|` of a separator follows a space,
+since a trimmed cell never ends in one. A cell never holds a line feed, so
+`\n` separates rows. The written form is also how the cell's pipe is written
+in the file.
+
+**4. Which chain, when several are longest.** Take the leftmost. Number the
+current text-bearing leaves from 0 in document order. A chain's pairs, in
+base order, have increasing current indices, and since a chain's keys are
+unique in the current text, the sequence of those indices identifies the
+chain. Of the longest chains, the chain is the one whose sequence is
+lexicographically smallest: at the first position where two sequences
+differ, the smaller index wins. All the longest chains have one length, so
+the comparison always ends at a difference. For two unique leaves that swap
+places, both chains have length 1, and the chain is the pair of the leaf
+that is now first: it is `EXACT`, and the other is `MOVED`.
+
+**5. Thresholds compare exactly**, in integer arithmetic. With similarity
+`2·L/T`, where `T = m+n`, and `T` at least 2 since every key holds its type
+and U+001F:
+
+| §11 states | compare |
+| --- | --- |
+| similarity at least 0.5 | `4·L ≥ T` |
+| similarity below 1 | `2·L < T` |
+| `2·L₁/T₁` exceeds `2·L₂/T₂` by at least 0.15 | `40·L₁·T₂ − 40·L₂·T₁ ≥ 3·T₁·T₂` |
+
+Each keeps the sense `SPEC.md` §11 gives it: "at least" stays `≥`, and
+"below" stays `<`. Each is the stated comparison multiplied through by a
+positive integer: `2·T`, `T` and `20·T₁·T₂`. Checked against exact rationals on 200,000
+random draws with `T` up to 120. Floating point does differ:
+`22/30 − 42/72` is exactly 0.15, and IEEE 754 doubles compute 0.1499…,
+below the margin.
+
+**6. A hit at the leaf's edge.** A `prefix` shorter than 32 code points is
+short because the leaf's start was nearer, and a `suffix` shorter than 32
+because the leaf's end was. A hit must still sit at that edge: with a short
+`prefix`, the hit's `prefix` starts at the start of the paired leaf's text,
+and with a short `suffix`, the hit's `suffix` ends at its end. An occurrence
+that does not is not a hit. Without the rule, a span at a leaf's start,
+stored with an empty `prefix`, could land on a later occurrence of it that
+the same `suffix` follows.
+
+**7. A transclusion's path** resolves relative to the directory that holds
+the referring document, as a renderer resolves a relative link. The path is
+the link destination's part before the `#` (CommonMark 0.31.2, *Links*). It
+is read in the tree of the snapshot being resolved, from the referrer's
+directory: split at `/`, a `.` segment is dropped, and a `..` segment
+removes the segment before it.
+
+- **An absolute path is refused, as `unresolvable-path`.** That is a path
+  that begins with `/`, or whose first segment holds a `:`, as a URL's scheme
+  or a drive letter does. Renderers disagree on what `/` is relative to: a
+  forge reads it as the repository's root, and a local editor as the file
+  system's. A URL leaves the repository. Refusing is lossless to relax.
+- **A `..` that would go above the repository's root is refused, as
+  `unresolvable-path`.** What it names is not versioned with the referrer,
+  so its blob cannot be read from the repository.
+- **A path that names no file in that tree is refused, as
+  `document-missing`**, the reason `SPEC.md` §11.10 already gives a missing
+  target. Names compare exactly, so a path that differs from a file's only
+  in case names nothing.
+
+`unresolvable-path` is a new resolution reason. The path is checked before
+everything else in `SPEC.md` §11.9's step 0.
+
+**What these leave open**, listed in `SPEC.md` §12: whether creation and the
+consistency check count occurrences under detail 6's edge rule; whether a
+record's frontmatter may carry other keys, and whether a reply carries a
+status; a pin that no transclusion uses; a frontmatter whose other content
+makes a YAML reader read the `pins:` line as something else; what a
+conflict among the pin lines does if reading 12 is reversed; how a span is
+written back into a table, whose text holds separators and escapes no single
+raw character gives; how a path's percent-encoding, backslash escapes, entity
+references and empty segments are read; and a path that names a symbolic
+link, a submodule or a file that is not markdown.
