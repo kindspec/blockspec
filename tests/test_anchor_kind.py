@@ -250,6 +250,28 @@ def test_each_field_of_a_transclusion_is_compared(tmp_path):
         assert code == 1, (change, out)
 
 
+def _refused_referrer():
+    expect, files, check = _with_transclusions()
+    expect["transclusions"] = {"ref.md": "REFUSED(not-in-profile)"}
+    check["answer"]["transclusions"] = {"ref.md": "REFUSED(not-in-profile)"}
+    return expect, files, check
+
+
+def test_a_referrer_level_status_is_compared(tmp_path):
+    code, _, out = _run(tmp_path, *_refused_referrer())
+    assert code == 0, out
+    for change in (None, [], copy.deepcopy(TRANSCLUSIONS), "REFUSED(document-missing)"):
+        expect, files, check = _refused_referrer()
+        check["answer"]["transclusions"] = {} if change is None else {"ref.md": change}
+        code, _, out = _run(tmp_path, expect, files, check)
+        assert code == 1, (change, out)
+    expect, _, _ = _refused_referrer()
+    assert anchor_cases.refuses(expect)
+    labels = [label for label, _ in anchor_cases.alterations(expect, {"written/doc.md": "x"})]
+    assert "referrer 'ref.md' dropped" in labels
+    assert "referrer 'ref.md' as an empty list" in labels
+
+
 def _tree(tmp_path, cases):
     root = tmp_path / "tree"
     with open(os.path.join(ROOT, "conformance", "cases", "case-body.schema.json")) as handle:

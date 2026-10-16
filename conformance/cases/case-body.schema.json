@@ -179,7 +179,13 @@
           "type": "object",
           "minProperties": 1,
           "propertyNames": { "$ref": "#/$defs/relative_path" },
-          "additionalProperties": { "type": "array", "items": { "$ref": "#/$defs/transclusion_outcome" } }
+          "additionalProperties": {
+            "$comment": "A list of the referrer's transclusions, or the referrer-level status of a referrer the profile refuses as a whole (SPEC.md section 11.9, step 0).",
+            "oneOf": [
+              { "type": "array", "items": { "$ref": "#/$defs/transclusion_outcome" } },
+              { "const": "REFUSED(not-in-profile)" }
+            ]
+          }
         },
         "controls": {
           "type": "array",
