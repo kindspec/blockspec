@@ -6,4 +6,4 @@ parent is `ORPHANED`. The reply still names a record in its directory.
 SPEC.md §11.8:
 
 > - **A reply whose `reply-to` names no record in its directory** renders as
->   `#REF!(reply-to)`.
+>   `#REF!(reply-to)`, once its document checks pass (§11.10).

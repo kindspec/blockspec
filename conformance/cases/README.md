@@ -206,7 +206,10 @@ order* below says. The same author, under the same constraints, later added
 the cases for 0003's second addendum (the groups `order/`,
 `transclusion-order/` and `referrer/`, and cases in `record/`, `reply/`,
 `suggestion/`, `input/` and `transclusion/`), and re-pointed the `WHY.md`
-quotes that addendum changed. No existing outcome changed.
+quotes that addendum changed. No existing outcome changed. They then
+added the cases for its third addendum (overlapping occurrences, replies
+whose document is missing or refused, and two write-back edges) and
+re-pointed the quotes it changed, again with no outcome changed.
 
 ## Shape
 
