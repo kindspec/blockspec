@@ -961,5 +961,5 @@ def resolve(repo: dict, queries: dict) -> dict:
         anchor = importlib.util.module_from_spec(spec)
         sys.modules["blockspec_anchor"] = anchor
         spec.loader.exec_module(anchor)
-    reader = SimpleNamespace(parse=parse, Refusal=Refusal, split_lines=_split_lines)
+    reader = SimpleNamespace(parse=parse, Refusal=Refusal, split_lines=_split_lines, slug=_slug)
     return anchor.resolve(repo, queries, reader)

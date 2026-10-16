@@ -515,12 +515,35 @@ def test_a_record_with_no_frontmatter_is_inconsistent():
     }
 
 
-def test_two_reasons_at_once_are_undecided():
+def test_input_problems_are_reported_in_data_dependency_order():
+    """Section 11.10, *Which reason is reported*: grammar, document-missing,
+    the document's profile, base-unavailable, base's profile, leaf at nth."""
     base = doc(ALPHA, SCRAM)
-    anchor = make_anchor(base, SCRAM, "4.2 sigma")
-    got = run({R: record(anchor)})["records"][R]
-    assert got["status"] == "UNDECIDED"
-    assert "base-unavailable, document-missing" in got["question"]
+    good = make_anchor(base, SCRAM, "4.2 sigma")
+    twice = A.Anchor(**{**good.__dict__, "text": SCRAM + " " + SCRAM})
+    absent = A.Anchor(**{**good.__dict__, "nth": 1})
+    refused_base = "<div>\n\n" + base
+    on_refused = A.Anchor(**{**good.__dict__, "base": oid(refused_base)})
+    conflicted = doc(ALPHA, "<<<<<<< HEAD", SCRAM)
+
+    def status(tree_doc, anchor, blobs=()):
+        tree = {R: record(anchor)}
+        if tree_doc is not None:
+            tree["doc.md"] = tree_doc
+        return run(tree, blobs=blobs)["records"][R]["status"]
+
+    # 1 before 2: a triple that occurs twice, with no document and no base.
+    assert status(None, twice) == "REFUSED(record-inconsistent)"
+    # 2 before 3 cannot both hold; 2 before 4.
+    assert status(None, good) == "REFUSED(document-missing)"
+    # 3 before 4.
+    assert status(conflicted, good) == "REFUSED(not-in-profile)"
+    # 4 before 6: the leaf at nth cannot be checked without base.
+    assert status(doc(BRAVO), absent) == "REFUSED(base-unavailable)"
+    # 5 before 6.
+    assert status(doc(BRAVO), on_refused, [refused_base]) == "REFUSED(not-in-profile)"
+    # 6 alone.
+    assert status(doc(BRAVO), absent, [base]) == "REFUSED(record-inconsistent)"
 
 
 @pytest.mark.parametrize(
@@ -530,27 +553,44 @@ def test_two_reasons_at_once_are_undecided():
         "doc.md.notes/01j9z3m8q4x7v2k6t0r5n1b8cd.md",
         "doc.md.notes/81J9Z3M8Q4X7V2K6T0R5N1B8CD.md",
         "doc.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B8CD.txt",
-        "doc.md/01J9Z3M8Q4X7V2K6T0R5N1B8CD.md",
+        "doc.md.notes/sub/01J9Z3M8Q4X7V2K6T0R5N1B8CD.md",
     ],
 )
-def test_a_record_path_section_11_does_not_describe_is_undecided(path):
+def test_an_entry_of_a_notes_directory_that_is_not_a_record_is_inconsistent(path):
+    # Second addendum, item 5, before every other input problem (step 1).
+    base = doc(ALPHA, SCRAM)
+    got = run({path: record(make_anchor(base, SCRAM, "4.2"))}, records=[path])
+    assert got["records"][path]["status"] == "REFUSED(record-inconsistent)"
+
+
+def test_a_path_in_no_notes_directory_is_undecided():
+    path = "doc.md/01J9Z3M8Q4X7V2K6T0R5N1B8CD.md"
     base = doc(ALPHA, SCRAM)
     got = run({"doc.md": base, path: record(make_anchor(base, SCRAM, "4.2"))}, records=[path])
     assert got["records"][path]["status"] == "UNDECIDED"
 
 
-def test_a_context_longer_than_32_is_undecided():
+def test_a_context_longer_than_32_is_inconsistent():
     base = doc(ALPHA, LONG)
     anchor = make_anchor(base, LONG, "4.2 sigma")
     start = LONG.index("4.2 sigma")
-    longer = A.Anchor(**{**anchor.__dict__, "prefix": LONG[start - 33 : start]})
-    assert run({"doc.md": base, R: record(longer)})["records"][R]["status"] == "UNDECIDED"
+    end = start + len("4.2 sigma")
+    for change in ({"prefix": LONG[start - 33 : start]}, {"suffix": LONG[end : end + 33]}):
+        longer = A.Anchor(**{**anchor.__dict__, **change})
+        got = run({R: record(longer)})["records"][R]  # before document-missing
+        assert got["status"] == "REFUSED(record-inconsistent)", change
 
 
-def test_a_record_the_profile_refuses_is_undecided():
+def test_a_record_whose_body_the_profile_refuses_is_inconsistent():
     base = doc(ALPHA, SCRAM)
-    rec = record(make_anchor(base, SCRAM, "4.2 sigma")) + "\nText\n===\n"
-    assert run({"doc.md": base, R: rec})["records"][R]["status"] == "UNDECIDED"
+    rec = record(make_anchor(base, SCRAM, "4.2 sigma", replace="5")) + "\nText\n===\n"
+    got = run({R: rec})["records"][R]  # before document-missing
+    assert got == {
+        "status": "REFUSED(record-inconsistent)",
+        "leaf": None,
+        "span": None,
+        "suggestion": {"gate": "stale", "reason": None},
+    }
 
 
 # --- replies and warnings (section 11.8) ------------------------------------
@@ -564,9 +604,13 @@ def test_replies():
     assert got == {"status": "REPLY", "leaf": None, "span": None, "suggestion": None}
     got = run({"doc.md": base, R2: reply}, records=[R2])["records"][R2]
     assert got["status"] == "#REF!(reply-to)"
-    bad = reply.replace('"01J9Z3M8Q4X7V2K6T0R5N1B8CD"', "01J9Z3M8Q4X7V2K6T0R5N1B8CD")
-    got = run({"doc.md": base, R: parent, R2: bad}, records=[R2])["records"][R2]
-    assert got["status"] == "REFUSED(record-inconsistent)"
+    for bad in (
+        reply.replace('"01J9Z3M8Q4X7V2K6T0R5N1B8CD"', "01J9Z3M8Q4X7V2K6T0R5N1B8CD"),
+        reply.replace("01J9Z3M8Q4X7V2K6T0R5N1B8CD", "01j9z3m8q4x7v2k6t0r5n1b8cd"),
+        reply.replace("01J9Z3M8Q4X7V2K6T0R5N1B8CD", "../x"),
+    ):
+        got = run({"doc.md": base, R: parent, R2: bad}, records=[R2])["records"][R2]
+        assert got["status"] == "REFUSED(record-inconsistent)", bad
 
 
 def test_a_record_id_in_two_notes_directories_is_reported():
@@ -665,8 +709,9 @@ def test_write_back_prefixes_a_new_line_in_a_list_items_continuation():
     assert got["suggestion"]["written"] == (
         "- Item one.\n- The value is four\n  point two\n  here.\n"
     )
+    # A break in the item's first line, whose prefix is the list marker.
     got = suggest(base, base, leaf, "is four", "is\nfour")
-    assert got["status"] == "UNDECIDED"  # a break in the item's first line
+    assert got["suggestion"] == {"gate": "stale", "reason": "unmappable-offset"}
 
 
 def test_write_back_maps_through_lost_indentation():
@@ -713,10 +758,12 @@ def test_write_back_into_a_table_is_undecided():
     assert (got["status"], got["suggestion"]) == ("RESOLVED", {"gate": "stale", "reason": None})
 
 
-def test_a_new_line_written_after_a_last_line_with_no_ending_is_undecided():
+def test_a_break_in_a_last_line_with_no_ending_is_unmappable():
     base = "The value is four"
     got = suggest(base, base, "The value is four", "four", "four\nfive")
-    assert got["status"] == "UNDECIDED"
+    assert got["suggestion"] == {"gate": "stale", "reason": "unmappable-offset"}
+    got = suggest(base, base, "The value is four", "four", "five")
+    assert got["suggestion"] == {"gate": "apply", "written": "The value is five"}
 
 
 def test_the_document_hook_loads_the_resolver_by_path():
@@ -993,14 +1040,19 @@ def test_a_short_suffix_must_end_at_the_leafs_end():
     assert got["status"] == "EDITED"
 
 
-def test_a_break_in_a_lazy_line_gets_the_prefixes_the_line_has():
-    base = "- The value is four\npoint two here.\n"
+def test_a_break_in_a_lazy_line_or_through_a_tab_prefix_is_unmappable():
     leaf = "The value is four\npoint two here."
-    got = suggest(base, base, leaf, "two here", "two\nhere")
-    assert got["suggestion"]["written"] == "- The value is four\npoint two\nhere.\n"
-    base = "> The value is four\npoint two here.\n"
-    got = suggest(base, base, leaf, "two here", "two\nhere")
-    assert got["suggestion"]["written"] == "> The value is four\npoint two\nhere.\n"
+    stale = {"gate": "stale", "reason": "unmappable-offset"}
+    for base in (
+        "- The value is four\npoint two here.\n",
+        "> The value is four\npoint two here.\n",
+    ):
+        assert suggest(base, base, leaf, "two here", "two\nhere")["suggestion"] == stale, base
+        # Without a break, the lazy line maps.
+        got = suggest(base, base, leaf, "two here", "two there")
+        assert got["suggestion"]["gate"] == "apply", base
+    base = ">\tThe value is four\n>\tpoint two here.\n"
+    assert suggest(base, base, leaf, "two here", "two\nhere")["suggestion"] == stale
 
 
 def test_the_runner_resolves_an_anchor_case_with_the_reference(tmp_path):
@@ -1061,3 +1113,76 @@ def test_the_runner_resolves_an_anchor_case_with_the_reference(tmp_path):
     (case / "expect.json").write_text(json.dumps(expect), encoding="utf-8")
     done = subprocess.run(done.args, capture_output=True, text=True)
     assert done.returncode == 1, done.stdout + done.stderr
+
+
+# --- the order of a transclusion's steps (section 11.9, second addendum) ---
+
+
+def test_a_referrer_the_profile_refuses_is_refused_as_a_whole():
+    for body in (
+        referrer(LINK, blob=oid(TARGET)).replace("pins:", "pins:\n<<<<<<< HEAD", 1),
+        referrer(LINK, "```\n=======\n```", blob=oid(TARGET)),
+        referrer(LINK, "Title\n=====", blob=oid(TARGET)),
+    ):
+        got = run({"policy.md": TARGET, "guide.md": body}, records=(), transclusions=["guide.md"])
+        assert got["transclusions"]["guide.md"] == "REFUSED(not-in-profile)", body
+
+
+def test_an_unresolvable_path_comes_before_broken_pins():
+    link = '[Scram](/policy.md#scram "transclude")'
+    pins = [
+        '{"path": "b.md", "blob": "' + "0" * 40 + '"}',
+        '{"path": "a.md", "blob": "' + "0" * 40 + '"}',
+    ]
+    tree = {"policy.md": TARGET, "guide.md": referrer(link, pins=pins)}
+    assert transclude(tree)[0]["status"] == "REFUSED(unresolvable-path)"
+
+
+def test_broken_pins_come_before_a_missing_document():
+    pins = ['{"path": "policy.md", "blob": "' + "0" * 40 + '"}'] * 2  # a path twice
+    tree = {"guide.md": referrer(LINK, pins=pins)}
+    assert transclude(tree)[0]["status"] == "REFUSED(record-inconsistent)"
+
+
+def test_the_current_target_comes_before_the_pin():
+    bad_pin = referrer(LINK, blob="0" * 40)  # an unreadable pinned blob
+    assert transclude({"guide.md": bad_pin})[0]["status"] == "REFUSED(document-missing)"
+    conflicted = TARGET + "<<<<<<< HEAD\n"
+    got = transclude({"policy.md": conflicted, "guide.md": bad_pin})
+    assert got[0]["status"] == "REFUSED(not-in-profile)"
+
+
+def test_a_name_only_a_heading_slug_matches_is_ref_before_the_pin_is_read():
+    slugged = doc("# Scram", ALPHA, SCRAM, BRAVO)
+    bad_pin = referrer(LINK, blob="0" * 40)
+    got = transclude({"policy.md": slugged, "guide.md": bad_pin})
+    assert (got[0]["status"], got[0]["unit"]) == ("#REF!(scram)", None)
+    unslugged = doc("# Other", ALPHA, SCRAM, BRAVO)
+    got = transclude({"policy.md": unslugged, "guide.md": bad_pin})
+    assert got[0]["status"] == "REFUSED(base-unavailable)"
+    # A marker name that is also a heading's slug binds through the marker.
+    both = "# Scram\n\n" + TARGET
+    got = transclude({"policy.md": both, "guide.md": referrer(LINK, blob=oid(TARGET))}, [TARGET])
+    assert got[0]["unit"] == {"document": "policy.md", "target": {"node": [3], "type": "paragraph"}}
+
+
+def test_the_pinned_blob_is_read_before_its_binding():
+    refused = TARGET + "\nTitle\n=====\n"
+    tree = {"policy.md": TARGET, "guide.md": referrer(LINK, blob=oid(refused))}
+    assert transclude(tree, [refused])[0]["status"] == "REFUSED(not-in-profile)"
+
+
+def test_of_several_pinned_reasons_the_first_leaf_in_the_pinned_blob_decides():
+    def region(*leaves):
+        return "<!-- #r:begin -->\n\n" + doc(*leaves) + "\n<!-- #r:end -->\n"
+
+    edited_bravo = BRAVO.replace("limits", "limits today")
+    link = '[R](policy.md#r "transclude")'
+    for pinned_leaves, current_leaves, want in (
+        ((SCRAM, BRAVO), (edited_bravo, DIGITS), "REFUSED(pinned-orphaned)"),
+        ((BRAVO, SCRAM), (edited_bravo, DIGITS), "REFUSED(pinned-crowded-gap)"),
+    ):
+        pinned = doc(ALPHA) + "\n" + region(*pinned_leaves) + "\n" + doc(CHARLIE)
+        current = doc(ALPHA) + "\n" + region(*current_leaves) + "\n" + doc(CHARLIE)
+        tree = {"policy.md": current, "guide.md": referrer(link, blob=oid(pinned))}
+        assert transclude(tree, [pinned])[0]["status"] == want, pinned_leaves

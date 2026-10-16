@@ -203,7 +203,7 @@ def read_record(lines: list[str] | None, object_format: str) -> Record | None:
         return Record(kind, status, anchor, None)
     if len(lines) == 2 and lines[0].startswith("reply-to: ") and lines[1] == "kind: comment":
         parent = read_string(lines[0][len("reply-to: ") :])
-        if parent is None:
+        if parent is None or not _ULID.fullmatch(parent):
             return None
         return Record("comment", None, None, parent)
     return None
@@ -459,7 +459,7 @@ def check_pair(corr: Correspondence, k: int) -> tuple[int, str]:
         if len(base_copies) > 1 or len(copies) > 1:
             in_base = sum(1 for b in base_copies if b in gap_base)
             in_current = sum(1 for d in copies if d in gap_current)
-            if in_base != in_current or c not in gap_current:
+            if in_base != in_current:
                 raise _Refused("repeat")
         if near(also_exact=False):
             raise _Refused("near-copy")
@@ -506,11 +506,7 @@ def span_in_base(anchor: Anchor) -> int:
     if len(anchor.suffix) < CONTEXT and end < len(text):
         raise _Refused("record-inconsistent")
     if len(anchor.prefix) > CONTEXT or len(anchor.suffix) > CONTEXT:
-        raise Undecided(
-            "a prefix or suffix longer than 32 code points: section 11.1 defines "
-            "them as 32 code points, and its consistency rules refuse only a "
-            "shorter one"
-        )
+        raise _Refused("record-inconsistent")  # second addendum, item 1
     return at + len(anchor.prefix)
 
 
@@ -618,7 +614,9 @@ def _map_span(content: str, text: str, start: int, end: int) -> tuple[int, int]:
 
 
 def _container_prefix(leaf: Leaf, raw_line: str, number: int) -> str:
-    """The container prefixes the parse gives line `number`."""
+    """The container prefixes the parse gives line `number`, or
+    `_Unmappable` where a new line cannot repeat them (section 11.7, *A line
+    break that cannot be written back*)."""
     chain = []
     node = leaf.node.parent
     while node is not None and node.type != "document":
@@ -631,25 +629,22 @@ def _container_prefix(leaf: Leaf, raw_line: str, number: int) -> str:
             while j < at + 3 and j < len(raw_line) and raw_line[j] == " ":
                 j += 1
             if j >= len(raw_line) or raw_line[j] != ">":
-                break  # a lazy line: the parse gives it no more prefixes
+                raise _Unmappable()  # a lazy line, which has no prefix to repeat
             j += 1
             if j < len(raw_line) and raw_line[j] == "\t":
-                raise Undecided("a container prefix that holds a tab, to copy onto a new line")
+                raise _Unmappable()  # a tab in the container prefix
             if j < len(raw_line) and raw_line[j] == " ":
                 j += 1
             at = j
         elif node.type == "list_item":
             if node.start == number:
-                raise Undecided(
-                    "a line break written into a list item's first line: the prefix the "
-                    "parse gives that line is the list marker"
-                )
+                raise _Unmappable()  # the item's first line: its prefix is the marker
             width = node.list_data["offset"] + node.list_data["padding"]
             part = raw_line[at : at + width]
             if "\t" in part:
-                raise Undecided("a container prefix that holds a tab, to copy onto a new line")
+                raise _Unmappable()  # a tab in the container prefix
             if part != " " * width:
-                break
+                raise _Unmappable()  # a lazy line, which has no prefix to repeat
             at += width
     return raw_line[:at]
 
@@ -689,7 +684,7 @@ def write_back(snapshot: Snapshot, leaf: Leaf, span: list[int], replace: str) ->
             )
         ending, prefix = endings.pop(), prefixes.pop()
         if not ending:
-            raise Undecided("a line break written into a last line that has no line ending")
+            raise _Unmappable()  # the file's last line, with no line ending to copy
         replace = replace.replace("\n", ending + prefix)
     return snapshot.text[:first] + replace + snapshot.text[last:]
 
@@ -699,49 +694,57 @@ def write_back(snapshot: Snapshot, leaf: Leaf, span: list[int], replace: str) ->
 PAIRED_STATUS = {EXACT: "RESOLVED", MOVED: "MOVED"}
 
 
-def _one_reason(reasons: list[str]) -> None:
-    distinct = sorted(set(reasons))
-    if len(distinct) > 1:
-        raise Undecided(f"which of {', '.join(distinct)} a record or transclusion reports")
-    if distinct:
-        raise _Refused(distinct[0])
+def _raw_frontmatter(lines: list[str]) -> list[str] | None:
+    """The lines between a frontmatter's `---` lines, found by section 5's
+    rule on the raw lines, so that a record whose body the profile refuses
+    still shows whether it is a suggestion."""
+    if len(lines) > 1 and lines[0] == "---" and lines[1].strip(" \t"):
+        for at in range(1, len(lines)):
+            if lines[at].rstrip(" \t") == "---":
+                return lines[1:at]
+    return None
+
+
+def _record_location(path: str) -> str:
+    """The document a record path belongs to, or `record-inconsistent` for an
+    entry of a notes directory that is not a record (section 11.1)."""
+    parts = path.split("/")
+    notes = [i for i, part in enumerate(parts[:-1]) if part.endswith(".notes")]
+    if not notes:
+        raise Undecided("a path that is in no notes directory")
+    if notes[-1] != len(parts) - 2:
+        raise _Refused("record-inconsistent")  # in a subfolder of a notes directory
+    name = parts[-1]
+    if not name.endswith(".md") or not _ULID.fullmatch(name[: -len(".md")]):
+        raise _Refused("record-inconsistent")
+    return "/".join(parts[:-1])[: -len(".notes")]
 
 
 def resolve_record(reader, repo: Mapping, path: str) -> dict:
+    """One record's outcome. Input problems are reported in section 11.10's
+    order, *Which reason is reported*: the first that applies decides."""
     tree = repo["tree"]
-    object_format = repo["object_format"]
-    directory, _, name = path.rpartition("/")
-    if not directory.endswith(".notes") or not name.endswith(".md"):
-        raise Undecided("a record that is not a file in a notes directory")
-    if not _ULID.fullmatch(name[: -len(".md")]):
-        raise Undecided("a record whose file name is not an upper-case ULID")
-    document = directory[: -len(".notes")]
+    outcome = {"status": None, "leaf": None, "span": None, "suggestion": None}
     if path not in tree:
         raise Undecided("a record that is not in the tree")
-    try:
-        record_snapshot = Snapshot(reader, tree[path])
-    except reader.Refusal as refusal:
-        raise Undecided("a record that the profile refuses (section 9)") from refusal
-    fm = _frontmatter_lines(record_snapshot.doc, record_snapshot.lines)
-    suggestion_line = fm is not None and "kind: suggestion" in fm
-    record = read_record(fm, object_format)
-    outcome = {"status": None, "leaf": None, "span": None, "suggestion": None}
-    if record is not None and record.anchor is None:
-        siblings = f"{directory}/{record.reply_to}.md"
-        found = "/" not in record.reply_to and siblings in tree
-        outcome["status"] = "REPLY" if found else "#REF!(reply-to)"
-        return outcome
-    if suggestion_line:
+    fm = _raw_frontmatter(reader.split_lines(tree[path]))
+    if fm is not None and "kind: suggestion" in fm:
         outcome["suggestion"] = {"gate": "stale", "reason": None}
     try:
-        current, base = _record_inputs(reader, repo, document, record)
+        document = _record_location(path)
+        record = _read_record(reader, tree[path], fm, repo["object_format"])
+        if record.anchor is None:
+            directory = path.rpartition("/")[0]
+            found = f"{directory}/{record.reply_to}.md" in tree
+            outcome["status"] = "REPLY" if found else "#REF!(reply-to)"
+            return outcome
         anchor = record.anchor
-        start = span_in_base(anchor)
+        start = span_in_base(anchor)  # step 1: the checks that read only the record
+        current, base, k = _record_inputs(reader, repo, document, anchor)
     except _Refused as refused:
         outcome["status"] = f"REFUSED({refused.reason})"
         return outcome
     corr = Correspondence(base.leaves, current.leaves)
-    k = _anchored_leaf(base, anchor)
     try:
         c, kind = check_pair(corr, k)
         if c is None:
@@ -761,36 +764,32 @@ def resolve_record(reader, repo: Mapping, path: str) -> dict:
     return outcome
 
 
-def _record_inputs(reader, repo: Mapping, document: str, record: Record | None):
-    """The current snapshot and the base snapshot, or the one reason the
-    inputs are unusable for (sections 11.1, 11.10)."""
-    reasons, current, base = [], None, None
-    if document not in repo["tree"]:
-        reasons.append("document-missing")
-    else:
-        try:
-            current = _read(reader, repo["tree"][document])
-        except _Refused as refused:
-            reasons.append(refused.reason)
+def _read_record(reader, text: str, fm: list[str] | None, object_format: str) -> Record:
+    """The record, or `record-inconsistent` for its grammar or for a body the
+    profile refuses (section 11.1)."""
+    try:
+        reader.parse(text)
+    except reader.Refusal as refusal:
+        raise _Refused("record-inconsistent") from refusal
+    record = read_record(fm, object_format)
     if record is None:
-        reasons.append("record-inconsistent")
-    elif record.anchor.base not in repo["blobs"]:
-        reasons.append("base-unavailable")
-    else:
-        try:
-            base = _read(reader, repo["blobs"][record.anchor.base])
-        except _Refused as refused:
-            reasons.append(refused.reason)
-        else:
-            if _anchored_leaf(base, record.anchor) is None:
-                reasons.append("record-inconsistent")
-            else:
-                try:
-                    span_in_base(record.anchor)
-                except _Refused as refused:
-                    reasons.append(refused.reason)
-    _one_reason(reasons)
-    return current, base
+        raise _Refused("record-inconsistent")
+    return record
+
+
+def _record_inputs(reader, repo: Mapping, document: str, anchor: Anchor):
+    """Steps 2 to 6 of section 11.10's order: the current snapshot, the base
+    snapshot and the anchored leaf, or the first reason that applies."""
+    if document not in repo["tree"]:
+        raise _Refused("document-missing")
+    current = _read(reader, repo["tree"][document])
+    if anchor.base not in repo["blobs"]:
+        raise _Refused("base-unavailable")
+    base = _read(reader, repo["blobs"][anchor.base])
+    k = _anchored_leaf(base, anchor)
+    if k is None:
+        raise _Refused("record-inconsistent")
+    return current, base, k
 
 
 def _anchored_leaf(base: Snapshot, anchor: Anchor) -> int | None:
@@ -1017,14 +1016,17 @@ def _reaches(reader, tree: Mapping, start: str, goal: str, seen: set[str]) -> bo
     return False
 
 
-def resolve_transclusions(reader, repo: Mapping, referrer: str) -> list[dict]:
+def resolve_transclusions(reader, repo: Mapping, referrer: str) -> list[dict] | str:
+    """Each transclusion of a referrer, in document order, or the one
+    referrer-level status of a referrer the profile refuses (section 11.9,
+    step 0)."""
     tree = repo["tree"]
     if referrer not in tree:
         raise Undecided("a referrer that is not in the tree")
     try:
         snapshot = Snapshot(reader, tree[referrer])
-    except reader.Refusal as refusal:
-        raise Undecided("a referrer that the profile refuses (section 9)") from refusal
+    except reader.Refusal:
+        return "REFUSED(not-in-profile)"
     pins = read_pins(_frontmatter_lines(snapshot.doc, snapshot.lines), repo["object_format"])
     out = []
     for leaf in snapshot.leaves:
@@ -1043,61 +1045,52 @@ def resolve_transclusions(reader, repo: Mapping, referrer: str) -> list[dict]:
     return out
 
 
+def _slug_only(reader, current: Snapshot, name: str) -> bool:
+    """Whether only a heading slug matches `name` in the current target."""
+    if name in current.doc.names:
+        return False
+    return any(
+        node.type == "heading" and reader.slug(node.text) == name for node in current.doc.nodes
+    )
+
+
 def _resolve_one(reader, repo: Mapping, referrer: str, one: Transclusion, pins) -> dict:
+    """Section 11.9, steps 1 to 4, for one transclusion of an accepted
+    referrer. The first step that fails decides."""
     tree, blobs = repo["tree"], repo["blobs"]
-    reasons = []
-    try:
-        target = resolve_path(referrer, one.path)
-    except _Refused as refused:
-        if pins is None:
-            raise Undecided(
-                "which of unresolvable-path and record-inconsistent (the pins' grammar) is reported"
-            ) from refused
-        raise
+    target = resolve_path(referrer, one.path)  # 1.1
     if not target.endswith(".md"):
         raise Undecided("a transclusion path that names a file that is not markdown")
     if target == referrer or _reaches(reader, tree, target, referrer, set()):
         raise Undecided("a document that transcludes itself, directly or through another")
-    current = pinned = None
-    if target not in tree:
-        reasons.append("document-missing")
-    else:
-        try:
-            current = _read(reader, tree[target])
-        except _Refused as refused:
-            reasons.append(refused.reason)
-    if pins is None:
-        reasons.append("record-inconsistent")
-    elif one.path not in pins:
+    if pins is None:  # 1.2
+        raise _Refused("record-inconsistent")
+    if target not in tree:  # 1.3
+        raise _Refused("document-missing")
+    current = _read(reader, tree[target])  # 1.4
+    if _slug_only(reader, current, one.name):  # 1.5
+        return {"status": f"#REF!({one.name})", "unit": None}
+    if one.path not in pins:
         raise Undecided("a transclusion with no pin")
-    elif pins[one.path] not in blobs:
-        reasons.append("base-unavailable")
-    else:
-        try:
-            pinned = _read(reader, blobs[pins[one.path]])
-        except _Refused as refused:
-            reasons.append(refused.reason)
-        else:
-            if one.name not in pinned.doc.names:
-                reasons.append("record-inconsistent")
-    _one_reason(reasons)
-    binding = current.doc.names.get(one.name)
+    if pins[one.path] not in blobs:  # 1.6
+        raise _Refused("base-unavailable")
+    pinned = _read(reader, blobs[pins[one.path]])  # 1.7
+    if one.name not in pinned.doc.names:  # 1.8
+        raise _Refused("record-inconsistent")
+    binding = current.doc.names.get(one.name)  # 2
     if binding is None:
         return {"status": f"#REF!({one.name})", "unit": None}
-    corr = Correspondence(pinned.leaves, current.leaves)
-    failures, pairs = [], []
+    corr = Correspondence(pinned.leaves, current.leaves)  # 3
+    pairs = []
     for leaf in _bound_leaves(pinned, pinned.doc.names[one.name]):
         try:
             c, _kind = check_pair(corr, leaf.index)
         except _Refused as refused:
-            failures.append(f"pinned-{refused.reason}")
-            continue
+            raise _Refused(f"pinned-{refused.reason}") from refused
         if c is None:
-            failures.append("pinned-orphaned")
-        else:
-            pairs.append(c)
-    _one_reason(failures)
-    inside = {leaf.index for leaf in _bound_leaves(current, binding)}
+            raise _Refused("pinned-orphaned")
+        pairs.append(c)
+    inside = {leaf.index for leaf in _bound_leaves(current, binding)}  # 4
     if any(c not in inside for c in pairs):
         raise _Refused("name-rebound")
     return {"status": "RESOLVED", "unit": {"document": target, "target": binding}}
@@ -1110,7 +1103,10 @@ def _default_reader():
     from blockspec import document
 
     return SimpleNamespace(
-        parse=document.parse, Refusal=document.Refusal, split_lines=document._split_lines
+        parse=document.parse,
+        Refusal=document.Refusal,
+        split_lines=document._split_lines,
+        slug=document._slug,
     )
 
 
