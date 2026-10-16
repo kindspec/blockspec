@@ -961,3 +961,53 @@ record is a blockspec document (§3), so its body is one.
 
 The body of this document keeps both clauses as first written. This
 addendum removes them, and `SPEC.md` does not carry them.
+
+## Addendum, 2026-10-16: overlaps, replies, and two write-back edges
+
+The owner's decisions of 2026-10-16. Each numbered item is the owner's.
+Where this write-up adds precision of its own, it says so, marked
+**(precision, not the owner's)**, with the reason. `SPEC.md` §11 carries
+the rules.
+
+**1. Overlapping occurrences count.** Occurrences of
+`prefix + span + suffix` in `leaf.text` are counted by start position, so
+two that overlap are two, and the triple does not occur exactly once. That
+applies at creation and in the consistency check alike.
+
+**(precision, not the owner's)** §11.5's hits are counted the same way: an
+occurrence is a start position, and two overlapping hits are two, so
+`span-ambiguous`. *Reason*: one way of counting occurrences everywhere
+§11 counts them.
+
+**2. Replies are records.** A reply whose notes directory's document is
+missing, or refused by the profile, is `REFUSED(document-missing)` or
+`REFUSED(not-in-profile)`, as any record is.
+
+**(precision, not the owner's)** Where it sits in the order of the second
+addendum's item 2: a reply goes through steps 1 to 3, its grammar, then
+`document-missing`, then the document refused under the profile. Steps 4
+to 6 read an anchor, which a reply does not have. Only a reply that passes
+steps 1 to 3 is looked up by its `reply-to`, and renders `#REF!(reply-to)`
+when that names no record. *Reason*: the data-dependency rule puts every
+check on the document before anything rendered on it, and `#REF!(reply-to)`
+is how a reply renders, not an input problem.
+
+**3. A character that comes from no single raw character.** Where a tab is
+only partly consumed by container indentation, CommonMark keeps the rest of
+its width as spaces in the content, and those characters of `leaf.text`
+come from no single raw character. A span that crosses one makes the
+suggestion stale, as `unmappable-offset`.
+
+**(precision, not the owner's)** "Crosses" is read as: at least one code
+point of the span is such a character. A span that only begins or ends
+next to one maps. *Reason*: the write-back maps each code point of the span
+to one raw character, and only a code point inside the span needs one.
+
+**4. A code block's final line ending.** A span that ends at a code block's
+final line ending, the `\n` that ends its last content line, makes the
+suggestion stale, as `unmappable-offset`: writing it back would join the
+closing fence to the line before it.
+
+**(precision, not the owner's)** That holds whatever `replace` ends with,
+including a `\n`. *Reason*: the rule as decided names the span alone, and
+read literally it stays a fact about where the span ends.
