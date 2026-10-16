@@ -30,8 +30,8 @@ which mature parsers draw different trees, or which hide what a merge did.
 
 **A block gets no minted id.** Identity is computed from content where it can
 be, and named by an author where it must be (`DESIGN-BRIEF.md` §1, with the
-measurement behind it; D8's invariant I7). Nothing in this document requires writing an
-identifier into the text.
+measurement behind it; D8's invariant I7). Nothing in this document requires
+writing an identifier into the text.
 
 ## 2. What this document decides
 
