@@ -2,6 +2,11 @@
 
 `paragraph` is the tree's name for the node, not an allowed `T`.
 
+This case cannot isolate the `T` check. No leaf of `base` has the key
+`paragraph` and this text, so the rule that refuses a record whose `leaf`
+at `nth` is not in `base` gives the same outcome. An implementation that
+skipped the `T` check would still pass it.
+
 SPEC.md §11.1:
 
 > - `T` is a string, one of `p`, `h1` to `h6`, `code` and `table`.
@@ -16,3 +21,11 @@ SPEC.md §11.1:
 > (other spacing, key order or escapes, a duplicate key, an unquoted key);
 > when `B` or `T` is not a value the list above allows; or when `replace` is
 > present on a comment or missing on a suggestion.
+
+SPEC.md §11.1:
+
+> **Consistency.** A record is `REFUSED(record-inconsistent)` when `leaf` at
+> `nth` is not in `base`; when `prefix + span + suffix` does not occur exactly
+> once in `leaf.text`; when `prefix` or `suffix` is shorter than 32 code points
+> while the leaf's edge is further away; or when `span` is empty (0003, the
+> details it fixes).
