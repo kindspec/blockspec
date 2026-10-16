@@ -586,6 +586,11 @@ blob in that commit, `leaf` at `nth` exists in `base`, and
 `prefix + span + suffix` occurs exactly once in `leaf.text`. Where it does
 not occur exactly once, the anchor is not created.
 
+**Occurrences are counted by start position** (0003, third addendum of
+2026-10-16, item 1), here, in the consistency check below and in §11.5's
+hits alike: two occurrences that overlap are two. (Applying it to §11.5 is
+that addendum's precision, not the owner's ruling.)
+
 **Consistency.** A record is `REFUSED(record-inconsistent)` when `leaf` at
 `nth` is not in `base`; when `prefix + span + suffix` does not occur exactly
 once in `leaf.text`; when `prefix` or `suffix` is shorter than 32 code
@@ -726,7 +731,8 @@ starting where it ends. **A short context must sit at the leaf's edge**
 (0003, addendum, detail 6): when `prefix` is shorter than 32 code points,
 the hit's `prefix` starts at the start of the paired leaf's text, and when
 `suffix` is shorter than 32, the hit's `suffix` ends at its end. An
-occurrence that does not is not a hit. With no hit the anchor is
+occurrence that does not is not a hit. Hits are counted by start position,
+overlapping ones included (§11.1). With no hit the anchor is
 `DETACHED`; with more than one, `REFUSED(span-ambiguous)`. With one hit, the
 longest common subsequence alignment (§11.2) of the base leaf's text onto
 the paired leaf's text must pair every code point of the span with the code
@@ -792,13 +798,32 @@ whose container prefix is the list marker; a lazy line, which has no
 container prefix; a line whose container prefix holds a tab; or the file's
 last line, when the file has no final line ending.
 
+**Two spans that cannot be written back** (0003, third addendum of
+2026-10-16, items 3 and 4). The suggestion is stale, as `unmappable-offset`,
+when:
+
+- a code point of the span comes from no single raw character, or the
+  span ends right before one: the rest of a tab only partly consumed by
+  indentation, which CommonMark keeps as spaces in the content. That is
+  container indentation (item 3) or any other, such as a fenced code
+  block's own indentation (the addendum's precision, extending item 3). A
+  span that begins right after such a character maps; one that ends right
+  before it ends with a `\n`, and step 2 carries `b` into the tab (the
+  addendum's precision);
+- the span's last code point is the `\n` that ends a code block's last
+  content line. That `\n` marks where the block's content ends: writing
+  over it would join the closing fence to the line before it, and in a
+  fence left unclosed at the end of its container or the file it may come
+  from no raw character. That holds whatever `replace` ends with (the
+  addendum's precision).
+
 ### 11.8 Replies, deletion and document identity
 
 - **Records are not deleted in normal use** (0003 Q8). A suggestion is
   accepted or rejected by its `status`. A purge removes a whole thread, the
   record and every reply to it, in one commit.
 - **A reply whose `reply-to` names no record in its directory** renders as
-  `#REF!(reply-to)`.
+  `#REF!(reply-to)`, once its document checks pass (§11.10).
 - **A commit that renames a document moves its notes directory in the same
   commit** (0003 Q9).
 - **A record id found in more than one notes directory is warned on** (0003
@@ -950,6 +975,14 @@ is reported:
 5. `base` refused under the profile (`not-in-profile`);
 6. the leaf at `nth` inconsistent with `base` (`record-inconsistent`).
 
+**A reply is a record** (0003, third addendum of 2026-10-16, item 2): a
+reply whose document is missing, or refused by the profile, is
+`REFUSED(document-missing)` or `REFUSED(not-in-profile)`. It goes through
+steps 1 to 3; steps 4 to 6 read an anchor, which a reply does not have. Only
+a reply that passes steps 1 to 3 is looked up by its `reply-to`, and renders
+`#REF!(reply-to)` when that names no record. (Where the reply sits in the
+order is the addendum's precision.)
+
 Step 1 holds every check that reads only the record, `leaf.text` included:
 its file name and directory entry, its frontmatter, its body, an empty
 `span`, a context longer than 32 code points, `prefix + span + suffix` not
@@ -968,7 +1001,8 @@ order beyond items 2, 3, 6 and 7, and the leaves' order, are the
 addendum's precision.)
 
 A stale suggestion carries `unmappable-offset` when §11.7's mapping fails.
-A reply with no parent renders `#REF!(reply-to)`.
+A reply with no parent renders `#REF!(reply-to)`, once its document
+checks pass (above; §11.8).
 
 ### 11.11 What a tool MAY add
 
