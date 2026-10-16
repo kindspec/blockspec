@@ -1,0 +1,9 @@
+{
+  "kind": "anchor",
+  "transclusions": {
+    "guide.md": [
+      {"leaf": {"node": [1], "type": "paragraph"}, "status": "RESOLVED", "unit": {"document": "policy.md", "target": {"node": [2], "type": "paragraph"}}},
+      {"leaf": {"node": [2], "type": "paragraph"}, "status": "RESOLVED", "unit": {"document": "safety.md", "target": {"node": [2], "type": "paragraph"}}}
+    ]
+  }
+}

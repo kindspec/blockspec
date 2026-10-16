@@ -4,12 +4,15 @@
 Draft 0 is what `docs/adjudications/` decides, and `SPEC.md` writes it up:
 0001, a pinned CommonMark 0.31.2 block-level profile with `<!-- #name -->`
 region markers, and 0002, what a block is, each with addenda, and 0003,
-how comments, suggestions and transclusions anchor. 0003 has no cases and no
-implementation yet. `conformance/cases/` encodes 0001 and 0002 and came first, before any
-implementation existed. `reference/blockspec/` is a standard-library-only
-implementation written against that tree, and CI runs the tree against it
-(`just conform`). There is one implementation, so nothing disagrees with it
-yet.
+how comments, suggestions and transclusions anchor. `conformance/cases/`
+encodes all three. Its 0001 and 0002 cases came first, before any
+implementation existed. Its 0003 cases, under `conformance/cases/anchor/`,
+were written from `SPEC.md` by an author who had not read the resolver,
+which was written before them. `reference/blockspec/` is a
+standard-library-only implementation, the reader (`document.py`) and the
+anchor resolver (`anchor.py`), run against that tree with no case changed,
+and CI runs the tree against it (`just conform`). There is one
+implementation, so nothing disagrees with it yet.
 
 The pre-registered spike, `spike/` (blockspec#2), asked whether prose has a
 silent-wrong-merge worth a format. Its binding verdict is **FOUND**:

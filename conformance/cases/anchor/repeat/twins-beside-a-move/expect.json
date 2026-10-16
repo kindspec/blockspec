@@ -1,0 +1,8 @@
+{
+  "kind": "anchor",
+  "records": {
+    "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B801.md": {"status": "REFUSED(repeat)", "leaf": null, "span": null, "suggestion": null},
+    "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B802.md": {"status": "REFUSED(unaccounted-copy)", "leaf": null, "span": null, "suggestion": null}
+  },
+  "controls": ["anchor/repeat/copies-separated-by-unique-leaves-resolve"]
+}

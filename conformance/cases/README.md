@@ -187,6 +187,30 @@ puts a heading there instead. Added then:
 `refusal/table-not-blank-above/accepts-a-lazy-header-over-a-one-cell-delimiter`,
 `refusal/table-not-blank-above/refuses-a-lazy-header-over-a-two-cell-delimiter`.
 
+Every case under `anchor/` was added later, against blockspec `66ce7f1`,
+while a resolver for `SPEC.md` §11 existed on an unmerged branch. Their
+author did not read that resolver, its branch, its pull request or any
+branch but `main`. They had `SPEC.md`, the three adjudications with their
+addenda, this README, `case-body.schema.json`, the tree as it stood, the
+runner and `check_tree.py` with `anchor_cases.py`, and the block reader
+`reference/blockspec/document.py`, read to learn the parse. Each expected
+outcome comes from §11 and 0003, and each `WHY.md` quotes the passage that
+decides it. The author cross-checked the statuses, leaves and spans with a
+throwaway calculation of §11.2 to §11.5 written from the same text and not
+committed, run on the repository `anchor_cases.Repository` builds, so every
+placeholder and merge was hashed and merged by stock git as the runner does
+it. Where §11 does not decide an outcome there is no case; the pull request
+that added these lists each such question with the passages checked. The
+cases fail `just conform` until a resolver lands with them, as *Landing
+order* below says. The same author, under the same constraints, later added
+the cases for 0003's second addendum (the groups `order/`,
+`transclusion-order/` and `referrer/`, and cases in `record/`, `reply/`,
+`suggestion/`, `input/` and `transclusion/`), and re-pointed the `WHY.md`
+quotes that addendum changed. No existing outcome changed. They then
+added the cases for its third addendum (overlapping occurrences, replies
+whose document is missing or refused, and two write-back edges) and
+re-pointed the quotes it changed, again with no outcome changed.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
@@ -433,8 +457,8 @@ section, without reading an implementation.
 **Landing order.** The reference reader has no `resolve` until the resolver
 lands, so the first anchor case would turn `just conform` red on `main`. The
 cases are therefore written blind from `main`, on a branch and pull request of
-their own, and reviewed there. The resolver's branch is then rebased onto the
-cases, run against them with no case changed, reviewed, and merged: that merge
+their own, and reviewed there. The cases are then merged into the resolver's
+branch, which is run against them with no case changed, reviewed, and merged: that merge
 lands the cases and the resolver together, and the cases' pull request closes
 as landed through it.
 

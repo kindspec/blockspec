@@ -15,17 +15,22 @@ the **blocks kind** — identity is deliberately no minted ids — alongside [ro
 
 Draft 0 is what `docs/adjudications/` 0001, 0002 and 0003 decide; `SPEC.md`
 restates it, defers to them, and lists what they leave open. 0003, anchors
-and transclusion, has no cases and no implementation yet: its cases come
-first, from an author who has not read a resolver. The spike's binding verdict is FOUND, under an owner ruling that
-overrides frozen rules; see `spike/README.md`, The verdict. `conformance/cases/` holds draft 0's conformance cases,
-written before any implementation existed. `reference/blockspec/` is the first
-implementation, written afterwards against the tree and `docs/adjudications/`,
-with no case changed. CI checks the tree itself, and runs it against the
+and transclusion, has cases under `conformance/cases/anchor/`, written blind
+from `main` by an author who had not read the resolver, and an
+implementation, `reference/blockspec/anchor.py`, which was written before
+those cases and then run against them with no case changed. The spike's binding verdict is FOUND, under an owner ruling that
+overrides frozen rules; see `spike/README.md`, The verdict. `conformance/cases/` holds draft 0's conformance cases.
+Those for 0001 and 0002 were written before any implementation existed, and
+the reader, `reference/blockspec/document.py`, was written afterwards against
+them and `docs/adjudications/`, with no case changed. For 0003 the order was
+the reverse, as above: the resolver came first, and its cases were written
+without reading it. CI checks the tree itself, and runs it against the
 reference (`just conform`). There is no second implementation.
 
 The mutation gate, `just mutants`, is not in CI: it reports mutants the tree
 does not kill, which are holes for the case author to close, not bugs in the
-reference. Run it to see the current list. Saying so is cheaper than being
+reference. It gates the reader and the anchor resolver, each with its own
+table in `conformance/mutants.py`. Run it to see the current list. Saying so is cheaper than being
 asked.
 
 ## Before writing anything

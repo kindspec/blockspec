@@ -14,7 +14,10 @@ implementation, and is reported as one.
 The machinery is kindkit's (`kindkit.gate`): patterns are matched on a
 normalised token stream, a pattern that no longer matches is STALE, and a run
 that reaches no verdict is BROKEN. What is here is what knows about
-`reference/blockspec/document.py`: the mutants, and the probe.
+`reference/blockspec/document.py` and `reference/blockspec/anchor.py`: a
+table of mutants for each, and their probes. The resolver's probe runs its
+mutated copy as `anchor.py` beside a copy of the reader, which loads
+`anchor.py` from its own directory.
 
 Two more checks than the kit makes, both by hashing:
 
@@ -35,7 +38,9 @@ from __future__ import annotations
 
 import hashlib
 import os
+import shutil
 import sys
+import tempfile
 
 from kindkit import GateError, MutantError, Verdict, apply_mutant, from_table, gate, probe_command
 from kindkit.cli import EXIT_FAILURES, EXIT_NO_VERDICT, EXIT_OK
@@ -43,11 +48,13 @@ from kindkit.cli import EXIT_FAILURES, EXIT_NO_VERDICT, EXIT_OK
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMPL = os.path.normpath(os.path.join(HERE, "..", "reference", "blockspec", "document.py"))
 RUNNER = os.path.join(HERE, "run_cases.py")
+ANCHOR = os.path.join(os.path.dirname(IMPL), "anchor.py")
 
 #: Overwritten with each mutant and deleted at the end; gitignored. The runner
 #: loads `--impl` by path under a module name of its own, so nothing on
-#: `sys.path` can shadow it.
-SCRATCH = os.path.join(HERE, "mutant_impl.py")
+#: `sys.path` can shadow it. It sits beside the reader, because the reader's
+#: `resolve` loads `anchor.py` from its own directory.
+SCRATCH = os.path.join(os.path.dirname(IMPL), "mutant_impl.py")
 
 #: Seconds one probe may take. The whole tree runs in well under one, so only
 #: a mutant that made the reader loop can reach this.
@@ -467,6 +474,450 @@ MUTANTS = {
     ),
 }
 
+# The resolver's mutants: the same gate over reference/blockspec/anchor.py,
+# probed by the anchor cases. Mutants that only turn an UNDECIDED into a
+# guess are left out, since no case can expect UNDECIDED, and so are the
+# duplicate-id warning, which no case field asserts, and a notes
+# directory's subfolder, which a case cannot name (cases/README.md).
+ANCHOR_MUTANTS = {
+    "escape set misses U+2028": (
+        "0x2028, 0x2029",
+        "0x2029",
+    ),
+    "escape set misses C1 controls": (
+        "*range(0x7F, 0xA0)",
+        "0x7F",
+    ),
+    "negative nth read": (
+        'if leaf["nth"] < 0 or leaf["type"]',
+        'if leaf["type"]',
+    ),
+    "replace not tied to kind": (
+        'if (anchor.replace is not None) != (kind == "suggestion"):',
+        "if False:",
+    ),
+    "canonical bytes not compared": (
+        "return anchor if write_anchor(anchor) == value else None",
+        "return anchor",
+    ),
+    "table pipe not escaped": (
+        'cell.replace("|", "\\\\|")',
+        "cell",
+    ),
+    "heading level dropped": (
+        'f"h{_heading_level(self.lines[node.start - 1])}"',
+        '"h1"',
+    ),
+    "text not normalised": (
+        'text_ = unicodedata.normalize("NFC", text_)',
+        "text_ = text_",
+    ),
+    "half compares strictly": (
+        "return 4 * sim[0] >= sim[1]",
+        "return 4 * sim[0] > sim[1]",
+    ),
+    "below one allows one": (
+        "return 2 * sim[0] < sim[1]",
+        "return 2 * sim[0] <= sim[1]",
+    ),
+    "margin compares strictly": (
+        "return 40 * l1 * t2 - 40 * l2 * t1 >= 3 * t1 * t2",
+        "return 40 * l1 * t2 - 40 * l2 * t1 > 3 * t1 * t2",
+    ),
+    "margin in floating point": (
+        "return 40 * l1 * t2 - 40 * l2 * t1 >= 3 * t1 * t2",
+        "return 2 * l1 / t1 - 2 * l2 / t2 >= 0.15",
+    ),
+    "alignment skips the second first": (
+        "elif suffix[i + 1][j] == suffix[i][j]:",
+        "elif suffix[i][j + 1] != suffix[i][j]:",
+    ),
+    "chain is the rightmost": (
+        "k = min(options, key=lambda k: pairs[k][1])",
+        "k = max(options, key=lambda k: pairs[k][1])",
+    ),
+    "chain is not the longest": (
+        "longest[k] = max(longest[k], longest[later] + 1)",
+        "longest[k] = 1",
+    ),
+    "moved pairs dropped": (
+        "            if (b, c) not in on_chain:\n                self.pair[b] = (c, MOVED)",
+        "            if False:\n                self.pair[b] = (c, MOVED)",
+    ),
+    "moved leaves stay in gaps": (
+        "if c not in moved_current]",
+        "]",
+    ),
+    "no lcs in gaps": (
+        "for i, j in lcs_alignment(keys_b, keys_c).items():",
+        "for i, j in {}.items():",
+    ),
+    "edit needs no half": (
+        "        if not at_least_half(sim):\n            return False",
+        "        if False:\n            return False",
+    ),
+    "edit needs no lead over other current": (
+        "for o in left_current if o != c):",
+        "for o in [] if o != c):",
+    ),
+    "edit needs no lead over other base": (
+        "for o in left_base if o != b)",
+        "for o in [] if o != b)",
+    ),
+    "no unaccounted-copy": (
+        '        if copies:\n            raise _Refused("unaccounted-copy")',
+        '        if False:\n            raise _Refused("unaccounted-copy")',
+    ),
+    "repeat only when base repeats": (
+        "if len(base_copies) > 1 or len(copies) > 1:",
+        "if len(base_copies) > 1:",
+    ),
+    "repeat only when current repeats": (
+        "if len(base_copies) > 1 or len(copies) > 1:",
+        "if len(copies) > 1:",
+    ),
+    "exact near-copy off": (
+        '        if near(also_exact=False):\n            raise _Refused("near-copy")',
+        '        if False:\n            raise _Refused("near-copy")',
+    ),
+    "near-copy below half": (
+        "if at_least_half(sim) and (also_exact or below_one(sim)):",
+        "if (also_exact or below_one(sim)):",
+    ),
+    "exact near-copy counts exact copies": (
+        "if at_least_half(sim) and (also_exact or below_one(sim)):",
+        "if at_least_half(sim):",
+    ),
+    "moved near-copy off": (
+        "    elif kind == MOVED:\n        if near(also_exact=True):",
+        "    elif kind == MOVED:\n        if False:",
+    ),
+    "refilled gap off": (
+        (
+            "        if any(u in gap_current for u in unmatched):\n"
+            '            raise _Refused("refilled-gap")'
+        ),
+        '        if False:\n            raise _Refused("refilled-gap")',
+    ),
+    "exact-copy off": (
+        "if any(u in copies for u in unmatched):",
+        "if False:",
+    ),
+    "exact-copy counts paired copies": (
+        "if any(u in copies for u in unmatched):",
+        "if len(copies) > 0:",
+    ),
+    "crowded gap off": (
+        (
+            "        if any(u in gap_current for u in unmatched):\n"
+            '            raise _Refused("crowded-gap")'
+        ),
+        '        if False:\n            raise _Refused("crowded-gap")',
+    ),
+    "edited near-copy off": (
+        "if near(True):",
+        "if False:",
+    ),
+    "empty span allowed": (
+        '    if not anchor.span:\n        raise _Refused("record-inconsistent")',
+        '    if False:\n        raise _Refused("record-inconsistent")',
+    ),
+    "triple may occur twice": (
+        "if len(found) != 1:",
+        "if not found:",
+    ),
+    "short prefix anywhere": (
+        "if len(anchor.prefix) < CONTEXT and at > 0:",
+        "if False:",
+    ),
+    "short suffix anywhere": (
+        "if len(anchor.suffix) < CONTEXT and end < len(text):",
+        "if False:",
+    ),
+    "occurrences skip overlaps": (
+        "at = text.find(part, at + 1)",
+        "at = text.find(part, at + len(part))",
+    ),
+    "no prefix edge rule": (
+        "if len(prefix) < CONTEXT and before != 0:",
+        "if False:",
+    ),
+    "no suffix edge rule": (
+        "if len(suffix) < CONTEXT and after != len(text):",
+        "if False:",
+    ),
+    "two hits not ambiguous": (
+        "if len(hits) > 1:",
+        "if False:",
+    ),
+    "no alignment check": (
+        "if any(paired.get(start + d) != hit + d for d in range(len(span))):",
+        "if False:",
+    ),
+    "gate ignores status": (
+        'if record.status != "open" or status not in ("RESOLVED", "EDITED"):',
+        'if status not in ("RESOLVED", "EDITED"):',
+    ),
+    "gate applies on moved": (
+        'if record.status != "open" or status not in ("RESOLVED", "EDITED"):',
+        'if record.status != "open" or status not in ("RESOLVED", "EDITED", "MOVED"):',
+    ),
+    "break written as LF": (
+        'replace = replace.replace("\\n", ending + prefix)',
+        'replace = replace.replace("\\n", "\\n" + prefix)',
+    ),
+    "break written with no prefix": (
+        'replace = replace.replace("\\n", ending + prefix)',
+        'replace = replace.replace("\\n", ending)',
+    ),
+    "synthetic spaces mapped": (
+        '            if k and raw[len(raw) - len(tail) - 1] != "\\t":\n                continue',
+        "            if k:\n                continue",
+    ),
+    "absolute path allowed": (
+        'if path.startswith("/") or ":" in segments[0]:',
+        'if path.startswith("/"):',
+    ),
+    "scheme path allowed": (
+        'if path.startswith("/") or ":" in segments[0]:',
+        'if ":" in segments[0]:',
+    ),
+    "above the root allowed": (
+        (
+            "            if not out:\n"
+            '                raise _Refused("unresolvable-path")\n'
+            "            out.pop()"
+        ),
+        "            if out:\n                out.pop()",
+    ),
+    "pins order unchecked": (
+        'if pins and got["path"] <= list(pins)[-1]:',
+        "if False:",
+    ),
+    "pins after a blank line read": (
+        'not line.strip(" \\t") or line.startswith((" ", "#")) for line in lines[at:later]',
+        "False for line in lines[at:later]",
+    ),
+    "name ref skipped": (
+        "    if binding is None:\n        return",
+        "    if False:\n        return",
+    ),
+    "rebound unchecked": (
+        "if any(c not in inside for c in pairs):",
+        "if False:",
+    ),
+    "reply-to not canonical": (
+        "if not isinstance(got, str) or canonical_string(got) != value:",
+        "if not isinstance(got, str):",
+    ),
+    "pin not canonical": (
+        "        if written != value:\n            return None",
+        "        if False:\n            return None",
+    ),
+    "pins line with trailing text": (
+        'if len(heads) > 1 or lines[heads[0]] != "pins:":',
+        "if len(heads) > 1:",
+    ),
+    "dot segment kept": (
+        '        if segment == ".":\n            continue',
+        "        if False:\n            continue",
+    ),
+    "synthetic char inside span mapped": (
+        "if any(p is None for p in positions[a:b]) or a == b:",
+        "if a == b:",
+    ),
+    "repeat ignores counts": (
+        '            if in_base != in_current:\n                raise _Refused("repeat")',
+        '            if False:\n                raise _Refused("repeat")',
+    ),
+    "over-long context read": (
+        "if len(anchor.prefix) > CONTEXT or len(anchor.suffix) > CONTEXT:",
+        "if False:",
+    ),
+    "reply-to any string": (
+        "if parent is None or not _ULID.fullmatch(parent):",
+        "if parent is None:",
+    ),
+    "lowercase ulid read": (
+        'if not name.endswith(".md") or not _ULID.fullmatch(name[: -len(".md")]):',
+        'if not name.endswith(".md") or not _ULID.fullmatch(name[: -len(".md")].upper()):',
+    ),
+    "reply parent never found": (
+        'found = f"{directory}/{record.reply_to}.md" in tree',
+        "found = False",
+    ),
+    "base checked before record-only checks": (
+        (
+            "        start = span_in_base(anchor)  # step 1: the checks"
+            " that read only the record\n"
+            "        current, base, k = _record_inputs(reader, repo, do"
+            "cument, anchor)"
+        ),
+        (
+            "        current, base, k = _record_inputs(reader, repo, do"
+            "cument, anchor)\n"
+            "        start = span_in_base(anchor)  # step 1: the checks"
+            " that read only the record"
+        ),
+    ),
+    "record body not checked": (
+        "try:\n        reader.parse(text)",
+        "try:\n        pass",
+    ),
+    "document missing ignored for records": (
+        '    if document not in repo["tree"]:\n        raise _Refused("document-missing")',
+        '    if False:\n        raise _Refused("document-missing")',
+    ),
+    "base read before the document": (
+        (
+            '    current = _read(reader, repo["tree"][document])\n'
+            '    if anchor.base not in repo["blobs"]:\n'
+            '        raise _Refused("base-unavailable")\n'
+            '    base = _read(reader, repo["blobs"][anchor.base])'
+        ),
+        (
+            '    if anchor.base not in repo["blobs"]:\n'
+            '        raise _Refused("base-unavailable")\n'
+            '    base = _read(reader, repo["blobs"][anchor.base])\n'
+            '    current = _read(reader, repo["tree"][document])'
+        ),
+    ),
+    "lazy bq line repeats a shorter prefix": (
+        'if j >= len(raw_line) or raw_line[j] != ">":\n                raise _Unmappable()',
+        'if j >= len(raw_line) or raw_line[j] != ">":\n                break',
+    ),
+    "lazy list line repeats a shorter prefix": (
+        (
+            '            if part != " " * width:\n'
+            "                raise _Unmappable()  # a lazy line, which "
+            "has no prefix to repeat"
+        ),
+        '            if part != " " * width:\n                break',
+    ),
+    "tab after a quote marker repeated": (
+        (
+            '            if j < len(raw_line) and raw_line[j] == "\\t":'
+            "\n"
+            "                raise _Unmappable()  # a tab in the contai"
+            "ner prefix"
+        ),
+        (
+            "            if False:\n"
+            "                raise _Unmappable()  # a tab in the contai"
+            "ner prefix"
+        ),
+    ),
+    "item first line repeated": (
+        "if node.start == number:\n                raise _Unmappable()",
+        "if False:\n                raise _Unmappable()",
+    ),
+    "break with no ending written": (
+        "if not ending:\n            raise _Unmappable()",
+        "if False:\n            raise _Unmappable()",
+    ),
+    "refused referrer enumerated": (
+        '        return "REFUSED(not-in-profile)"',
+        "        return []",
+    ),
+    "pins before the path": (
+        "    target = resolve_path(referrer, one.path)  # 1.1",
+        (
+            "    if pins is None:\n"
+            '        raise _Refused("record-inconsistent")\n'
+            "    target = resolve_path(referrer, one.path)  # 1.1"
+        ),
+    ),
+    "broken pins ignored": (
+        '    if pins is None:  # 1.2\n        raise _Refused("record-inconsistent")',
+        "    if pins is None:  # 1.2\n        pins = {}",
+    ),
+    "missing target after the pin": (
+        '    if target not in tree:  # 1.3\n        raise _Refused("document-missing")',
+        (
+            "    if target not in tree and one.path in pins and pins[on"
+            "e.path] in blobs:  # 1.3\n"
+            '        raise _Refused("document-missing")'
+        ),
+    ),
+    "slug-only name not checked early": (
+        "    if _slug_only(reader, current, one.name):  # 1.5",
+        "    if False:  # 1.5",
+    ),
+    "slug match ignored": (
+        "reader.slug(node.text) == name for node",
+        "False for node",
+    ),
+    "marker name taken for slug-only": (
+        "    if name in current.doc.names:\n        return False",
+        "    if False:\n        return False",
+    ),
+    "pinned blob not required": (
+        '    if pins[one.path] not in blobs:  # 1.6\n        raise _Refused("base-unavailable")',
+        (
+            "    if pins[one.path] not in blobs:  # 1.6\n"
+            '        return {"status": "RESOLVED", "unit": None}'
+        ),
+    ),
+    "pinned name unchecked": (
+        (
+            "    if one.name not in pinned.doc.names:  # 1.8\n"
+            '        raise _Refused("record-inconsistent")'
+        ),
+        '    if False:  # 1.8\n        raise _Refused("record-inconsistent")',
+    ),
+    "orphaned pinned leaf passes": (
+        '            raise _Refused("pinned-orphaned")',
+        "            continue",
+    ),
+    "last pinned leaf decides": (
+        "    for leaf in _bound_leaves(pinned, pinned.doc.names[one.name]):",
+        "    for leaf in reversed(_bound_leaves(pinned, pinned.doc.names[one.name])):",
+    ),
+    "anchor array taken for an object": (
+        "    if not isinstance(pairs, _Object):\n        return None\n    keys",
+        "    if not isinstance(pairs, list):\n        return None\n    keys",
+    ),
+    "inner link ignored": (
+        "                    raise _NotALink()",
+        "                    pass",
+    ),
+    "entity without semicolon decoded": (
+        '    return _ENTITY.sub(lambda m: html.unescape(m.group()), inner) == "transclude"',
+        '    return html.unescape(inner) == "transclude"',
+    ),
+    "image read as a link": (
+        'if content.startswith("![") and _link_destination(content[1:]) is not None:',
+        "if False:",
+    ),
+    "prose with a title read as a link": (
+        '    if "](" not in content:\n        return None  # no inline link at all',
+        "    if False:\n        return None  # no inline link at all",
+    ),
+    "line ending after the title refused": (
+        "r'(?:[ \\t]+(?:\\n[ \\t]*)?|\\n[ \\t]*)\"transclude\"[ \\t]*(?:\\n[ \\t]*)?\\)'",
+        "r'(?:[ \\t]+(?:\\n[ \\t]*)?|\\n[ \\t]*)\"transclude\"[ \\t]*\\)'",
+    ),
+    "code block's final line ending written": (
+        'if leaf.node.type == "code_block" and b == len(content):',
+        "if False:",
+    ),
+    "reply's document unchecked": (
+        (
+            "            if document not in tree:\n"
+            '                raise _Refused("document-missing")\n'
+            "            _read(reader, tree[document])"
+        ),
+        "            pass",
+    ),
+}
+
+ANCHOR_EQUIVALENT = {
+    "item first line repeated": (
+        "a list item's first line holds its marker in the prefix region, so the "
+        "lazy-line check refuses the break anyway"
+    ),
+}
+
 
 def _sha(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
@@ -491,6 +942,27 @@ def preflight(source: str, mutants=MUTANTS) -> list[str]:
         else:
             seen[digest] = name
     return problems
+
+
+def make_anchor_probe(origin: str, impl: str):
+    """The probe for the resolver's mutants. The reader loads `anchor.py`
+    from its own directory, so the scratch file is `anchor.py` in a
+    directory of its own, beside `impl`, a copy of the unmutated reader."""
+    calls = 0
+
+    def probe(path: str) -> Verdict:
+        nonlocal calls
+        calls += 1
+        with open(path, encoding="utf-8", newline="") as handle:
+            if calls > 1 and _sha(handle.read()) == origin:
+                print(f"  NO VERDICT  {path} holds the unmutated source", file=sys.stderr)
+                return Verdict.none()
+        env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+        return probe_command(
+            [sys.executable, RUNNER, "--impl", impl], cwd=HERE, env=env, timeout=PROBE_TIMEOUT
+        )
+
+    return probe
 
 
 def make_probe(origin: str):
@@ -524,21 +996,37 @@ def main(argv: list[str]) -> int:
             )
         with open(IMPL, encoding="utf-8", newline="") as handle:
             source = handle.read()
-        problems = preflight(source)
+        with open(ANCHOR, encoding="utf-8", newline="") as handle:
+            anchor = handle.read()
+        problems = preflight(source) + preflight(anchor, ANCHOR_MUTANTS)
         if problems:
             for problem in problems:
                 print(f"  {problem}")
             return EXIT_FAILURES
+        print("--- the reader, reference/blockspec/document.py")
         report = gate(
             source=IMPL,
             mutants=from_table(MUTANTS),
             probe=make_probe(_sha(source)),
             scratch=SCRATCH,
         )
+        print("\n--- the resolver, reference/blockspec/anchor.py")
+        workdir = tempfile.mkdtemp(prefix="blockspec-anchor-gate-")
+        try:
+            impl = os.path.join(workdir, "document.py")
+            shutil.copyfile(IMPL, impl)
+            anchor_report = gate(
+                source=ANCHOR,
+                mutants=from_table(ANCHOR_MUTANTS, ANCHOR_EQUIVALENT),
+                probe=make_anchor_probe(_sha(anchor), impl),
+                scratch=os.path.join(workdir, "anchor.py"),
+            )
+        finally:
+            shutil.rmtree(workdir, ignore_errors=True)
     except GateError as exc:
         print(f"\nHARD FAILURE: {exc}", file=sys.stderr)
         return EXIT_NO_VERDICT
-    return EXIT_OK if report.ok else EXIT_FAILURES
+    return EXIT_OK if report.ok and anchor_report.ok else EXIT_FAILURES
 
 
 if __name__ == "__main__":

@@ -1,0 +1,7 @@
+# Scram limits
+
+Every channel trips whenever it reads high on two successive scans of the window.
+
+Every channel trips whenever it reads high on two successive scans of the window.01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456
+
+Operators review the trip logs at the start of every shift.
