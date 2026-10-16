@@ -358,7 +358,8 @@ anchor is `RESOLVED` or `EDITED`.** Otherwise it is stale.
   of content must be `span`, and its position is mapped back through the
   parse to raw positions, skipping those characters (`SPEC.md` §11.7).
   Container prefixes and line endings are re-emitted line by line from the
-  parse, and nothing outside the span is re-normalised. Otherwise the suggestion is stale, `unmappable-offset`.
+  parse, and nothing outside the span is re-normalised. Otherwise the
+  suggestion is stale, `unmappable-offset`.
   Mapping the whole raw leaf instead would make every span after the first
   line of a quoted or list paragraph, or of a CRLF file, unmappable.
   Rewriting the whole leaf to NFC was weighed and declined: it is a visible

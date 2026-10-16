@@ -286,10 +286,10 @@ matches**
 **and is indented at most three spaces** (0001, addendum). Where the line
 would start a block, four or more make it an indented code block, which §4.1
 refuses. In paragraph context the same line is a paragraph continuation
-line, so it is paragraph text, as CommonMark reads it. **(read as)** 0001's addendum
-says four or more make an indented code block; this document reads that as
-applying where a block can start. The only spacing allowed
-is spaces and tabs, inside and around the comment, so `<!--#intro-->` and
+line, so it is paragraph text, as CommonMark reads it. **(read as)**
+0001's addendum says four or more make an indented code block; this document
+reads that as applying where a block can start. The only spacing allowed is
+spaces and tabs, inside and around the comment, so `<!--#intro-->` and
 `<!--  #intro  -->` are both markers, and a no-break space is not spacing.
 Nothing else may share the line. An HTML comment that does not match is raw
 HTML, refused as `raw-html`.
