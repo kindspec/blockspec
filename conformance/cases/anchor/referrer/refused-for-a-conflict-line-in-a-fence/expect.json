@@ -1,0 +1,7 @@
+{
+  "kind": "anchor",
+  "transclusions": {
+    "guide.md": "REFUSED(not-in-profile)"
+  },
+  "controls": ["anchor/transclusion/resolves-when-unchanged"]
+}

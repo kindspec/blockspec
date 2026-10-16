@@ -202,7 +202,11 @@ placeholder and merge was hashed and merged by stock git as the runner does
 it. Where §11 does not decide an outcome there is no case; the pull request
 that added these lists each such question with the passages checked. The
 cases fail `just conform` until a resolver lands with them, as *Landing
-order* below says.
+order* below says. The same author, under the same constraints, later added
+the cases for 0003's second addendum (the groups `order/`,
+`transclusion-order/` and `referrer/`, and cases in `record/`, `reply/`,
+`suggestion/`, `input/` and `transclusion/`), and re-pointed the `WHY.md`
+quotes that addendum changed. No existing outcome changed.
 
 ## Shape
 
