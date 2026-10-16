@@ -54,3 +54,11 @@ def test_the_probe_reads_the_unmutated_source_after_the_baseline_as_no_verdict(t
     baseline = probe(str(path))
     assert baseline.reached and not baseline.failures
     assert not probe(str(path)).reached
+
+
+def test_a_mutated_reader_can_reach_the_anchor_resolver():
+    """The reader's `resolve` loads `anchor.py` from its own directory, so the
+    gate's mutated copy has to sit beside it, or every anchor case would fail
+    against the unmutated baseline."""
+    assert os.path.dirname(mutants.SCRATCH) == os.path.dirname(mutants.IMPL)
+    assert os.path.isfile(os.path.join(os.path.dirname(mutants.SCRATCH), "anchor.py"))

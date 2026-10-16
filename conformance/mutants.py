@@ -46,8 +46,9 @@ RUNNER = os.path.join(HERE, "run_cases.py")
 
 #: Overwritten with each mutant and deleted at the end; gitignored. The runner
 #: loads `--impl` by path under a module name of its own, so nothing on
-#: `sys.path` can shadow it.
-SCRATCH = os.path.join(HERE, "mutant_impl.py")
+#: `sys.path` can shadow it. It sits beside the reader, because the reader's
+#: `resolve` loads `anchor.py` from its own directory.
+SCRATCH = os.path.join(os.path.dirname(IMPL), "mutant_impl.py")
 
 #: Seconds one probe may take. The whole tree runs in well under one, so only
 #: a mutant that made the reader loop can reach this.
