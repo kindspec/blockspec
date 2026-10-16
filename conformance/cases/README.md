@@ -547,10 +547,15 @@ implementation may add fields of its own, such as a message, and they are
 ignored. A path index or an offset must be an integer, not a float or a
 bool.
 
-**One outcome per record.** Where `SPEC.md` does not fix which of two
-reasons is reported, write the case so that only one applies, as a `parse`
-refusal case does (§9). §11.4 fixes an order inside each kind of pair ("the
-first rule that applies decides"), and §11.9 orders its steps.
+**One outcome per record.** §11.10, *Which reason is reported*, fixes the
+order among a record's or a transclusion's input problems, and among several
+`pinned-<reason>`s. §11.4 fixes an order inside each kind of pair ("the
+first rule that applies decides"), and §11.9 orders its steps. Where one of
+these orders applies, a case may set up several reasons and expect the first
+by that order; §11.10's order needs such cases to be pinned at all. To pin
+one reason on its own, a case where only that reason applies is still the
+clearest. Where `SPEC.md` fixes no order between two reasons, write the case
+so that only one applies, as a `parse` refusal case does (§9).
 
 ### An example
 
