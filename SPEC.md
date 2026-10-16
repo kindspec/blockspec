@@ -2,16 +2,16 @@
 # blockspec — specification, draft 0
 
 Status: draft. This document writes up draft 0 as
-`docs/adjudications/0001-syntax.md` and `0002-block.md` decide it, with
-their addenda. It adds no decision of its own. **Where this document and an
-adjudication disagree, the adjudication wins and this document is in
-error.** Where the adjudications are silent, this document says so (§11)
+`docs/adjudications/0001-syntax.md`, `0002-block.md` and
+`0003-anchors.md` decide it, with their addenda. It adds no decision of its
+own. **Where this document and an adjudication disagree, the adjudication
+wins and this document is in error.** Where the adjudications are silent, this document says so (§12)
 instead of choosing.
 
 The conformance suite, `conformance/cases/`, was written from the same
 adjudications before any implementation existed. Where they left a question
 open, a case takes a reading and its `WHY.md` says **READING**. A reading is
-not a decision, and §11 lists each one.
+not a decision, and §12 lists each one.
 
 **[CHOICE]** marks a decision that had a real alternative, with the reason
 the adjudication gave for it.
@@ -38,10 +38,12 @@ identifier into the text.
 Specified here, because two implementations that disagree on any of it read
 the same file differently: the profile and its refusals (§4, §9), where
 frontmatter ends (§5), how a document is cut into blocks and leaves (§6),
-what each name binds to (§7), and how a name resolves (§8).
+what each name binds to (§7), how a name resolves (§8), and how an anchor
+or a transclusion resolves (§11).
 
-Not specified here: rendering, how a refusal is worded, editor behaviour,
-and anything about inline content beyond keeping it as written (§4.2).
+Not specified here: rendering, beyond what §11 says an anchor's status
+shows; how a refusal is worded; editor behaviour; and anything about inline
+content beyond keeping it as written and the one shape §4.2 names.
 
 ## 3. Encoding and lines
 
@@ -104,6 +106,10 @@ The profile is block-level. **Inline content is opaque text** (0001, *What
 draft 0 carries*): a leaf's inline content is kept as written and is not
 parsed, so emphasis, links, code spans and entity references are characters
 of the leaf's content (§6.3), not structure.
+
+**One exception**: a paragraph whose content is exactly one inline link
+titled `transclude` is a transclusion (§11.9). 0003 Q5 amends 0001 to add
+it. The paragraph is still a leaf, and its content is still its raw text.
 
 ### 4.3 Tables
 
@@ -224,7 +230,8 @@ and a thematic break carry no text, so an anchor lands in a paragraph,
 heading, fenced code block or table.
 
 **Stage 1 of every anchor resolves a leaf**, with no fallback to the
-enclosing block (0002 §2). The anchor format is not part of draft 0.
+enclosing block (0002 §2). §11 gives the anchor format and its
+resolution.
 
 **[CHOICE]** the leaf, not the block, for anchoring. Graded against D8's
 line oracle, the leaf was correct at least as often as the enclosing item,
@@ -241,7 +248,7 @@ parsed text rather than raw bytes, so the blocks are raw lines and the
 anchors are parsed text, each for its own job. Line endings in content are
 `\n` (§3).
 
-What that is per leaf type is the suite's reading (§11, reading 8).
+What that is per leaf type is the suite's reading (§12, reading 8).
 
 ## 7. Names
 
@@ -363,7 +370,8 @@ R record in its reproduction is a heading slug, and in 171 of the 265 the
 oracle says the target was deleted and the slug resolved to something else
 (0001, the factual disputes, and §2).
 The remedy is not to treat derived names as durable references, and that is
-available in either syntax (0001 §2).
+available in either syntax (0001 §2). So a slug is not a transclusion target
+(§11.9; 0003 §7).
 
 ## 9. Refusals — normative
 
@@ -441,7 +449,291 @@ entry fails it.
 can fail and every refusal has a control. `just mutants` reports mutants of
 the reader that the tree does not kill.
 
-## 11. Not decided
+## 11. Anchors and transclusion
+
+Decided by `docs/adjudications/0003-anchors.md`, which gives the reason for
+each rule below and the edit shape it exists for. **An anchor resolves only
+where every witness it has agrees. Any disagreement, any tie and any missing
+witness is loud** (0003 §1). Nothing here writes into the document an
+anchor or a transclusion points at.
+
+This section specifies what the format guarantees from two snapshots of a
+document: `base`, the blob an anchor was made against, and the current
+text. §11.11 says what a tool MAY add on top, and §11.12 what no tool
+reading only those snapshots can prevent.
+
+### 11.1 Records
+
+**A comment or a suggestion is a record: one file per record, in
+`<doc>.notes/` beside its document** (0003 Q1). For `policy.md` that is
+`policy.md.notes/`. The directory is authoritative for which document a
+record belongs to, and a record holds no path (0003 Q9).
+
+- **A record's file name is `<id>.md`**, where `<id>` is a ULID (D8 §7.4).
+  Ids are unique within a notes directory. An id is never written into the
+  document.
+- **A record is a blockspec document.** Its frontmatter holds the anchor and
+  the metadata. Its body is the comment.
+- **The anchor is one line**, `anchor:` followed by a YAML flow mapping, and
+  **at least one line that is not edited freely separates it from any line
+  that is**, such as `kind:` before `status:`.
+- **A reply is its own record**, with `reply-to: <id>` naming a record in the
+  same directory, and no anchor.
+
+The anchor's fields:
+
+| field | value |
+| --- | --- |
+| `base` | the full object id of the document's blob that the anchor was made against |
+| `leaf.type` | `p`, `h1` to `h6`, `code` or `table`: a paragraph, a heading with its level, a code block or a table |
+| `leaf.text` | the leaf's content (§6.3), normalised to Unicode NFC, with `\n` line endings |
+| `leaf.nth` | the 0-based ordinal of the leaf among the leaves of `base` with the same type and text |
+| `span`, `prefix`, `suffix` | a W3C TextQuoteSelector inside `leaf.text`. `prefix` is the 32 code points before `span`, and `suffix` the 32 after it, or fewer where the leaf's edge is nearer. Neither crosses the leaf's edge |
+| `replace` | a suggestion's replacement text; absent on a comment |
+
+The other fields: `kind` is `comment` or `suggestion`, and `status` is
+`open`, `accepted`, `rejected` or `resolved`.
+
+**Offsets are code points of `leaf.text`**, the NFC-normalised parsed
+content, never offsets into the file.
+
+**Creation.** In the commit that adds a record, `base` is the document's
+blob in that commit, `leaf` at `nth` exists in `base`, and
+`prefix + span + suffix` occurs exactly once in `leaf.text`. Where it does
+not occur exactly once, the anchor is not created.
+
+**Re-anchoring** replaces the whole anchor line with one made against a
+newer blob of the document, at the position the current resolution gives. It
+is done only while the anchor resolves `RESOLVED` or `EDITED` (§11.6).
+
+### 11.2 Leaves, keys and similarity
+
+The resolver works on each snapshot's **text-bearing leaves**, in document
+order: paragraphs, headings, code blocks and tables. HTML blocks (markers)
+and thematic breaks take no part.
+
+A leaf's **key** is its `leaf.type` and its `leaf.text`. Two leaves are
+**copies** when their keys are equal. A heading that changes level changes
+its key.
+
+The **similarity** of two leaves is `2·L/(m+n)`, where `m` and `n` are the
+lengths in code points of their keys, each written as the type, U+001F and
+the text, and `L` is the length of a longest common subsequence of the two.
+
+A **longest common subsequence alignment** of two sequences pairs elements
+from the start: when the two elements under consideration are equal they
+are paired;
+otherwise the element of the first sequence is skipped if that does not
+shorten the longest common subsequence of what remains, and the element of
+the second is skipped if it does.
+
+### 11.3 Correspondence
+
+Correspondence pairs base leaves with current leaves (0003 §4):
+
+1. **The chain.** Take each key that occurs exactly once in `base` and
+   exactly once in the current text, as a pair of positions. The longest
+   subsequence of those pairs, in base order, whose current positions
+   increase is the **chain**. Its pairs are `EXACT`. Every other such pair
+   is `MOVED`.
+2. **Gaps.** The chain cuts each snapshot into gaps: the leaves between two
+   consecutive chain pairs, before the first, or after the last, leaving out
+   leaves paired as `MOVED`. Inside each gap, the longest common subsequence
+   alignment (§11.2) of the base leaves' keys onto the current leaves' keys
+   gives further `EXACT` pairs.
+3. **Edits.** A base leaf `i` and a current leaf `j` left over in the same
+   gap pair as `EDITED` when all of these hold: their similarity is at least
+   0.5; it exceeds the similarity of `i` to every other leftover current
+   leaf in the gap by at least 0.15; and it exceeds the similarity of `j` to
+   every other leftover base leaf in the gap by at least 0.15.
+
+A current leaf that is no base leaf's pair is **unmatched**.
+
+### 11.4 The anchored leaf
+
+The anchored leaf `k` is the leaf of `base` with key `leaf.type` and
+`leaf.text`, at ordinal `nth`. Its **gap** is bounded by the nearest chain
+pair before `k` and the nearest after it, in base order, or by a snapshot's
+edge where there is none. On the base side the gap is the leaves strictly
+between those two pairs' base positions, and on the current side the leaves
+strictly between their current positions.
+
+`k`'s pair, if it has one, is then checked, and the first rule that applies
+decides (0003 §4):
+
+- **No pair**: `REFUSED(unaccounted-copy)` if any current leaf is a copy of
+  `k`, and `ORPHANED` otherwise.
+- **`EXACT`**:
+  - if `base` or the current text holds more than one copy of `k`, the
+    number of copies in `k`'s gap must be equal on both sides, and the pair
+    must lie in the gap, or `REFUSED(repeat)`;
+  - an unmatched leaf with similarity to `k` of at least 0.5 and below 1:
+    `REFUSED(near-copy)`.
+- **`MOVED`**:
+  - an unmatched leaf with similarity to `k` of at least 0.5:
+    `REFUSED(near-copy)`;
+  - an unmatched leaf in `k`'s gap on the current side:
+    `REFUSED(refilled-gap)`.
+- **`EDITED`**:
+  - an unmatched copy of `k`: `REFUSED(exact-copy)`. A copy that is some
+    base leaf's pair does not count (0003 Q12);
+  - another unmatched leaf in `k`'s gap on the current side:
+    `REFUSED(crowded-gap)`;
+  - an unmatched leaf with similarity to `k` of at least 0.5:
+    `REFUSED(near-copy)`.
+
+### 11.5 The span
+
+For `EXACT` and `MOVED`, the span keeps its offset in the paired leaf, whose
+text is unchanged.
+
+For `EDITED`, the span is searched **inside the paired leaf only**. A hit is
+an occurrence of `span` with `prefix` ending where it starts and `suffix`
+starting where it ends. With no hit the anchor is `DETACHED`; with more than
+one, `REFUSED(span-ambiguous)`. With one hit, the longest common subsequence
+alignment (§11.2) of the base leaf's text onto the paired leaf's text must
+pair every code point of the span with the code point at the same position in
+the hit, or the anchor is `DETACHED` (0003 §5).
+
+There is no fallback that places a comment without its context (0003 Q13).
+
+### 11.6 Statuses
+
+| status | meaning | renders as |
+| --- | --- | --- |
+| `RESOLVED` | `EXACT`, and the span found | the anchor |
+| `MOVED` | `MOVED`, and the span found | the anchor, marked moved |
+| `EDITED` | `EDITED`, and the span found | the anchor, marked changed |
+| `DETACHED` | the leaf has a pair, and the span does not survive in it | on the paired leaf, flagged, with the text as it stood at `base` |
+| `ORPHANED` | the leaf has no pair | `#REF!`, with the text as it stood at `base` |
+| `REFUSED(reason)` | a rule of §11.4 or §11.5 applies, or an input is unusable (§11.10) | `#REF!(reason)`, with the text as it stood at `base` where it is available |
+
+`DETACHED`, `ORPHANED` and `REFUSED` are loud: they render in place, with
+their reason (D8 §10).
+
+### 11.7 Suggestions
+
+**A suggestion applies only when its record's `status` is `open` and its
+anchor is `RESOLVED` or `EDITED`** (0003 Q2, Q10). Otherwise it is stale. A
+suggestion is never applied on `MOVED`. An accepted or rejected suggestion
+renders as history, never as an edit that can be applied.
+
+**Accepting** a suggestion changes the document and sets `status: accepted`
+in one commit.
+
+**Write-back** (0003 Q11). The suggestion is written into the file only when
+the span maps exactly onto a range of the leaf's raw text: normalising, to
+NFC, the raw text before the range, the range itself and the raw text after
+it gives, respectively, the leaf's text before the span, the span, and the
+text after it. The range is replaced by `replace`. Container prefixes are
+re-emitted line by line from the parse, and nothing outside the range is
+re-normalised. Where the span does not map exactly, the suggestion is stale,
+with the reason `unmappable-offset`.
+
+### 11.8 Replies, deletion and document identity
+
+- **Records are not deleted in normal use** (0003 Q8). A suggestion is
+  accepted or rejected by its `status`. A purge removes a whole thread, the
+  record and every reply to it, in one commit.
+- **A reply whose `reply-to` names no record in its directory** renders as
+  `#REF!(reply-to)`.
+- **A commit that renames a document moves its notes directory in the same
+  commit** (0003 Q9).
+- **A record id found in more than one notes directory is warned on** (0003
+  Q9). It is a warning, not a refusal.
+
+### 11.9 Transclusion
+
+**A transclusion is a paragraph whose content is exactly one inline link
+with the title `transclude`** (0003 Q5):
+
+    [Scram threshold](policy.md#scram-threshold "transclude")
+
+This is the one inline shape the profile gives meaning to (§4.2). The link's
+destination is `path#name`, where `path` is the target document and `name`
+is a region marker's name in it (§7). A heading slug is not a target. The
+link renders as a link in any markdown tool.
+
+**The unit transcluded is what the name binds** (0002 §4): one node with its
+subtree, or the nodes of one region. It renders as block content in the
+referrer, and it is never copied into the referrer's file (D8 §8.1, R3).
+
+**The referrer pins each target**: its frontmatter records, for each target
+it transcludes, the target document's blob at the time it was pinned (0003
+§7; D8 §7.3).
+
+**Resolution**, against the target's current text:
+
+0. The target document must exist, or `REFUSED(document-missing)`, and the
+   pinned blob must be readable, or `REFUSED(base-unavailable)`. The name
+   must bind in the pinned blob, or `REFUSED(record-inconsistent)`.
+1. The name resolves as §8.1 says, against markers only. Zero matches, or
+   more than one, is `#REF!(name)`.
+2. For each text-bearing leaf the name bound in the pinned blob, §11.3 and
+   §11.4 run with that blob as `base`. A refusal, or no pair, refuses the
+   transclusion, as `REFUSED(pinned-<reason>)`, where `<reason>` is §11.4's
+   reason or `orphaned`.
+3. Each pair must lie inside what the name binds now. Otherwise the
+   transclusion is `REFUSED(name-rebound)`.
+
+A refused transclusion stays refused until the referrer re-pins, recording
+the target's current blob (0003 Q4).
+
+### 11.10 Resolution reasons
+
+A refused anchor or transclusion renders `#REF!(reason)` with one of these
+reasons. They are resolution outcomes, not refusals of a document, so they
+are not in §9's list.
+
+| reason | applies when |
+| --- | --- |
+| `document-missing` | the notes directory's document, or a transclusion's target, does not exist |
+| `base-unavailable` | the `base` blob, or a pin's blob, cannot be read |
+| `not-in-profile` | `base` or the current text is refused under §9 |
+| `record-inconsistent` | `leaf` at `nth` is not in `base`, or `prefix + span + suffix` does not occur exactly once in it, or a pinned name binds nothing in its pinned blob |
+| `unaccounted-copy` | §11.4, no pair |
+| `repeat` | §11.4, `EXACT` |
+| `near-copy` | §11.4, `EXACT`, `MOVED` or `EDITED` |
+| `refilled-gap` | §11.4, `MOVED` |
+| `exact-copy` | §11.4, `EDITED` |
+| `crowded-gap` | §11.4, `EDITED` |
+| `span-ambiguous` | §11.5 |
+| `name-rebound` | §11.9, step 3 |
+| `pinned-<reason>` | §11.9, step 2 |
+
+A stale suggestion carries `unmappable-offset` when §11.7's mapping fails.
+A reply with no parent renders `#REF!(reply-to)`.
+
+### 11.11 What a tool MAY add
+
+None of these is part of the format, and correctness does not depend on any
+of them (0003 §1). Each may only refuse more, never turn a refusal into a
+resolution.
+
+- **Re-anchor before landing** (0003 Q3). A squash-merge or a rebase can
+  leave a record's `base` in no commit that a fresh clone has. A tool MAY
+  re-anchor every record to the branch head before it lands, and MAY check in
+  CI that each record's `base` is the document's blob at that head. An
+  anchor that does not resolve `RESOLVED` or `EDITED` at landing keeps its
+  `base`, and becomes `REFUSED(base-unavailable)` once that blob is gone.
+- **Resolve through merge parents** (0003 Q7), refusing when the parents
+  disagree.
+- **Track document identity** (0003 Q9) across renames and copies, and
+  refuse a record it can tell belongs to another document.
+
+### 11.12 What this does not prevent
+
+Four mechanisms leave current bytes identical to those a legitimate edit
+produces, so they resolve, silently, to the wrong text (0003 §9):
+
+| | mechanism | indistinguishable from | suggestions |
+| --- | --- | --- | --- |
+| R1 | a leaf deleted, and a verbatim copy of it elsewhere | a move | not affected: stale on `MOVED` |
+| R2 | a leaf rewritten to similarity below 0.5, with a verbatim copy of its old text left in its place in order | a new leaf inserted beside an unchanged one | affected |
+| R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with the same context | a sentence moved within its leaf | affected |
+| R4 | a different document at the same path, by archive-and-replace or copy-and-rewrite | an edit of the document | affected |
+
+## 12. Not decided
 
 The adjudications leave these open. Where the suite pins one, it does so as
 a **READING**, numbered as in `conformance/cases/README.md`, *Readings*.
@@ -492,11 +784,8 @@ Each is a question for a later decision, not an answer.
   bytes yet (`conformance/cases/README.md`, *Not pinned yet*).
 - **A byte-order mark, bytes that are not UTF-8, and U+0000.** No
   adjudication says whether each is refused, stripped or kept.
-- **What a heading slug transcludes**: the heading, or its section (0002
-  §4).
-- **The anchor format**: how an anchor is stored and resolved, how it
-  carries a disambiguator for a leaf already repeated when it is made, and
-  how a range across leaves is written (0002 §2).
+- **A range anchor**, a selection across leaves (0002 §2; 0003, *Effect on
+  0001, 0002 and draft 0's documents*).
 - **How this document ranks against the suite.** This document defers to
   the adjudications; whether, as in rowspec, the suite wins over this
   document where they disagree is not decided.
@@ -505,3 +794,34 @@ Each is a question for a later decision, not an answer.
 - **The second opinion in CI** that 0001 proposes, an off-the-shelf
   CommonMark parser's block tree diffed against the reference's, is
   proposed, not adopted.
+
+**Left open by 0003:**
+
+- **The exact syntax of a record's frontmatter**: which YAML the anchor's
+  flow mapping is read as, how its strings are quoted, and where `reply-to`
+  sits. 0003 fixes the fields and the one-line rule, not the grammar.
+- **How a referrer's pins are written** in its frontmatter: the key, and one
+  line per target or not.
+- **A table leaf's `leaf.text`.** §6.3 gives a table's content as rows of
+  cells, and an anchor needs it as one string.
+- **Which chain, when several are longest** (§11.3, step 1). Which pairs
+  are `EXACT` and which `MOVED` depends on it, so two implementations must
+  pick the same one.
+- **Whether the thresholds compare exactly.** Similarity is a ratio of
+  integers, and a floating-point comparison at exactly 0.5 or a margin of
+  exactly 0.15 can differ between implementations.
+- **Whether a hit must reach the leaf's edge** when the stored `prefix` or
+  `suffix` is shorter than 32 code points because the edge was nearer
+  (§11.5).
+- **Transclusion details**: how `path` resolves (from the referrer's
+  directory, as a renderer resolves a relative link, is the reading Q5's
+  reason suggests), a destination with no path, the title's other quoting
+  forms (`'transclude'`, `(transclude)`), a `transclude` link in a paragraph
+  that holds other text, a transclusion paragraph inside a list item or a
+  block quote, a transclusion with no pin, and a document that transcludes
+  itself, directly or through another.
+- **What a validator reports** for a rename that leaves its notes directory
+  behind, and for a record id in two notes directories, and whether either
+  has an identifier.
+- **Thresholds.** 0.5 and 0.15 are D8's, untested for this resolver (0003
+  §4).

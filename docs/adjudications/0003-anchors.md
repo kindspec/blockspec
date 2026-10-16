@@ -1,0 +1,560 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+# Adjudication 0003: anchors and transclusion
+
+The brief (`DESIGN-BRIEF.md` §2) lists quote-anchoring's failure modes as
+open. 0002 settled where stage 1 of an anchor lands (the leaf) and left three
+things to the anchor work: how an anchor carries a disambiguator for a leaf
+that was already repeated when it was made (§2), how a selection that crosses
+leaves is written (§2), and how a transclusion is written down, since draft 0
+has no syntax for one (§4). 0001 §6 asked that anchors quote parsed text, not
+raw bytes.
+
+The question this document decides:
+
+> How do comments, suggestions and transclusions anchor to text in a
+> blockspec document, so that after edits, and after a stock `git merge` of
+> two branches, an anchor either lands on the right text or is refused
+> loudly, and never lands silently on the wrong text?
+
+Unlike 0001 and 0002, this question was not argued as two opposing cases. A
+single design was put to the owner as thirteen questions, each with a
+recommended answer and the alternatives it was weighed against, and the
+owner decided all thirteen on 2026-10-16. This document records each
+decision with its reasoning, the rules that follow, and what the design does
+not prevent.
+
+**What the evidence is.** Each rule below exists for an edit shape that a
+simpler rule gets silently wrong. The shapes were built and run under stock
+git while the design was drafted. Those runs are not published with this
+document. The conformance cases that follow it are where each shape becomes a
+public case that can fail, and they will be written by an author who has not
+read the resolver. **No figure in this document measures these rules on real
+history.** That measurement is the first item under *What would reverse it*.
+
+Pins: blockspec `26e00f2` with `SPEC.md` from kindspec/blockspec#40;
+kindspec/research `244dff0`.
+
+## Decision
+
+**Decided, 2026-10-16.**
+
+| | question | decided |
+|---|---|---|
+| Q1 | where comment and suggestion records live | one file per record, in `<doc>.notes/` beside the document. The directory says which document a record belongs to |
+| Q2 | whether a comment follows a moved paragraph | yes, marked `MOVED`. A suggestion never applies to a moved leaf |
+| Q3 | where `base` comes from under squash and rebase | the format refuses an anchor whose `base` is unreachable, as `base-unavailable`. A tool MAY re-anchor every record to the branch head before landing, and MAY check in CI that it did |
+| Q4 | a target's author moves a name to other content | the transclusion is refused until the referrer re-pins |
+| Q5 | how a transclusion is written | a paragraph that is one link, titled `transclude`: `[t](doc.md#name "transclude")`. **This amends 0001** |
+| Q6 | whether a moved leaf whose old place now holds new text is refused (the refill rule) | yes, kept |
+| Q7 | whether resolution reads the merge's parents | not in the format. A tool MAY read them, as a check that only adds refusals |
+| Q8 | deleting records | records are not deleted in normal use. A purge removes a whole thread in one commit. A reply whose parent is missing is `#REF!(reply-to)` |
+| Q9 | a different document at the same path | the notes directory is authoritative. A rename moves the notes directory in the same commit, and a record id found in two notes directories is warned on. A tool MAY track document identity beyond that |
+| Q10 | which suggestions apply | only a record whose `status` is `open` |
+| Q11 | writing an accepted suggestion back into the file | only when the span maps exactly from the normalised leaf to the raw text. Otherwise the suggestion is stale, `unmappable-offset` |
+| Q12 | editing one of two identical paragraphs | the narrowing: an edited leaf is refused for an exact copy of its old text only when that copy is paired with nothing |
+| Q13 | the context stored around a span | 32 code points on each side, and no comment-only fallback, until a replay of real history prices the detachments |
+
+`SPEC.md` §11 carries the rules this decision produces.
+
+## 1. What the format guarantees, and what it cannot
+
+**The guarantee.** A resolver reads two snapshots: `base`, the blob of the
+document that the anchor was made against, and the current text. **An anchor
+resolves only where every witness it has agrees. Any disagreement, any tie
+and any missing witness is loud**: the anchor is shown in place, with its
+reason and the text as it stood at `base`. The witnesses are:
+
+- the correspondence between `base`'s leaves and the current leaves (§4);
+- the absence of an unaccounted near-copy of the anchored leaf (§4);
+- the quote of the span with its stored context (§5);
+- a character alignment of the old leaf onto the new one (§5).
+
+**The limit.** Some edits leave current bytes that are exactly what a
+legitimate edit would also have produced. No resolver that sees only the two
+snapshots can tell such a pair apart. §9 names the four mechanisms, and says
+which reach suggestions. What separates them is *which edit happened*, not
+*what the text is*, and git alone does not reliably keep that.
+
+**So the format is the floor.** It is safe against every edit shape the bytes
+can distinguish, and it documents the rest. A tool that knows more, such as
+merge parents, the history of renames, or what the author meant, MAY refuse
+more. Q3, Q7 and Q9 name where that knowledge helps. Nothing in the format
+requires it, and correctness may not depend on it (org contract §5: no merge
+driver, filter or hook).
+
+**Why refusal beats resolution.** kindspec's invariant I3, from research
+`DESIGN.md`: *"A broken reference fails visibly and locally: never zero,
+never empty, never stale, never plausible."* The same document's §16, risk
+1, says I3 *"is aimed at the wrong failure"*: *"The dangerous case is a
+reference that still* resolves*, to something else."* An anchor on the wrong
+text is that case. Brush, Bargeron, Gupta and Cadiz (CHI 2001, quoted in
+research `design-findings/D8-identity.md` §3.5) found user satisfaction
+correlated −.34 with edit severity for annotations that were found, and +.72
+for annotations that were orphaned. D8 reads that as users preferring an
+honest orphan. 0002 §2 applied the same rule when it declined the fallback
+from leaf to block.
+
+**Why a quote and its context are not enough.** D8 §3.4's two-stage resolver
+(the block first, then the span inside it only) made no silent wrong at
+rust-book gaps 5 and 25, against 1.73% and 15.34% for a one-stage search of
+the whole file. But `spike/LOG.md` §9 then built a single commit that defeats
+its first stage: reword the anchored paragraph, and quote its original
+wording in a new appendix. The old paragraph's exact text now sits in the
+appendix, D8's block resolver lands there under both its naive and its hard
+policy, and it is wrong. No merge is involved. The design below
+adds `base` and the correspondence as witnesses so that a verbatim copy of
+the old text is not, on its own, evidence of where the anchored text went.
+
+## 2. Where anchors live (Q1, Q8, Q9)
+
+**Standoff, not inline.** Comments and suggestions are records beside the
+document, and the document is never written to. An inline anchor, in the
+manner of OOXML's `commentRangeStart` and `commentRangeEnd`, writes into the
+target, which D8's invariant I7 forbids (*"It may write nothing into the
+artifact it refers to"*). It also conflicts: D8 §11, *Still open*, item 5,
+verified that a marker written on its own line above a paragraph conflicts
+with another branch that rewords the paragraph. Region markers stay what 0001
+made them, rare names an author chooses, and they are what transclusion
+addresses (§7).
+
+**One file per record, in `<doc>.notes/` (Q1).** For `policy.md` that is
+`policy.md.notes/`, beside it. Two people who comment at the same time add
+two files, which git merges cleanly. A single sidecar file, such as D8 §7.3's
+`comments.yaml`, puts every new comment at the same place in one file, and
+two branches that both append there conflict.
+
+**The directory is authoritative for the document (Q9).** A record holds no
+path. If one ever does, the field is not called `on`: PyYAML's `safe_load`
+reads `on: doc.md` as `{True: 'doc.md'}`, because YAML 1.1 reads `on` as a
+boolean.
+
+**A record's file name is its id**, a ULID, the one minted-id shape D8 §7.4
+admits, for a thing that is not text. Ids are unique within a notes directory,
+and the id is never written into the document.
+
+**A rename moves the notes directory in the same commit (Q9).** If another
+branch adds a record under the old directory meanwhile, git's default
+directory-rename handling (`merge.directoryRenames` is `conflict` unless set)
+reports the new file's location as a conflict, which is loud. A notes
+directory left behind would resolve every record against whatever document
+later takes the old path.
+
+**The same record id in two notes directories is warned on (Q9).** It means
+a directory was copied, for example into an archive beside a rewritten
+document, and the copies may now resolve against the wrong document. A
+record made on another branch after the copy has its own id, so the warning
+does not reach it. That case is part of §9's R4.
+
+**Records are not deleted in normal use (Q8).** A suggestion is accepted or
+rejected by changing its `status`, not by deleting it. A deleted record and a
+reply added to it on another branch merge cleanly, because one branch deletes
+a file and the other adds a different one, and the reply is left pointing at
+nothing. A status change keeps the parent. Two branches that accept and
+reject one suggestion edit the same `status` line and conflict, which is
+loud. Where records must go, a purge removes a whole thread in one commit.
+If a reply's parent is missing anyway, the reply renders as
+`#REF!(reply-to)`.
+
+## 3. The record
+
+A record is a blockspec document. Its frontmatter carries the anchor and the
+metadata, and its body is the comment:
+
+    ---
+    anchor: {base: <40 hex>, leaf: {type: p, nth: 0, text: "The reactor scram threshold is 4.2 sigma above baseline, measured over a rolling 30-second window."}, span: "4.2 sigma", prefix: "The reactor scram threshold is ", suffix: " above baseline, measured over a"}
+    kind: comment
+    status: open
+    ---
+
+    Is this still right after the recalibration?
+
+- **The anchor is one line.** A re-anchoring tool rewrites the whole line.
+  Two concurrent re-anchorings then conflict, where a multi-line anchor could
+  be merged line by line into a record that matches neither side.
+- **At least one unchanging line separates the anchor from any field edited
+  freely**, here `kind` before `status`. Git conflicts on edits to adjacent
+  lines, so without the spacer a status change and a re-anchoring on two
+  branches would conflict for no reason.
+- `base` is the full object id of the document's blob.
+- `leaf` names the anchored leaf in `base`: its type (`p`, `h1` to `h6`,
+  `code` or `table`), its content, and `nth`, its 0-based ordinal among the
+  leaves of `base` that have the same type and content. **`base` and `nth`
+  are the disambiguator 0002 §2 left open**: a leaf repeated when the anchor
+  was made is still one leaf of one blob.
+- `span`, `prefix` and `suffix` are a W3C TextQuoteSelector (Web Annotation
+  Data Model §4.2.4) inside the leaf, and never cross its edge.
+- A suggestion adds `replace:` on the same line. `kind` is `comment` or
+  `suggestion`. `status` is `open`, `accepted`, `rejected` or `resolved`.
+- A reply is its own record, with `reply-to: <id>` and no anchor.
+
+**Text is parsed and normalised.** A leaf's text is its content as `SPEC.md`
+§6.3 defines it, normalised to Unicode NFC, with `\n` line endings. Offsets
+are code points into that text, never offsets into the file. Two saves of
+the same paragraph, one in NFC and one in NFD, or one with LF and one with
+CRLF, give the same leaf.
+
+**Creation is checked.** In the commit that adds a record, `base` is the
+document's blob in that commit, the leaf at `nth` exists in it, and
+`prefix + span + suffix` occurs exactly once in the leaf. A tool that cannot
+make the triple unique does not create the anchor.
+
+## 4. Which leaf: correspondence, and when to refuse
+
+The resolver works on the **text-bearing leaves** of each snapshot, in
+document order: paragraphs, headings, code blocks and tables. Markers and
+thematic breaks carry no text and take no part. Each leaf has a **key**: its
+type, with the heading level for a heading, and its normalised text. A
+heading that changes level is an edited leaf, not an unchanged one.
+
+**Correspondence** pairs base leaves with current leaves, in three steps:
+
+1. Keys that occur exactly once in each snapshot pair up. The longest run of
+   those pairs that keeps document order on both sides is the **chain**, and
+   its pairs are `EXACT`. A unique pair off the chain is `MOVED`.
+2. Between two consecutive chain pairs lies a **gap** on each side. Inside a
+   gap, a longest common subsequence of equal keys gives more `EXACT` pairs.
+3. Leaves left over in a gap pair as `EDITED` when their similarity is at
+   least 0.5, the best candidate leads the next by at least 0.15, and the
+   choice is mutual. Similarity is `2·LCS/(|a|+|b|)` over code points.
+
+The thresholds 0.5 and 0.15 are D8's (§7.1, §7.3). They have not been tested
+for this resolver.
+
+**Then the anchored leaf's pair is checked against what else changed.**
+*Unmatched* means a current leaf that is no base leaf's pair. Each rule
+refuses one edit shape:
+
+- **No pair.** The leaf is `ORPHANED`, unless a current leaf has its exact
+  key, which is refused as `unaccounted-copy`: the text is still there, and
+  the correspondence could not say which copy descends from it.
+- **`EXACT`, repeated text.** If `base` or the current text holds more than
+  one leaf with this key, the gap around the anchored leaf must hold as many
+  copies in both, and the pair must lie in that gap, or it is refused as
+  `repeat`. When one of two identical paragraphs is deleted, the copies alone
+  do not say which survived. Unchanged unique neighbours on both sides can.
+  The rule fires when *either* side is repeated: deleting one of two copies
+  leaves the current text with one, and `base` still has two.
+- **`EXACT`, near-copy.** An unmatched leaf at similarity of at least 0.5 and
+  below 1 is refused as `near-copy`. This is `spike/LOG.md` §9's shape when
+  the verbatim copy keeps the paragraph's place in the order: the anchored
+  paragraph is reworded, and its old wording survives verbatim. The verbatim
+  copy matches exactly, and the reworded paragraph, the real descendant, is
+  the near-copy.
+- **`MOVED`, near-copy.** An unmatched leaf at similarity of at least 0.5 is
+  refused as `near-copy`. This is the same shape when the copy lands
+  elsewhere, as in the log's appendix: the reworded paragraph stays in
+  place, and its old wording copied elsewhere looks like a move.
+- **`MOVED`, refilled gap (Q6).** If the gap the leaf left now holds an
+  unmatched leaf, it is refused as `refilled-gap`. A paragraph rewritten
+  beyond recognition in place, with its old wording copied elsewhere, also
+  looks like a move, and the rewrite sits where the original was. The rule
+  also refuses a real move whose old place gained a new paragraph. That is
+  its cost.
+- **`EDITED`, exact copy.** An unmatched leaf with the anchored leaf's old
+  key is refused as `exact-copy`: the old text survives verbatim, and the
+  edited pair is only one candidate. **Narrowed by Q12** to unmatched copies.
+  A twin that is itself paired is accounted for, so editing one of two
+  identical paragraphs does not refuse comments on the other.
+- **`EDITED`, crowded gap.** Another unmatched leaf in the same gap is
+  refused as `crowded-gap`. When a gap gains paragraphs while the anchored one
+  is edited, which of the near candidates descends from it is a guess.
+- **`EDITED`, near-copy.** An unmatched leaf anywhere at similarity of at
+  least 0.5 is refused as `near-copy`. A paragraph moved and edited, with a
+  variant of it left in its old place, has two candidates.
+
+## 5. Which characters: the span
+
+For `EXACT` and `MOVED`, the leaf's text is unchanged and the span keeps its
+offset.
+
+For `EDITED`, the span is searched **inside the paired leaf only**, D8 §7.3's
+two-stage rule. A hit is an occurrence of `span` with `prefix` immediately
+before it and `suffix` immediately after it. No hit makes the anchor
+`DETACHED`. More than one is refused as `span-ambiguous`.
+
+**The context filter (Q13).** Requiring the stored context detaches a span
+whose wording was re-added elsewhere in the leaf with paraphrased
+surroundings. It also tells apart two occurrences of the span that differ
+only in their context, and it detaches an anchor when the words right next
+to the span change. That last case is a recall cost: the span is intact, and
+the anchor still detaches. A comment-only fallback, which places a comment
+by the alignment alone when no hit carries the context, was weighed and
+declined. It recovers those detachments, and it lets a comment follow a
+re-added span with paraphrased surroundings onto the wrong words. The width
+is 32 code points, the Hypothesis convention D8 §3.4 used. A wider context
+detaches more comments after nearby edits, and does not help §9's R3, whose
+re-added sentence carries its own context. Both stay until a replay of real
+history prices the detachments.
+
+**The alignment.** A deterministic longest-common-subsequence alignment of
+the base leaf's text onto the current leaf's must carry every character of
+the span onto the hit, or the anchor is `DETACHED`. That detaches a span
+rewritten in place while its old wording reappears elsewhere in the leaf
+with the same context, when the alignment carries the old span to the
+rewritten position rather than to the copy. When it carries the old span
+onto the copy, the anchor lands there: that is §9's R3.
+
+**Statuses**, and how each renders (D8 §10 for the loud ones):
+
+| status | meaning | renders as |
+|---|---|---|
+| `RESOLVED` | the leaf is unchanged and the span is where it was | the anchor |
+| `MOVED` | the unchanged leaf is elsewhere | the anchor, marked moved |
+| `EDITED` | the leaf changed, and the span, its context and its alignment are intact | the anchor, marked changed |
+| `DETACHED` | the leaf has a descendant, and the span or its context does not survive in it | on the leaf, flagged, with the base text |
+| `ORPHANED` | the leaf has no descendant | `#REF!`, with the base text |
+| `REFUSED(reason)` | the witnesses disagree, or an input is unusable | `#REF!(reason)`, with the base text |
+
+**Comments follow moves (Q2).** A comment on a paragraph that moved,
+unchanged, lands on it marked `MOVED`. Refusing every move would close §9's
+R1, and would refuse every real move as well. A comment that follows a false
+move is shown as moved, with its base text beside it.
+
+## 6. Suggestions (Q2, Q10, Q11)
+
+**A suggestion applies only when its record's `status` is `open` and its
+anchor is `RESOLVED` or `EDITED`.** Otherwise it is stale.
+
+- **Never on `MOVED` (Q2).** §9's R1 cannot be told from a real move. A
+  comment that follows it is visible and harmless. A suggestion that applies
+  to it edits the wrong text.
+- **Only `open` (Q10).** Accepting a suggestion changes the document and sets
+  `status: accepted` in one commit. A `git revert` of that commit restores
+  both, and the suggestion is open again, consistently. A hand edit that
+  restores the old text leaves the record `accepted`. A gate that ignored
+  `status` would apply the suggestion a second time. An accepted or rejected
+  suggestion renders as history, never as an edit that can be applied.
+- **Write-back maps exactly or not at all (Q11).** The span's offsets are NFC
+  code points of the parsed leaf. The file may hold the leaf in another
+  normalisation form, and container prefixes (`> `, list indentation) sit
+  between its lines. The suggestion is applied only when the span maps
+  exactly onto a range of the raw text: normalising the raw text before the
+  range, the range and the text after it gives the leaf's text before the
+  span, the span and the text after it. Container prefixes are re-emitted
+  line by line from the parse, and nothing outside the range is
+  re-normalised. Otherwise the suggestion is stale, `unmappable-offset`.
+  Rewriting the whole leaf to NFC was weighed and declined: it is a visible
+  edit the author did not make.
+
+## 7. Transclusion (Q4, Q5)
+
+**A transclusion is a paragraph that is exactly one link, titled
+`transclude`** (Q5):
+
+    [Scram threshold](policy.md#scram-threshold "transclude")
+
+It renders as a working link in every markdown tool, which is the owner's
+answer to 0001 applied again. The alternative, an `<!-- include … -->`
+marker, renders as nothing, so a reader in an ordinary renderer would not
+know that content was missing. **This amends 0001**: inline content stays
+opaque everywhere except in this one shape.
+
+**The target is a region marker's name.** A heading slug is not a target.
+0001 decided that slugs are resolvable but not durable, and a transclusion is
+the most durable reference a document makes. This settles the question 0002
+§4 left open, whether a slug transcludes the heading or its section: it
+transcludes neither. The unit is what the name binds (0002 §4): one node with
+its subtree, or the nodes of one region.
+
+**The referrer pins the target.** A name can be moved to other content by the
+target's author (Q4), and a marker separated from its text binds whatever
+comes next, silently. So the referrer stores, in its own frontmatter, the
+target's blob at the time it was pinned: the referrer holds the selector, as
+D8 §7.3 puts it, and the target is never written to. Research `DESIGN.md`
+§16, risk 1, names the same remedy, binding a reference to a fingerprint of
+what it named.
+
+Resolution:
+
+1. Resolve the name in the current target. Zero or several matches are
+   `#REF!(name)`.
+2. For each text-bearing leaf the name bound in the pinned blob, run §4
+   against the current target. A refusal, or no pair, refuses the
+   transclusion.
+3. Every pair must lie inside what the name binds now. Otherwise the
+   transclusion is refused as `name-rebound`.
+
+**A refused transclusion stays refused until the referrer re-pins (Q4)**,
+which records the target's current blob and is an edit someone makes on
+purpose. Editing inside the named content passes step 3, so a target's
+author can keep revising the text without breaking its readers. Moving the
+name to other content does not pass.
+
+**The transcluded text is never copied into the referrer** (D8 §8.1, R3).
+
+## 8. What each edit must produce
+
+The edit shapes the rules above exist for, and the outcome each must have.
+"Stale" means a suggestion that does not apply. The conformance cases that
+follow this document take their shapes from this table.
+
+| edit | comment | suggestion | transclusion |
+|---|---|---|---|
+| other leaves edited | `RESOLVED` | applies | resolves |
+| a new leaf, unlike the anchored one, inserted directly above or below it | `RESOLVED` | applies | resolves |
+| the anchored leaf edited outside the span and its context | `EDITED` | applies | resolves |
+| the anchored leaf edited inside the context, not the span | `DETACHED` | stale | resolves |
+| the span rewritten, including when its old wording reappears elsewhere in the leaf with other context, or where the alignment does not carry the span onto it | `DETACHED` | stale | resolves |
+| the anchored leaf rewritten to similarity below 0.5 | `ORPHANED`, or refused | stale | refused |
+| the anchored leaf deleted | `ORPHANED` | stale | refused |
+| the unchanged leaf moved, nothing new where it was | `MOVED` | stale | resolves if the name moved with it |
+| two branches edit different lines of the anchored leaf and merge cleanly | as the edit of the merged text | as the edit of the merged text | resolves |
+| two branches edit the same lines | a git conflict; committed with its markers, the file is refused as `conflict-marker` | — | — |
+| the number of copies of the anchored text in its gap differs between `base` and now | `REFUSED(repeat)` | stale | — |
+| identical copies separated by unchanged unique leaves | `RESOLVED` on the right copy | applies | — |
+| the anchored leaf changed, and a near-copy of its old wording unaccounted for | `DETACHED` or refused, never a span on the copy | stale | refused |
+| the anchored leaf's gap gains leaves while it is edited | `REFUSED(crowded-gap)` | stale | refused |
+| a heading changes level only | `EDITED` | applies | resolves |
+| the file re-saved in another normalisation form, or with other line endings | as if unchanged | as if unchanged, where the write-back maps exactly | as if unchanged |
+| the document deleted, or renamed without its notes directory | `REFUSED(document-missing)` | stale | refused |
+| `base` unreachable | `REFUSED(base-unavailable)` | stale | refused |
+| the record inconsistent with `base` | `REFUSED(record-inconsistent)` | stale | refused |
+| the suggestion's `status` is not `open` | — | stale, shown as history | — |
+
+## 9. The residual: four mechanisms the bytes cannot separate
+
+These are silent wrongs this design does not prevent. Each is a pair of
+histories that leave identical snapshots, one of which is a legitimate edit.
+
+**R1. A leaf deleted, and a verbatim copy of it elsewhere.** A paragraph is
+deleted, and on another branch, or in the same commit, its wording is quoted
+in a "superseded wording" appendix. The comment follows the quote as `MOVED`.
+The two snapshots are identical to a real move of the paragraph.
+*Suggestions are not affected*: the gate is stale on `MOVED`.
+
+**R2. A leaf rewritten beyond recognition, with its old wording left in
+order.** The paragraph is rewritten to similarity below 0.5, and a block
+quote of its old wording sits directly below it. The quote's text equals the
+old leaf, in the old leaf's place in the chain, so it reads as the paragraph,
+unchanged, with a new paragraph inserted above it. *Suggestions are
+affected*: the suggestion applies to the quotation.
+
+**R3. Inside one leaf, the span's sentence rewritten and the old sentence
+re-added with the same context.** The span keeps its 32 code points of
+context, and the alignment maps the old sentence onto the re-added copy. The
+snapshots are identical to moving a sentence to another place in its
+paragraph and writing a new one where it was. *Suggestions are affected.*
+
+**R4. A different document at the same path.** A document is moved to an
+archive, or copied there with its notes directory, and a new document that
+reuses some of its paragraphs takes the old path. The notes left at the path
+resolve against the new document. *Suggestions are affected.* Git reports
+the old path as modified and the archive path as added, not as a rename, so
+§2's rename rule does not see either form. The duplicate-id warning flags a
+copied directory's original records, and not a record made concurrently on
+another branch.
+
+`spike/LOG.md` §9's single-commit shape is the published instance of this
+family. In the form the log gives, a light rewording with the original
+quoted in an appendix, the reworded paragraph is still similar to its old
+text, so by §4's near-copy rules it is refused rather than silently wrong.
+That follows from the rules; it has not been run against the log's case. R1
+and R2 are the forms in which no such similarity survives.
+
+**What would close each**, none of which the format can require:
+
+- **merge parents** (Q7): resolving through each side of a merge can refuse
+  the two-branch forms of R1 and R2, where the sides disagree. Squash-merge
+  and rebase leave no merge to read, and the one-commit forms have none;
+- **edit history** kept per commit through integration, which squash and
+  rebase discard;
+- **an authored name** on the leaf, which survives R1 because it is carried
+  in the bytes. That is a write to the document, which D8 I7 allows only for
+  names an author chooses;
+- **document identity** (Q9) for R4, which in the file would be a minted id
+  in the target, forbidden by I7;
+- **intent**, which only the author has.
+
+A tool MAY use any of them to refuse more. Under Q7 such a check MAY only add
+refusals, never turn a refusal into a resolution, and is not part of
+conformance.
+
+## 10. Prior art, and why it does or does not fit stock git
+
+- **W3C Web Annotation Data Model** (Recommendation, 2017, §4.2): the
+  TextQuoteSelector's `exact`, `prefix` and `suffix` are the record's
+  vocabulary. Its resolution policy does not fit: on several matches the
+  selection "SHOULD be treated as matching all of the matches", the opposite
+  of refusing.
+- **Hypothesis** (D8 §3.4): its matcher has no minimum score and searches the
+  whole document. It is tuned for recall, and this design is tuned the other
+  way.
+- **Word / OOXML** (ECMA-376 Part 1 §17.13.4): comment ranges are written
+  inline and linked by id. It writes into the target.
+- **Google Docs**: anchors live in the editor's model, kept current by a
+  central operation log. Git has no such log.
+- **CRDTs**, such as Yjs relative positions and Peritext (Litt, Lim,
+  Kleppmann and van Hardenberg, 2022): anchors attach to character ids. A
+  hand edit in a text editor has none. An operation log of that kind is
+  exactly the history that would make R1 to R3 unambiguous.
+- **Transclusion systems** (D8 §8.1): AsciiDoc tags, MediaWiki sections and
+  DITA's `conref`/`keyref` have the target declare the region and address it
+  by name, as draft 0's markers do. None of them pins content, so a name
+  moved to other content goes unnoticed there. That is an inference, not
+  tested.
+
+## 11. The cost of reversing each choice
+
+Common to all of them: no document changes, because nothing is written into
+one. Every record carries `base`, so a migration can recompute an anchor from
+git while `base` is reachable.
+
+| choice | reversed to | cost |
+|---|---|---|
+| one file per record (Q1) | one sidecar per document | Mechanical: concatenate. Concurrent comments then conflict. |
+| comments follow moves (Q2) | every move refused | Lossless: one refusal more. Real moves stop resolving. |
+| suggestions never on `MOVED` (Q2) | applied on `MOVED` | R1 reaches suggestions. Not recommended under any evidence here. |
+| refill rule kept (Q6) | dropped | Lossless to drop. One silent-wrong shape returns. |
+| the titled link (Q5) | a marker | Every transclusion paragraph is rewritten, mechanically, and rendering stops showing a link. |
+| 32-code-point context (Q13) | wider | New records only. Existing ones keep theirs until re-anchored, which needs `base`. |
+| no comment fallback (Q13) | a fallback | Lossless to add. Comments gain the recall and accept the wrong-words case. |
+| the twin narrowing (Q12) | the wider rule | Lossless: more refusals. |
+| only `open` applies (Q10) | any status | Reapplies restored suggestions. Not recommended. |
+| exact write-back (Q11) | whole-leaf NFC | Each write-back may rewrite a whole paragraph's bytes. |
+
+## 12. What would reverse it
+
+1. **A replay over real history that prices the refusals.** D8 §3.4
+   measured 7.1% loud refusal for its two-stage resolver on rust-book at gap
+   25, 3.1% on obsidian-help and 2.1% on rust-book at gap 5. This design adds
+   refusals: the near-copy, refilled-gap, crowded-gap, twin and context
+   rules, and the alignment. Its rate is unknown. If it is too high, the
+   crowded-gap rule and the near-copy rule on `EDITED` leaves are the likeliest
+   costs, and the first to revisit. The replay needs an oracle other than this
+   resolver.
+2. **How often R1 to R4 occur.** The spike's quote-anchor units on deleted
+   targets number 0 (0001, the factual disputes), which is suggestive for
+   R1, not a measurement.
+3. **Q13's replay.** If detachments from edits next to a span dominate, the
+   width or the fallback is revisited.
+4. **A workflow that guarantees merge commits.** Q7's check then closes the
+   two-branch forms of R1 and R2, and could be required where that holds.
+
+## Effect on 0001, 0002 and draft 0's documents
+
+- **0001 is amended by Q5**: one inline shape, a paragraph that is exactly one
+  link titled `transclude`, has meaning. Everything else inline stays opaque.
+  Slugs stay resolvable and are not transclusion targets.
+- **0002 is unchanged.** The correspondence key adds the heading level and NFC
+  normalisation to the type and content 0002's tree pins. 0002 §2's
+  disambiguator is `base` with `nth`. Its range anchor, a selection across
+  leaves, stays open.
+- **A document stays as it was.** The profile's reader still treats
+  frontmatter as opaque. A record's frontmatter and a referrer's pins are
+  read by the resolver, not by the profile.
+
+## What draft 0 carries, from this decision
+
+- **Records**: one file per record in `<doc>.notes/<ulid>.md`, a blockspec
+  document whose frontmatter holds a one-line anchor (`base`, `leaf` with
+  type, text and `nth`, `span`, `prefix`, `suffix`, and `replace` for a
+  suggestion), then `kind` and `status`.
+- **Resolution**: correspondence over keyed text-bearing leaves, the
+  refusal rules of §4, the span search and alignment of §5, six statuses, and
+  the refusal reasons `SPEC.md` §11.10 lists.
+- **Suggestions**: applied only when `open`, and only on `RESOLVED` or
+  `EDITED`, and written back only through an exact mapping.
+- **Transclusion**: a paragraph that is one link titled `transclude`,
+  addressing a marker's name, pinned by the referrer, refused when the name
+  is rebound, until re-pinned.
+- **Documented residuals**: R1 to R4.
