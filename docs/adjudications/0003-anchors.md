@@ -5,8 +5,9 @@ The brief (`DESIGN-BRIEF.md` §2) lists quote-anchoring's failure modes as
 open. 0002 settled where stage 1 of an anchor lands (the leaf) and left three
 things to the anchor work: how an anchor carries a disambiguator for a leaf
 that was already repeated when it was made (§2), how a selection that crosses
-leaves is written (§2), and how a transclusion is written down, since draft 0
-has no syntax for one (§4). 0001 §6 asked that anchors quote parsed text, not
+leaves is written (§2), and how a transclusion is written down: 0002 §4
+decides what a transclusion addresses, and neither adjudication gives a
+syntax for one. 0001 §6 asked that anchors quote parsed text, not
 raw bytes.
 
 The question this document decides:
@@ -41,7 +42,7 @@ kindspec/research `244dff0`.
 |---|---|---|
 | Q1 | where comment and suggestion records live | one file per record, in `<doc>.notes/` beside the document. The directory says which document a record belongs to |
 | Q2 | whether a comment follows a moved paragraph | yes, marked `MOVED`. A suggestion never applies to a moved leaf |
-| Q3 | where `base` comes from under squash and rebase | the format refuses an anchor whose `base` is unreachable, as `base-unavailable`. A tool MAY re-anchor every record to the branch head before landing, and MAY check in CI that it did |
+| Q3 | where `base` comes from under squash and rebase | the format refuses an anchor whose `base` is unreachable, as `base-unavailable`. Before landing, while `base` is still reachable, a tool MAY re-base each record that resolves onto the branch head, and MAY check in CI that it did. A record that does not resolve keeps its `base` and is reported, and does not fail the landing |
 | Q4 | a target's author moves a name to other content | the transclusion is refused until the referrer re-pins |
 | Q5 | how a transclusion is written | a paragraph that is one link, titled `transclude`: `[t](doc.md#name "transclude")`. **This amends 0001** |
 | Q6 | whether a moved leaf whose old place now holds new text is refused (the refill rule) | yes, kept |
@@ -54,6 +55,23 @@ kindspec/research `244dff0`.
 | Q13 | the context stored around a span | 32 code points on each side, and no comment-only fallback, until a replay of real history prices the detachments |
 
 `SPEC.md` §11 carries the rules this decision produces.
+
+**Details this document fixes beyond the thirteen answers**, all decided
+with them:
+
+- the resolution reasons and their names: `document-missing`,
+  `base-unavailable`, `not-in-profile` (a snapshot the profile refuses, such
+  as a file committed with conflict markers), `record-inconsistent`,
+  `unaccounted-copy`, `repeat`, `near-copy`, `refilled-gap`, `exact-copy`,
+  `crowded-gap`, `span-ambiguous`, `name-rebound` and `pinned-<reason>`, and
+  `#REF!(name)` for a transclusion name that binds zero or several targets;
+- a pinned name that binds nothing in its pinned blob is
+  `record-inconsistent`;
+- a record is `record-inconsistent` when its `prefix` or `suffix` is shorter
+  than 32 code points while the leaf's edge is further away, or when its
+  `span` is empty;
+- `replace` is written into the document exactly as stored, never
+  normalised.
 
 ## 1. What the format guarantees, and what it cannot
 
@@ -76,9 +94,11 @@ which reach suggestions. What separates them is *which edit happened*, not
 
 **So the format is the floor.** It is safe against every edit shape the bytes
 can distinguish, and it documents the rest. A tool that knows more, such as
-merge parents, the history of renames, or what the author meant, MAY refuse
-more. Q3, Q7 and Q9 name where that knowledge helps. Nothing in the format
-requires it, and correctness may not depend on it (org contract §5: no merge
+merge parents, the history of renames, or what the author meant, MAY use it
+to refuse more (Q7, Q9), and never to turn a refusal into a resolution. Q3 is
+of another kind: it re-bases records onto the version that lands, before
+their `base` becomes unreachable. Nothing in the format requires any of
+these, and correctness may not depend on them (org contract §5: no merge
 driver, filter or hook).
 
 **Why refusal beats resolution.** kindspec's invariant I3, from research
@@ -197,6 +217,12 @@ document's blob in that commit, the leaf at `nth` exists in it, and
 `prefix + span + suffix` occurs exactly once in the leaf. A tool that cannot
 make the triple unique does not create the anchor.
 
+**A record is consistent or refused.** `prefix` and `suffix` are exactly 32
+code points, or fewer only where the leaf's edge is nearer; a shorter one
+with the edge further away is `record-inconsistent`, and so is an empty
+`span`. `replace` is written into the document exactly as stored, never
+normalised.
+
 ## 4. Which leaf: correspondence, and when to refuse
 
 The resolver works on the **text-bearing leaves** of each snapshot, in
@@ -216,8 +242,9 @@ heading that changes level is an edited leaf, not an unchanged one.
    least 0.5, the best candidate leads the next by at least 0.15, and the
    choice is mutual. Similarity is `2·LCS/(|a|+|b|)` over code points.
 
-The thresholds 0.5 and 0.15 are D8's (§7.1, §7.3). They have not been tested
-for this resolver.
+The thresholds 0.5 and 0.15 are borrowed from D8 (§7.1, §7.3), where they
+apply to `difflib`'s ratio. Here they apply to `2·LCS/(|a|+|b|)`, a
+different measure, and they have not been tested for this resolver.
 
 **Then the anchored leaf's pair is checked against what else changed.**
 *Unmatched* means a current leaf that is no base leaf's pair. Each rule
@@ -325,13 +352,15 @@ anchor is `RESOLVED` or `EDITED`.** Otherwise it is stale.
   suggestion renders as history, never as an edit that can be applied.
 - **Write-back maps exactly or not at all (Q11).** The span's offsets are NFC
   code points of the parsed leaf. The file may hold the leaf in another
-  normalisation form, and container prefixes (`> `, list indentation) sit
-  between its lines. The suggestion is applied only when the span maps
-  exactly onto a range of the raw text: normalising the raw text before the
-  range, the range and the text after it gives the leaf's text before the
-  span, the span and the text after it. Container prefixes are re-emitted
-  line by line from the parse, and nothing outside the range is
+  normalisation form, and container prefixes (`> `, list indentation),
+  continuation indentation and carriage returns sit between its lines. The
+  span's position is mapped back through the parse to raw positions,
+  skipping those characters, and the suggestion is applied only when the
+  span's own raw text normalises to `span`. Container prefixes are
+  re-emitted line by line from the parse, and nothing outside the span is
   re-normalised. Otherwise the suggestion is stale, `unmappable-offset`.
+  Mapping the whole raw leaf instead would make every span after the first
+  line of a quoted or list paragraph, or of a CRLF file, unmappable.
   Rewriting the whole leaf to NFC was weighed and declined: it is a visible
   edit the author did not make.
 
@@ -376,10 +405,13 @@ Resolution:
 **A refused transclusion stays refused until the referrer re-pins (Q4)**,
 which records the target's current blob and is an edit someone makes on
 purpose. Editing inside the named content passes step 3, so a target's
-author can keep revising the text without breaking its readers. Moving the
-name to other content does not pass.
+author can usually revise the text without breaking its readers. An edit
+that leaves a pinned leaf with no pair (`pinned-orphaned`), or that adds
+leaves around one while editing it (`pinned-crowded-gap`), still refuses
+until a re-pin, as does moving the name to other content.
 
-**The transcluded text is never copied into the referrer** (D8 §8.1, R3).
+**The transcluded text is never copied into the referrer** (D8 §8.1, D8's
+R3).
 
 ## 8. What each edit must produce
 
@@ -390,7 +422,7 @@ follow this document take their shapes from this table.
 | edit | comment | suggestion | transclusion |
 |---|---|---|---|
 | other leaves edited | `RESOLVED` | applies | resolves |
-| a new leaf, unlike the anchored one, inserted directly above or below it | `RESOLVED` | applies | resolves |
+| a new leaf, unlike the anchored one, inserted directly above or below it | `RESOLVED` | applies | resolves, except when inserted between a one-line marker and the leaf it names: the marker then names the new leaf (`SPEC.md` §7.2), `REFUSED(name-rebound)` |
 | the anchored leaf edited outside the span and its context | `EDITED` | applies | resolves |
 | the anchored leaf edited inside the context, not the span | `DETACHED` | stale | resolves |
 | the span rewritten, including when its old wording reappears elsewhere in the leaf with other context, or where the alignment does not carry the span onto it | `DETACHED` | stale | resolves |
@@ -398,7 +430,7 @@ follow this document take their shapes from this table.
 | the anchored leaf deleted | `ORPHANED` | stale | refused |
 | the unchanged leaf moved, nothing new where it was | `MOVED` | stale | resolves if the name moved with it |
 | two branches edit different lines of the anchored leaf and merge cleanly | as the edit of the merged text | as the edit of the merged text | resolves |
-| two branches edit the same lines | a git conflict; committed with its markers, the file is refused as `conflict-marker` | — | — |
+| two branches edit the same lines | a git conflict; committed with its markers, the document is refused (`conflict-marker`) and the anchor is `REFUSED(not-in-profile)` | stale | `REFUSED(not-in-profile)` |
 | the number of copies of the anchored text in its gap differs between `base` and now | `REFUSED(repeat)` | stale | — |
 | identical copies separated by unchanged unique leaves | `RESOLVED` on the right copy | applies | — |
 | the anchored leaf changed, and a near-copy of its old wording unaccounted for | `DETACHED` or refused, never a span on the copy | stale | refused |
@@ -458,8 +490,8 @@ and R2 are the forms in which no such similarity survives.
 - **edit history** kept per commit through integration, which squash and
   rebase discard;
 - **an authored name** on the leaf, which survives R1 because it is carried
-  in the bytes. That is a write to the document, which D8 I7 allows only for
-  names an author chooses;
+  in the bytes. That is a write to the document, which D8 allows only for a
+  name the target's own author chooses (D8 §7.2, §11);
 - **document identity** (Q9) for R4, which in the file would be a minted id
   in the target, forbidden by I7;
 - **intent**, which only the author has.
@@ -521,9 +553,10 @@ git while `base` is reachable.
    crowded-gap rule and the near-copy rule on `EDITED` leaves are the likeliest
    costs, and the first to revisit. The replay needs an oracle other than this
    resolver.
-2. **How often R1 to R4 occur.** The spike's quote-anchor units on deleted
-   targets number 0 (0001, the factual disputes), which is suggestive for
-   R1, not a measurement.
+2. **How often R1 to R4 occur.** Summed over the spike's FOUND cells,
+   `wrong_on_deleted`, the count of quote-anchor units wrong on a target the
+   oracle says was deleted, is 0 (0001, the factual disputes). That is
+   suggestive for R1, not a measurement of it.
 3. **Q13's replay.** If detachments from edits next to a span dominate, the
    width or the fallback is revisited.
 4. **A workflow that guarantees merge commits.** Q7's check then closes the

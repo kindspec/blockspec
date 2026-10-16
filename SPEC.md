@@ -3,10 +3,10 @@
 
 Status: draft. This document writes up draft 0 as
 `docs/adjudications/0001-syntax.md`, `0002-block.md` and
-`0003-anchors.md` decide it, with their addenda. It adds no decision of its
-own. **Where this document and an adjudication disagree, the adjudication
-wins and this document is in error.** Where the adjudications are silent, this document says so (§12)
-instead of choosing.
+`0003-anchors.md` decide it, with their addenda. 0003 names the details §11
+fixes beyond its thirteen answers. **Where this document and an adjudication
+disagree, the adjudication wins and this document is in error.** Where the
+adjudications are silent, this document says so (§12) instead of choosing.
 
 The conformance suite, `conformance/cases/`, was written from the same
 adjudications before any implementation existed. Where they left a question
@@ -502,6 +502,12 @@ blob in that commit, `leaf` at `nth` exists in `base`, and
 `prefix + span + suffix` occurs exactly once in `leaf.text`. Where it does
 not occur exactly once, the anchor is not created.
 
+**Consistency.** A record is `REFUSED(record-inconsistent)` when `leaf` at
+`nth` is not in `base`; when `prefix + span + suffix` does not occur exactly
+once in `leaf.text`; when `prefix` or `suffix` is shorter than 32 code points
+while the leaf's edge is further away; or when `span` is empty (0003, the
+details it fixes).
+
 **Re-anchoring** replaces the whole anchor line with one made against a
 newer blob of the document, at the position the current resolution gives. It
 is done only while the anchor resolves `RESOLVED` or `EDITED` (§11.6).
@@ -621,14 +627,27 @@ renders as history, never as an edit that can be applied.
 **Accepting** a suggestion changes the document and sets `status: accepted`
 in one commit.
 
-**Write-back** (0003 Q11). The suggestion is written into the file only when
-the span maps exactly onto a range of the leaf's raw text: normalising, to
-NFC, the raw text before the range, the range itself and the raw text after
-it gives, respectively, the leaf's text before the span, the span, and the
-text after it. The range is replaced by `replace`. Container prefixes are
-re-emitted line by line from the parse, and nothing outside the range is
-re-normalised. Where the span does not map exactly, the suggestion is stale,
-with the reason `unmappable-offset`.
+**Write-back** (0003 Q11). Through the parse, each code point of the leaf's
+content comes from one raw character of its lines. Container prefixes (`>`
+markers and list-item indentation), the indentation a paragraph line loses,
+and line endings, carriage returns included, are raw characters no content
+code point comes from; a `\n` in the content stands for the line ending.
+
+1. Let `a` and `b` be the positions in the leaf's content, before NFC, such
+   that the NFC form of the content before `a` is `leaf.text` before the
+   span, and the NFC form of the content from `a` to `b` is `span`. If there
+   are no such positions, the span does not map.
+2. Map `a` and `b` through the parse to raw positions, skipping the
+   characters above. The raw text between them is the span's raw range.
+3. Replace the range with `replace`, written exactly as stored and never
+   normalised. Where `replace` holds `\n`, each new line is preceded by the
+   container prefixes the parse gives the line it continues. Nothing outside
+   the range changes.
+
+Only the span's own text must match after NFC; the rest of the leaf may be
+in any normalisation form and may span several prefixed or CRLF lines.
+Where the span does not map, the suggestion is stale, with the reason
+`unmappable-offset`.
 
 ### 11.8 Replies, deletion and document identity
 
@@ -656,7 +675,8 @@ link renders as a link in any markdown tool.
 
 **The unit transcluded is what the name binds** (0002 §4): one node with its
 subtree, or the nodes of one region. It renders as block content in the
-referrer, and it is never copied into the referrer's file (D8 §8.1, R3).
+referrer, and it is never copied into the referrer's file (D8 §8.1, D8's
+R3).
 
 **The referrer pins each target**: its frontmatter records, for each target
 it transcludes, the target document's blob at the time it was pinned (0003
@@ -665,8 +685,10 @@ it transcludes, the target document's blob at the time it was pinned (0003
 **Resolution**, against the target's current text:
 
 0. The target document must exist, or `REFUSED(document-missing)`, and the
-   pinned blob must be readable, or `REFUSED(base-unavailable)`. The name
-   must bind in the pinned blob, or `REFUSED(record-inconsistent)`.
+   pinned blob must be readable, or `REFUSED(base-unavailable)`. Both the
+   pinned blob and the current target must pass the profile, or
+   `REFUSED(not-in-profile)`. The name must bind in the pinned blob, or
+   `REFUSED(record-inconsistent)`.
 1. The name resolves as §8.1 says, against markers only. Zero matches, or
    more than one, is `#REF!(name)`.
 2. For each text-bearing leaf the name bound in the pinned blob, §11.3 and
@@ -689,8 +711,8 @@ are not in §9's list.
 | --- | --- |
 | `document-missing` | the notes directory's document, or a transclusion's target, does not exist |
 | `base-unavailable` | the `base` blob, or a pin's blob, cannot be read |
-| `not-in-profile` | `base` or the current text is refused under §9 |
-| `record-inconsistent` | `leaf` at `nth` is not in `base`, or `prefix + span + suffix` does not occur exactly once in it, or a pinned name binds nothing in its pinned blob |
+| `not-in-profile` | `base`, the current text, a pinned blob or a transclusion's current target is refused under §9, a file committed with conflict markers included |
+| `record-inconsistent` | §11.1's consistency rules fail, or a pinned name binds nothing in its pinned blob |
 | `unaccounted-copy` | §11.4, no pair |
 | `repeat` | §11.4, `EXACT` |
 | `near-copy` | §11.4, `EXACT`, `MOVED` or `EDITED` |
@@ -701,21 +723,29 @@ are not in §9's list.
 | `name-rebound` | §11.9, step 3 |
 | `pinned-<reason>` | §11.9, step 2 |
 
+A transclusion whose name binds zero or several targets in the current
+target renders `#REF!(name)` (§11.9, step 1).
+
 A stale suggestion carries `unmappable-offset` when §11.7's mapping fails.
 A reply with no parent renders `#REF!(reply-to)`.
 
 ### 11.11 What a tool MAY add
 
 None of these is part of the format, and correctness does not depend on any
-of them (0003 §1). Each may only refuse more, never turn a refusal into a
-resolution.
+of them (0003 §1).
 
-- **Re-anchor before landing** (0003 Q3). A squash-merge or a rebase can
-  leave a record's `base` in no commit that a fresh clone has. A tool MAY
-  re-anchor every record to the branch head before it lands, and MAY check in
-  CI that each record's `base` is the document's blob at that head. An
-  anchor that does not resolve `RESOLVED` or `EDITED` at landing keeps its
-  `base`, and becomes `REFUSED(base-unavailable)` once that blob is gone.
+- **Re-base before landing** (0003 Q3). A squash-merge or a rebase can
+  leave a record's `base` in no commit that a fresh clone has. Before the
+  branch lands, while `base` is still reachable, a tool MAY re-anchor
+  (§11.1) each record that resolves `RESOLVED` or `EDITED` onto the
+  document's blob at the branch head. It MAY check in CI that every record
+  that resolves has been re-based; a record that does not resolve keeps its
+  `base` and is reported, and does not fail the landing. Once its `base` is
+  gone, such a record is `REFUSED(base-unavailable)`. This turns a future
+  `base-unavailable` into a resolution, so it is not a refusal rule.
+
+The other two MAY only refuse more, never turn a refusal into a resolution:
+
 - **Resolve through merge parents** (0003 Q7), refusing when the parents
   disagree.
 - **Track document identity** (0003 Q9) across renames and copies, and
@@ -802,8 +832,11 @@ Each is a question for a later decision, not an answer.
   sits. 0003 fixes the fields and the one-line rule, not the grammar.
 - **How a referrer's pins are written** in its frontmatter: the key, and one
   line per target or not.
-- **A table leaf's `leaf.text`.** §6.3 gives a table's content as rows of
-  cells, and an anchor needs it as one string.
+- **A table's text as one string.** §6.3 leaves per-type content to the
+  suite's reading 8, which pins a table's content as rows of cells. The key
+  and the similarity of §11.2 need it as one string, so this affects every
+  table's correspondence and near-copy checks, not only anchors placed in a
+  table.
 - **Which chain, when several are longest** (§11.3, step 1). Which pairs
   are `EXACT` and which `MOVED` depends on it, so two implementations must
   pick the same one.
@@ -815,13 +848,16 @@ Each is a question for a later decision, not an answer.
   (§11.5).
 - **Transclusion details**: how `path` resolves (from the referrer's
   directory, as a renderer resolves a relative link, is the reading Q5's
-  reason suggests), a destination with no path, the title's other quoting
-  forms (`'transclude'`, `(transclude)`), a `transclude` link in a paragraph
+  reason suggests), a destination with no path, a destination in angle
+  brackets, the title's other quoting forms (`'transclude'`,
+  `(transclude)`), a title written with backslash escapes or entity
+  references, a `transclude` link in a paragraph
   that holds other text, a transclusion paragraph inside a list item or a
   block quote, a transclusion with no pin, and a document that transcludes
   itself, directly or through another.
 - **What a validator reports** for a rename that leaves its notes directory
   behind, and for a record id in two notes directories, and whether either
   has an identifier.
-- **Thresholds.** 0.5 and 0.15 are D8's, untested for this resolver (0003
-  §4).
+- **Thresholds.** 0.5 and 0.15 are borrowed from D8's `difflib` ratios and
+  applied here to `2·L/(m+n)`, a different measure. They are untested for
+  this resolver (0003 §4).
