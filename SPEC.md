@@ -3,10 +3,13 @@
 
 Status: draft. This document writes up draft 0 as
 `docs/adjudications/0001-syntax.md`, `0002-block.md` and
-`0003-anchors.md` decide it, with their addenda. 0003 names the details §11
-fixes beyond its thirteen answers. **Where this document and an adjudication
-disagree, the adjudication wins and this document is in error.** Where the
-adjudications are silent, this document says so (§12) instead of choosing.
+`0003-anchors.md` decide it, with their addenda. It answers nothing the
+adjudications leave open; 0003 names the details §11 fixes beyond its
+thirteen answers. Where an adjudication's wording had to be scoped or read
+to give one answer, the text says so where it uses it, marked **(read as)**.
+**Where this document and an adjudication disagree, the adjudication wins
+and this document is in error.** Where the adjudications are silent, this
+document says so (§12) instead of choosing.
 
 The conformance suite, `conformance/cases/`, was written from the same
 adjudications before any implementation existed. Where they left a question
@@ -39,7 +42,9 @@ Specified here, because two implementations that disagree on any of it read
 the same file differently: the profile and its refusals (§4, §9), where
 frontmatter ends (§5), how a document is cut into blocks and leaves (§6),
 what each name binds to (§7), how a name resolves (§8), and how an anchor
-or a transclusion resolves (§11).
+or a transclusion resolves (§11). What a name names is also the unit a
+transclusion takes: one node with its subtree, or the nodes of one region,
+rendered as block content in the referrer (0002, *Decision*).
 
 Not specified here: rendering, beyond what §11 says an anchor's status
 shows; how a refusal is worded; editor behaviour; and anything about inline
@@ -47,7 +52,11 @@ content beyond keeping it as written and the one shape §4.2 names.
 
 ## 3. Encoding and lines
 
-A document is UTF-8 text, one document per file (`DESIGN-BRIEF.md` §1).
+A document is UTF-8 text, one document per file, as `DESIGN-BRIEF.md` §1
+decides. No refusal code exists yet for a file that is not UTF-8 (§12).
+
+**U+0000 is replaced with U+FFFD**, as the pinned grammar requires
+(CommonMark 0.31.2 §2.3, "Insecure characters").
 
 Lines, line endings and tabs are CommonMark 0.31.2's (§2.1 and §2.2 of its
 spec): a line ends at a line feed, a carriage return, or the pair, and a tab
@@ -125,7 +134,9 @@ paragraphs would build a different tree from the one every author sees (0002
 §6).
 
 **A table must have a blank line, or its container's edge, on both sides**
-(0002, *Decision*). So:
+(0002, *Decision*). That sentence decides the general rule: any non-blank
+line directly above or below a table in its container, a heading or a
+marker included, is refused, not only the two shapes 0002 §6 names. So:
 
 - a table with a non-blank line directly above it in its container is
   refused (`table-not-blank-above`);
@@ -159,6 +170,10 @@ list item, which are tried first (0002, addendum on ambiguous tables):
 3. A lazy header line is read as it stands: whitespace before its leading
    pipe makes an empty first cell.
 
+A **lazy delimiter line**, one that continues a paragraph inside a block
+quote or a list item without that container's prefix, starts no table: it is
+paragraph text, as CommonMark reads a lazy continuation line.
+
 If the two lines alone are `ambiguous-table`, so is the document, and that
 takes precedence over `table-not-blank-above`. If the two lines alone are a
 table, a paragraph line above them makes it `table-not-blank-above`.
@@ -172,8 +187,9 @@ lossless to relax later.
 **A file holding a git conflict-marker line is refused** (`conflict-marker`),
 as a line scan before any block parsing (0001 §4 and *What draft 0
 carries*). Git's markers are column-0 runs of seven `<`, `=` or `>`, and of
-seven `|` for diff3's base marker (0001 §4). Because the scan precedes
-parsing, a marker line is refused wherever it sits.
+seven `|` for diff3's base marker (0001 §4). Whether the scan reaches a line
+inside a fenced code block or inside frontmatter is not decided; the suite
+reads that it does (§12, readings 4 and 12).
 
 **[CHOICE]** refuse, rather than leave the markers to the parser. Under
 CommonMark a conflicted file parses without error: the first marker line
@@ -265,8 +281,12 @@ matches**
 
     ^[ \t]*<!--[ \t]*#[a-z0-9][a-z0-9-]*(:begin|:end)?[ \t]*-->[ \t]*$
 
-**and is indented at most three spaces** (0001, addendum). Four or more make
-the line an indented code block, which §4.1 refuses. The only spacing allowed
+**and is indented at most three spaces** (0001, addendum). Where the line
+would start a block, four or more make it an indented code block, which §4.1
+refuses. In paragraph context the same line is a lazy continuation line, so
+it is paragraph text, as CommonMark reads it. **(read as)** 0001's addendum
+says four or more make an indented code block; this document reads that as
+applying where a block can start. The only spacing allowed
 is spaces and tabs, inside and around the comment, so `<!--#intro-->` and
 `<!--  #intro  -->` are both markers, and a no-break space is not spacing.
 Nothing else may share the line. An HTML comment that does not match is raw
@@ -331,8 +351,10 @@ targets, or more than one, is `#REF!(name)`.** A marker's name never matches
 more than one target, since a duplicate is refused (§7.4), so a marker name
 resolves even where two headings share it as a slug.
 
-What a name resolves to is the node a marker binds (§7.2), the nodes of a
-region (§7.3), or the heading whose slug it is.
+What a name resolves to is the node a marker binds (§7.2) or the nodes of a
+region (§7.3). For a heading slug, whether it names the heading or its
+section is not decided (0002 §4); the suite resolves a slug to the heading
+node (§12).
 
 ### 8.2 Heading slugs
 
@@ -385,14 +407,14 @@ An implementation MUST refuse:
 
 1. `setext-heading`: a setext heading, at any depth (§4.1)
 2. `indented-code`: an indented code block, at any depth, a marker line
-   indented four or more columns included (§4.1, §7.1)
+   indented four or more columns where a block can start included (§4.1,
+   §7.1)
 3. `link-reference-definition`: a link reference definition, at any depth
    (§4.1)
 4. `raw-html`: an HTML block that is not a region marker, an HTML comment
    that does not match the marker line included (§4.1, §7.1)
 5. `duplicate-name`: one name declared twice in one document (§7.4)
-6. `conflict-marker`: a git conflict-marker line, anywhere in the file
-   (§4.4)
+6. `conflict-marker`: a git conflict-marker line (§4.4)
 7. `dangling-marker`: a marker that names no node: a one-line marker with no
    next sibling in its container or whose next sibling is a marker, or an
    empty region (§7.2, §7.3)
@@ -413,7 +435,14 @@ name nothing, and three defaults; addendum on ambiguous tables):
 - when `duplicate-name` and `unpaired-region` both apply, the refusal is
   `duplicate-name`, and `dangling-marker` is reported after both: a document
   that also has a duplicate or unpaired name is refused for that;
-- `ambiguous-table` is reported before `table-not-blank-above`.
+- `ambiguous-table` is reported before `table-not-blank-above` when both
+  apply to the same table's lines. **(read as)** The addendum on markers that
+  name nothing states this order in general terms; the addendum on
+  ambiguous tables states it for one pair of lines ("If the two lines alone
+  are `ambiguous-table`, so is the document, which takes precedence over
+  `table-not-blank-above`"), and this document reads the general sentence
+  that way. When the two refusals arise from different tables, their order
+  is unspecified, like any other.
 
 **Any other order is unspecified.** A document to which two refusals apply
 that neither order fixes, such as a setext heading and an indented code
@@ -771,16 +800,17 @@ Each is a question for a later decision, not an answer.
 
 **Readings the suite pins:**
 
+The suite's reading 2, a non-paragraph line directly above a table, is not
+listed: 0002's *Decision* text decides it (§4.3).
+
 - **Reading 1.** Whether a region holds the other markers among its sibling
   nodes. The suite says it holds every sibling node between its markers,
   markers included.
-- **Reading 2.** §4.3 states the table rule generally, as 0002's *Decision*
-  does ("a blank line, or its container's edge, on both sides"). 0002 §6
-  names its two refused shapes by a paragraph line above and a non-blank
-  line below, and the suite reads the general rule, so a heading or a marker
-  directly above a table is refused.
 - **Reading 3.** Whether a `:begin` with no `:end` anywhere, or an `:end`
   with no `:begin`, is `unpaired-region`. The suite says it is.
+- **Reading 4.** Whether a conflict-marker line inside a fenced code block
+  is refused. 0001 §4 describes the refusal as a line scan before any block
+  parsing; the suite reads that the scan reaches inside a fence.
 - **Reading 6.** Whether `raw-html` reaches inline HTML. The suite reads it
   as block-level only, which follows from inline content being opaque
   (§4.2), but neither adjudication says so.
@@ -799,9 +829,8 @@ Each is a question for a later decision, not an answer.
 - **Reading 11.** That an unclosed frontmatter block is not frontmatter, and
   its lines parse under the other rules.
 - **Reading 12.** That frontmatter is opaque to the block rules but not to
-  the conflict-marker scan. §4.4's "wherever it sits" follows from 0001's
-  line scan before any block parsing; that the scan reaches inside
-  frontmatter is the suite's reading.
+  the conflict-marker scan, read, as reading 4 is, from 0001 §4's line scan
+  before any block parsing.
 - **Reading 13.** That frontmatter is not checked as YAML.
 - **Reading 14.** The exact shape of a conflict-marker line: the suite reads
   a run of seven **or more** `<`, `>` or `|` followed by a space or the end
@@ -812,8 +841,12 @@ Each is a question for a later decision, not an answer.
 
 - **CRLF fixtures.** §3's `\n` rule is decided, but no fixture holds CRLF
   bytes yet (`conformance/cases/README.md`, *Not pinned yet*).
-- **A byte-order mark, bytes that are not UTF-8, and U+0000.** No
-  adjudication says whether each is refused, stripped or kept.
+- **A byte-order mark, and bytes that are not UTF-8.** No adjudication
+  says whether each is refused, stripped or kept, and neither has a refusal
+  code.
+- **What a heading slug names** for resolution: the heading, or its section
+  (0002 §4). The suite resolves it to the heading. A slug is not a
+  transclusion target either way (§11.9).
 - **A range anchor**, a selection across leaves (0002 §2; 0003, *Effect on
   0001, 0002 and draft 0's documents*).
 - **How this document ranks against the suite.** This document defers to

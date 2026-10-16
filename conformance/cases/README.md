@@ -402,9 +402,10 @@ Questions the adjudications leave open, with no case in this tree, because
 any case would decide them:
 
 - **CRLF line endings.** The owner has decided that leaf content uses `\n`
-  everywhere (0002, addendum), but no fixture has CRLF bytes: the
-  repository's `.gitattributes` normalises text to LF on commit, so a CRLF
-  fixture needs an attribute that exempts it first.
+  everywhere (0002, addendum), but no fixture has CRLF bytes yet. The
+  repository's `.gitattributes` already exempts this tree from line-ending
+  normalisation (`conformance/cases/** -text`), so a CRLF fixture keeps its
+  bytes.
 
 The marker after a marker, the empty region, the marker line grammar,
 frontmatter closed by `...` and the slug algorithm were listed here until
