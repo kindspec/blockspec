@@ -454,8 +454,8 @@ section, without reading an implementation.
 **Landing order.** The reference reader has no `resolve` until the resolver
 lands, so the first anchor case would turn `just conform` red on `main`. The
 cases are therefore written blind from `main`, on a branch and pull request of
-their own, and reviewed there. The resolver's branch is then rebased onto the
-cases, run against them with no case changed, reviewed, and merged: that merge
+their own, and reviewed there. The cases are then merged into the resolver's
+branch, which is run against them with no case changed, reviewed, and merged: that merge
 lands the cases and the resolver together, and the cases' pull request closes
 as landed through it.
 

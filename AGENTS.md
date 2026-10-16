@@ -19,10 +19,12 @@ and transclusion, has cases under `conformance/cases/anchor/`, written blind
 from `main` by an author who had not read the resolver, and an
 implementation, `reference/blockspec/anchor.py`, which was written before
 those cases and then run against them with no case changed. The spike's binding verdict is FOUND, under an owner ruling that
-overrides frozen rules; see `spike/README.md`, The verdict. `conformance/cases/` holds draft 0's conformance cases,
-written before any implementation existed. `reference/blockspec/` is the first
-implementation, written afterwards against the tree and `docs/adjudications/`,
-with no case changed. CI checks the tree itself, and runs it against the
+overrides frozen rules; see `spike/README.md`, The verdict. `conformance/cases/` holds draft 0's conformance cases.
+Those for 0001 and 0002 were written before any implementation existed, and
+the reader, `reference/blockspec/document.py`, was written afterwards against
+them and `docs/adjudications/`, with no case changed. For 0003 the order was
+the reverse, as above: the resolver came first, and its cases were written
+without reading it. CI checks the tree itself, and runs it against the
 reference (`just conform`). There is no second implementation.
 
 The mutation gate, `just mutants`, is not in CI: it reports mutants the tree

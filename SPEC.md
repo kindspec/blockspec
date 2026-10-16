@@ -15,7 +15,9 @@ and this document is in error.** Where the adjudications are silent, this
 document says so (§12) instead of choosing.
 
 The conformance suite, `conformance/cases/`, was written from the same
-adjudications before any implementation existed. Where they left a question
+adjudications. Its 0001 and 0002 cases were written before any
+implementation existed; its 0003 cases, under `conformance/cases/anchor/`,
+after the reference resolver, by an author who had not read it. Where they left a question
 open, a case takes a reading and its `WHY.md` says **READING**. A reading is
 not a decision, and §12 lists each one.
 
