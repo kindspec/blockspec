@@ -1,0 +1,7 @@
+{
+  "kind": "anchor",
+  "records": {
+    "policy.md.notes/comment-1.md": {"status": "REFUSED(record-inconsistent)", "leaf": null, "span": null, "suggestion": null}
+  },
+  "controls": ["anchor/status/resolved-when-unchanged"]
+}

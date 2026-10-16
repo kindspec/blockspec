@@ -1,0 +1,8 @@
+{
+  "kind": "anchor",
+  "merge": {"guide.md": "conflict"},
+  "transclusions": {
+    "guide.md": "REFUSED(not-in-profile)"
+  },
+  "controls": ["anchor/transclusion/resolves-when-unchanged"]
+}

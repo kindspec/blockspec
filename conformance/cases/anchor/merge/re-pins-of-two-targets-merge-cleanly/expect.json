@@ -1,0 +1,11 @@
+{
+  "kind": "anchor",
+  "merge": {"guide.md": "clean"},
+  "transclusions": {
+    "guide.md": [
+      {"leaf": {"node": [1], "type": "paragraph"}, "status": "RESOLVED", "unit": {"document": "a.md", "target": {"node": [2], "type": "paragraph"}}},
+      {"leaf": {"node": [2], "type": "paragraph"}, "status": "RESOLVED", "unit": {"document": "b.md", "target": {"node": [2], "type": "paragraph"}}},
+      {"leaf": {"node": [3], "type": "paragraph"}, "status": "RESOLVED", "unit": {"document": "c.md", "target": {"node": [2], "type": "paragraph"}}}
+    ]
+  }
+}

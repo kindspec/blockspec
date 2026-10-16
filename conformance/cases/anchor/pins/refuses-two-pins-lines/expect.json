@@ -1,0 +1,10 @@
+{
+  "kind": "anchor",
+  "transclusions": {
+    "guide.md": [
+      {"leaf": {"node": [1], "type": "paragraph"}, "status": "REFUSED(record-inconsistent)", "unit": null},
+      {"leaf": {"node": [2], "type": "paragraph"}, "status": "REFUSED(record-inconsistent)", "unit": null}
+    ]
+  },
+  "controls": ["anchor/pins/two-sorted-pins-resolve"]
+}

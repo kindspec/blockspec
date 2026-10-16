@@ -1,0 +1,10 @@
+{
+  "kind": "anchor",
+  "transclusions": {
+    "guide.md": [
+      {"leaf": {"node": [1], "type": "paragraph"}, "status": "REFUSED(name-rebound)", "unit": null},
+      {"leaf": {"node": [2], "type": "paragraph"}, "status": "RESOLVED", "unit": {"document": "policy.md", "target": {"node": [2], "type": "paragraph"}}}
+    ]
+  },
+  "controls": ["anchor/transclusion/resolves-when-unchanged"]
+}

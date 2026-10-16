@@ -1,0 +1,9 @@
+{
+  "kind": "anchor",
+  "merge": {"policy.md": "conflict"},
+  "records": {
+    "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B801.md": {"status": "REFUSED(not-in-profile)", "leaf": null, "span": null, "suggestion": null},
+    "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B802.md": {"status": "REFUSED(not-in-profile)", "leaf": null, "span": null, "suggestion": {"gate": "stale", "reason": null}}
+  },
+  "controls": ["anchor/merge/clean-merge-of-two-edits-to-the-anchored-leaf"]
+}
