@@ -873,13 +873,33 @@ ANCHOR_MUTANTS = {
         "    for leaf in _bound_leaves(pinned, pinned.doc.names[one.name]):",
         "    for leaf in reversed(_bound_leaves(pinned, pinned.doc.names[one.name])):",
     ),
+    "anchor array taken for an object": (
+        "    if not isinstance(pairs, _Object):\n        return None\n    keys",
+        "    if not isinstance(pairs, list):\n        return None\n    keys",
+    ),
+    "inner link ignored": (
+        "                    raise _NotALink()",
+        "                    pass",
+    ),
+    "entity without semicolon decoded": (
+        '    return _ENTITY.sub(lambda m: html.unescape(m.group()), inner) == "transclude"',
+        '    return html.unescape(inner) == "transclude"',
+    ),
+    "image read as a link": (
+        'if content.startswith("![") and _link_destination(content[1:]) is not None:',
+        "if False:",
+    ),
+    "prose with a title read as a link": (
+        '    if "](" not in content:\n        return None  # no inline link at all',
+        "    if False:\n        return None  # no inline link at all",
+    ),
+    "line ending after the title refused": (
+        "r'(?:[ \\t]+(?:\\n[ \\t]*)?|\\n[ \\t]*)\"transclude\"[ \\t]*(?:\\n[ \\t]*)?\\)'",
+        "r'(?:[ \\t]+(?:\\n[ \\t]*)?|\\n[ \\t]*)\"transclude\"[ \\t]*\\)'",
+    ),
 }
 
 ANCHOR_EQUIVALENT = {
-    "moved leaves stay in gaps": (
-        "a MOVED leaf's key is unique on both sides and its base copy is out of every "
-        "gap, so the LCS cannot pair it, and the EDITED step skips paired leaves"
-    ),
     "item first line repeated": (
         "a list item's first line holds its marker in the prefix region, so the "
         "lazy-line check refuses the break anyway"
