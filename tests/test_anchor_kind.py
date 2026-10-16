@@ -137,6 +137,8 @@ def test_each_field_of_a_record_is_compared(tmp_path):
         ("leaf", None),
         ("span", [0, 3]),
         ("span", [0.0, 2.0]),
+        ("span", [False, 2]),
+        ("leaf", {"node": [False], "type": "paragraph"}),
         ("suggestion", {"gate": "apply", "written": "New text.\n"}),
         ("suggestion", {"gate": "stale", "reason": None}),
         ("suggestion", None),
@@ -332,6 +334,7 @@ def test_check_tree_finds_a_comparison_that_was_dropped(tmp_path, monkeypatch):
     assert _tree(tmp_path, {"anchor/one": (expect, files)}) == [
         "anchor/one: an answer with transclusions in 'ref.md' entry 0 unit still passes",
         "anchor/one: an answer with transclusions in 'ref.md' entry 0 unit as floats still passes",
+        "anchor/one: an answer with transclusions in 'ref.md' entry 0 unit as bools still passes",
     ]
 
 
@@ -349,3 +352,25 @@ def test_check_tree_finds_a_case_that_an_empty_answer_passes(tmp_path, monkeypat
     expect, files, _ = _basic()
     problems = _tree(tmp_path, {"anchor/one": (expect, files)})
     assert "anchor/one: an implementation that reports nothing passes it" in problems, problems
+
+
+def test_check_tree_reports_an_unreadable_file_with_a_readable_files_bytes(tmp_path):
+    """Ids are content-addressed: a file outside tree/, blobs/ and merge/ that
+    has a readable file's bytes names a readable blob, whatever its place."""
+    expect, files, _ = _basic()
+    files["gone/doc.md"] = files["blobs/doc.md"]
+    files[f"tree/{RECORD}"] = files[f"tree/{RECORD}"].replace("blobs/doc.md", "gone/doc.md")
+    assert _tree(tmp_path, {"anchor/one": (expect, files)}) == [
+        "anchor/one: gone/doc.md: meant to be unreadable, but a readable file has the same "
+        "bytes, so its blob id names a readable blob"
+    ]
+    files["gone/doc.md"] = "Never committed.\n"
+    assert _tree(tmp_path / "ok", {"anchor/one": (expect, files)}) == []
+
+
+def test_check_tree_alters_an_index_into_a_bool(tmp_path, monkeypatch):
+    """If the runner took True for 1, a bool alteration would pass."""
+    monkeypatch.setattr(anchor_cases, "not_integers", lambda value: iter(()))
+    expect, files, _ = _basic()
+    problems = _tree(tmp_path, {"anchor/one": (expect, files)})
+    assert any("as bools still passes" in p for p in problems), problems

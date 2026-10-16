@@ -430,6 +430,14 @@ This kind was added before any anchor case and before any implementation of
 §11 existed. Its case author is to work from `SPEC.md`, 0003 and this
 section, without reading an implementation.
 
+**Landing order.** The reference reader has no `resolve` until the resolver
+lands, so the first anchor case would turn `just conform` red on `main`. The
+cases are therefore written blind from `main`, on a branch and pull request of
+their own, and reviewed there. The resolver's branch is then rebased onto the
+cases, run against them with no case changed, reviewed, and merged: that merge
+lands the cases and the resolver together, and the cases' pull request closes
+as landed through it.
+
 ### Files
 
     cases/anchor/<group>/<case-name>/
@@ -453,6 +461,12 @@ and the blob it names is then one the repository cannot read, which is how a
 case sets up `base-unavailable` (§11.11's squash-merge, for example). A file
 under `blobs/` is readable and in no path of the current tree, which is how a
 case gives a `base` that an earlier commit held.
+
+**Ids are content-addressed.** An unreadable file with the same bytes as a
+readable one names a readable blob, so the case would not test what it
+means to. `check_tree.py` reports a placeholder target outside `tree/`,
+`blobs/` and `merge/` whose bytes equal a readable file's; give such a file
+bytes of its own.
 
 **Placeholders.** `{{blob:PATH}}`, anywhere in any file of the case, is
 replaced by the object id of the file at `PATH`, a path relative to the case
@@ -478,7 +492,8 @@ runs a stock `git merge` of each into the base, ours first, with no
 configuration from the machine (kindkit `gitmerge.merge`). Stock git, since
 correctness may not depend on a merge driver (0003 §1). The working-tree
 text afterwards is the current file at `<path>`, with its conflict markers
-when there are any; they are labelled `<<<<<<< HEAD` and `>>>>>>> b1`. The
+when there are any; they are labelled `<<<<<<< HEAD` and `>>>>>>> b1`, and in
+a file whose lines end in CRLF git ends the marker lines in CRLF too. The
 case fails if git's outcome is not the one stated. `tree/<path>` must not
 exist as well. Each merge is of one file; a record is added on a branch by
 putting it straight into `tree/`, where git would have merged it cleanly.
@@ -584,6 +599,10 @@ the blobs and run the merges.
 - Bytes that are not UTF-8, a symbolic link, a submodule and an empty
   directory: every fixture is a UTF-8 file.
 - A merge of more than one file in one repository, or a rename.
+- What a tool writes: a re-anchored record (§11.1), the creation of a new
+  anchor, including the refusal to create one when `prefix + span + suffix`
+  does not occur exactly once, and a referrer's re-pin (§11.9). A case asserts
+  how existing records and pins resolve, not what a tool would write.
 
 ## Running it
 
