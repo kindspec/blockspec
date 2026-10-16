@@ -1,0 +1,7 @@
+{
+  "kind": "anchor",
+  "records": {
+    "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B801.md": {"status": "EDITED", "leaf": {"node": [1], "type": "paragraph"}, "span": [113, 122], "suggestion": null},
+    "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B802.md": {"status": "EDITED", "leaf": {"node": [1], "type": "paragraph"}, "span": [113, 122], "suggestion": {"gate": "apply", "written": "written/policy.md"}}
+  }
+}

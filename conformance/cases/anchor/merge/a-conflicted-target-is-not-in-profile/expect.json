@@ -1,0 +1,10 @@
+{
+  "kind": "anchor",
+  "merge": {"policy.md": "conflict"},
+  "transclusions": {
+    "guide.md": [
+      {"leaf": {"node": [1], "type": "paragraph"}, "status": "REFUSED(not-in-profile)", "unit": null}
+    ]
+  },
+  "controls": ["anchor/transclusion/resolves-when-unchanged"]
+}

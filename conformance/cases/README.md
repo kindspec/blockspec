@@ -187,6 +187,23 @@ puts a heading there instead. Added then:
 `refusal/table-not-blank-above/accepts-a-lazy-header-over-a-one-cell-delimiter`,
 `refusal/table-not-blank-above/refuses-a-lazy-header-over-a-two-cell-delimiter`.
 
+Every case under `anchor/` was added later, against blockspec `66ce7f1`,
+while a resolver for `SPEC.md` §11 existed on an unmerged branch. Their
+author did not read that resolver, its branch, its pull request or any
+branch but `main`. They had `SPEC.md`, the three adjudications with their
+addenda, this README, `case-body.schema.json`, the tree as it stood, the
+runner and `check_tree.py` with `anchor_cases.py`, and the block reader
+`reference/blockspec/document.py`, read to learn the parse. Each expected
+outcome comes from §11 and 0003, and each `WHY.md` quotes the passage that
+decides it. The author cross-checked the statuses, leaves and spans with a
+throwaway calculation of §11.2 to §11.5 written from the same text and not
+committed, run on the repository `anchor_cases.Repository` builds, so every
+placeholder and merge was hashed and merged by stock git as the runner does
+it. Where §11 does not decide an outcome there is no case; the pull request
+that added these lists each such question with the passages checked. The
+cases fail `just conform` until a resolver lands with them, as *Landing
+order* below says.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
