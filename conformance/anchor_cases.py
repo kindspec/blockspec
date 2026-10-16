@@ -75,6 +75,15 @@ def fixture_problems(expect: Mapping, files: Mapping[str, str]) -> Iterator[str]
                 yield f"{path}: {{{{blob:{target}}}}} names no file in the case directory"
             elif _placeholders(files[target]):
                 yield f"{path}: {{{{blob:{target}}}}} names a file that holds a placeholder itself"
+    readable = {t for p, t in files.items() if p.startswith((TREE, BLOBS, MERGE))}
+    named = {target for text in files.values() for target in _placeholders(text)}
+    for target in sorted(named):
+        if target in files and not target.startswith((TREE, BLOBS, MERGE)):
+            if files[target] in readable:
+                yield (
+                    f"{target}: meant to be unreadable, but a readable file has the same "
+                    "bytes, so its blob id names a readable blob"
+                )
     merged = expect.get("merge", {})
     for path in merged:
         for side in SIDES:
@@ -274,6 +283,17 @@ def _other_leaf(leaf):
     return {**leaf, "node": [*leaf["node"], 0]}
 
 
+def _bools(value):
+    """`value` with each 0 and 1 written as a bool, which == takes for them."""
+    if isinstance(value, Mapping):
+        return {k: _bools(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_bools(v) for v in value]
+    if isinstance(value, int) and not isinstance(value, bool) and value in (0, 1):
+        return bool(value)
+    return value
+
+
 def _floats(value):
     if isinstance(value, Mapping):
         return {k: _floats(v) for k, v in value.items()}
@@ -322,6 +342,9 @@ def alterations(expect: Mapping, files: Mapping[str, str]) -> Iterator[tuple[str
             changes["leaf node as floats"] = {**outcome, "leaf": _floats(outcome["leaf"])}
         if outcome["span"] is not None:
             changes["span as floats"] = {**outcome, "span": _floats(outcome["span"])}
+        for field in ("leaf", "span"):
+            if outcome[field] is not None and repr(_bools(outcome[field])) != repr(outcome[field]):
+                changes[f"{field} as bools"] = {**outcome, field: _bools(outcome[field])}
         for label, change in changes.items():
             alt = copy.deepcopy(right)
             if change is None:
@@ -359,6 +382,9 @@ def alterations(expect: Mapping, files: Mapping[str, str]) -> Iterator[tuple[str
             }
             if entry["unit"] is not None:
                 changes["unit as floats"] = {**entry, "unit": _floats(entry["unit"])}
+            for field in ("leaf", "unit"):
+                if entry[field] is not None and repr(_bools(entry[field])) != repr(entry[field]):
+                    changes[f"{field} as bools"] = {**entry, field: _bools(entry[field])}
             for label, change in changes.items():
                 alt = copy.deepcopy(right)
                 if change is None:

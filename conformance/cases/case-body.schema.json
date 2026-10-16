@@ -279,14 +279,30 @@
             "required": ["suggestion"]
           },
           "then": { "properties": { "status": { "enum": ["RESOLVED", "EDITED"] } } }
+        },
+        {
+          "if": {
+            "properties": { "suggestion": { "type": "object", "properties": { "reason": { "const": "unmappable-offset" } }, "required": ["reason"] } },
+            "required": ["suggestion"]
+          },
+          "then": { "properties": { "status": { "enum": ["RESOLVED", "EDITED"] } } }
         }
       ]
+    },
+    "transclusion_leaf": {
+      "type": "object",
+      "required": ["node", "type"],
+      "properties": {
+        "node": { "$ref": "#/$defs/path" },
+        "type": { "const": "paragraph" }
+      },
+      "additionalProperties": false
     },
     "transclusion_outcome": {
       "type": "object",
       "required": ["leaf", "status", "unit"],
       "properties": {
-        "leaf": { "$ref": "#/$defs/anchored_leaf" },
+        "leaf": { "$ref": "#/$defs/transclusion_leaf" },
         "status": {
           "oneOf": [
             {

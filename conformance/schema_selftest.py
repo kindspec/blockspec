@@ -50,6 +50,12 @@ GOOD = {
             "status": "REFUSED(near-copy)",
             "leaf": None,
             "span": None,
+            "suggestion": {"gate": "stale", "reason": None},
+        },
+        "doc.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B8CJ.md": {
+            "status": "EDITED",
+            "leaf": LEAF,
+            "span": [0, 1],
             "suggestion": {"gate": "stale", "reason": "unmappable-offset"},
         },
         "doc.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B8CH.md": {
@@ -121,6 +127,10 @@ def _broken():
     path = "doc.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B8CG.md"
     yield "REFUSED with a leaf", record("leaf", LEAF, path)
     yield (
+        "unmappable-offset on a refused anchor",
+        record("suggestion", {"gate": "stale", "reason": "unmappable-offset"}, path),
+    )
+    yield (
         "an unknown stale reason",
         record("suggestion", {"gate": "stale", "reason": "status-not-open"}, path),
     )
@@ -141,6 +151,22 @@ def _broken():
         "a transclusion leaf of a type that bears no text",
         entry("leaf", {"node": [0], "type": "list"}),
     )
+    yield (
+        "a transclusion leaf that is not a paragraph",
+        entry("leaf", {"node": [0], "type": "heading"}),
+    )
+    reply = "doc.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B8CH.md"
+    yield "a span of three offsets", record("span", [0, 1, 2])
+    yield "an empty node path", record("leaf", {"node": [], "type": "paragraph"})
+    yield "a reply with a leaf", record("leaf", LEAF, reply)
+    yield "a record status of #REF!(name)", record("status", "#REF!(name)", reply)
+    yield "an empty records object", edit(lambda b: b.__setitem__("records", {}))
+    yield "an empty merge object", edit(lambda b: b.__setitem__("merge", {}))
+    yield (
+        "a unit document with a .. segment",
+        entry("unit", {"document": "a/../doc.md", "target": LEAF}),
+    )
+    yield "a control that is not a case id", edit(lambda b: b.__setitem__("controls", ["Case"]))
     yield "a resolved transclusion with no unit", entry("unit", None)
     yield (
         "a refused transclusion with a unit",
