@@ -103,6 +103,11 @@ content moves the anchor. The 40-character measurement says collisions are rare
 and detectable; it does not say what happens when an anchored block is *edited*
 rather than duplicated.
 
+Decided by `docs/adjudications/0003-anchors.md`: an anchor lands only where
+every witness agrees, and is loud otherwise. Four edit shapes that the bytes
+cannot tell from legitimate edits remain, and that document names them. The
+refusal rate on real history is not yet measured.
+
 **What is the merge failure this format prevents?** rowspec has a specific,
 demonstrated one: two branches insert rows, git merges cleanly, the total is 480
 where the truth is 660. **blockspec does not yet have its equivalent, and should

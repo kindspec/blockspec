@@ -3,8 +3,9 @@
 **Status: draft 0, defined by its decisions and its conformance cases.**
 Draft 0 is what `docs/adjudications/` decides, and `SPEC.md` writes it up:
 0001, a pinned CommonMark 0.31.2 block-level profile with `<!-- #name -->`
-region markers, and 0002, what a block is, each with addenda.
-`conformance/cases/` encodes those decisions and came first, before any
+region markers, and 0002, what a block is, each with addenda, and 0003,
+how comments, suggestions and transclusions anchor. 0003 has no cases and no
+implementation yet. `conformance/cases/` encodes 0001 and 0002 and came first, before any
 implementation existed. `reference/blockspec/` is a standard-library-only
 implementation written against that tree, and CI runs the tree against it
 (`just conform`). There is one implementation, so nothing disagrees with it
