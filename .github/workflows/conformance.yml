@@ -41,6 +41,12 @@ jobs:
         if: ${{ !cancelled() }}
         run: python3 conformance/check_tree.py
 
+      # The anchor kind's branch of the schema, against synthetic bodies: one
+      # that must validate, and broken ones that must each be rejected.
+      - name: the case-body schema accepts an anchor body and rejects broken ones
+        if: ${{ !cancelled() }}
+        run: python3 conformance/schema_selftest.py .kindkit
+
       # A run against nothing must be no verdict, exit 2, never a pass. The
       # `reference` job below runs the tree against the implementation.
       - name: the runner with no implementation reports no verdict
@@ -56,13 +62,14 @@ jobs:
           fi
 
       # And a run against an implementation that returns nothing must fail
-      # every case, not some of them.
+      # every case, not some of them, of either kind.
       - name: the runner fails every case against an empty implementation
         if: ${{ !cancelled() }}
         run: |
           impl="$RUNNER_TEMP/empty_impl.py"
           report="$RUNNER_TEMP/report.json"
           printf 'def conform(text, queries):\n    return {"accept": True, "blocks": [], "leaves": [], "names": {}}\n' > "$impl"
+          printf 'def resolve(repo, queries):\n    return {"records": {}, "transclusions": {}}\n' >> "$impl"
           set +e
           PYTHONPATH=.kindkit python3 conformance/run_cases.py --impl "$impl" --report-json "$report" > /dev/null
           code=$?

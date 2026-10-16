@@ -4,12 +4,16 @@
   "title": "blockspec case bodies",
   "description": "The shape of every expect.json in blockspec's conformance tree, applied alongside kindkit's case-tree/expect.schema.json. README.md in this directory says what each field means.",
   "type": "object",
-  "required": ["kind", "accept"],
+  "required": ["kind"],
   "properties": {
-    "kind": { "enum": ["parse"] },
+    "kind": { "enum": ["parse", "anchor"] },
     "accept": { "type": "boolean" }
   },
   "allOf": [
+    {
+      "if": { "properties": { "kind": { "const": "parse" } }, "required": ["kind"] },
+      "then": { "required": ["accept"], "properties": { "accept": { "type": "boolean" } } }
+    },
     {
       "if": { "properties": { "accept": { "const": true } }, "required": ["accept"] },
       "then": {
@@ -76,6 +80,10 @@
         },
         "additionalProperties": false
       }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "anchor" } }, "required": ["kind"] },
+      "then": { "$ref": "#/$defs/anchor_case" }
     }
   ],
   "$defs": {
@@ -149,6 +157,191 @@
           "additionalProperties": false
         }
       ]
+    },
+    "anchor_case": {
+      "$comment": "The anchor kind, SPEC.md section 11. README.md in this directory, The kind `anchor`, says what each field means.",
+      "properties": {
+        "kind": true,
+        "object_format": { "enum": ["sha1", "sha256"] },
+        "merge": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "$ref": "#/$defs/relative_path" },
+          "additionalProperties": { "enum": ["clean", "conflict"] }
+        },
+        "records": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "type": "string", "pattern": "^(?!\\.\\.?(/|$))([^/]+/)*[^/]+\\.notes/[^/]+$" },
+          "additionalProperties": { "$ref": "#/$defs/record_outcome" }
+        },
+        "transclusions": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "$ref": "#/$defs/relative_path" },
+          "additionalProperties": { "type": "array", "items": { "$ref": "#/$defs/transclusion_outcome" } }
+        },
+        "controls": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9-]+(/[a-z0-9-]+)+$" }
+        }
+      },
+      "anyOf": [{ "required": ["records"] }, { "required": ["transclusions"] }],
+      "additionalProperties": false
+    },
+    "relative_path": {
+      "$comment": "A path relative to a root: the case's repository, or the case directory. No leading `/`, and no empty, `.` or `..` segment.",
+      "type": "string",
+      "pattern": "^(?!\\.\\.?(/|$))[^/]+(/(?!\\.\\.?(/|$))[^/]+)*$"
+    },
+    "anchored_leaf": {
+      "type": "object",
+      "required": ["node", "type"],
+      "properties": {
+        "node": { "$ref": "#/$defs/path" },
+        "type": { "enum": ["paragraph", "heading", "code_block", "table"] }
+      },
+      "additionalProperties": false
+    },
+    "span": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "suggestion": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["gate", "written"],
+          "properties": { "gate": { "const": "apply" }, "written": { "$ref": "#/$defs/relative_path" } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["gate", "reason"],
+          "properties": { "gate": { "const": "stale" }, "reason": { "enum": [null, "unmappable-offset"] } },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "record_outcome": {
+      "type": "object",
+      "required": ["status", "leaf", "span", "suggestion"],
+      "properties": {
+        "status": {
+          "enum": [
+            "RESOLVED",
+            "MOVED",
+            "EDITED",
+            "DETACHED",
+            "ORPHANED",
+            "REFUSED(document-missing)",
+            "REFUSED(base-unavailable)",
+            "REFUSED(not-in-profile)",
+            "REFUSED(record-inconsistent)",
+            "REFUSED(unaccounted-copy)",
+            "REFUSED(repeat)",
+            "REFUSED(near-copy)",
+            "REFUSED(refilled-gap)",
+            "REFUSED(exact-copy)",
+            "REFUSED(crowded-gap)",
+            "REFUSED(span-ambiguous)",
+            "REPLY",
+            "#REF!(reply-to)"
+          ]
+        },
+        "leaf": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/anchored_leaf" }] },
+        "span": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/span" }] },
+        "suggestion": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/suggestion" }] }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "enum": ["RESOLVED", "MOVED", "EDITED", "DETACHED"] } } },
+          "then": { "properties": { "leaf": { "$ref": "#/$defs/anchored_leaf" } } },
+          "else": { "properties": { "leaf": { "type": "null" } } }
+        },
+        {
+          "if": { "properties": { "status": { "enum": ["RESOLVED", "MOVED", "EDITED"] } } },
+          "then": { "properties": { "span": { "$ref": "#/$defs/span" } } },
+          "else": { "properties": { "span": { "type": "null" } } }
+        },
+        {
+          "if": { "properties": { "status": { "enum": ["REPLY", "#REF!(reply-to)"] } } },
+          "then": { "properties": { "suggestion": { "type": "null" } } }
+        },
+        {
+          "if": {
+            "properties": { "suggestion": { "type": "object", "properties": { "gate": { "const": "apply" } }, "required": ["gate"] } },
+            "required": ["suggestion"]
+          },
+          "then": { "properties": { "status": { "enum": ["RESOLVED", "EDITED"] } } }
+        },
+        {
+          "if": {
+            "properties": { "suggestion": { "type": "object", "properties": { "reason": { "const": "unmappable-offset" } }, "required": ["reason"] } },
+            "required": ["suggestion"]
+          },
+          "then": { "properties": { "status": { "enum": ["RESOLVED", "EDITED"] } } }
+        }
+      ]
+    },
+    "transclusion_leaf": {
+      "type": "object",
+      "required": ["node", "type"],
+      "properties": {
+        "node": { "$ref": "#/$defs/path" },
+        "type": { "const": "paragraph" }
+      },
+      "additionalProperties": false
+    },
+    "transclusion_outcome": {
+      "type": "object",
+      "required": ["leaf", "status", "unit"],
+      "properties": {
+        "leaf": { "$ref": "#/$defs/transclusion_leaf" },
+        "status": {
+          "oneOf": [
+            {
+              "enum": [
+                "RESOLVED",
+                "REFUSED(unresolvable-path)",
+                "REFUSED(document-missing)",
+                "REFUSED(base-unavailable)",
+                "REFUSED(not-in-profile)",
+                "REFUSED(record-inconsistent)",
+                "REFUSED(name-rebound)",
+                "REFUSED(pinned-unaccounted-copy)",
+                "REFUSED(pinned-repeat)",
+                "REFUSED(pinned-near-copy)",
+                "REFUSED(pinned-refilled-gap)",
+                "REFUSED(pinned-exact-copy)",
+                "REFUSED(pinned-crowded-gap)",
+                "REFUSED(pinned-orphaned)"
+              ]
+            },
+            { "type": "string", "pattern": "^#REF!\\(.*\\)$" }
+          ]
+        },
+        "unit": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "required": ["document", "target"],
+              "properties": { "document": { "$ref": "#/$defs/relative_path" }, "target": { "$ref": "#/$defs/target" } },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "if": { "properties": { "status": { "const": "RESOLVED" } } },
+      "then": { "properties": { "unit": { "type": "object" } } },
+      "else": { "properties": { "unit": { "type": "null" } } }
     }
   }
 }

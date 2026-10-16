@@ -200,13 +200,17 @@ The tree follows kindkit's case-tree convention (kindspec/kindkit
     cases/refusal/<refusal-code>/<case-name>/
         the refusal cases for one code, and their controls
 
+An `anchor` case holds a repository instead of `input.md`; *The kind
+`anchor`*, below, gives its files.
+
 `case-body.schema.json` declares the shape of every `expect.json`. kindkit's
 `tools/validate_case_tree.py` applies it.
 
-## The one kind: `parse`
+## The kind `parse`
 
-Every case has `"kind": "parse"`. The implementation reads `input.md` and
-either refuses it or returns its structure.
+A case with `"kind": "parse"` asserts how one document reads. The
+implementation reads `input.md` and either refuses it or returns its
+structure.
 
 | field | when | what it asserts |
 | --- | --- | --- |
@@ -411,6 +415,194 @@ The marker after a marker, the empty region, the marker line grammar,
 frontmatter closed by `...` and the slug algorithm were listed here until
 the owner decided them on 2026-10-14 (0001 and 0002, addenda); each now has
 cases.
+
+## The kind `anchor`
+
+A case with `"kind": "anchor"` asserts how comments, suggestions and
+transclusions resolve, as `SPEC.md` §11 decides them
+(`docs/adjudications/0003-anchors.md` and its addendum). The case directory
+holds a small repository: the current snapshot, the earlier blobs it can
+still read, and, optionally, a merge that produces part of the current
+snapshot. The case lists records and referrers, and the outcome expected for
+each.
+
+This kind was added before any anchor case and before any implementation of
+§11 existed. Its case author is to work from `SPEC.md`, 0003 and this
+section, without reading an implementation.
+
+**Landing order.** The reference reader has no `resolve` until the resolver
+lands, so the first anchor case would turn `just conform` red on `main`. The
+cases are therefore written blind from `main`, on a branch and pull request of
+their own, and reviewed there. The resolver's branch is then rebased onto the
+cases, run against them with no case changed, reviewed, and merged: that merge
+lands the cases and the resolver together, and the cases' pull request closes
+as landed through it.
+
+### Files
+
+    cases/anchor/<group>/<case-name>/
+        expect.json         what to assert
+        WHY.md              prose, ignored
+        tree/<path>         the current snapshot: each file of the repository, at its path
+        blobs/<any name>    more blobs the repository can read, such as a record's base
+        merge/base/<path>   the three sides of a merge whose result is tree path <path>
+        merge/ours/<path>
+        merge/theirs/<path>
+        <anything else>     not in the repository: a placeholder's target, a written file
+
+Every file is exact bytes, as everywhere in this tree, so a CRLF or a bare CR
+in a fixture is kept.
+
+**The repository.** Its files are those under `tree/`, at their paths below
+`tree/`, plus each merge's result. Its readable blobs are every file under
+`tree/`, `blobs/` and `merge/`, and each merge's result. A file anywhere else
+in the case directory is in neither: it can still be named by a placeholder,
+and the blob it names is then one the repository cannot read, which is how a
+case sets up `base-unavailable` (§11.11's squash-merge, for example). A file
+under `blobs/` is readable and in no path of the current tree, which is how a
+case gives a `base` that an earlier commit held.
+
+**Ids are content-addressed.** An unreadable file with the same bytes as a
+readable one names a readable blob, so the case would not test what it
+means to. `check_tree.py` reports a placeholder target outside `tree/`,
+`blobs/` and `merge/` whose bytes equal a readable file's; give such a file
+bytes of its own.
+
+**Placeholders.** `{{blob:PATH}}`, anywhere in any file of the case, is
+replaced by the object id of the file at `PATH`, a path relative to the case
+directory, as `git hash-object` computes it over that file's exact bytes, in
+lower-case hex. Write it where a record's `base` or a pin's `blob` goes, so
+that a case holds content and never a hash:
+
+    anchor: {"base": "{{blob:blobs/policy.md}}", "leaf": {...}, ...}
+
+The file a placeholder names must not hold a placeholder itself. Placeholders
+are replaced before anything else happens, in merge sides and written files
+too. A literal id needs none: write one to pin a malformed `base`, or the id
+of a blob that no file of the case has.
+
+**`object_format`**, optional: `"sha1"`, the default, or `"sha256"`. Ids are
+computed in a repository of that format, and it is the format §11.1's `B`
+is checked against: 40 hex digits for SHA-1, 64 for SHA-256.
+
+**`merge`**, optional: an object from a repository path to `"clean"` or
+`"conflict"`. For each path, the runner commits `merge/base/<path>`, commits
+`merge/ours/<path>` on one branch and `merge/theirs/<path>` on another, and
+runs a stock `git merge` of each into the base, ours first, with no
+configuration from the machine (kindkit `gitmerge.merge`). Stock git, since
+correctness may not depend on a merge driver (0003 §1). The working-tree
+text afterwards is the current file at `<path>`, with its conflict markers
+when there are any; they are labelled `<<<<<<< HEAD` and `>>>>>>> b1`, and in
+a file whose lines end in CRLF git ends the marker lines in CRLF too. The
+case fails if git's outcome is not the one stated. `tree/<path>` must not
+exist as well. Each merge is of one file; a record is added on a branch by
+putting it straight into `tree/`, where git would have merged it cleanly.
+
+### What a case asserts
+
+| field | when | what it asserts |
+| --- | --- | --- |
+| `object_format` | optional | above |
+| `merge` | optional | above |
+| `records` | at least one of the two | for each record named, by its path in the repository, its outcome (below) |
+| `transclusions` | at least one of the two | for each referrer named, by its path in the repository, every transclusion in it, in document order (below) |
+| `controls` | when any outcome is `REFUSED(...)` | ids of `anchor` cases on the other side of the line the refusal draws, as for a `parse` refusal. Not an assertion about the implementation; `check_tree.py` checks they exist and are `anchor` cases |
+
+A record's path is `<document>.notes/<file>` (§11.1), so the document it
+belongs to is the path with `.notes/<file>` removed. Each record and referrer
+named must be a file of the current snapshot. Records and referrers the case
+does not name are not compared.
+
+**A record's outcome** has four fields, all required:
+
+| field | value |
+| --- | --- |
+| `status` | `RESOLVED`, `MOVED`, `EDITED`, `DETACHED`, `ORPHANED` or `REFUSED(<reason>)`, with a reason from §11.10's table (§11.6). For a reply (§11.1, §11.8): `REPLY` when its `reply-to` names a record in its directory, `#REF!(reply-to)` when it does not. `REPLY` is this tree's word for a reply that renders normally, not a §11.6 status. A reply refused for its frontmatter is `REFUSED(record-inconsistent)` |
+| `leaf` | the current leaf the anchor is on, `{"node": path, "type": type}`, with `node` as *Nodes and paths* above, over the current document, and `type` one of `paragraph`, `heading`, `code_block` and `table`. The paired leaf for `RESOLVED`, `MOVED`, `EDITED` and `DETACHED` (§11.6: `DETACHED` renders on it); `null` for every other status |
+| `span` | `[start, end]`, the span's code point offsets in that leaf's text as §11 defines it (§6.3's content, NFC, `\n` line endings; a table's text as §11.2 builds it), start inclusive and end exclusive. Given for `RESOLVED`, `MOVED` and `EDITED`; `null` otherwise |
+| `suggestion` | `null` unless the record's frontmatter holds the line `kind: suggestion`, exactly. Otherwise §11.7's gate: `{"gate": "apply", "written": FILE}` when the suggestion applies, or `{"gate": "stale", "reason": R}` when it does not |
+
+For `"gate": "apply"`, `FILE` is a path relative to the case directory, such
+as `written/policy.md`, and holds the exact bytes of the current document
+after §11.7's write-back of `replace` (its steps 1 to 3). Only the document
+is compared; the record's own `status: accepted` is not. `apply` is only
+possible with `RESOLVED` or `EDITED`. For `"gate": "stale"`, `R` is
+`"unmappable-offset"` when the record's `status` is `open`, its anchor is
+`RESOLVED` or `EDITED`, and the span does not map (§11.7); it is `null` for
+every other stale suggestion, whatever made it stale.
+
+**A transclusion's outcome** has three fields, all required. The list holds
+one per transclusion paragraph (§11.9) of the referrer, in document order,
+and `[]` for a referrer with none:
+
+| field | value |
+| --- | --- |
+| `leaf` | the transclusion paragraph, `{"node": path, "type": "paragraph"}`, over the referrer |
+| `status` | `RESOLVED`; `REFUSED(<reason>)` with a reason from §11.10's table, `pinned-<reason>` written out (`REFUSED(pinned-orphaned)`, `REFUSED(pinned-near-copy)`); or, for §11.9's step 1, `#REF!(<name>)` with the name as the destination writes it after its `#`, as `resolve` writes it for a `parse` case |
+| `unit` | for `RESOLVED`, what is transcluded: `{"document": path, "target": target}`, where `path` is the target document's path in the repository, after §11.9 resolves the link's path from the referrer's directory, and `target` is what the name binds in the current target, written as `names` writes it (a node, or `{"region": [...]}`). `null` for every other status |
+
+Each listed record and each listed referrer's list is compared whole: a
+field that differs, or a transclusion missing or extra, fails the case. An
+implementation may add fields of its own, such as a message, and they are
+ignored. A path index or an offset must be an integer, not a float or a
+bool.
+
+**One outcome per record.** Where `SPEC.md` does not fix which of two
+reasons is reported, write the case so that only one applies, as a `parse`
+refusal case does (§9). §11.4 fixes an order inside each kind of pair ("the
+first rule that applies decides"), and §11.9 orders its steps.
+
+### An example
+
+Shown for the shape, not as a case of this tree. `policy.md` is unchanged
+since the comment was made, so `base` is the blob of the current file:
+
+    tree/policy.md
+        The scram threshold is 4.2 sigma.
+    tree/policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B8CD.md
+        ---
+        anchor: {"base": "{{blob:tree/policy.md}}", "leaf": {"type": "p", "nth": 0, "text": "The scram threshold is 4.2 sigma."}, "span": "4.2 sigma", "prefix": "The scram threshold is ", "suffix": "."}
+        kind: comment
+        status: open
+        ---
+
+        Still right?
+
+    expect.json
+        {
+          "kind": "anchor",
+          "records": {
+            "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B8CD.md": {
+              "status": "RESOLVED",
+              "leaf": {"node": [0], "type": "paragraph"},
+              "span": [23, 32],
+              "suggestion": null
+            }
+          }
+        }
+
+### What an implementation is handed
+
+`run_cases.py`'s docstring gives the interface: `resolve(repo, queries)`,
+where `repo` is `{"object_format", "tree", "blobs"}` (each current file's
+text by its path, and each readable blob's text by its object id) and
+`queries` is `{"records": [...], "transclusions": [...]}`, the paths the
+case names. The implementation needs no git: the runner has already hashed
+the blobs and run the merges.
+
+### What this kind cannot express
+
+- §11.8's warning for a record id in two notes directories, and what a
+  validator reports for a rename: no field asserts a warning.
+- How a status renders, beyond the fields above (the base text beside a
+  loud status, for one).
+- Bytes that are not UTF-8, a symbolic link, a submodule and an empty
+  directory: every fixture is a UTF-8 file.
+- A merge of more than one file in one repository, or a rename.
+- What a tool writes: a re-anchored record (§11.1), the creation of a new
+  anchor, including the refusal to create one when `prefix + span + suffix`
+  does not occur exactly once, and a referrer's re-pin (§11.9). A case asserts
+  how existing records and pins resolve, not what a tool would write.
 
 ## Running it
 

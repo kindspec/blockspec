@@ -11,8 +11,19 @@ FILE is a Python file that defines
 case's `resolve` names, in order. The returned object has the shape of the
 case's `expect.json` body (see cases/README.md): `accept`, and then either
 `refusal`, or `frontmatter` (absent or null when there is none), `blocks`,
-`leaves`, `names` and `resolve`. An implementation in
-another language needs a FILE that calls out to it.
+`leaves`, `names` and `resolve`.
+
+For the `anchor` kind (SPEC.md section 11), FILE also defines
+
+    resolve(repo: dict, queries: dict) -> dict
+
+`repo` is the case's repository: `object_format`, `tree` (each current file's
+text by its path) and `blobs` (each readable blob's text by its object id).
+`queries` names the case's `records` and `transclusions` referrers. The
+returned object has `records` and `transclusions`, shaped as the case's
+(cases/README.md, *The kind `anchor`*). A FILE without `resolve` fails every
+anchor case. An implementation in another language needs a FILE that calls
+out to it.
 
 Nothing is checked without an implementation, so there is no pass to report:
 
@@ -38,6 +49,10 @@ import importlib.util
 import os
 import sys
 from collections.abc import Callable, Iterator, Mapping
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import anchor_cases  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CASES = os.path.join(HERE, "cases")
@@ -109,13 +124,35 @@ def handler(conform: Callable[[str, list[str]], object]):
     return parse
 
 
-def load(path: str) -> Callable[[str, list[str]], object]:
+def anchor_handler(resolve: Callable[[dict, dict], object] | None):
+    def anchor(case) -> Iterator[str]:
+        files = anchor_cases.read_case_files(case.dir)
+        problems = list(anchor_cases.fixture_problems(case.expect, files))
+        if problems:
+            yield from (f"the case is malformed: {problem}" for problem in problems)
+            return
+        if resolve is None:
+            yield "the implementation defines no resolve(repo, queries)"
+            return
+        repo = anchor_cases.Repository(case.expect, files)
+        try:
+            built, messages = repo.build()
+            yield from messages
+            got = resolve(built, anchor_cases.queries(case.expect))
+            yield from anchor_cases.compare(case.expect, got, repo.files)
+        finally:
+            repo.close()
+
+    return anchor
+
+
+def load(path: str):
     spec = importlib.util.spec_from_file_location("blockspec_under_test", path)
     if spec is None or spec.loader is None:
         raise ImportError(f"cannot load {path!r} as a Python file")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.conform
+    return module.conform, getattr(module, "resolve", None)
 
 
 def main(argv: list[str]) -> int:
@@ -145,11 +182,14 @@ def main(argv: list[str]) -> int:
         print(f"HARD FAILURE: kindkit is not importable: {exc}", file=sys.stderr)
         return EXIT_NO_VERDICT
     try:
-        conform = load(impl)
+        conform, resolve = load(impl)
     except Exception as exc:  # noqa: BLE001 -- any failure to load is no verdict
         print(f"HARD FAILURE: cannot load the implementation: {exc}", file=sys.stderr)
         return EXIT_NO_VERDICT
-    adapter = Adapter(fixture_suffixes=(".md",), handlers={"parse": handler(conform)})
+    adapter = Adapter(
+        fixture_suffixes=(".md",),
+        handlers={"parse": handler(conform), "anchor": anchor_handler(resolve)},
+    )
     return cli.main(
         adapter,
         rest,
