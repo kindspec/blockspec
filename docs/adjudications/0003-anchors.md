@@ -1048,7 +1048,7 @@ kept its branch-only `base`. After a squash-merge or a rebase that rewrote
 the commit holding that `base`, and once the branch was gone, it was
 `REFUSED(base-unavailable)`, though its text was still in the document. The
 *Decision* table's Q3 row read more widely: "each record that resolves".
-Both texts stay as first written. This narrows Q3's row for a suggestion,
+Q3's row stays as first written. This narrows Q3's row for a suggestion,
 to `RESOLVED` or `EDITED`, and keeps it for a comment.
 
 Why, and what it costs:
@@ -1060,10 +1060,9 @@ Why, and what it costs:
   `EDITED`. It resolves `RESOLVED` on the moved paragraph, and renders as
   the anchor, no longer marked moved (`SPEC.md` §11.6).
 - **Under R1, the comment ends up on the copy as `RESOLVED`.** §6 judges a
-  comment that follows a false move "visible and harmless": harmless
-  because a comment edits nothing, and visible because it is marked moved,
-  with its base text beside it. Once re-anchored it is still harmless, and
-  no longer visible as a move. That is the cost of this decision.
+  comment that follows a false move "visible and harmless", and §5 says it
+  "is shown as moved". Once re-anchored it is still harmless, and no longer
+  shown as moved. That is the cost of this decision.
 - **The resolver is unchanged.** What changes is what a tool may write:
   wherever §11.1 lets it re-anchor, before landing or after, a moved
   comment may now be written against the current blob, and then resolves

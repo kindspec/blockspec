@@ -609,10 +609,10 @@ present on a comment or missing on a suggestion. And it is
 profile refuses its body (item 8), since a record is a blockspec document.
 
 **Re-anchoring** replaces the whole anchor line with one made against a
-newer blob of the document, at the position the current resolution gives
-(0003, addendum of 2026-10-17). A comment is re-anchored only while it
-resolves `RESOLVED`, `EDITED` or `MOVED` (§11.6), and a suggestion only
-while it resolves `RESOLVED` or `EDITED`.
+newer blob of the document, at the position the current resolution gives.
+A comment is re-anchored only while it resolves `RESOLVED`, `EDITED` or
+`MOVED` (§11.6), and a suggestion only while it resolves `RESOLVED` or
+`EDITED` (0003, addendum of 2026-10-17).
 
 ### 11.2 Leaves, keys and similarity
 
