@@ -1,8 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Pre-registration 4: the anchor resolver's refusals on real history
 
-**Status: draft, for the owner's approval.** "Committed" means merged to
-`main`. No verdict arm below runs before this document merges.
+**Status: approved by the owner on 2026-10-17, as written, with each §0
+choice as drafted.** "Committed" means merged to `main`. No verdict arm
+below runs before this document merges.
 
 **The question.** Adjudication 0003 §12, item 1, names first among what
 would reverse its anchor design "A replay over real history that prices the
@@ -16,9 +17,8 @@ what, and what result means what.
 **Citations.** A blockspec path means its content at `d38a6bc` on `main`.
 The harness is kindspec/research `experiments/D8-anchor-replay/`, with the
 word oracle and the labelled sample of research#20, merged as `c26bba1`;
-the commit it runs at is pinned in §2 when this document is approved, and
-`c26bba1` is proposed. Every figure below is given with the file that
-holds it.
+the commit it runs at is pinned in §2. Every figure below is given with
+the file that holds it.
 
 ---
 
@@ -126,7 +126,8 @@ The pins and pathspecs are `arms.json`'s. The replay's sample is
 | unplaced, loud | 60 |
 | unplaced, resolves | 30 |
 
-The harness pin is filled in when this document is approved.
+The harness runs at research `c26bba1`, its gap-5 sample with
+`--cap placed/resolves=100`.
 
 **Not verdict arms:** site-policy is the rehearsal arm (§6). cmspec is
 excluded: the profile refuses both of its documents (one holds a
