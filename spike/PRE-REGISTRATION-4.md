@@ -20,9 +20,9 @@ revisit." This document fixes, before the replay runs, what is measured, on
 what, and what result means what.
 
 **Citations.** A blockspec path means its content at `d38a6bc` on `main`.
-The harness is kindspec/research `experiments/D8-anchor-replay/`, at the
-commit that merges research#19, pinned in §2 when this document is
-approved. Every figure below is given with the command that produced it.
+The harness is kindspec/research `experiments/D8-anchor-replay/`, merged
+as `c6df399` (research#19); the commit it runs at is pinned in §2 when this
+document is approved. Every figure below is given with the command that produced it.
 
 ---
 
@@ -129,10 +129,12 @@ The classification and its reason are written beside each one.
 - **The rehearsal arm, site-policy,** was run at gaps 1 and 5
   (`rehearsal-site-policy.txt`). Among comments the oracle places, 9 of
   3,882 surviving spans were refused at gap 1 (0.2%) and 16 of 1,701 at gap
-  5 (0.9%, all `near-copy`), with no `WRONG`. Counting as surviving every
-  loud comment the oracle cannot place, the rates are 2.0% and 17.2%. At gap
-  5 all 103 `crowded-gap` refusals are among those, and 800 comments sit on
-  documents whose later version the profile refuses.
+  5 (0.9%, all `near-copy`), with no `WRONG`. As if every loud comment the
+  oracle cannot place had surviving text, the rates are 2.0% and 17.2%; as
+  if, besides, every comment on a pair whose later version the profile
+  refuses did (800 of them at gap 5), 3.5% and 40.5%. None of these is a
+  bound. At gap 5 all 103 `crowded-gap` refusals are among the comments the
+  oracle cannot place.
 - **red_states.py and red_sweep.py** were run on their own fixture.
 - **D8's figures** for its own resolver were known: 7.1% loud on rust-book
   at gap 25, 3.1% on obsidian-help and 2.1% on rust-book at gap 5 (0003
