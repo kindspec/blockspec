@@ -609,8 +609,10 @@ present on a comment or missing on a suggestion. And it is
 profile refuses its body (item 8), since a record is a blockspec document.
 
 **Re-anchoring** replaces the whole anchor line with one made against a
-newer blob of the document, at the position the current resolution gives. It
-is done only while the anchor resolves `RESOLVED` or `EDITED` (§11.6).
+newer blob of the document, at the position the current resolution gives.
+A comment is re-anchored only while it resolves `RESOLVED`, `EDITED` or
+`MOVED` (§11.6), and a suggestion only while it resolves `RESOLVED` or
+`EDITED` (0003, addendum of 2026-10-17).
 
 ### 11.2 Leaves, keys and similarity
 
@@ -1009,15 +1011,18 @@ checks pass (above; §11.8).
 None of these is part of the format, and correctness does not depend on any
 of them (0003 §1).
 
-- **Re-base before landing** (0003 Q3). A squash-merge or a rebase can
-  leave a record's `base` in no commit that a fresh clone has. Before the
-  branch lands, while `base` is still reachable, a tool MAY re-anchor
-  (§11.1) each record that resolves `RESOLVED` or `EDITED` onto the
-  document's blob at the branch head. It MAY check in CI that every record
-  that resolves has been re-based; a record that does not resolve keeps its
-  `base` and is reported, and does not fail the landing. Once its `base` is
-  gone, such a record is `REFUSED(base-unavailable)`. This turns a future
-  `base-unavailable` into a resolution, so it is not a refusal rule.
+- **Re-base before landing** (0003 Q3, and its addendum of 2026-10-17). A
+  squash-merge or a rebase can leave a record's `base` in no commit that a
+  fresh clone has. Before the branch lands, while `base` is still
+  reachable, a tool MAY re-anchor (§11.1) each comment that resolves
+  `RESOLVED`, `EDITED` or `MOVED`, and each suggestion that resolves
+  `RESOLVED` or `EDITED`, onto the document's blob at the branch head. It
+  MAY check in CI that every such record has been re-based; any other
+  record, one that does not resolve or a suggestion that resolves `MOVED`,
+  keeps its `base` and is reported, and does not fail the landing. Once a
+  record's `base` is gone, it is `REFUSED(base-unavailable)`. This turns a
+  future `base-unavailable` into a resolution, so it is not a refusal
+  rule.
 
 The other two MAY only refuse more, never turn a refusal into a resolution:
 

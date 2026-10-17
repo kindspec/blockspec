@@ -7,7 +7,7 @@ re-base, so its `base` names a blob that is not in the repository.
 
 SPEC.md §11.11:
 
-> Once its `base` is gone, such a record is `REFUSED(base-unavailable)`.
+> Once a record's `base` is gone, it is `REFUSED(base-unavailable)`.
 
 SPEC.md §11.10:
 
