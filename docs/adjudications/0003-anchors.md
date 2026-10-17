@@ -1036,34 +1036,44 @@ read literally it stays a fact about where the span ends.
 
 ## Addendum, 2026-10-17: re-anchoring a moved comment
 
-The owner's decision of 2026-10-17, on kindspec/blockspec#49. `SPEC.md`
-§11.1 and §11.11 carry the rule.
+The owner's decision of 2026-10-17, on kindspec/blockspec#49, recorded
+there. The numbered item is the owner's. Where this write-up adds precision
+of its own, it says so, marked **(precision, not the owner's)**, with the
+reason. `SPEC.md` §11.1 and §11.11 carry the rule.
 
-**A comment may be re-anchored while it resolves `MOVED`; a suggestion may
-not.** Before, `SPEC.md` re-anchored a record only while it resolved
+**1. A comment may be re-anchored while it resolves `MOVED`; a suggestion
+may not.** Before, `SPEC.md` re-anchored a record only while it resolved
 `RESOLVED` or `EDITED`, so a comment on a paragraph that moved on a branch
 kept its branch-only `base`. After a squash-merge or a rebase that rewrote
 the commit holding that `base`, and once the branch was gone, it was
 `REFUSED(base-unavailable)`, though its text was still in the document. The
-*Decision* table's Q3 row read more widely, "each record that resolves".
-This settles the difference: Q3's row holds for a comment, and for a
-suggestion it narrows to `RESOLVED` or `EDITED`.
+*Decision* table's Q3 row read more widely: "each record that resolves".
+Both texts stay as first written. This narrows Q3's row for a suggestion,
+to `RESOLVED` or `EDITED`, and keeps it for a comment.
 
-The reasons:
+Why, and what it costs:
 
 - **A suggestion stays out.** A re-anchored suggestion would resolve
   `RESOLVED`, and so apply, where Q2 makes it stale: on a `MOVED` leaf,
   which §9's R1 cannot tell from a real move.
-- **A comment loses only its moved mark**, as a re-anchored comment already
-  loses `EDITED`. It then resolves `RESOLVED` on the moved paragraph.
-- **Under R1, the comment ends up on the copy as `RESOLVED`, not marked
-  moved.** Q2 already lets a comment follow that false move, and judges it
-  harmless because a comment edits nothing.
-- **Resolution is unchanged.** Like the rest of Q3, this acts only before
-  landing, while `base` is still reachable.
+- **A re-anchored comment loses its moved mark**, as one already loses
+  `EDITED`. It resolves `RESOLVED` on the moved paragraph, and renders as
+  the anchor, no longer marked moved (`SPEC.md` §11.6).
+- **Under R1, the comment ends up on the copy as `RESOLVED`.** §6 judges a
+  comment that follows a false move "visible and harmless": harmless
+  because a comment edits nothing, and visible because it is marked moved,
+  with its base text beside it. Once re-anchored it is still harmless, and
+  no longer visible as a move. That is the cost of this decision.
+- **The resolver is unchanged.** What changes is what a tool may write:
+  wherever §11.1 lets it re-anchor, before landing or after, a moved
+  comment may now be written against the current blob, and then resolves
+  `RESOLVED` instead of `MOVED`, or, once its old `base` would have gone,
+  instead of `REFUSED(base-unavailable)`.
 
-**(precision, not the owner's)** Q3's CI check, that every record that
-resolves has been re-based, becomes every record that may be re-based. A
-suggestion that resolves `MOVED` keeps its `base` and is reported, as a
-record that does not resolve is. *Reason*: read as before, the check would
-fail a landing on a record the rule now forbids re-basing.
+**(precision, not the owner's)** `SPEC.md` §11.11's optional CI check read
+"every record that resolves has been re-based". It now covers every record
+that may be re-based: a suggestion that resolves `MOVED` keeps its `base`
+and is reported, as a record that does not resolve is. *Reason*: the old
+wording already conflicted with §11.1 for every `MOVED` record, which
+§11.1 did not let a tool re-base; the decision leaves that conflict only
+for suggestions, and this reading removes it.
