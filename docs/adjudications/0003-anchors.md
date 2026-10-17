@@ -1033,3 +1033,37 @@ container or of the file, where reading 8 still ends the last line in
 **(precision, not the owner's)** That holds whatever `replace` ends with,
 including a `\n`. *Reason*: the rule as decided names the span alone, and
 read literally it stays a fact about where the span ends.
+
+## Addendum, 2026-10-17: re-anchoring a moved comment
+
+The owner's decision of 2026-10-17, on kindspec/blockspec#49. `SPEC.md`
+§11.1 and §11.11 carry the rule.
+
+**A comment may be re-anchored while it resolves `MOVED`; a suggestion may
+not.** Before, `SPEC.md` re-anchored a record only while it resolved
+`RESOLVED` or `EDITED`, so a comment on a paragraph that moved on a branch
+kept its branch-only `base`. After a squash-merge or a rebase that rewrote
+the commit holding that `base`, and once the branch was gone, it was
+`REFUSED(base-unavailable)`, though its text was still in the document. The
+*Decision* table's Q3 row read more widely, "each record that resolves".
+This settles the difference: Q3's row holds for a comment, and for a
+suggestion it narrows to `RESOLVED` or `EDITED`.
+
+The reasons:
+
+- **A suggestion stays out.** A re-anchored suggestion would resolve
+  `RESOLVED`, and so apply, where Q2 makes it stale: on a `MOVED` leaf,
+  which §9's R1 cannot tell from a real move.
+- **A comment loses only its moved mark**, as a re-anchored comment already
+  loses `EDITED`. It then resolves `RESOLVED` on the moved paragraph.
+- **Under R1, the comment ends up on the copy as `RESOLVED`, not marked
+  moved.** Q2 already lets a comment follow that false move, and judges it
+  harmless because a comment edits nothing.
+- **Resolution is unchanged.** Like the rest of Q3, this acts only before
+  landing, while `base` is still reachable.
+
+**(precision, not the owner's)** Q3's CI check, that every record that
+resolves has been re-based, becomes every record that may be re-based. A
+suggestion that resolves `MOVED` keeps its `base` and is reported, as a
+record that does not resolve is. *Reason*: read as before, the check would
+fail a landing on a record the rule now forbids re-basing.
