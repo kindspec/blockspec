@@ -1,9 +1,13 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Pre-registration 4: the anchor resolver's refusals on real history
 
-**Status: approved by the owner on 2026-10-17, as written, with each §0
-choice as drafted.** "Committed" means merged to `main`. No verdict arm
-below runs before this document merges.
+**Status: approved by the owner on 2026-10-17, with each §0 choice as
+drafted.** After approval and before merging, review fixed what the
+choices left open: the commands and the resolver's pin (§2), what is
+published (§3), how the range is read and which cause is revisited
+first (§4), and which labeller (choice 6); and corrected an attribution to
+0003. "Committed" means merged to `main`. No verdict arm below runs before
+this document merges.
 
 **The question.** Adjudication 0003 §12, item 1, names first among what
 would reverse its anchor design "A replay over real history that prices the
@@ -28,8 +32,9 @@ Approving the document approves each of these, as written.
 
 1. **The bar for refusals (§4).** At gap 5, pooled over the verdict arms, at
    most **5%** of comments whose span survived are refused (`loud`), with
-   the labelled sample for truth (§1). Above it, the rule that refuses most
-   is revisited first, as 0003 §12 says. *Alternatives:* 2%, about the
+   the labelled sample for truth (§1). Above it, the cause that refuses most
+   is revisited first (§4); 0003 §12 names the crowded-gap rule and the
+   near-copy rule on `EDITED` leaves as the likeliest. *Alternatives:* 2%, about the
    lowest D8 figure for its own resolver at gap 5 (2.1%, rust-book), which
    would make any cost of the added rules a failure; or 10%, which
    tolerates one refusal in ten of text that is still there. **The
@@ -49,8 +54,8 @@ Approving the document approves each of these, as written.
    estimate alone, which always decides but can decide on noise.
 3. **The bar for wrong resolutions (§4).** Every `WRONG` is examined by
    hand and classified (§5). A single `WRONG` that is a resolver defect,
-   not one of `SPEC.md` §11.12's R1 to R4 and not an oracle error, fails
-   the run. *Alternative:* a rate, such as 0.1%. 0003's guarantee is that
+   not one of `SPEC.md` §11.12's R1 to R4 and not an oracle error, at any
+   gap, fails the run. *Alternative:* a rate, such as 0.1%. 0003's guarantee is that
    the format resolves silently wrong only in R1 to R4, so any other wrong
    resolution contradicts it, however rare.
 4. **The verdict arms (§2).** rust-book, obsidian-help, k8s-en and
@@ -66,12 +71,14 @@ Approving the document approves each of these, as written.
    are sampled per stratum up to the caps in §2, with **100** for comments
    the oracle places and the resolver resolves (30 on the rehearsal arm,
    where the oracle's error, with every stratum at the upper end of its
-   interval, was 11.4%). Each
-   packet is labelled twice, independently, by automated labellers who see
-   only the packet and `labelling-brief.md`, as on the rehearsal arm; a
-   disagreement is settled by a third label. *Alternatives:* people label,
-   which no arm has tried and which the brief would need no change for; or
-   the rehearsal's caps, up to 70 fewer packets per arm and a wider range.
+   interval, was 11.4%). Each packet is labelled twice, independently, by
+   automated labellers who see only the packet and `labelling-brief.md`,
+   as on the rehearsal arm; a disagreement is settled by a third label
+   from a fresh labeller given the same. Every pass uses one model and the
+   brief at the harness pin, both named in the published sample.
+   *Alternatives:* people label, which no arm has tried and for which the
+   brief's instructions on writing the output would change; or the
+   rehearsal's caps, up to 70 fewer packets per arm and a wider range.
 
 ## 1. What is measured
 
@@ -81,13 +88,15 @@ versions GAP commits apart in that file's history:
 
 - a comment on three words from the middle of every paragraph of the
   earlier version with at least 20 characters, made as `SPEC.md` §11.1
-  creates one;
+  creates one (a paragraph where no window's span and context are unique
+  gets none);
 - resolved by the reference resolver against the later version;
 - graded by the word oracle: difflib matches the earlier version's
   paragraph words onto the later's, and the span survives in the paragraph
   its three words map to, adjacent and in order; it is gone when its
   words occur, in order and adjacent, in no later paragraph; otherwise (a
-  move, a copy) it is not counted. A comment is `correct`; `loud`, refused, `DETACHED` or
+  move, a copy) it is not counted, nor is a surviving span whose words
+  occur more than once in its target. A comment is `correct`; `loud`, refused, `DETACHED` or
   `ORPHANED` though its span survived; or `WRONG`, resolved somewhere the
   oracle does not put it, or resolved though its span is gone.
 
@@ -126,8 +135,25 @@ The pins and pathspecs are `arms.json`'s. The replay's sample is
 | unplaced, loud | 60 |
 | unplaced, resolves | 30 |
 
-The harness runs at research `c26bba1`, its gap-5 sample with
-`--cap placed/resolves=100`.
+The harness runs at research `c26bba1`, against the reference resolver at
+blockspec `d38a6bc` (`--blockspec` a checkout of that commit). From
+`experiments/D8-anchor-replay/`, with each clone at its pin:
+
+    python3 -I replay.py --blockspec BLOCKSPEC \
+        --clone rust-book=CLONE --clone obsidian-help=CLONE \
+        --clone kubernetes-website=CLONE --clone cncf-toc=CLONE \
+        --arm rust-book --arm obsidian-help --arm k8s-en --arm cncf-toc \
+        --dump DUMP
+    python3 -I sample.py --blockspec BLOCKSPEC --clone ... --dump DUMP --gap 5 \
+        --cap placed/resolves=100 --packets PACKETS --keydir KEY
+    python3 -I score.py --keydir KEY --labels A.jsonl --labels B.jsonl [--adjudicated C.jsonl]
+    python3 -I kinds.py --blockspec BLOCKSPEC --clone ... --dump DUMP --gap 5
+
+`replay.py` may instead run once per arm (`--arm NAME`), with the dumps
+concatenated in `arms.json`'s order: each arm and gap draws from its own
+generator seeded 7, so the rows are the same. `sample.py`'s draw depends on the
+dump's order, so it runs once, on the whole dump. k8s-l10n shares
+k8s-en's clone and is never in the dump.
 
 **Not verdict arms:** site-policy is the rehearsal arm (§6). cmspec is
 excluded: the profile refuses both of its documents (one holds a
@@ -136,27 +162,36 @@ comments.
 
 ## 3. What is published
 
-`replay.py`'s full stdout for every verdict arm and gap, `kinds.py`'s at
-gap 5, and every labelled sample (`sample.py`'s key and stdout, both passes
-of labels, any adjudication, and `score.py`'s stdout), committed under
-research `experiments/D8-anchor-replay/`, with every `WRONG` listed and
-classified (§5). The verdict, one of §4's, is recorded in blockspec beside
+`replay.py`'s full stdout for every verdict arm and gap, its dump
+(compressed), `kinds.py`'s stdout at gap 5, and the labelled sample
+(`sample.py`'s stdout, key and `strata.json`, both passes of labels, any
+adjudication, the model and brief they used, and `score.py`'s stdout),
+committed under research `experiments/D8-anchor-replay/`. Every `WRONG`, at
+every gap, is listed from the dump (each row whose `verdict` is `WRONG`)
+and classified (§5). The verdict, one of §4's, is recorded in blockspec beside
 0003. It is published whatever it is.
 
 ## 4. Verdicts
 
+The range is `score.py`'s pooled line, read as printed, to 0.1%: within
+the bar is an upper end of at most 5.0%, above it a lower end of more than
+5.0%.
+
 - **Pass:** the pooled refusal rate's range at gap 5 is within choice 1's
   bar, and no `WRONG` is a resolver defect.
-- **Refusals too high:** the whole range is above the bar. The refusal
-  reason with the most `loud` comments is revisited first. This reverses
-  no rule by itself: a change to a rule is its own adjudication.
+- **Refusals too high:** the whole range is above the bar. The cause with
+  the most `loud` comments is revisited first: each refusal reason, and
+  `DETACHED` and `ORPHANED` each as its own cause, counted in `replay.py`'s
+  stdout at gap 5 and summed over the verdict arms. This reverses no rule
+  by itself: a change to a rule is its own adjudication.
 - **Inconclusive:** the range spans the bar. It is reported as that, with
   the range; a larger sample is a new document, not an amendment.
 - **Resolver defect:** a `WRONG` is classified as a resolver defect. It is
   filed as a bug against the reference resolver, with the file, the pair
   and the comment, and the run fails until the defect is decided.
 
-A resolver defect can hold with any of the first three.
+A resolver defect can hold with refusals too high or inconclusive. With a
+range within the bar, it makes the verdict a resolver defect, not a pass.
 
 ## 5. Classifying a WRONG
 
