@@ -1,8 +1,14 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Pre-registration 4: the anchor resolver's refusals on real history
 
-**Status: draft, for the owner's approval.** "Committed" means merged to
-`main`. No verdict arm below runs before this document merges.
+**Status: draft, for the owner's approval, and blocked.** "Committed"
+means merged to `main`. No verdict arm below runs before this document
+merges. **It cannot be approved as written:** the harness's line oracle
+cannot place an edited one-line paragraph or a moved one, so the refusals
+0003 asks to price fall mostly outside what it counts, and the refusal rate
+it gives is a range, not a figure (§6). §4's first bar cannot be decided on
+it. The oracle needs another way to place those paragraphs, chosen with the
+owner, first.
 
 **The question.** Adjudication 0003 §12, item 1, names first among what
 would reverse its anchor design "A replay over real history that prices the
@@ -120,11 +126,14 @@ The classification and its reason are written beside each one.
 
 ## 6. Disclosure: what was seen before this draft
 
-- **The rehearsal arm, site-policy,** was run at gaps 1 and 5 to show the
-  harness works (`rehearsal-site-policy.txt`): 9 of 3,882 surviving spans
-  refused at gap 1 (0.2%), 16 of 1,701 at gap 5 (0.9%, all `near-copy`),
-  and no `WRONG`.
-- **red_states.py** was run on site-policy at gap 1, with 5 files.
+- **The rehearsal arm, site-policy,** was run at gaps 1 and 5
+  (`rehearsal-site-policy.txt`). Among comments the oracle places, 9 of
+  3,882 surviving spans were refused at gap 1 (0.2%) and 16 of 1,701 at gap
+  5 (0.9%, all `near-copy`), with no `WRONG`. Counting as surviving every
+  loud comment the oracle cannot place, the rates are 2.0% and 17.2%. At gap
+  5 all 103 `crowded-gap` refusals are among those, and 800 comments sit on
+  documents whose later version the profile refuses.
+- **red_states.py and red_sweep.py** were run on their own fixture.
 - **D8's figures** for its own resolver were known: 7.1% loud on rust-book
   at gap 25, 3.1% on obsidian-help and 2.1% on rust-book at gap 5 (0003
   §12). They measure a different resolver and are not comparable as
