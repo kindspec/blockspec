@@ -329,6 +329,25 @@ def similarity(a: Leaf, b: Leaf) -> tuple[int, int]:
     return lcs_length(a.written_key, b.written_key), len(a.written_key) + len(b.written_key)
 
 
+_SPACE = re.compile(r"[\t\n\r ]+")
+
+
+def words(leaf: Leaf) -> list[str]:
+    """A leaf's words (0004): its type, then its text split at runs of tab,
+    LF, CR and space."""
+    return [leaf.type, *(w for w in _SPACE.split(leaf.text) if w)]
+
+
+def word_similarity(a: Leaf, b: Leaf) -> tuple[int, int]:
+    """`(L, T)` over words: the word similarity is `2·L/T` (0004)."""
+    wa, wb = words(a), words(b)
+    return lcs_length(wa, wb), len(wa) + len(wb)
+
+
+def at_least_three_tenths(sim: tuple[int, int]) -> bool:
+    return 20 * sim[0] >= 3 * sim[1]
+
+
 def at_least_half(sim: tuple[int, int]) -> bool:
     return 4 * sim[0] >= sim[1]
 
@@ -374,6 +393,7 @@ class Correspondence:
     def __init__(self, base: list[Leaf], current: list[Leaf]) -> None:
         self.base, self.current = base, current
         self._similarity: dict[tuple[int, int], tuple[int, int]] = {}
+        self._words: dict[tuple[int, int], tuple[int, int]] = {}
         base_count = _counts(base)
         current_count = _counts(current)
         unique = {leaf.key: leaf.index for leaf in current if current_count[leaf.key] == 1}
@@ -410,6 +430,11 @@ class Correspondence:
         if (b, c) not in self._similarity:
             self._similarity[(b, c)] = similarity(self.base[b], self.current[c])
         return self._similarity[(b, c)]
+
+    def word_similarity(self, b: int, c: int) -> tuple[int, int]:
+        if (b, c) not in self._words:
+            self._words[(b, c)] = word_similarity(self.base[b], self.current[c])
+        return self._words[(b, c)]
 
     def _edited(self, b: int, c: int, left_base: list[int], left_current: list[int]) -> bool:
         sim = self.similarity(b, c)
@@ -454,7 +479,7 @@ def check_pair(corr: Correspondence, k: int) -> tuple[int, str]:
 
     def near(also_exact: bool) -> bool:
         for u in unmatched:
-            sim = corr.similarity(k, u)
+            sim = corr.word_similarity(k, u)
             if at_least_half(sim) and (also_exact or below_one(sim)):
                 return True
         return False
@@ -476,7 +501,10 @@ def check_pair(corr: Correspondence, k: int) -> tuple[int, str]:
     else:
         if any(u in copies for u in unmatched):
             raise _Refused("exact-copy")
-        if any(u in gap_current for u in unmatched):
+        if any(
+            u in gap_current and at_least_three_tenths(corr.word_similarity(k, u))
+            for u in unmatched
+        ):
             raise _Refused("crowded-gap")
         if near(True):
             raise _Refused("near-copy")
@@ -515,21 +543,46 @@ def span_in_base(anchor: Anchor) -> int:
     return at + len(anchor.prefix)
 
 
+def _spaced(text: str) -> str:
+    """`text` with each run of tab, LF, CR and space as one space (0004)."""
+    return _SPACE.sub(" ", text)
+
+
+def _word_code_point(c: str) -> bool:
+    return unicodedata.category(c)[0] in "LN"
+
+
+def _edge(text: str, at: int) -> bool:
+    """Whether `at` is a word boundary in `text` (0004): an end of the text,
+    or a position not between two letters or numbers."""
+    return (
+        at <= 0
+        or at >= len(text)
+        or not (_word_code_point(text[at - 1]) and _word_code_point(text[at]))
+    )
+
+
 def find_span(anchor: Anchor, start: int, base: Leaf, current: Leaf) -> tuple[str, list | None]:
     """Section 11.5 for an EDITED pair: `EDITED` with the span, `DETACHED`,
     or `_Refused("span-ambiguous")`."""
     text = current.text
     span, prefix, suffix = anchor.span, anchor.prefix, anchor.suffix
+    begins, ends = _edge(base.text, start), _edge(base.text, start + len(span))
     hits = []
     for at in occurrences(text, span):
-        before, after = at - len(prefix), at + len(span) + len(suffix)
-        if before < 0 or text[before:at] != prefix or text[at + len(span) : after] != suffix:
+        if _edge(text, at) != begins or _edge(text, at + len(span)) != ends:
             continue
-        if len(prefix) < CONTEXT and before != 0:
-            continue
-        if len(suffix) < CONTEXT and after != len(text):
-            continue
-        hits.append(at)
+        before, after = _spaced(text[:at]), _spaced(text[at + len(span) :])
+        if len(prefix) < CONTEXT:
+            prefix_holds = before == _spaced(prefix)
+        else:
+            prefix_holds = before.endswith(_spaced(prefix))
+        if len(suffix) < CONTEXT:
+            suffix_holds = after == _spaced(suffix)
+        else:
+            suffix_holds = after.startswith(_spaced(suffix))
+        if prefix_holds or suffix_holds:
+            hits.append(at)
     if not hits:
         return "DETACHED", None
     if len(hits) > 1:
