@@ -34,6 +34,11 @@ the first item under *What would reverse it*.
 Pins: blockspec `26e00f2` with `SPEC.md` from kindspec/blockspec#40;
 kindspec/research `244dff0`.
 
+**Amended by 0004** (2026-10-18), after the replay this document's §12
+asked for: §4's near-copy checks compare words, its crowded-gap check needs
+a rival, and §5's context filter needs one side of the context, with the
+span's word boundaries kept (`0004-anchor-refusals.md`).
+
 ## Decision
 
 **Decided, 2026-10-16.**

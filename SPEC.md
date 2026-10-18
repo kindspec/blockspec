@@ -638,6 +638,14 @@ The **similarity** of two leaves is `2·L/(m+n)`, where `m` and `n` are the
 lengths in code points of their keys, each written as the type, U+001F and
 the text, and `L` is the length of a longest common subsequence of the two.
 
+The **word similarity** of two leaves is the same formula over words
+(0004): a leaf's **words** are its `leaf.type`, then its `leaf.text` split
+at each run of U+0009, U+000A, U+000D and U+0020, empty pieces left out.
+`m` and `n` count words, which are compared exactly, and `L` is the length
+of a longest common subsequence of the two word sequences. §11.3's
+correspondence uses the similarity; §11.4's near-copy and crowded-gap checks
+use the word similarity.
+
 A **longest common subsequence alignment** of two sequences pairs elements
 from the start: when the two elements under consideration are equal they
 are paired;
@@ -678,11 +686,12 @@ detail 5). With a similarity written `2·L/T`, where `T = m+n` is at least 2:
 | §11 states | compare |
 | --- | --- |
 | similarity at least 0.5 | `4·L ≥ T` |
+| similarity at least 0.3 | `20·L ≥ 3·T` |
 | similarity below 1 | `2·L < T` |
 | `2·L₁/T₁` exceeds `2·L₂/T₂` by at least 0.15 | `40·L₁·T₂ − 40·L₂·T₁ ≥ 3·T₁·T₂` |
 
-These apply wherever §11.3 and §11.4 compare a similarity with 0.5, 1 or a
-margin of 0.15. A floating-point comparison is not conforming:
+These apply wherever §11.3 and §11.4 compare a similarity or a word
+similarity with 0.3, 0.5, 1 or a margin of 0.15. A floating-point comparison is not conforming:
 `22/30 − 42/72` is exactly 0.15, and IEEE 754 doubles compute it as just
 below.
 
@@ -707,19 +716,19 @@ decides (0003 §4):
     never on the chain, so `k`'s `EXACT` pair comes from §11.3 step 2's
     alignment inside `k`'s own gap (0003, second addendum of 2026-10-16,
     item 9);
-  - an unmatched leaf with similarity to `k` of at least 0.5 and below 1:
-    `REFUSED(near-copy)`.
+  - an unmatched leaf with word similarity to `k` of at least 0.5 and below
+    1: `REFUSED(near-copy)`.
 - **`MOVED`**:
-  - an unmatched leaf with similarity to `k` of at least 0.5:
+  - an unmatched leaf with word similarity to `k` of at least 0.5:
     `REFUSED(near-copy)`;
   - an unmatched leaf in `k`'s gap on the current side:
     `REFUSED(refilled-gap)`.
 - **`EDITED`**:
   - an unmatched copy of `k`: `REFUSED(exact-copy)`. A copy that is some
     base leaf's pair does not count (0003 Q12);
-  - another unmatched leaf in `k`'s gap on the current side:
-    `REFUSED(crowded-gap)`;
-  - an unmatched leaf with similarity to `k` of at least 0.5:
+  - another unmatched leaf in `k`'s gap on the current side, with word
+    similarity to `k` of at least 0.3: `REFUSED(crowded-gap)` (0004);
+  - an unmatched leaf with word similarity to `k` of at least 0.5:
     `REFUSED(near-copy)`.
 
 ### 11.5 The span
@@ -728,20 +737,33 @@ For `EXACT` and `MOVED`, the span keeps its offset in the paired leaf, whose
 text is unchanged.
 
 For `EDITED`, the span is searched **inside the paired leaf only**. A hit is
-an occurrence of `span` with `prefix` ending where it starts and `suffix`
-starting where it ends. **A short context must sit at the leaf's edge**
-(0003, addendum, detail 6): when `prefix` is shorter than 32 code points,
-the hit's `prefix` starts at the start of the paired leaf's text, and when
-`suffix` is shorter than 32, the hit's `suffix` ends at its end. An
-occurrence that does not is not a hit. Hits are counted by start position,
-overlapping ones included (§11.1). With no hit the anchor is
+an occurrence of `span` that meets both of these (0004, which replaces
+0003 Q13's requirement of both sides):
+
+1. **Its ends are word boundaries exactly where the base span's are.** A
+   position in a text is a word boundary when it is the text's start or
+   end, or when the code points on its two sides are not both letters or
+   numbers (general category L or N). The occurrence's start is a word
+   boundary in the paired leaf's text if and only if the span's start is
+   one in `leaf.text`, and the same for its end.
+2. **One side of its context holds.** Write each text with every run of
+   U+0009, U+000A, U+000D and U+0020 as one U+0020. The prefix holds when
+   the paired leaf's text before the occurrence, so written, ends with
+   `prefix` so written; when `prefix` is shorter than 32 code points it
+   must be all of that text (0003, addendum, detail 6: a short context sits
+   at the leaf's edge). The suffix holds in the same way, after the
+   occurrence and at the leaf's end. A hit needs the prefix or the suffix
+   to hold.
+
+Hits are counted by start position, overlapping ones included (§11.1). With no hit the anchor is
 `DETACHED`; with more than one, `REFUSED(span-ambiguous)`. With one hit, the
 longest common subsequence alignment (§11.2) of the base leaf's text onto
 the paired leaf's text must pair every code point of the span with the code
 point at the same position in the hit, or the anchor is `DETACHED` (0003
 §5).
 
-There is no fallback that places a comment without its context (0003 Q13).
+There is no fallback that places a comment with neither side of its
+context (0003 Q13, as 0004 amends it).
 
 ### 11.6 Statuses
 
@@ -1040,7 +1062,7 @@ produces, so they resolve, silently, to the wrong text (0003 §9):
 | --- | --- | --- | --- |
 | R1 | a leaf deleted, and a verbatim copy of it elsewhere | a move | not affected: stale on `MOVED` |
 | R2 | a leaf rewritten to similarity below 0.5, with a verbatim copy of its old text left in its place in order | a new leaf inserted beside an unchanged one | affected |
-| R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with the same context | a sentence moved within its leaf | affected |
+| R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with one side of its context or both (0004), on the same word boundaries | a sentence moved within its leaf | affected |
 | R4 | a different document at the same path, by archive-and-replace or copy-and-rewrite | an edit of the document | affected |
 
 ## 12. Not decided
