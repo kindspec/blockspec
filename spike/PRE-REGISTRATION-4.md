@@ -8,8 +8,9 @@ is revisited, choice 3 and 5 make a resolver defect at any gap fail the
 run, and choice 6 names the labellers. It also fixed the commands and the
 resolver's pin (§2), what is published (§3), how the range is read and
 that a defect is not a pass (§4), the exclusions §1 lists, and an
-attribution to 0003. "Committed" means merged to `main`. No verdict arm
-below runs before this document merges.
+attribution to 0003. Amendment 1 (§7, 2026-10-18) moves the harness pin
+after a first attempt stopped on a harness defect. "Committed" means
+merged to `main`. No verdict arm below runs before this document merges.
 
 **The question.** Adjudication 0003 §12, item 1, names first among what
 would reverse its anchor design "A replay over real history that prices the
@@ -149,7 +150,8 @@ The pins and pathspecs are `arms.json`'s. The replay's sample is
 | unplaced, loud | 60 |
 | unplaced, resolves | 30 |
 
-The harness runs at research `c26bba1`, against the reference resolver at
+The harness runs at research `735091e` (amendment 1, §7; it was
+`c26bba1`), against the reference resolver at
 blockspec `d38a6bc` (`--blockspec` a checkout of that commit). From
 `experiments/D8-anchor-replay/`, with each clone at its pin:
 
@@ -254,7 +256,9 @@ classified the same way.
   at gap 25, 3.1% on obsidian-help and 2.1% on rust-book at gap 5 (0003
   §12). They measure a different resolver and are not comparable as
   numbers.
-- No verdict arm has been run against the blockspec reference resolver.
+- No verdict arm had been run against the blockspec reference resolver
+  when this draft was approved. The attempt amendment 1 (§7) records ran it
+  on some gap-1 pairs and printed nothing.
 
 ## 7. Amendment rules
 
@@ -262,3 +266,45 @@ After this merges, a change to the bars, the arms, the sample or the
 harness before the run is an amendment, committed and dated before the run.
 After the run, nothing here changes; a different question gets its own
 document.
+
+### Amendment 1, 2026-10-18: the harness pin moves to research `735091e`
+
+**Why.** An attempt was started at `c26bba1`, one `replay.py` per verdict
+arm. rust-book, obsidian-help and k8s-en each stopped on the same defect,
+after 1.2 s, 4.8 s and 31.6 s: a file's history from `git log -- FILE`
+includes the commit that deletes it or moves it away, where `git show`
+fails. cncf-toc, which holds no such pair, was stopped by hand. Before
+stopping, the three had read and resolved 22, 37 and 55 gap-1 pairs, and
+cncf-toc an unknown number; none printed any section, and no dump was
+written, so no figure was seen. The attempt is not the run: §3 counts a
+run only with all twelve sections, and the run, restarted at the new pin
+after this amendment merges, starts from nothing.
+
+**What changes** (research#21, merged as `735091e`). A file's history
+starts after the last commit, in `git log`'s order, that does not hold it
+as a file, as the history before a rename was already not followed.
+Skipping only the deleting commit would have joined histories across a
+move away and back: on rust-book, 36 sampled files left for
+`second-edition/` in 2017 and returned in 2018. That, and a check that
+stops the run if `git cat-file`'s answers do not line up, is the whole
+change to the measurement; the rest of #21 adds self-checks (a red state,
+sweep breaks, `histcheck.py`) and README text.
+
+**Effect.** `histcheck.txt` counts the sampled files whose history this
+changes: rust-book 36 of 60, obsidian-help 2, k8s-en 2, cncf-toc 1, and
+site-policy 0, so the rehearsal's pairs, figures and labels (§6) are
+unchanged. (It was made at research `7d5021e`, which differs from
+`735091e` only in that file.) In the four verdict arms other files' pairs
+can change too, since one generator draws every file's pairs in turn, and
+three arms have fewer pairs, from shorter histories: rust-book 176, 160
+and 88 at gaps 1, 5 and 25 become 172, 146 and 69; obsidian-help 104 at
+gap 5 becomes 101; k8s-en 73 at gap 1 becomes 71, and 6 at gap 25
+becomes 3.
+
+**What was seen before this amendment**, besides §6: the three tracebacks;
+`histcheck.txt`; a check that read every sampled pair's two versions with
+`git show` and decoded them, at every arm and gap, which found none
+unreadable and none not UTF-8 and gave each arm's number of pairs per gap;
+and, in review, git-only counts of the pairs per arm and gap under each
+harness version and of the pairs that crossed a deletion. None of these
+read a document with the blockspec reader or ran the resolver.
