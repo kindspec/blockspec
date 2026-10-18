@@ -149,7 +149,8 @@ The pins and pathspecs are `arms.json`'s. The replay's sample is
 | unplaced, loud | 60 |
 | unplaced, resolves | 30 |
 
-The harness runs at research `c26bba1`, against the reference resolver at
+The harness runs at research `735091e` (amendment 1, §7; it was
+`c26bba1`), against the reference resolver at
 blockspec `d38a6bc` (`--blockspec` a checkout of that commit). From
 `experiments/D8-anchor-replay/`, with each clone at its pin:
 
@@ -262,3 +263,34 @@ After this merges, a change to the bars, the arms, the sample or the
 harness before the run is an amendment, committed and dated before the run.
 After the run, nothing here changes; a different question gets its own
 document.
+
+### Amendment 1, 2026-10-18: the harness pin moves to research `735091e`
+
+**Why.** The run was started at `c26bba1`, one `replay.py` per verdict arm.
+rust-book and obsidian-help stopped within seconds: a file's history from
+`git log -- FILE` includes the commit that deletes it or moves it away,
+where `git show` fails. The other two runs were stopped before they printed
+any section; no run printed a figure, and no dump was written. k8s-en's
+sample holds such a pair too.
+
+**What changes** (research#21, merged as `735091e`). A file's history
+starts after the last commit, in `git log`'s order, that does not hold it
+as a file, as the history before a rename was already not followed.
+Skipping only the deleting commit would have joined histories across a
+move away and back: on rust-book, 36 sampled files left for
+`second-edition/` in 2017 and returned in 2018. Nothing else in the
+harness changes.
+
+**Effect.** `histcheck.txt` counts the sampled files whose history this
+changes: rust-book 36 of 60, obsidian-help 2, k8s-en 2, cncf-toc 1, and
+site-policy 0, so the rehearsal's pairs, figures and labels (§6) are
+unchanged. In the four verdict arms other files' pairs can change too,
+since one generator draws every file's pairs in turn. rust-book's sample
+is smaller: up to three pairs per file, from shorter histories.
+
+**What was seen before this amendment**, besides §6: the two crashes'
+tracebacks; `histcheck.txt`; and a check that read every sampled pair's
+two versions with `git show` and decoded them, at every arm and gap,
+which found none unreadable and none not UTF-8 and gave each arm's
+number of pairs per gap. None read a document with the blockspec reader
+or ran the resolver.
