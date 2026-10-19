@@ -78,7 +78,9 @@ def test_the_resolvers_probe_runs_the_scratch_file_beside_a_copy_of_the_reader(t
     baseline = probe(str(scratch))
     assert baseline.reached and not baseline.failures
     assert not probe(str(scratch)).reached  # the unmutated source again: no verdict
-    scratch.write_text(anchor.replace("if near(True):", "if False:"), encoding="utf-8")
+    killed = "if any(u in copies for u in unmatched):"
+    assert anchor.count(killed) == 1
+    scratch.write_text(anchor.replace(killed, "if False:"), encoding="utf-8")
     assert probe(str(scratch)).failures  # a mutant the anchor cases kill
 
 
