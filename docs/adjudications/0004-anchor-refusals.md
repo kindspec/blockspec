@@ -33,8 +33,9 @@ nothing in a document or a record changes.
   matching an edge). On a paragraph or heading, the context compares
   whitespace runs as one space, and a comment needs one side of it that
   holds and is not empty; a suggestion still needs both sides, as 0003 Q13
-  said, whitespace aside. On a code block or table, comments and
-  suggestions keep 0003's rule: both sides, compared exactly.
+  said, whitespace aside. Where the leaf or its pair is a code block or a
+  table, comments and suggestions keep 0003's rule: both sides, compared
+  exactly.
 
 ## Why each
 
@@ -71,7 +72,9 @@ so it keeps 0003's stricter test.
 In code and tables, whitespace and the cells beside a span carry meaning
 that prose does not: a line's indentation is its scope in Python and its
 parent in YAML, and a table row's first cell names what the others
-describe. So those leaves keep 0003's exact, two-sided rule. The replay
+describe. So those leaves keep 0003's exact, two-sided rule, whichever side
+of the edit they are on: a paragraph of pipes that becomes a table, or of
+code that becomes a code block, is compared exactly too. The replay
 scores paragraphs only, so the figures below do not depend on this.
 
 ## How it was reached
@@ -95,13 +98,22 @@ wrong text where 0003 refused or detached:
 The owner approved the version with those holes closed on the
 measurements below. Its own review then found rule D, as first worded for
 every leaf type, putting text in the wrong place in code and tables where
-0003 detached it, and the owner scoped D to prose:
+0003 detached it, and the owner scoped D to prose, here meaning a pair
+whose two leaves are both paragraphs or headings:
 
 | input | 0003 | D on every leaf | this version |
 | --- | --- | --- | --- |
 | a suggestion on `remove(f)`, the line moved out of its `for` loop | DETACHED, stale | EDITED, applies | DETACHED, stale |
 | a suggestion on `name: web`, re-parented under `spec:` in YAML | DETACHED, stale | EDITED, applies | DETACHED, stale |
 | a comment on row api's limit, the row renamed db | DETACHED | EDITED on db's limit | DETACHED |
+
+A second review found that scope decided by the anchored leaf's type
+alone left two of these open across a change of type: a paragraph of
+pipes becoming a table with row api renamed db moved a comment onto db's
+`10`, and a paragraph of code becoming a Python block with `remove(f)`
+indented into the loop let a suggestion apply there. 0003 detached both.
+The comparison is now exact when either leaf is a code block or a table,
+and both detach.
 
 ## The measurement, and what it is not
 
@@ -130,9 +142,10 @@ owner the same day.
 ## What it gives up
 
 - **On prose, a comment follows its span through an edit beside it** while
-  one side of its context and its neighbours hold: "Unit A: trip at 4.2
-  sigma" becoming "Unit B: trip at 4.2 sigma", or "should restart every
-  replica" becoming "should not restart every replica". The comment lands
+  one side of its context and its neighbours hold: a comment on `4.2` in
+  "Unit A: trip at 4.2 sigma" becoming "Unit B: trip at 4.2 sigma", or on
+  `restart` in "should restart every replica" becoming "should not restart
+  every replica". The comment lands
   `EDITED`, shown as changed (SPEC.md §11.6), but the words around it may
   now mean something else; SPEC.md §11.12 names it. This was 0003 Q13's
   cost, kept on purpose, and is now traded the other way for comments on
@@ -140,9 +153,9 @@ owner the same day.
 - **A short context away from the leaf's edge** no longer detaches a
   comment when the other side holds. The neighbour rule still detaches it
   when a code point was added at that edge and the context there was
-  empty; with a short context there, as "Note: restart every replica"
-  becoming "Urgent note: restart every replica", the comment follows on
-  the other side.
+  empty; with a short context there, as a comment on `restart every
+  replica` in "Note: restart every replica now." becoming "Urgent note:
+  restart every replica now.", the comment follows on the other side.
 - **Transclusions.** SPEC.md §11.9 runs §11.4, so A also changes a pinned
   transclusion's near-copy check. The replay does not measure
   transclusions.

@@ -20,7 +20,7 @@ adjudications. Its 0001 and 0002 cases were written before any
 implementation existed; its 0003 cases, under
 `conformance/cases/anchor/`, after the reference resolver, by an author who
 had not read it. 0004's cases, and the resolver change that follows them,
-are not yet written: until they land, §11's 0004 rules are ahead of
+have not landed: until they do, §11's 0004 rules are ahead of
 `conformance/cases/` and `reference/blockspec/anchor.py`, and cases there
 that 0004 changes still pin 0003. Where they left a question
 open, a case takes a reading and its `WHY.md` says **READING**. A reading is
@@ -759,11 +759,11 @@ Q13):
    32 code points, counted as stored, it must be all of that text (0003,
    addendum, detail 6: a short context sits at the leaf's edge). The
    suffix holds in the same way, after the occurrence and at the leaf's
-   end. Which sides must hold, and how they compare, depends on `leaf`'s
-   type:
-   - **`code` and `table`**: both sides, compared exactly, as 0003 Q13
-     decided, for a comment and a suggestion alike.
-   - **`p` and `h1` to `h6`**: each of the text before the occurrence, the
+   end. Which sides must hold, and how they compare, depends on the types
+   of `leaf` and of the paired leaf:
+   - **either is `code` or `table`**: both sides, compared exactly, as
+     0003 Q13 decided, for a comment and a suggestion alike.
+   - **both are `p` or `h1` to `h6`**: each of the text before the occurrence, the
      text after it, `prefix` and `suffix` is first written on its own with
      every run of U+0009, U+000A, U+000D and U+0020 as one U+0020. **For a
      comment**, one side must hold whose stored context is not empty; when
@@ -1079,15 +1079,16 @@ and R3 as 0004 widens them):
 | --- | --- | --- | --- |
 | R1 | a leaf deleted, and a verbatim copy of it elsewhere | a move | not affected: stale on `MOVED` |
 | R2 | a leaf rewritten to word similarity below 0.5 (0004; by code points it may be more similar), with a verbatim copy of its old text left in its place in order | a new leaf inserted beside an unchanged one | affected |
-| R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with its neighbouring code points and the sides of its context §11.5 requires: for a comment on a `p` or heading leaf, one side, compared with whitespace runs as one space (0004) | a sentence moved within its leaf | affected |
+| R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with its neighbouring code points and the sides of its context §11.5 requires: for a comment where both leaves are `p` or headings, one side, compared with whitespace runs as one space (0004) | a sentence moved within its leaf | affected |
 | R4 | a different document at the same path, by archive-and-replace or copy-and-rewrite | an edit of the document | affected |
 
-**An edit beside a comment** is not in the table, and 0004 accepts it. On a
-`p` or heading leaf, a comment follows its span through a change on one
-side of it while its neighbouring code points and the other side of its
-context hold: "Unit A: trip at 4.2 sigma" becoming "Unit B: trip at 4.2
-sigma", or "should restart every replica" becoming "should not restart
-every replica". It lands on the same span, not on a copy of it as in R3,
+**An edit beside a comment** is not in the table, and 0004 accepts it.
+Where a leaf and its pair are both `p` or headings, a comment follows its
+span through a change on one side of it while its neighbouring code points
+and the other side of its context hold: a comment on `4.2` in "Unit A: trip
+at 4.2 sigma" becoming "Unit B: trip at 4.2 sigma", or on `restart` in
+"should restart every replica" becoming "should not restart every
+replica". It lands on the same span, not on a copy of it as in R3,
 and it is `EDITED`, shown as changed (§11.6), but the text around it may
 now mean something else. A suggestion is not affected: it needs both
 sides.

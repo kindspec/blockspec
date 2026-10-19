@@ -37,8 +37,9 @@ kindspec/research `244dff0`.
 **Amended by 0004** (2026-10-18), after the replay §12 asks for: §4's
 near-copy check on an unchanged leaf compares words, and §5's context filter
 needs, for a comment on a paragraph or heading, one side of the context and
-the span's neighbouring code points; a suggestion, and any record on a code
-block or table, still needs both sides. §9's R2 and R3 widen with them
+the span's neighbouring code points; a suggestion needs both sides,
+compared on prose with whitespace runs as one space, and any record on a
+code block or table, before or after the edit, needs both sides exactly. §9's R2 and R3 widen with them
 (`0004-anchor-refusals.md`; `SPEC.md` §11.12).
 
 ## Decision
