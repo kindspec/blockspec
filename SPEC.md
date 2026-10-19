@@ -17,9 +17,12 @@ document says so (§12) instead of choosing.
 
 The conformance suite, `conformance/cases/`, was written from the same
 adjudications. Its 0001 and 0002 cases were written before any
-implementation existed; its 0003 and 0004 cases, under
+implementation existed; its 0003 cases, under
 `conformance/cases/anchor/`, after the reference resolver, by an author who
-had not read it. Where they left a question
+had not read it. 0004's cases, and the resolver change that follows them,
+are not yet written: until they land, §11's 0004 rules are ahead of
+`conformance/cases/` and `reference/blockspec/anchor.py`, and cases there
+that 0004 changes still pin 0003. Where they left a question
 open, a case takes a reading and its `WHY.md` says **READING**. A reading is
 not a decision, and §12 lists each one.
 
@@ -645,7 +648,8 @@ words. A leaf's **words** are its `leaf.text` split at each run of U+0009,
 U+000A, U+000D and U+0020, empty pieces left out; `m` and `n` count words,
 which are compared exactly, and `L` is the length of a longest common
 subsequence of the two word sequences. It is 0 when either leaf has no
-words. Only §11.4's near-copy check on an `EXACT` leaf uses it.
+words. Only §11.4's near-copy check on an `EXACT` leaf uses it, including
+where §11.9 runs §11.4 for a transclusion.
 
 A **longest common subsequence alignment** of two sequences pairs elements
 from the start: when the two elements under consideration are equal they
@@ -717,9 +721,11 @@ decides (0003 §4):
     alignment inside `k`'s own gap (0003, second addendum of 2026-10-16,
     item 9);
   - an unmatched leaf that is not a copy of `k`, with word similarity to
-    `k` of at least 0.5: `REFUSED(near-copy)` (0004). A leaf that differs
-    from `k` only in runs of U+0009, U+000A, U+000D and U+0020 has word
-    similarity 1 and is not a copy, so it refuses.
+    `k` of at least 0.5: `REFUSED(near-copy)` (0004). When `k` has words,
+    a leaf that differs from it only in runs of U+0009, U+000A, U+000D and
+    U+0020 has word similarity 1 and is not a copy, so it refuses; when `k`
+    has none, no leaf reaches 0.5. Words leave out the type, so a heading
+    with `k`'s text at another level, or a paragraph, refuses.
 - **`MOVED`**:
   - an unmatched leaf with similarity to `k` of at least 0.5:
     `REFUSED(near-copy)`;
@@ -748,16 +754,23 @@ Q13):
    the one just after the span. U+0009, U+000A, U+000D and U+0020 compare
    equal to one another; a text's start or end compares equal only to a
    start or end; any other code point only to itself.
-2. **Its context holds.** Write each of these on its own with every run of
-   U+0009, U+000A, U+000D and U+0020 as one U+0020: the paired leaf's text
-   before the occurrence, its text after it, `prefix` and `suffix`. The
-   prefix holds when the text before ends with `prefix`; when `prefix` is
-   shorter than 32 code points, counted as stored, it must be all of that
-   text (0003, addendum, detail 6: a short context sits at the leaf's
-   edge). The suffix holds in the same way, after the occurrence and at
-   the leaf's end. **For a comment**, one side must hold whose stored
-   context is not empty; when both are empty, the span is the whole leaf
-   and both hold. **For a suggestion**, both sides must hold. Hits are counted by start position,
+2. **Its context holds.** The prefix holds when the paired leaf's text
+   before the occurrence ends with `prefix`; when `prefix` is shorter than
+   32 code points, counted as stored, it must be all of that text (0003,
+   addendum, detail 6: a short context sits at the leaf's edge). The
+   suffix holds in the same way, after the occurrence and at the leaf's
+   end. Which sides must hold, and how they compare, depends on `leaf`'s
+   type:
+   - **`code` and `table`**: both sides, compared exactly, as 0003 Q13
+     decided, for a comment and a suggestion alike.
+   - **`p` and `h1` to `h6`**: each of the text before the occurrence, the
+     text after it, `prefix` and `suffix` is first written on its own with
+     every run of U+0009, U+000A, U+000D and U+0020 as one U+0020. **For a
+     comment**, one side must hold whose stored context is not empty; when
+     both are empty, the span is the whole leaf and both hold. **For a
+     suggestion**, both sides must hold.
+
+Hits are counted by start position,
 overlapping ones included (§11.1). With no hit the anchor is
 `DETACHED`; with more than one, `REFUSED(span-ambiguous)`. With one hit, the
 longest common subsequence alignment (§11.2) of the base leaf's text onto
@@ -1059,14 +1072,25 @@ The other two MAY only refuse more, never turn a refusal into a resolution:
 ### 11.12 What this does not prevent
 
 Four mechanisms leave current bytes identical to those a legitimate edit
-produces, so they resolve, silently, to the wrong text (0003 §9):
+produces, so they resolve, silently, to the wrong text (0003 §9, with R2
+and R3 as 0004 widens them):
 
 | | mechanism | indistinguishable from | suggestions |
 | --- | --- | --- | --- |
 | R1 | a leaf deleted, and a verbatim copy of it elsewhere | a move | not affected: stale on `MOVED` |
 | R2 | a leaf rewritten to word similarity below 0.5 (0004; by code points it may be more similar), with a verbatim copy of its old text left in its place in order | a new leaf inserted beside an unchanged one | affected |
-| R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with its neighbouring code points and, for a comment, one side of its context, for a suggestion both (0004) | a sentence moved within its leaf | affected |
+| R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with its neighbouring code points and the sides of its context §11.5 requires: for a comment on a `p` or heading leaf, one side, compared with whitespace runs as one space (0004) | a sentence moved within its leaf | affected |
 | R4 | a different document at the same path, by archive-and-replace or copy-and-rewrite | an edit of the document | affected |
+
+**An edit beside a comment** is not in the table, and 0004 accepts it. On a
+`p` or heading leaf, a comment follows its span through a change on one
+side of it while its neighbouring code points and the other side of its
+context hold: "Unit A: trip at 4.2 sigma" becoming "Unit B: trip at 4.2
+sigma", or "should restart every replica" becoming "should not restart
+every replica". It lands on the same span, not on a copy of it as in R3,
+and it is `EDITED`, shown as changed (§11.6), but the text around it may
+now mean something else. A suggestion is not affected: it needs both
+sides.
 
 ## 12. Not decided
 
@@ -1158,8 +1182,8 @@ listed: 0002's *Decision* text decides it (§4.3).
 
 - **Whether creation and the consistency check count under the edge rule.**
   §11.1 requires `prefix + span + suffix` to occur exactly once in
-  `leaf.text`, counting every occurrence; §11.5 counts a hit only at the
-  edge when a context is short. A triple that occurs once at the edge and
+  `leaf.text`, counting every occurrence; §11.5 holds a short side of the
+  context only at the leaf's edge. A triple that occurs once at the edge and
   again elsewhere is not created, and a record holding it is
   `record-inconsistent`, though under the edge rule it is unambiguous.
 - **Whether a later version admits further keys in a record's
