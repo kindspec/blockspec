@@ -108,7 +108,8 @@ every witness agrees, and is loud otherwise. Four edit shapes that the bytes
 cannot tell from legitimate edits remain, and that document names them.
 Pre-registration 4 measured its refusals on real history as too high
 (`0003-anchors/replay-verdict.md`), and `0004-anchor-refusals.md` narrows
-two of its rules.
+two of its rules; pre-registration 5 measured 0004's rules on held-out history
+refusing 2.9% of comments on surviving text, within its 5% bar (`0004-anchor-refusals/replay-verdict.md`).
 
 **What is the merge failure this format prevents?** rowspec has a specific,
 demonstrated one: two branches insert rows, git merges cleanly, the total is 480
