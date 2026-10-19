@@ -1,7 +1,0 @@
-{
-  "kind": "anchor",
-  "records": {
-    "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B801.md": {"status": "REFUSED(near-copy)", "leaf": null, "span": null, "suggestion": null}
-  },
-  "controls": ["anchor/near-copy/exact-with-an-unmatched-leaf-just-below-one-half"]
-}

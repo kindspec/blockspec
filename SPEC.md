@@ -19,10 +19,8 @@ The conformance suite, `conformance/cases/`, was written from the same
 adjudications. Its 0001 and 0002 cases were written before any
 implementation existed; its 0003 cases, under
 `conformance/cases/anchor/`, after the reference resolver, by an author who
-had not read it. 0004's cases, and the resolver change that follows them,
-have not landed: until they do, §11's 0004 rules are ahead of
-`conformance/cases/` and `reference/blockspec/anchor.py`, and cases there
-that 0004 changes still pin 0003. Where they left a question
+had not read it. 0004's cases were written the same way, after its resolver change. Where
+they left a question
 open, a case takes a reading and its `WHY.md` says **READING**. A reading is
 not a decision, and §12 lists each one.
 

@@ -516,10 +516,6 @@ ANCHOR_MUTANTS = {
         "return 4 * sim[0] >= sim[1]",
         "return 4 * sim[0] > sim[1]",
     ),
-    "below one allows one": (
-        "return 2 * sim[0] < sim[1]",
-        "return 2 * sim[0] <= sim[1]",
-    ),
     "margin compares strictly": (
         "return 40 * l1 * t2 - 40 * l2 * t1 >= 3 * t1 * t2",
         "return 40 * l1 * t2 - 40 * l2 * t1 > 3 * t1 * t2",
@@ -577,19 +573,47 @@ ANCHOR_MUTANTS = {
         "if len(copies) > 1:",
     ),
     "exact near-copy off": (
-        '        if near(also_exact=False):\n            raise _Refused("near-copy")',
-        '        if False:\n            raise _Refused("near-copy")',
-    ),
-    "near-copy below half": (
-        "if at_least_half(sim) and (also_exact or below_one(sim)):",
-        "if (also_exact or below_one(sim)):",
+        "corr.current[u].key != leaf.key and at_least_half(corr.word_similarity(k, u))",
+        "False",
     ),
     "exact near-copy counts exact copies": (
-        "if at_least_half(sim) and (also_exact or below_one(sim)):",
-        "if at_least_half(sim):",
+        "corr.current[u].key != leaf.key and at_least_half(corr.word_similarity(k, u))",
+        "at_least_half(corr.word_similarity(k, u))",
+    ),
+    "exact near-copy by code points": (
+        "corr.current[u].key != leaf.key and at_least_half(corr.word_similarity(k, u))",
+        "corr.current[u].key != leaf.key and at_least_half(corr.similarity(k, u))",
+    ),
+    "exact near-copy below half": (
+        "corr.current[u].key != leaf.key and at_least_half(corr.word_similarity(k, u))",
+        "corr.current[u].key != leaf.key and corr.word_similarity(k, u)[0] > 0",
+    ),
+    "words split on any whitespace": (
+        '_SPACE = re.compile(r"[\\t\\n\\r ]+")',
+        '_SPACE = re.compile(r"\\s+")',
+    ),
+    "words split at punctuation": (
+        '_SPACE = re.compile(r"[\\t\\n\\r ]+")',
+        '_SPACE = re.compile(r"\\W+")',
+    ),
+    "words carry the type": (
+        "return [w for w in _SPACE.split(leaf.text) if w]",
+        "return [leaf.type] + [w for w in _SPACE.split(leaf.text) if w]",
+    ),
+    "a leaf with no words scores one": (
+        "return 0, 2",
+        "return (2, 2) if not wa and not wb else (0, 2)",
+    ),
+    "near-copy below half": (
+        "return any(at_least_half(corr.similarity(k, u)) for u in unmatched)",
+        "return any(corr.similarity(k, u)[0] > 0 for u in unmatched)",
+    ),
+    "moved and edited near-copy by words": (
+        "return any(at_least_half(corr.similarity(k, u)) for u in unmatched)",
+        "return any(at_least_half(corr.word_similarity(k, u)) for u in unmatched)",
     ),
     "moved near-copy off": (
-        "    elif kind == MOVED:\n        if near(also_exact=True):",
+        "    elif kind == MOVED:\n        if near():",
         "    elif kind == MOVED:\n        if False:",
     ),
     "refilled gap off": (
@@ -615,8 +639,22 @@ ANCHOR_MUTANTS = {
         '        if False:\n            raise _Refused("crowded-gap")',
     ),
     "edited near-copy off": (
-        "if near(True):",
-        "if False:",
+        (
+            "    else:\n"
+            "        if any(u in copies for u in unmatched):\n"
+            '            raise _Refused("exact-copy")\n'
+            "        if any(u in gap_current for u in unmatched):\n"
+            '            raise _Refused("crowded-gap")\n'
+            "        if near():"
+        ),
+        (
+            "    else:\n"
+            "        if any(u in copies for u in unmatched):\n"
+            '            raise _Refused("exact-copy")\n'
+            "        if any(u in gap_current for u in unmatched):\n"
+            '            raise _Refused("crowded-gap")\n'
+            "        if False:"
+        ),
     ),
     "empty span allowed": (
         '    if not anchor.span:\n        raise _Refused("record-inconsistent")',
@@ -639,12 +677,117 @@ ANCHOR_MUTANTS = {
         "at = text.find(part, at + len(part))",
     ),
     "no prefix edge rule": (
-        "if len(prefix) < CONTEXT and before != 0:",
-        "if False:",
+        "prefix_holds = before == spaced(prefix)",
+        "prefix_holds = before.endswith(spaced(prefix))",
     ),
     "no suffix edge rule": (
-        "if len(suffix) < CONTEXT and after != len(text):",
+        "suffix_holds = after == spaced(suffix)",
+        "suffix_holds = after.startswith(spaced(suffix))",
+    ),
+    "short prefix counted after collapse": (
+        "        if len(prefix) < CONTEXT:\n            prefix_holds",
+        "        if len(spaced(prefix)) < CONTEXT:\n            prefix_holds",
+    ),
+    "short suffix counted after collapse": (
+        "        if len(suffix) < CONTEXT:\n            suffix_holds",
+        "        if len(spaced(suffix)) < CONTEXT:\n            suffix_holds",
+    ),
+    "neighbours unchecked": (
+        (
+            "if _neighbour(text, at - 1) != before_was or "
+            "_neighbour(text, at + len(span)) != after_was:"
+        ),
         "if False:",
+    ),
+    "neighbour before unchecked": (
+        (
+            "if _neighbour(text, at - 1) != before_was or "
+            "_neighbour(text, at + len(span)) != after_was:"
+        ),
+        "if _neighbour(text, at + len(span)) != after_was:",
+    ),
+    "neighbour after unchecked": (
+        (
+            "if _neighbour(text, at - 1) != before_was or "
+            "_neighbour(text, at + len(span)) != after_was:"
+        ),
+        "if _neighbour(text, at - 1) != before_was:",
+    ),
+    "neighbour whitespace compared exactly": (
+        'return " " if text[at] in "\\t\\n\\r " else text[at]',
+        "return text[at]",
+    ),
+    "neighbour edge matches a space": (
+        'if at < 0 or at >= len(text):\n        return ""',
+        'if at < 0 or at >= len(text):\n        return " "',
+    ),
+    "prose context compared exactly": (
+        "spaced = (lambda t: t) if exact else _spaced",
+        "spaced = lambda t: t",
+    ),
+    "code and table context collapsed": (
+        "spaced = (lambda t: t) if exact else _spaced",
+        "spaced = _spaced",
+    ),
+    "text before the hit not collapsed": (
+        "before, after = spaced(text[:at]), spaced(text[at + len(span) :])",
+        "before, after = text[:at], spaced(text[at + len(span) :])",
+    ),
+    "text after the hit not collapsed": (
+        "before, after = spaced(text[:at]), spaced(text[at + len(span) :])",
+        "before, after = spaced(text[:at]), text[at + len(span) :]",
+    ),
+    "stored prefix not collapsed": (
+        "prefix_holds = before.endswith(spaced(prefix))",
+        "prefix_holds = before.endswith(prefix)",
+    ),
+    "stored suffix not collapsed": (
+        "suffix_holds = after.startswith(spaced(suffix))",
+        "suffix_holds = after.startswith(suffix)",
+    ),
+    "only the anchored leaf's type decides": (
+        'exact = base.type in ("code", "table") or current.type in ("code", "table")',
+        'exact = base.type in ("code", "table")',
+    ),
+    "only the paired leaf's type decides": (
+        'exact = base.type in ("code", "table") or current.type in ("code", "table")',
+        'exact = current.type in ("code", "table")',
+    ),
+    "context collapses any whitespace": (
+        'return _SPACE.sub(" ", text)',
+        'return re.sub(r"\\s+", " ", text)',
+    ),
+    "a table compares collapsed": (
+        'exact = base.type in ("code", "table") or current.type in ("code", "table")',
+        'exact = base.type in ("code",) or current.type in ("code",)',
+    ),
+    "a code block compares collapsed": (
+        'exact = base.type in ("code", "table") or current.type in ("code", "table")',
+        'exact = base.type in ("table",) or current.type in ("table",)',
+    ),
+    "two empty sides take one": (
+        "if both_sides or exact or not (prefix or suffix):",
+        "if both_sides or exact:",
+    ),
+    "code and table take one side": (
+        "if both_sides or exact or not (prefix or suffix):",
+        "if both_sides or not (prefix or suffix):",
+    ),
+    "a suggestion takes one side": (
+        "if both_sides or exact or not (prefix or suffix):",
+        "if exact or not (prefix or suffix):",
+    ),
+    "a comment needs both sides": (
+        "if both_sides or exact or not (prefix or suffix):",
+        "if True:",
+    ),
+    "an empty prefix counts": (
+        '(prefix_holds and prefix != "")',
+        "prefix_holds",
+    ),
+    "an empty suffix counts": (
+        '(suffix_holds and suffix != "")',
+        "suffix_holds",
     ),
     "two hits not ambiguous": (
         "if len(hits) > 1:",

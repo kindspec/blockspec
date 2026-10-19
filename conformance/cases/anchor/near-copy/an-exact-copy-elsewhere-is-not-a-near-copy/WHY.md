@@ -3,8 +3,9 @@
 `R` is unique in `base`, and the current text adds a second copy after the
 last paragraph. `R` pairs as `EXACT` in its gap between `I` and `B`, where
 both sides hold one copy, so the repeat rule passes. The new copy is
-unmatched, but its similarity is 1, and the near-copy rule for `EXACT`
-takes only a similarity below 1.
+unmatched, but it is a copy, and the near-copy rule for `EXACT` takes only
+an unmatched leaf that is not a copy of `k`. (Under 0003 the rule took a
+similarity below 1, which excluded the same leaf.)
 
 SPEC.md §11.4:
 
@@ -15,8 +16,12 @@ SPEC.md §11.4:
 >     never on the chain, so `k`'s `EXACT` pair comes from §11.3 step 2's
 >     alignment inside `k`'s own gap (0003, second addendum of 2026-10-16,
 >     item 9);
->   - an unmatched leaf with similarity to `k` of at least 0.5 and below 1:
->     `REFUSED(near-copy)`.
+>   - an unmatched leaf that is not a copy of `k`, with word similarity to
+>     `k` of at least 0.5: `REFUSED(near-copy)` (0004). When `k` has words,
+>     a leaf that differs from it only in runs of U+0009, U+000A, U+000D and
+>     U+0020 has word similarity 1 and is not a copy, so it refuses; when `k`
+>     has none, no leaf reaches 0.5. Words leave out the type, so a heading
+>     with `k`'s text at another level, or a paragraph, refuses.
 
 SPEC.md §11.3:
 

@@ -19,8 +19,7 @@ anchors and transclusion, has cases under `conformance/cases/anchor/`, written b
 from `main` by an author who had not read the resolver, and an
 implementation, `reference/blockspec/anchor.py`, which was written before
 those cases and then run against them with no case changed. 0004 amends
-0003; its cases and then its resolver change follow, and until they land
-`SPEC.md` §11 is ahead of both. The spike's binding verdict is FOUND, under an owner ruling that
+0003, and its cases and resolver change landed the same way. The spike's binding verdict is FOUND, under an owner ruling that
 overrides frozen rules; see `spike/README.md`, The verdict. `conformance/cases/` holds draft 0's conformance cases.
 Those for 0001 and 0002 were written before any implementation existed, and
 the reader, `reference/blockspec/document.py`, was written afterwards against

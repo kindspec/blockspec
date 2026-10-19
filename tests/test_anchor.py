@@ -205,7 +205,6 @@ def test_thresholds_compare_exactly():
     assert A.exceeds_by_margin((11, 30), (21, 72))  # 22/30 - 42/72 is exactly 0.15
     assert not A.exceeds_by_margin((11, 30), (22, 72))
     assert A.at_least_half((5, 20)) and not A.at_least_half((4, 17))
-    assert A.below_one((9, 20)) and not A.below_one((10, 20))
 
 
 def test_similarity_is_over_the_written_keys():
@@ -399,17 +398,27 @@ def test_a_heading_that_changes_level_is_edited():
 def test_edited_outside_the_context_finds_the_span():
     base = doc(ALPHA, SCRAM, BRAVO)
     current = doc(ALPHA, "Now: " + EDITED_SCRAM, BRAVO)
-    # The prefix is short because the leaf's start was near, so the hit must
-    # start there too: prepending text detaches it (addendum detail 6).
-    assert resolve_one(base, current, SCRAM, "4.2 sigma")["status"] == "DETACHED"
+    # The prefix is short because the leaf's start was near, so it holds only
+    # at the start (addendum detail 6): prepending text breaks it. A comment
+    # follows on its suffix (0004); a suggestion needs both sides.
+    got = resolve_one(base, current, SCRAM, "4.2 sigma")
+    assert (got["status"], got["span"]) == ("EDITED", [28, 37])
+    got = resolve_one(base, current, SCRAM, "4.2 sigma", replace="5 sigma")
+    assert got["status"] == "DETACHED"
     got = resolve_one(base, doc(ALPHA, EDITED_SCRAM, BRAVO), SCRAM, "4.2 sigma")
     assert (got["status"], got["span"]) == ("EDITED", [23, 32])
 
 
-def test_edited_inside_the_context_detaches():
+def test_edited_inside_the_context_keeps_a_comment_on_its_other_side():
     base = doc(ALPHA, SCRAM, BRAVO)
     current = doc(ALPHA, SCRAM.replace("above baseline", "over baseline"), BRAVO)
+    # One side edited: a comment follows on the other (0004), a suggestion not.
     got = resolve_one(base, current, SCRAM, "4.2 sigma")
+    assert (got["status"], got["span"]) == ("EDITED", [23, 32])
+    got = resolve_one(base, current, SCRAM, "4.2 sigma", replace="5 sigma")
+    assert got["status"] == "DETACHED"
+    edited = SCRAM.replace("scram threshold", "trip threshold").replace("above", "over")
+    got = resolve_one(base, doc(ALPHA, edited, BRAVO), SCRAM, "4.2 sigma")
     assert got == {
         "status": "DETACHED",
         "leaf": {"node": [1], "type": "paragraph"},
@@ -1034,7 +1043,13 @@ def test_a_short_suffix_must_end_at_the_leafs_end():
     leaf = "Operators note that the scram threshold for every channel is 4.2."
     base = doc(ALPHA, leaf, BRAVO)
     current = doc(ALPHA, leaf + " It was 4.0.", BRAVO)
-    assert resolve_one(base, current, leaf, "4.2")["status"] == "DETACHED"
+    # The suffix "." is short, so it holds only at the leaf's end. A comment
+    # follows on its prefix (0004); a suggestion, or a comment whose prefix
+    # was edited too, detaches.
+    assert resolve_one(base, current, leaf, "4.2")["status"] == "EDITED"
+    assert resolve_one(base, current, leaf, "4.2", replace="5")["status"] == "DETACHED"
+    both = doc(ALPHA, leaf.replace("for every", "on each") + " It was 4.0.", BRAVO)
+    assert resolve_one(base, both, leaf, "4.2")["status"] == "DETACHED"
     current = doc(ALPHA, "Today, o" + leaf[1:], BRAVO)
     got = resolve_one(base, current, leaf, "4.2")
     assert got["status"] == "EDITED"

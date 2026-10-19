@@ -1,0 +1,9 @@
+{
+  "kind": "anchor",
+  "transclusions": {
+    "guide.md": [
+      {"leaf": {"node": [1], "type": "paragraph"}, "status": "REFUSED(pinned-near-copy)", "unit": null}
+    ]
+  },
+  "controls": ["anchor/transclusion/resolves-beside-a-leaf-similar-by-code-points-only"]
+}
