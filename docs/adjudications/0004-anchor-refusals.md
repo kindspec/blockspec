@@ -47,10 +47,11 @@ reworded paragraph keeps most of its words, so the shape the rule is for
 still refuses. Words leave out the leaf's type, so two one-word headings are
 not near-copies of each other.
 
-For `MOVED` and `EDITED` leaves words are not safe: a descendant re-punctuated
-(`Set timeout=30, retries=5` becoming `Set timeout=30; retries=5`) shares
-almost no words and almost every code point, and comparing words would let the comment follow a
-sibling. Those checks stay as 0003 wrote them.
+For `MOVED` and `EDITED` leaves words are not safe: a descendant
+re-punctuated (`Set timeout=30, retries=5` becoming `Set timeout=30;
+retries=5`) shares almost no words and almost every code point, and
+comparing words would let the comment follow a sibling. Those checks stay
+as 0003 wrote them.
 
 **D.** 0003 §5 kept both sides of the context "until a replay of real
 history prices the detachments". It priced them: in pre-registration 4,
