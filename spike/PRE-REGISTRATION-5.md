@@ -1,8 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Pre-registration 5: adjudication 0004's resolver on held-out history
 
-**Status: draft, for the owner's approval.** "Committed" means merged to
-`main`. No verdict arm below runs before this document merges.
+**Status: approved by the owner on 2026-10-19, as it reads.** "Committed"
+means merged to `main`. No arm below runs before this document merges.
 
 **The question.** Pre-registration 4 found 0003's resolver refusing too
 much: 17.0% (16.3% to 18.7%) of comments whose text survived five commits
