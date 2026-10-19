@@ -1,0 +1,6 @@
+{
+  "kind": "anchor",
+  "records": {
+    "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B801.md": {"status": "DETACHED", "leaf": {"node": [1], "type": "paragraph"}, "span": null, "suggestion": {"gate": "stale", "reason": null}}
+  }
+}

@@ -231,7 +231,9 @@ type, the scope taken from the anchored leaf alone, no neighbour rule, an
 edge matching whitespace, an empty side counted, a collapsed context
 measured after collapsing, words split at punctuation or at every Unicode
 space, the type counted as a word, words for `MOVED` and `EDITED`, and
-others), was each failed by at least one case. Blob ids were not computed:
+others) found each of those readings giving the wrong outcome for at least
+one case. It did not hold every wrong reading: review later found five
+more, answered by the cases listed below. Blob ids were not computed:
 `check_tree.py` substitutes a stand-in, and `run_cases.py` needs kindkit.
 
 Three outcomes changed, the three 0004 says fail against its resolver, and
@@ -300,6 +302,27 @@ says. No case of this set takes a reading. Added then:
 `suggestion/stale-with-one-side-of-its-context`,
 `transclusion/pinned-near-copy-by-words`,
 `transclusion/resolves-beside-a-leaf-similar-by-code-points-only`.
+
+Review of that set found readings of §11.5 that no case told apart from
+the text: a short prefix held when the text before the occurrence only
+ends with it, a short suffix held when the text after only starts with it,
+a suffix's length judged after whitespace collapsing, the span itself
+collapsed before it is searched for, and a comment's context compared
+exactly. The same author, under the same constraints, added these cases
+for them, and changed no existing outcome:
+`context/a-short-prefix-must-be-all-of-the-text-before-a-comment`,
+`context/a-short-prefix-must-be-all-of-the-text-before-a-suggestion`,
+`context/a-short-suffix-must-be-all-of-the-text-after-a-comment`,
+`context/a-short-suffix-must-be-all-of-the-text-after-a-suggestion`,
+`context/a-short-suffix-is-counted-as-stored`,
+`context/a-span-holding-a-line-break-is-found-as-stored`,
+`context/a-comment-compares-both-sides-collapsed`.
+With those readings added to the sweep, it held 25 wrong readings. Run on
+the tree as it then stood, each gave the wrong outcome for at least one
+case, and the calculation under §11's rules matched every record outcome
+the tree's anchor cases list (the merged documents' records checked on
+`git merge-file`'s output, and transclusions with a separate pass over
+§11.9's step 3).
 
 ## Shape
 
