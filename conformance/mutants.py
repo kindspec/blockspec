@@ -753,6 +753,22 @@ ANCHOR_MUTANTS = {
         'exact = base.type in ("code", "table") or current.type in ("code", "table")',
         'exact = current.type in ("code", "table")',
     ),
+    "context collapses any whitespace": (
+        'return _SPACE.sub(" ", text)',
+        'return re.sub(r"\\s+", " ", text)',
+    ),
+    "a table compares collapsed": (
+        'exact = base.type in ("code", "table") or current.type in ("code", "table")',
+        'exact = base.type in ("code",) or current.type in ("code",)',
+    ),
+    "a code block compares collapsed": (
+        'exact = base.type in ("code", "table") or current.type in ("code", "table")',
+        'exact = base.type in ("table",) or current.type in ("table",)',
+    ),
+    "two empty sides take one": (
+        "if both_sides or exact or not (prefix or suffix):",
+        "if both_sides or exact:",
+    ),
     "code and table take one side": (
         "if both_sides or exact or not (prefix or suffix):",
         "if both_sides or not (prefix or suffix):",
