@@ -3,7 +3,8 @@
 
 Status: draft. This document writes up draft 0 as
 `docs/adjudications/0001-syntax.md`, `0002-block.md` and
-`0003-anchors.md` decide it, with their addenda. It answers nothing the
+`0003-anchors.md` decide it, with their addenda, and `0004-anchor-refusals.md`
+amends 0003. It answers nothing the
 adjudications leave open; 0003 names the details §11 fixes beyond its
 thirteen answers, and its addendum of 2026-10-16 decides the grammar and
 the precision §11 states, the owner's decisions on the precision
@@ -16,8 +17,9 @@ document says so (§12) instead of choosing.
 
 The conformance suite, `conformance/cases/`, was written from the same
 adjudications. Its 0001 and 0002 cases were written before any
-implementation existed; its 0003 cases, under `conformance/cases/anchor/`,
-after the reference resolver, by an author who had not read it. Where they left a question
+implementation existed; its 0003 and 0004 cases, under
+`conformance/cases/anchor/`, after the reference resolver, by an author who
+had not read it. Where they left a question
 open, a case takes a reading and its `WHY.md` says **READING**. A reading is
 not a decision, and §12 lists each one.
 
@@ -638,6 +640,13 @@ The **similarity** of two leaves is `2·L/(m+n)`, where `m` and `n` are the
 lengths in code points of their keys, each written as the type, U+001F and
 the text, and `L` is the length of a longest common subsequence of the two.
 
+The **word similarity** of two leaves (0004) is the same formula over
+words. A leaf's **words** are its `leaf.text` split at each run of U+0009,
+U+000A, U+000D and U+0020, empty pieces left out; `m` and `n` count words,
+which are compared exactly, and `L` is the length of a longest common
+subsequence of the two word sequences. It is 0 when either leaf has no
+words. Only §11.4's near-copy check on an `EXACT` leaf uses it.
+
 A **longest common subsequence alignment** of two sequences pairs elements
 from the start: when the two elements under consideration are equal they
 are paired;
@@ -681,8 +690,8 @@ detail 5). With a similarity written `2·L/T`, where `T = m+n` is at least 2:
 | similarity below 1 | `2·L < T` |
 | `2·L₁/T₁` exceeds `2·L₂/T₂` by at least 0.15 | `40·L₁·T₂ − 40·L₂·T₁ ≥ 3·T₁·T₂` |
 
-These apply wherever §11.3 and §11.4 compare a similarity with 0.5, 1 or a
-margin of 0.15. A floating-point comparison is not conforming:
+These apply wherever §11.3 and §11.4 compare a similarity or a word
+similarity with 0.5, 1 or a margin of 0.15. A floating-point comparison is not conforming:
 `22/30 − 42/72` is exactly 0.15, and IEEE 754 doubles compute it as just
 below.
 
@@ -707,8 +716,10 @@ decides (0003 §4):
     never on the chain, so `k`'s `EXACT` pair comes from §11.3 step 2's
     alignment inside `k`'s own gap (0003, second addendum of 2026-10-16,
     item 9);
-  - an unmatched leaf with similarity to `k` of at least 0.5 and below 1:
-    `REFUSED(near-copy)`.
+  - an unmatched leaf that is not a copy of `k`, with word similarity to
+    `k` of at least 0.5: `REFUSED(near-copy)` (0004). A leaf that differs
+    from `k` only in runs of U+0009, U+000A, U+000D and U+0020 has word
+    similarity 1 and is not a copy, so it refuses.
 - **`MOVED`**:
   - an unmatched leaf with similarity to `k` of at least 0.5:
     `REFUSED(near-copy)`;
@@ -728,12 +739,25 @@ For `EXACT` and `MOVED`, the span keeps its offset in the paired leaf, whose
 text is unchanged.
 
 For `EDITED`, the span is searched **inside the paired leaf only**. A hit is
-an occurrence of `span` with `prefix` ending where it starts and `suffix`
-starting where it ends. **A short context must sit at the leaf's edge**
-(0003, addendum, detail 6): when `prefix` is shorter than 32 code points,
-the hit's `prefix` starts at the start of the paired leaf's text, and when
-`suffix` is shorter than 32, the hit's `suffix` ends at its end. An
-occurrence that does not is not a hit. Hits are counted by start position,
+an occurrence of `span` that meets both of these (0004, which amends 0003
+Q13):
+
+1. **Its neighbours are unchanged.** The code point just before the
+   occurrence in the paired leaf's text compares equal to the code point
+   just before the span in `leaf.text`, and the code point just after it to
+   the one just after the span. U+0009, U+000A, U+000D and U+0020 compare
+   equal to one another; a text's start or end compares equal only to a
+   start or end; any other code point only to itself.
+2. **Its context holds.** Write each of these on its own with every run of
+   U+0009, U+000A, U+000D and U+0020 as one U+0020: the paired leaf's text
+   before the occurrence, its text after it, `prefix` and `suffix`. The
+   prefix holds when the text before ends with `prefix`; when `prefix` is
+   shorter than 32 code points, counted as stored, it must be all of that
+   text (0003, addendum, detail 6: a short context sits at the leaf's
+   edge). The suffix holds in the same way, after the occurrence and at
+   the leaf's end. **For a comment**, one side must hold whose stored
+   context is not empty; when both are empty, the span is the whole leaf
+   and both hold. **For a suggestion**, both sides must hold. Hits are counted by start position,
 overlapping ones included (§11.1). With no hit the anchor is
 `DETACHED`; with more than one, `REFUSED(span-ambiguous)`. With one hit, the
 longest common subsequence alignment (§11.2) of the base leaf's text onto
@@ -741,7 +765,8 @@ the paired leaf's text must pair every code point of the span with the code
 point at the same position in the hit, or the anchor is `DETACHED` (0003
 §5).
 
-There is no fallback that places a comment without its context (0003 Q13).
+There is no fallback that places a comment with neither side of its
+context (0003 Q13, as 0004 amends it).
 
 ### 11.6 Statuses
 
@@ -1039,8 +1064,8 @@ produces, so they resolve, silently, to the wrong text (0003 §9):
 | | mechanism | indistinguishable from | suggestions |
 | --- | --- | --- | --- |
 | R1 | a leaf deleted, and a verbatim copy of it elsewhere | a move | not affected: stale on `MOVED` |
-| R2 | a leaf rewritten to similarity below 0.5, with a verbatim copy of its old text left in its place in order | a new leaf inserted beside an unchanged one | affected |
-| R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with the same context | a sentence moved within its leaf | affected |
+| R2 | a leaf rewritten to word similarity below 0.5 (0004; by code points it may be more similar), with a verbatim copy of its old text left in its place in order | a new leaf inserted beside an unchanged one | affected |
+| R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with its neighbouring code points and, for a comment, one side of its context, for a suggestion both (0004) | a sentence moved within its leaf | affected |
 | R4 | a different document at the same path, by archive-and-replace or copy-and-rewrite | an edit of the document | affected |
 
 ## 12. Not decided
@@ -1124,8 +1149,10 @@ listed: 0002's *Decision* text decides it (§4.3).
   behind, and for a record id in two notes directories, and whether either
   has an identifier.
 - **Thresholds.** 0.5 and 0.15 are borrowed from D8's `difflib` ratios and
-  applied here to `2·L/(m+n)`, a different measure. They are untested for
-  this resolver (0003 §4).
+  applied here to `2·L/(m+n)`, a different measure (0003 §4). Pre-registration
+  4 measured the resolver they give on real history (0003-anchors/replay-verdict.md),
+  and 0004 changed the near-copy check on unchanged leaves to words; the
+  margins themselves are still untested.
 
 **Raised by 0003's addendum of 2026-10-16:**
 

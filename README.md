@@ -4,9 +4,10 @@
 Draft 0 is what `docs/adjudications/` decides, and `SPEC.md` writes it up:
 0001, a pinned CommonMark 0.31.2 block-level profile with `<!-- #name -->`
 region markers, and 0002, what a block is, each with addenda, and 0003,
-how comments, suggestions and transclusions anchor. `conformance/cases/`
-encodes all three. Its 0001 and 0002 cases came first, before any
-implementation existed. Its 0003 cases, under `conformance/cases/anchor/`,
+how comments, suggestions and transclusions anchor, amended by 0004 after a
+replay of real history. `conformance/cases/` encodes them. Its 0001 and
+0002 cases came first, before any implementation existed. Its 0003 and 0004
+cases, under `conformance/cases/anchor/`,
 were written from `SPEC.md` by an author who had not read the resolver,
 which was written before them. `reference/blockspec/` is a
 standard-library-only implementation, the reader (`document.py`) and the

@@ -13,9 +13,9 @@ specific to blockspec, and wins where the two conflict.
 **Draft 0 is decided, and `SPEC.md` writes it up.** blockspec is
 the **blocks kind** — identity is deliberately no minted ids — alongside [rowspec](https://github.com/kindspec/rowspec) and [nodespec](https://github.com/kindspec/nodespec).
 
-Draft 0 is what `docs/adjudications/` 0001, 0002 and 0003 decide; `SPEC.md`
-restates it, defers to them, and lists what they leave open. 0003, anchors
-and transclusion, has cases under `conformance/cases/anchor/`, written blind
+Draft 0 is what `docs/adjudications/` 0001, 0002, 0003 and 0004 decide;
+`SPEC.md` restates it, defers to them, and lists what they leave open. 0003,
+anchors and transclusion, as 0004 amends it, has cases under `conformance/cases/anchor/`, written blind
 from `main` by an author who had not read the resolver, and an
 implementation, `reference/blockspec/anchor.py`, which was written before
 those cases and then run against them with no case changed. The spike's binding verdict is FOUND, under an owner ruling that

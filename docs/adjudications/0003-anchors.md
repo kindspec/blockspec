@@ -34,6 +34,11 @@ the first item under *What would reverse it*.
 Pins: blockspec `26e00f2` with `SPEC.md` from kindspec/blockspec#40;
 kindspec/research `244dff0`.
 
+**Amended by 0004** (2026-10-18), after the replay §12 asks for: §4's
+near-copy check on an unchanged leaf compares words, and §5's context filter
+needs, for a comment, one side of the context and the span's neighbouring
+code points; a suggestion still needs both sides (`0004-anchor-refusals.md`).
+
 ## Decision
 
 **Decided, 2026-10-16.**
