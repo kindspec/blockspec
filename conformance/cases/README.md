@@ -327,6 +327,11 @@ the tree's anchor cases list (the merged documents' records checked on
 `git merge-file`'s output, and transclusions with a separate pass over
 §11.9's step 3).
 
+0004 left no rule in §11 that compares a similarity with 1, so §11.3's
+thresholds table lost its row "similarity below 1". The eight `WHY.md`
+files that quoted the table now quote it without that row. None of them
+used the row for its outcome, and no case, outcome or name changed.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit

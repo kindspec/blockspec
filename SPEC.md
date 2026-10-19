@@ -689,11 +689,10 @@ detail 5). With a similarity written `2·L/T`, where `T = m+n` is at least 2:
 | §11 states | compare |
 | --- | --- |
 | similarity at least 0.5 | `4·L ≥ T` |
-| similarity below 1 | `2·L < T` |
 | `2·L₁/T₁` exceeds `2·L₂/T₂` by at least 0.15 | `40·L₁·T₂ − 40·L₂·T₁ ≥ 3·T₁·T₂` |
 
 These apply wherever §11.3 and §11.4 compare a similarity or a word
-similarity with 0.5, 1 or a margin of 0.15. A floating-point comparison is not conforming:
+similarity with 0.5 or a margin of 0.15. A floating-point comparison is not conforming:
 `22/30 − 42/72` is exactly 0.15, and IEEE 754 doubles compute it as just
 below.
 
