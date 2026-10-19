@@ -9,8 +9,9 @@ replay of real history. `conformance/cases/` encodes 0001 to 0003. Its
 0001 and 0002 cases came first, before any implementation existed. Its 0003
 cases, under `conformance/cases/anchor/`,
 were written from `SPEC.md` by an author who had not read the resolver,
-which was written before them. 0004's cases and its resolver change follow
-in that order; until they land, `SPEC.md` §11 is ahead of both. `reference/blockspec/` is a
+which was written before them. 0004's cases were written the same way,
+after its resolver change, which was then run against them with no case
+changed. `reference/blockspec/` is a
 standard-library-only implementation, the reader (`document.py`) and the
 anchor resolver (`anchor.py`), run against that tree with no case changed,
 and CI runs the tree against it (`just conform`). There is one
