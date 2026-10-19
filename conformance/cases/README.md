@@ -211,6 +211,119 @@ added the cases for its third addendum (overlapping occurrences, replies
 whose document is missing or refused, and two write-back edges) and
 re-pointed the quotes it changed, again with no outcome changed.
 
+The cases for `docs/adjudications/0004-anchor-refusals.md` were written
+later, against blockspec `main` at `0194836`, by an author who had not read
+any resolver: not `reference/`, not `anchor.py`, not `spike/` or any
+mutation gate, and no branch, pull request or git history. They worked
+from an export holding only `SPEC.md` (§11 as 0004 amends it), the four
+adjudications under `docs/adjudications/`, and `conformance/` (this
+README, `case-body.schema.json`, the tree as it stood, the runner,
+`check_tree.py` and `anchor_cases.py`), with no implementation and no
+block reader in it. Each expected outcome comes from §11 and 0004, and each
+`WHY.md` quotes the passage that decides it. The author cross-checked the
+outcomes with a throwaway calculation of §11.2 to §11.5, with its own
+reader for the fixtures' simple shapes, written from the same text and not
+committed. Before it was switched to 0004's rules it reproduced every
+anchor record outcome already in the tree under 0003's, merges included
+(merged with `git merge-file`, since kindkit was not available). A sweep of
+wrong readings of 0004, each a variant of that calculation (D on every leaf
+type, the scope taken from the anchored leaf alone, no neighbour rule, an
+edge matching whitespace, an empty side counted, a collapsed context
+measured after collapsing, words split at punctuation or at every Unicode
+space, the type counted as a word, words for `MOVED` and `EDITED`, and
+others) found each of those readings giving the wrong outcome for at least
+one case. It did not hold every wrong reading: review later found five
+more, answered by the cases listed below. Blob ids were not computed:
+`check_tree.py` substitutes a stand-in, and `run_cases.py` needs kindkit.
+
+Three outcomes changed, the three 0004 says fail against its resolver, and
+each case was renamed to match its outcome:
+`context/an-edit-on-the-first-code-point-of-the-prefix-detaches` became
+`context/an-edit-on-the-first-code-point-of-the-prefix-keeps-a-comment`
+(`DETACHED` to `EDITED`: a comment needs one side of its context);
+`status/detached-when-the-context-is-edited` became
+`status/edited-when-one-side-of-the-context-is-edited` (`DETACHED` to
+`EDITED`, the same rule); and
+`near-copy/exact-with-an-unmatched-leaf-just-below-one-half` became
+`near-copy/exact-below-one-half-by-code-points-refuses-by-words`
+(`RESOLVED` to `REFUSED(near-copy)`: an `EXACT` leaf's near-copy check
+compares words). `near-copy/exact-with-an-unmatched-leaf-at-one-half`
+became `near-copy/exact-at-one-half-by-code-points-and-above-by-words`, its
+outcome unchanged, because its name described a similarity §11.4 no longer
+uses there. `context/a-short-prefix-must-sit-at-the-leaf-start` and
+`context/a-short-suffix-must-sit-at-the-leaf-end` keep their outcome, now
+reached through the neighbour rule, and their `WHY.md` says so. Every
+`WHY.md` quoting §11.4's `EXACT` rule, §11.5's hit or §11.12's table now
+quotes the amended text. The three changed cases, and the new ones whose
+outcome 0003's rules decide differently, fail against 0003's resolver
+until 0004's resolver change lands with them, as *Landing order* below
+says. No case of this set takes a reading. Added then:
+`context/a-code-block-compares-exactly`,
+`context/a-code-block-edit-away-from-the-span-is-edited`,
+`context/a-code-block-that-becomes-a-paragraph-compares-exactly`,
+`context/an-edit-one-code-point-outside-the-prefix-applies-a-suggestion`,
+`context/an-edit-on-the-first-code-point-of-the-prefix-detaches-a-suggestion`,
+`context/an-empty-prefix-does-not-count`,
+`context/an-empty-suffix-does-not-count`,
+`context/a-paragraph-that-becomes-a-code-block-compares-exactly`,
+`context/a-paragraph-that-becomes-a-code-block-keeps-an-exact-context`,
+`context/a-paragraph-that-becomes-a-table-compares-exactly`,
+`context/a-short-context-is-counted-as-stored`,
+`context/a-short-prefix-away-from-the-edge-gives-way-to-the-suffix`,
+`context/a-table-compares-exactly`,
+`context/a-table-that-becomes-a-paragraph-compares-exactly`,
+`context/both-sides-empty-the-span-is-the-whole-leaf`,
+`context/edits-on-the-outer-code-points-of-both-sides-detach-a-comment`,
+`context/the-span-itself-is-not-collapsed`,
+`near-copy/a-no-break-space-does-not-split-words`,
+`near-copy/a-table-s-separators-are-words`,
+`near-copy/different-one-word-headings-resolve`,
+`near-copy/edited-with-a-re-punctuated-copy-compares-code-points`,
+`near-copy/exact-with-a-whitespace-variant-beside-it`,
+`near-copy/exact-with-a-word-similarity-just-below-one-half`,
+`near-copy/exact-with-a-word-similarity-of-one-half`,
+`near-copy/exact-with-its-text-as-a-paragraph`,
+`near-copy/exact-with-its-text-at-another-heading-level`,
+`near-copy/moved-with-a-re-punctuated-copy-compares-code-points`,
+`near-copy/short-unrelated-leaves-resolve`,
+`near-copy/two-leaves-with-no-words`,
+`near-copy/words-are-split-only-at-whitespace`,
+`residual/an-edit-beside-a-comment-on-prose`,
+`residual/r2-a-rewrite-below-one-half-by-words-only`,
+`residual/r3-a-re-added-sentence-with-one-side-of-its-context`,
+`span/a-digit-after-the-span-detaches`,
+`span/a-hyphen-after-the-span-detaches`,
+`span/an-apostrophe-after-the-span-detaches`,
+`span/an-edge-does-not-match-whitespace`,
+`span/a-space-neighbour-matches-a-line-break`,
+`span/one-side-each-is-two-hits`,
+`status/detached-when-both-sides-of-the-context-are-edited`,
+`suggestion/applies-across-whitespace-changes-in-its-context`,
+`suggestion/stale-with-one-side-of-its-context`,
+`transclusion/pinned-near-copy-by-words`,
+`transclusion/resolves-beside-a-leaf-similar-by-code-points-only`.
+
+Review of that set found readings of §11.5 that no case told apart from
+the text: a short prefix held when the text before the occurrence only
+ends with it, a short suffix held when the text after only starts with it,
+a suffix's length judged after whitespace collapsing, the span itself
+collapsed before it is searched for, and a comment's context compared
+exactly. The same author, under the same constraints, added these cases
+for them, and changed no existing outcome:
+`context/a-short-prefix-must-be-all-of-the-text-before-a-comment`,
+`context/a-short-prefix-must-be-all-of-the-text-before-a-suggestion`,
+`context/a-short-suffix-must-be-all-of-the-text-after-a-comment`,
+`context/a-short-suffix-must-be-all-of-the-text-after-a-suggestion`,
+`context/a-short-suffix-is-counted-as-stored`,
+`context/a-span-holding-a-line-break-is-found-as-stored`,
+`context/a-comment-compares-both-sides-collapsed`.
+With those readings added to the sweep, it held 25 wrong readings. Run on
+the tree as it then stood, each gave the wrong outcome for at least one
+case, and the calculation under §11's rules matched every record outcome
+the tree's anchor cases list (the merged documents' records checked on
+`git merge-file`'s output, and transclusions with a separate pass over
+§11.9's step 3).
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
@@ -444,7 +557,8 @@ cases.
 
 A case with `"kind": "anchor"` asserts how comments, suggestions and
 transclusions resolve, as `SPEC.md` §11 decides them
-(`docs/adjudications/0003-anchors.md` and its addendum). The case directory
+(`docs/adjudications/0003-anchors.md` and its addenda, as
+`0004-anchor-refusals.md` amends them). The case directory
 holds a small repository: the current snapshot, the earlier blobs it can
 still read, and, optionally, a merge that produces part of the current
 snapshot. The case lists records and referrers, and the outcome expected for
