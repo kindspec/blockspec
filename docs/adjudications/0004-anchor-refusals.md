@@ -137,8 +137,9 @@ as correct, so it cannot see an edit beside the span (*What it gives up*).
 
 **These rules were chosen on these arms**, so this is not a test of them.
 The test is a new pre-registration on held-out repositories, decided by the
-owner the same day: `spike/PRE-REGISTRATION-5.md`. **It passed**: with
-labels for truth, 2.9% refused at gap 5 (2.8% to 4.2%) on github/docs,
+owner the same day and written as `spike/PRE-REGISTRATION-5.md`, approved
+2026-10-19. **It passed**: with labels for truth, 2.9% of comments on
+surviving text refused at gap 5 (2.8% to 4.2%) on github/docs,
 microsoft/vscode-docs, docker/docs and mdn/content, against the 5% bar,
 and no resolver defect (`0004-anchor-refusals/replay-verdict.md`).
 

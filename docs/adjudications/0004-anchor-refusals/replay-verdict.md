@@ -8,7 +8,8 @@ replay failing the bar or finding a resolver defect, is not met.
 
 **Pins.** The reference resolver at `ae1d274` (the header of each
 `replay-ARM.txt`), and the harness at kindspec/research `8ecb0e7`, as
-pre-registration §2 fixes them. The verdict arms are github-docs,
+pre-registration §2 fixes them; the outputs name the resolver, and the
+run's README names the harness. The verdict arms are github-docs,
 vscode-docs, docker-docs and mdn-en at the pins of research
 `experiments/D8-anchor-replay/heldout-arms.json`. The outputs are research
 `experiments/D8-anchor-replay/prereg5/`, merged as `95bfc44`
@@ -46,15 +47,19 @@ No comment at any gap is `WRONG` (`wrongs.txt`), and the labels put no
 resolving comment anywhere other than where it resolved (`score.txt`). So
 there is nothing for §5 to classify, and the resolver-defect verdict does
 not hold. As pre-registration 5 §4 says, the test cannot see an edit beside
-a span (`SPEC.md` §11.12), which the oracle counts correct, and 33
+a span (`SPEC.md` §11.12) or R3 within one leaf: the oracle counts such a
+comment correct, and the labels place it in the same paragraph. And 33
 resolving comments the oracle does not count, 19 at gap 1 and 14 at gap
-25, are outside both checks.
+25, are outside both checks; the run's README gives them per arm.
 
 ## What refuses
 
-By status and refusal reason, the 213 comments the oracle places and the
-resolver refuses at gap 5, per arm (each `replay-ARM.txt`) and pooled
-(`kinds-gap5.txt`):
+The rate counts the refusals of surviving text: the 213 comments the oracle
+places and the resolver refuses at gap 5, all of which the labels find
+surviving where sampled but two of 60 on vscode-docs, and the refused
+comments the oracle does not place that the labels find surviving (36 of
+the 56 sampled). By status and refusal reason, the 213, per arm (each
+`replay-ARM.txt`) and pooled (`kinds-gap5.txt`):
 
 | cause | github-docs | vscode-docs | docker-docs | mdn-en | pooled |
 | --- | --: | --: | --: | --: | --: |
@@ -81,8 +86,11 @@ gap 5 (4.8%), the figure 0004 records. They are not part of the verdict.
 The run followed the document: all twelve arm and gap sections for the
 verdict arms and fifteen for the regression arms, and the gap-5 sample of
 743 packets labelled twice by 44 labellers a pass, dealt as choice 6 says.
-The passes agree on 738; a third label decides the other five. The
-labellers shared one scratch directory and saw each other's helper scripts,
-and copies of pre-registration 4's labels were on the same machine with
-215 ids in common, for other comments; no label here matches one of
-those (`README.md` there).
+The passes agree on 738; a third label decides the other five. Labellers in
+the same pass shared one scratch directory and could see each other's
+helper scripts, which hold no labels; each pass's files were moved out of
+reach before the next. Copies of pre-registration 4's labels were on the
+same machine with 215 ids in common, for other comments: no label that
+says the words survive gives the same later paragraph as one of those,
+and three that say they do not survive match, about as chance gives
+(`README.md` there).
