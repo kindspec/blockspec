@@ -37,9 +37,9 @@ Approving the document approves each of these, as written.
    inconclusive.
 3. **Wrong resolutions (§4, §5)** are pre-registration 4's: any `WRONG` at
    any gap, or a resolving comment the labels put elsewhere, that is a
-   resolver defect fails the run. 0004's widened R2 and R3 (`SPEC.md`
-   §11.12) are residuals, not defects. Choice 7 says what a defect on the
-   regression arms does.
+   resolver defect, on a verdict arm, fails the run. 0004's widened R2
+   and R3 (`SPEC.md` §11.12) are residuals, not defects. Choice 7 says
+   what a defect on the regression arms does.
 4. **The verdict arms (§2) are chosen by a rule fixed before any of them
    was resolved:** from this list, in this order, the first four that meet
    every criterion below at the pin:
@@ -63,14 +63,16 @@ Approving the document approves each of these, as written.
 
    - the pin: `git rev-list --first-parent -1 --before=2026-10-18T00:00:00Z
      origin/DEFAULT`;
-   - Markdown files: `git ls-files -- PATHSPEC` at the pin, counted;
+   - Markdown files: `git ls-tree -r --name-only PIN`, counting the paths
+     the pathspec matches (for `content/*.md`, `grep -cE
+     '^content/.*\.md$'`);
    - commits: `git rev-list --count PIN -- PATHSPEC`;
    - author addresses: `git log --format=%ae PIN -- PATHSPEC`, distinct
      lines counted as written, not lowercased;
    - the licence: the repository's licence file at the pin, read. CC-BY
      4.0, CC-BY 3.0 US and CC-BY-SA 2.5 permit verbatim excerpts with
-     attribution, an excerpt quoted in a report being outside
-     ShareAlike's adaptations; Apache-2.0 permits reproduction with its
+     attribution, an excerpt quoted in a report being no adaptation
+     (Derivative Work, in 2.5's terms) that ShareAlike reaches; Apache-2.0 permits reproduction with its
      notice;
    - prior use: `git grep` of every kindspec repository for each
      candidate's name, read for use in an anchor experiment.
@@ -81,15 +83,18 @@ Approving the document approves each of these, as written.
    them before this document. *Alternative:* a different list, or more
    arms.
 5. **Gap 5 decides the bar; gaps 1 and 25 are reported**, as in
-   pre-registration 4. A resolver defect at any gap fails the run.
+   pre-registration 4. A resolver defect at any gap on a verdict arm
+   fails the run.
 6. **The labelled sample (§1)** is pre-registration 4's choice 6, with two
    changes. Pass B deals the key's `P` packets, in `key.jsonl`'s order, as
    `N` contiguous runs, `N` being pass A's number of labellers (as many as
    keep each at 17 or fewer, so `N` is `P` divided by 17, rounded up); the
    first `P mod N` runs hold one packet more than the rest. So no pass-B
    batch repeats a pass-A batch (pre-registration 4's rotation could not
-   separate them when `N` divided `P`). And `KEY` is written outside every
-   directory a labeller is given or told of. *Alternative:*
+   separate them when `N` divided `P`). As in pre-registration 4, `KEY`
+   sits in a directory no labeller is given or told of; labellers can
+   read the machine, so the labels' blindness rests on their brief, not
+   on the key being unreadable. *Alternative:*
    pre-registration 4's dealing unchanged.
 7. **The arms 0004 was tuned on are a regression check, not a test.**
    Pre-registration 4's four arms and site-policy are run with §2's
@@ -125,8 +130,9 @@ resolved):
 
 Counted as choice 4 says. dotnet/docs also meets every criterion and,
 fifth in order, is not an arm: at its pin `c1cd7d1ce319`, 13,527 files,
-22,983 commits and 3,032 author addresses, and CC-BY-4.0, read from
-GitHub's licence record because its clone is partial.
+22,983 commits and 3,032 author addresses, and CC-BY-4.0. Its clone is
+partial, so its licence was read from GitHub's licence record, whose blob
+is the pin's `LICENSE`.
 
 The replay's sample is `replay.py`'s, as in pre-registration 4: 60 files
 per arm, up to three pairs per file, seed 7, gaps 1, 5 and 25. The labelled
@@ -158,7 +164,9 @@ it runs once, on the whole verdict-arm dump.
 ## 3. What is published
 
 As pre-registration 4 §3, for these arms and for choice 7's: each arm's
-stdout with all twelve arm and gap sections for the verdict arms, the
+stdout with all its gap sections (twelve for the verdict arms, fifteen
+for choice 7's: rust-book, obsidian-help, k8s-en, cncf-toc and
+site-policy), the
 dump, `kinds.py`'s stdout, the labelled sample with its batches, and every
 `WRONG` at every gap with its classification. The verdict is recorded in
 blockspec beside 0004.
@@ -166,16 +174,17 @@ blockspec beside 0004.
 ## 4. Verdicts
 
 Pre-registration 4 §4, unchanged: **pass**, **refusals too high**,
-**inconclusive**, or **resolver defect**, read from `score.py`'s first
-pooled line as printed to 0.1%.
+**inconclusive**, or **resolver defect** (on a verdict arm; choice 7),
+read from `score.py`'s first pooled line as printed to 0.1%.
 
-**What it cannot see**, accepted as in pre-registration 4 and stated so
+**What it cannot see**, inherited from pre-registration 4 and stated so
 that a pass is not read as evidence about them:
 
 - The word oracle grades a comment that lands on its span's surviving
   words as correct, and the labels place it in the same paragraph. So an
   edit beside a span (`SPEC.md` §11.12, which accepts it) and R3 within
-  one leaf are counted correct, never `WRONG`.
+  one leaf are counted correct, not `WRONG` unless the oracle places the
+  span in another paragraph.
 - At gaps 1 and 25, resolving comments the oracle does not count are
   checked by neither the oracle nor the labels; their number is reported
   for each arm (pre-registration 4 had 15).
@@ -203,7 +212,9 @@ Pre-registration 4 §5, with R1 to R4 as `SPEC.md` §11.12 now gives them
 - Earlier, outside any anchor experiment: a census of diagram formats on
   2026-10-07 cloned microsoft/vscode-docs at `00fa0194` and counted its
   diagram files, and listed github/docs and vscode-docs among candidate
-  Markdown corpora for diagrams, with no counts. Neither was used.
+  Markdown corpora for diagrams, with no counts. vscode-docs's diagram
+  files were in that census's corpus; neither repository's Markdown was
+  used, in it or in any anchor experiment.
 
 ## 7. Amendment rules
 
