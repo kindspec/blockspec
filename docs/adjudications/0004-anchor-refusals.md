@@ -159,9 +159,9 @@ owner the same day.
 - **Transclusions.** SPEC.md §11.9 runs §11.4, so A also changes a pinned
   transclusion's near-copy check. The replay does not measure
   transclusions.
-- **The cases that pin 0003's behaviour here** (three on `main` fail
-  against this resolver) are rewritten under this document by an author
-  who has not read the resolver.
+- **The cases that pinned 0003's behaviour here** (three, which failed
+  against this resolver) were rewritten under this document by an author
+  who had not read the resolver.
 
 **The residual moves in two places** (SPEC.md §11.12):
 

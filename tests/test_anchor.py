@@ -409,7 +409,7 @@ def test_edited_outside_the_context_finds_the_span():
     assert (got["status"], got["span"]) == ("EDITED", [23, 32])
 
 
-def test_edited_inside_the_context_detaches():
+def test_edited_inside_the_context_keeps_a_comment_on_its_other_side():
     base = doc(ALPHA, SCRAM, BRAVO)
     current = doc(ALPHA, SCRAM.replace("above baseline", "over baseline"), BRAVO)
     # One side edited: a comment follows on the other (0004), a suggestion not.

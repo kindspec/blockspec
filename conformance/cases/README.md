@@ -255,8 +255,8 @@ uses there. `context/a-short-prefix-must-sit-at-the-leaf-start` and
 reached through the neighbour rule, and their `WHY.md` says so. Every
 `WHY.md` quoting §11.4's `EXACT` rule, §11.5's hit or §11.12's table now
 quotes the amended text. The three changed cases, and the new ones whose
-outcome 0003's rules decide differently, fail against 0003's resolver
-until 0004's resolver change lands with them, as *Landing order* below
+outcome 0003's rules decide differently, failed against 0003's resolver
+until 0004's resolver change landed with them, as *Landing order* below
 says. No case of this set takes a reading. Added then:
 `context/a-code-block-compares-exactly`,
 `context/a-code-block-edit-away-from-the-span-is-edited`,
