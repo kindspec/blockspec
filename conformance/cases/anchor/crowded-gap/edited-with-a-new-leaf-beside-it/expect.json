@@ -3,5 +3,5 @@
   "records": {
     "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B801.md": {"status": "REFUSED(crowded-gap)", "leaf": null, "span": null, "suggestion": null}
   },
-  "controls": ["anchor/status/edited"]
+  "controls": ["anchor/status/edited", "anchor/crowded-gap/edited-with-an-unlike-new-leaf-beside-it"]
 }

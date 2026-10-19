@@ -12,8 +12,11 @@ SPEC.md §6.3:
 SPEC.md §11.5:
 
 > For `EDITED`, the span is searched **inside the paired leaf only**. A hit is
-> an occurrence of `span` with `prefix` ending where it starts and `suffix`
-> starting where it ends.
+> an occurrence of `span` that meets both of these (0004, which replaces
+> 0003 Q13's requirement of both sides):
+> [...]
+> 2. **One side of its context holds.** [...] A hit needs the prefix or the suffix
+>    to hold.
 
 SPEC.md §11.6:
 

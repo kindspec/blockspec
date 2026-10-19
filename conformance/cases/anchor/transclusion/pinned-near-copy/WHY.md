@@ -6,6 +6,11 @@ and the reworded paragraph is an unmatched leaf with a similarity of at
 least 0.5 to it. 0003 §8: the anchored leaf changed, and a near-copy of its
 old wording unaccounted for, the transclusion refused.
 
+**Under 0004** the near-copy rule compares the word similarity. The pinned
+paragraph has 18 words (`p` and 17 pieces of text); the rewording replaces
+`rolling 30-second` with `sliding half-minute`, so `L = 16`, `T = 36`:
+`2·16/36`, at least 0.5 (`4·16 = 64 ≥ 36`). The outcome is unchanged.
+
 SPEC.md §11.9:
 
 > **Resolution**, against the target's current text. A name **binds** only

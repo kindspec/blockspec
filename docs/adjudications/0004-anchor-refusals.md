@@ -23,7 +23,9 @@ The question:
   checks of §11.4 use a **word similarity**: `2·L/(m+n)` over the leaves'
   words (the leaf type, then the text split at runs of tab, LF, CR and
   space), compared exactly. §11.3's correspondence keeps the code-point
-  similarity.
+  similarity. For an `EXACT` leaf, 0003's "below 1" becomes "not a copy":
+  a leaf differing from it only in whitespace has word similarity 1, and
+  still refuses.
 - **C. Crowded-gap needs a rival.** An unmatched leaf in an edited leaf's
   gap refuses it as `crowded-gap` only when its word similarity to the leaf
   is at least 0.3.
@@ -109,12 +111,20 @@ under this document by an author who has not read the resolver.
 - **Near-copy's threshold is in words**, so the cases that pin the
   code-point boundary at 0.5 are rewritten for the word similarity.
 
-**The residual widens in one place.** 0003 §9's R3 is a sentence rewritten
-and the old sentence re-added in the same leaf with the same context, and
-the comment follows the re-added copy. Under D the re-added copy needs only
-one side of its context, so R3 also covers a re-add that keeps one side.
-The alignment of §11.5 still has to carry the old span onto the copy, and
-the copy's ends must sit on the same word boundaries.
+**The residual moves in two places.**
+
+- **R2** is a leaf rewritten beyond recognition with its old wording left
+  in order, and "beyond recognition" is now in words: a rewrite below 0.5
+  by words resolves silently onto the copy even where its code points
+  reach 0.5, as `residual/r2-a-rewrite-unlike-only-by-words-with-its-old-wording-quoted-below`
+  shows, and one at 0.5 by words but below by code points now refuses.
+- **R3** is a sentence rewritten
+  and the old sentence re-added in the same leaf with the same context,
+  and the comment follows the re-added copy. Under D the re-added copy
+  needs only one side of its context, so R3 also covers a re-add that keeps
+  one side (`residual/r3-a-sentence-re-added-with-one-side-of-its-context`).
+  The alignment of §11.5 still has to carry the old span onto the copy,
+  and the copy's ends must sit on the same word boundaries.
 
 ## The cost of reversing it
 
@@ -126,5 +136,6 @@ reversed restore refusals; D reversed restores detachments.
 
 - **The held-out replay** fails the bar, or finds a resolution that is a
   resolver defect.
-- **A real case of R3's wider form**: a comment carried onto re-added text
-  with only one side of its context, in real history.
+- **A real case of R2's or R3's wider form** in real history: a comment
+  carried onto a verbatim copy of a rewrite unlike its original only by
+  words, or onto re-added text with only one side of its context.

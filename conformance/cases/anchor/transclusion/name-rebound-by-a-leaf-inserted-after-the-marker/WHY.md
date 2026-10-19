@@ -6,6 +6,11 @@ paragraph still pairs as `EXACT`, the new one being unlike it, but its pair
 is not inside what the name binds now. 0003 §8: a new leaf inserted
 between a one-line marker and the leaf it names, `REFUSED(name-rebound)`.
 
+**Under 0004** the near-copy rule compares the word similarity. The pinned
+paragraph has 18 words, none of them `See`, `the` or `annex.` (it has
+`The`), so `See the annex.` shares only `p`: `2·1/22`, below 0.5 (`4·1 = 4
+< 22`). The outcome is unchanged.
+
 SPEC.md §11.9:
 
 > **Resolution**, against the target's current text. A name **binds** only

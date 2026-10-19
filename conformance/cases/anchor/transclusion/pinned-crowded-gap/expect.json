@@ -5,5 +5,5 @@
       {"leaf": {"node": [1], "type": "paragraph"}, "status": "REFUSED(pinned-crowded-gap)", "unit": null}
     ]
   },
-  "controls": ["anchor/transclusion/resolves-a-region"]
+  "controls": ["anchor/transclusion/resolves-a-region", "anchor/transclusion/resolves-with-an-unlike-leaf-added-beside-an-edit"]
 }

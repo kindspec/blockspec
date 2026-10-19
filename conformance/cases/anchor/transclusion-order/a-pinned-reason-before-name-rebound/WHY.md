@@ -6,6 +6,11 @@ is an unmatched near-copy: `pinned-near-copy`, step 3. The marker also moved
 to the next paragraph, so the quote is not what the name binds now, which
 step 4 would report as `name-rebound`. Step 3 comes first.
 
+**Under 0004** the near-copy rule compares the word similarity. The pinned
+paragraph has 18 words; the rewording replaces two of them, so `L = 16`,
+`T = 36`: `2·16/36`, at least 0.5 (`4·16 = 64 ≥ 36`). The outcome is
+unchanged.
+
 SPEC.md §11.9:
 
 > 0. **The referrer.** A referrer the profile refuses is refused as a whole,

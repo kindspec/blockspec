@@ -352,10 +352,6 @@ def at_least_half(sim: tuple[int, int]) -> bool:
     return 4 * sim[0] >= sim[1]
 
 
-def below_one(sim: tuple[int, int]) -> bool:
-    return 2 * sim[0] < sim[1]
-
-
 def exceeds_by_margin(one: tuple[int, int], other: tuple[int, int]) -> bool:
     """Whether `one` exceeds `other` by at least 0.15."""
     (l1, t1), (l2, t2) = one, other
@@ -480,7 +476,7 @@ def check_pair(corr: Correspondence, k: int) -> tuple[int, str]:
     def near(also_exact: bool) -> bool:
         for u in unmatched:
             sim = corr.word_similarity(k, u)
-            if at_least_half(sim) and (also_exact or below_one(sim)):
+            if at_least_half(sim) and (also_exact or corr.current[u].key != leaf.key):
                 return True
         return False
 

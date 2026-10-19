@@ -716,8 +716,10 @@ decides (0003 §4):
     never on the chain, so `k`'s `EXACT` pair comes from §11.3 step 2's
     alignment inside `k`'s own gap (0003, second addendum of 2026-10-16,
     item 9);
-  - an unmatched leaf with word similarity to `k` of at least 0.5 and below
-    1: `REFUSED(near-copy)`.
+  - an unmatched leaf that is not a copy of `k`, with word similarity to
+    `k` of at least 0.5: `REFUSED(near-copy)`. A leaf that differs from `k`
+    only in whitespace has word similarity 1 and is not a copy, so it
+    refuses (0004).
 - **`MOVED`**:
   - an unmatched leaf with word similarity to `k` of at least 0.5:
     `REFUSED(near-copy)`;
@@ -747,10 +749,11 @@ an occurrence of `span` that meets both of these (0004, which replaces
    boundary in the paired leaf's text if and only if the span's start is
    one in `leaf.text`, and the same for its end.
 2. **One side of its context holds.** Write each text with every run of
-   U+0009, U+000A, U+000D and U+0020 as one U+0020. The prefix holds when
-   the paired leaf's text before the occurrence, so written, ends with
-   `prefix` so written; when `prefix` is shorter than 32 code points it
-   must be all of that text (0003, addendum, detail 6: a short context sits
+   U+0009, U+000A, U+000D and U+0020 as one U+0020: the paired leaf's text
+   before the occurrence and after it, each taken on its own, and `prefix`
+   and `suffix`. The prefix holds when the text before the occurrence, so
+   written, ends with `prefix` so written; when `prefix` is shorter than
+   32 code points, counted as stored, it must be all of that text (0003, addendum, detail 6: a short context sits
    at the leaf's edge). The suffix holds in the same way, after the
    occurrence and at the leaf's end. A hit needs the prefix or the suffix
    to hold.
@@ -1061,7 +1064,7 @@ produces, so they resolve, silently, to the wrong text (0003 §9):
 | | mechanism | indistinguishable from | suggestions |
 | --- | --- | --- | --- |
 | R1 | a leaf deleted, and a verbatim copy of it elsewhere | a move | not affected: stale on `MOVED` |
-| R2 | a leaf rewritten to similarity below 0.5, with a verbatim copy of its old text left in its place in order | a new leaf inserted beside an unchanged one | affected |
+| R2 | a leaf rewritten to word similarity below 0.5 (0004; by code points the rewrite may be more similar), with a verbatim copy of its old text left in its place in order | a new leaf inserted beside an unchanged one | affected |
 | R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with one side of its context or both (0004), on the same word boundaries | a sentence moved within its leaf | affected |
 | R4 | a different document at the same path, by archive-and-replace or copy-and-rewrite | an edit of the document | affected |
 

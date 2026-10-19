@@ -6,9 +6,10 @@ span no longer occurs in it.
 SPEC.md §11.5:
 
 > For `EDITED`, the span is searched **inside the paired leaf only**. A hit is
-> an occurrence of `span` with `prefix` ending where it starts and `suffix`
-> starting where it ends.
-> [...] With no hit the anchor is
+> an occurrence of `span` that meets both of these (0004, which replaces
+> 0003 Q13's requirement of both sides):
+> [...]
+> Hits are counted by start position, overlapping ones included (§11.1). With no hit the anchor is
 > `DETACHED`
 
 SPEC.md §11.6:

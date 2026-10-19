@@ -7,11 +7,15 @@ the paired leaf's end, so it is a hit, ten code points later than before.
 
 SPEC.md §11.5:
 
-> **A short context must sit at the leaf's edge**
-> (0003, addendum, detail 6): when `prefix` is shorter than 32 code points,
-> the hit's `prefix` starts at the start of the paired leaf's text, and when
-> `suffix` is shorter than 32, the hit's `suffix` ends at its end. An
-> occurrence that does not is not a hit.
+> 2. **One side of its context holds.** Write each text with every run of
+>    U+0009, U+000A, U+000D and U+0020 as one U+0020: the paired leaf's text
+>    before the occurrence and after it, each taken on its own, and `prefix`
+>    and `suffix`. The prefix holds when the text before the occurrence, so
+>    written, ends with `prefix` so written; when `prefix` is shorter than
+>    32 code points, counted as stored, it must be all of that text (0003,
+>    addendum, detail 6: a short context sits at the leaf's edge). The suffix holds in the same way, after the
+>    occurrence and at the leaf's end. A hit needs the prefix or the suffix
+>    to hold.
 
 SPEC.md §11.6:
 

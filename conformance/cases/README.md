@@ -211,6 +211,51 @@ added the cases for its third addendum (overlapping occurrences, replies
 whose document is missing or refused, and two write-back edges) and
 re-pointed the quotes it changed, again with no outcome changed.
 
+`docs/adjudications/0004-anchor-refusals.md` then changed three rules of
+§11 (near-copy by word similarity, crowded-gap only for a rival at word
+similarity 0.3, and a span hit on one side of its context with its word
+boundaries kept). An author with `SPEC.md`, the four adjudications, this
+tree and `check_tree.py`, and no implementation, rewrote the cases those
+rules changed, from §11 alone, computing each similarity from §11.2's
+definitions; every `WHY.md` gives the arithmetic. Where a case's purpose
+still held, its input changed to keep it and its name; where 0004's new
+outcome for the old input is worth pinning, that input became a new case.
+Rewritten: `context/an-edit-on-the-first-code-point-of-the-prefix-detaches`,
+`context/an-edit-one-code-point-outside-the-prefix-is-edited`,
+`context/a-short-prefix-must-sit-at-the-leaf-start`,
+`context/a-short-suffix-must-sit-at-the-leaf-end`,
+`status/detached-when-the-context-is-edited`,
+`crowded-gap/edited-with-a-new-leaf-beside-it`,
+`transclusion/pinned-crowded-gap`,
+`near-copy/exact-with-an-unmatched-leaf-at-one-half`,
+`near-copy/exact-with-an-unmatched-leaf-just-below-one-half`,
+`span/overlapping-hits-are-ambiguous` and
+`transclusion-order/several-pinned-reasons-report-the-first-leaf`, each
+with a new input and its expected outcome kept. Added, among them each
+old input whose outcome 0004 changes, with its new outcome:
+`context/an-edit-on-the-first-code-point-of-the-prefix-is-carried-by-the-suffix`,
+`context/an-edit-inside-the-suffix-is-carried-by-the-prefix`,
+`context/a-short-prefix-away-from-the-leaf-start-is-carried-by-the-suffix`,
+`context/a-short-suffix-away-from-the-leaf-end-is-carried-by-the-prefix`,
+`context/context-that-differs-only-in-whitespace-runs-holds`,
+`span/a-span-now-ending-inside-a-longer-word-detaches`,
+`span/a-span-now-starting-inside-a-longer-word-detaches`,
+`span/a-span-ending-inside-a-word-that-still-does-is-edited`,
+`span/a-span-ending-inside-a-word-now-ending-at-a-boundary-detaches`,
+`crowded-gap/edited-with-an-unlike-new-leaf-beside-it`,
+`crowded-gap/a-new-leaf-at-word-similarity-0-3-refuses`,
+`crowded-gap/a-new-leaf-just-below-word-similarity-0-3-resolves`,
+`near-copy/a-short-leaf-near-by-code-points-is-not-a-near-copy`,
+`near-copy/a-leaf-below-one-half-by-code-points-is-a-near-copy-by-words`,
+`near-copy/a-whitespace-variant-of-an-exact-leaf-is-a-near-copy`,
+`near-copy/words-split-at-a-line-break-too`,
+`span/a-number-span-now-continued-by-a-digit-detaches`,
+`residual/r3-a-sentence-re-added-with-one-side-of-its-context`,
+`residual/r2-a-rewrite-unlike-only-by-words-with-its-old-wording-quoted-below`
+and `transclusion/resolves-with-an-unlike-leaf-added-beside-an-edit`. The
+`WHY.md` quotes of the rules 0004 changed were re-pointed, and the cases
+whose outcome rests on a near-copy check now give its word arithmetic.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit

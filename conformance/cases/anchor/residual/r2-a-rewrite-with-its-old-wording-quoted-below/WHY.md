@@ -13,6 +13,16 @@ can tell from a legitimate one, so the case pins the resolution the rules
 give, which is silently wrong for the history described here and right
 for its twin.
 
+**Under 0004** the near-copy rule compares the word similarity. The
+anchored paragraph has 34 words (`p` and 33 pieces of text); the rewrite
+`Two channels voting to trip scram the reactor.` has 9, of which `p`,
+`channels`, `voting`, `to`, `trip`, `scram`, `the` and `reactor.` occur in
+it in order (`Two` does not: the paragraph has `two`), so `L = 8`, `T =
+43`: `2·8/43`, below 0.5 (`4·8 = 32 < 43`). The outcome is unchanged.
+`residual/r2-a-rewrite-unlike-only-by-words-with-its-old-wording-quoted-below`
+shows a rewrite that is like its old text by code points and unlike it by
+words, which 0004 also lets resolve.
+
 SPEC.md §11.12:
 
 > Four mechanisms leave current bytes identical to those a legitimate edit
@@ -21,6 +31,6 @@ SPEC.md §11.12:
 > | | mechanism | indistinguishable from | suggestions |
 > | --- | --- | --- | --- |
 > | R1 | a leaf deleted, and a verbatim copy of it elsewhere | a move | not affected: stale on `MOVED` |
-> | R2 | a leaf rewritten to similarity below 0.5, with a verbatim copy of its old text left in its place in order | a new leaf inserted beside an unchanged one | affected |
-> | R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with the same context | a sentence moved within its leaf | affected |
+> | R2 | a leaf rewritten to word similarity below 0.5 (0004; by code points the rewrite may be more similar), with a verbatim copy of its old text left in its place in order | a new leaf inserted beside an unchanged one | affected |
+> | R3 | inside one leaf, the span's sentence rewritten and the old sentence re-added with one side of its context or both (0004), on the same word boundaries | a sentence moved within its leaf | affected |
 > | R4 | a different document at the same path, by archive-and-replace or copy-and-rewrite | an edit of the document | affected |

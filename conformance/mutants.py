@@ -480,6 +480,88 @@ MUTANTS = {
 # duplicate-id warning, which no case field asserts, and a notes
 # directory's subfolder, which a case cannot name (cases/README.md).
 ANCHOR_MUTANTS = {
+    "near-copy below half": (
+        "if at_least_half(sim) and (also_exact or corr.current[u].key != leaf.key):",
+        "if (also_exact or corr.current[u].key != leaf.key):",
+    ),
+    "exact near-copy counts exact copies": (
+        "if at_least_half(sim) and (also_exact or corr.current[u].key != leaf.key):",
+        "if at_least_half(sim):",
+    ),
+    "near-copy by code points": (
+        "            sim = corr.word_similarity(k, u)\n",
+        "            sim = corr.similarity(k, u)\n",
+    ),
+    "words split on spaces only": (
+        '_SPACE = re.compile(r"[\\t\\n\\r ]+")',
+        '_SPACE = re.compile(r"[ ]+")',
+    ),
+    "words without the leaf type": (
+        "return [leaf.type, *(w for w in _SPACE.split(leaf.text) if w)]",
+        "return [w for w in _SPACE.split(leaf.text) if w]",
+    ),
+    "crowded gap off": (
+        (
+            "        if any(\n"
+            "            u in gap_current and at_least_three_tenths(corr.word_similarity(k, u))\n"
+            "            for u in unmatched\n"
+            "        ):\n"
+            '            raise _Refused("crowded-gap")'
+        ),
+        '        if False:\n            raise _Refused("crowded-gap")',
+    ),
+    "crowded gap needs no rival": (
+        "u in gap_current and at_least_three_tenths(corr.word_similarity(k, u))",
+        "u in gap_current",
+    ),
+    "rival bar compares strictly": (
+        "return 20 * sim[0] >= 3 * sim[1]",
+        "return 20 * sim[0] > 3 * sim[1]",
+    ),
+    "rival bar at one half": (
+        "return 20 * sim[0] >= 3 * sim[1]",
+        "return 4 * sim[0] >= sim[1]",
+    ),
+    "no word-boundary check": (
+        "if _edge(text, at) != begins or _edge(text, at + len(span)) != ends:",
+        "if False:",
+    ),
+    "start boundary not checked": (
+        "if _edge(text, at) != begins or _edge(text, at + len(span)) != ends:",
+        "if _edge(text, at + len(span)) != ends:",
+    ),
+    "end boundary not checked": (
+        "if _edge(text, at) != begins or _edge(text, at + len(span)) != ends:",
+        "if _edge(text, at) != begins:",
+    ),
+    "word code points are letters only": (
+        'return unicodedata.category(c)[0] in "LN"',
+        'return unicodedata.category(c)[0] == "L"',
+    ),
+    "context needs both sides": (
+        "if prefix_holds or suffix_holds:",
+        "if prefix_holds and suffix_holds:",
+    ),
+    "context needs only the prefix": (
+        "if prefix_holds or suffix_holds:",
+        "if prefix_holds:",
+    ),
+    "context needs only the suffix": (
+        "if prefix_holds or suffix_holds:",
+        "if suffix_holds:",
+    ),
+    "whitespace not collapsed": (
+        '    return _SPACE.sub(" ", text)',
+        "    return text",
+    ),
+    "no prefix edge rule": (
+        "            prefix_holds = before == _spaced(prefix)",
+        "            prefix_holds = before.endswith(_spaced(prefix))",
+    ),
+    "no suffix edge rule": (
+        "            suffix_holds = after == _spaced(suffix)",
+        "            suffix_holds = after.startswith(_spaced(suffix))",
+    ),
     "escape set misses U+2028": (
         "0x2028, 0x2029",
         "0x2029",
@@ -515,10 +597,6 @@ ANCHOR_MUTANTS = {
     "half compares strictly": (
         "return 4 * sim[0] >= sim[1]",
         "return 4 * sim[0] > sim[1]",
-    ),
-    "below one allows one": (
-        "return 2 * sim[0] < sim[1]",
-        "return 2 * sim[0] <= sim[1]",
     ),
     "margin compares strictly": (
         "return 40 * l1 * t2 - 40 * l2 * t1 >= 3 * t1 * t2",
@@ -580,14 +658,6 @@ ANCHOR_MUTANTS = {
         '        if near(also_exact=False):\n            raise _Refused("near-copy")',
         '        if False:\n            raise _Refused("near-copy")',
     ),
-    "near-copy below half": (
-        "if at_least_half(sim) and (also_exact or below_one(sim)):",
-        "if (also_exact or below_one(sim)):",
-    ),
-    "exact near-copy counts exact copies": (
-        "if at_least_half(sim) and (also_exact or below_one(sim)):",
-        "if at_least_half(sim):",
-    ),
     "moved near-copy off": (
         "    elif kind == MOVED:\n        if near(also_exact=True):",
         "    elif kind == MOVED:\n        if False:",
@@ -606,13 +676,6 @@ ANCHOR_MUTANTS = {
     "exact-copy counts paired copies": (
         "if any(u in copies for u in unmatched):",
         "if len(copies) > 0:",
-    ),
-    "crowded gap off": (
-        (
-            "        if any(u in gap_current for u in unmatched):\n"
-            '            raise _Refused("crowded-gap")'
-        ),
-        '        if False:\n            raise _Refused("crowded-gap")',
     ),
     "edited near-copy off": (
         "if near(True):",
@@ -637,14 +700,6 @@ ANCHOR_MUTANTS = {
     "occurrences skip overlaps": (
         "at = text.find(part, at + 1)",
         "at = text.find(part, at + len(part))",
-    ),
-    "no prefix edge rule": (
-        "if len(prefix) < CONTEXT and before != 0:",
-        "if False:",
-    ),
-    "no suffix edge rule": (
-        "if len(suffix) < CONTEXT and after != len(text):",
-        "if False:",
     ),
     "two hits not ambiguous": (
         "if len(hits) > 1:",
