@@ -105,8 +105,10 @@ rather than duplicated.
 
 Decided by `docs/adjudications/0003-anchors.md`: an anchor lands only where
 every witness agrees, and is loud otherwise. Four edit shapes that the bytes
-cannot tell from legitimate edits remain, and that document names them. The
-refusal rate on real history is not yet measured.
+cannot tell from legitimate edits remain, and that document names them.
+Pre-registration 4 measured its refusals on real history as too high
+(`0003-anchors/replay-verdict.md`), and `0004-anchor-refusals.md` narrows
+two of its rules.
 
 **What is the merge failure this format prevents?** rowspec has a specific,
 demonstrated one: two branches insert rows, git merges cleanly, the total is 480
