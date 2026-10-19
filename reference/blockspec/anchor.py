@@ -2,9 +2,10 @@
 """Resolve blockspec draft 0's anchors and transclusions: `SPEC.md` section 11.
 
 Decided by `docs/adjudications/0003-anchors.md` and its addendum of
-2026-10-16, as `0004-anchor-refusals.md` amends them. Standard library only, like the reader it builds on
-(`document.py`), which it is handed rather than imports, so that a mutated
-copy of the reader is the one it runs.
+2026-10-16, as `0004-anchor-refusals.md` amends them. Standard library
+only, like the reader it builds on (`document.py`), which it is handed
+rather than imports, so that a mutated copy of the reader is the one it
+runs.
 
 Where SPEC.md does not decide an input, this module does not guess: it raises
 `Undecided` with the question, and `resolve` reports that record or

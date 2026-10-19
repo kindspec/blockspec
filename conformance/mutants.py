@@ -693,15 +693,24 @@ ANCHOR_MUTANTS = {
         "        if len(spaced(suffix)) < CONTEXT:\n            suffix_holds",
     ),
     "neighbours unchecked": (
-        "if _neighbour(text, at - 1) != before_was or _neighbour(text, at + len(span)) != after_was:",
+        (
+            "if _neighbour(text, at - 1) != before_was or "
+            "_neighbour(text, at + len(span)) != after_was:"
+        ),
         "if False:",
     ),
     "neighbour before unchecked": (
-        "if _neighbour(text, at - 1) != before_was or _neighbour(text, at + len(span)) != after_was:",
+        (
+            "if _neighbour(text, at - 1) != before_was or "
+            "_neighbour(text, at + len(span)) != after_was:"
+        ),
         "if _neighbour(text, at + len(span)) != after_was:",
     ),
     "neighbour after unchecked": (
-        "if _neighbour(text, at - 1) != before_was or _neighbour(text, at + len(span)) != after_was:",
+        (
+            "if _neighbour(text, at - 1) != before_was or "
+            "_neighbour(text, at + len(span)) != after_was:"
+        ),
         "if _neighbour(text, at - 1) != before_was:",
     ),
     "neighbour whitespace compared exactly": (
@@ -709,8 +718,8 @@ ANCHOR_MUTANTS = {
         "return text[at]",
     ),
     "neighbour edge matches a space": (
-        "if at < 0 or at >= len(text):\n        return \"\"",
-        "if at < 0 or at >= len(text):\n        return \" \"",
+        'if at < 0 or at >= len(text):\n        return ""',
+        'if at < 0 or at >= len(text):\n        return " "',
     ),
     "prose context compared exactly": (
         "spaced = (lambda t: t) if exact else _spaced",
