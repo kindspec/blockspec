@@ -2,7 +2,7 @@
 """Resolve blockspec draft 0's anchors and transclusions: `SPEC.md` section 11.
 
 Decided by `docs/adjudications/0003-anchors.md` and its addendum of
-2026-10-16. Standard library only, like the reader it builds on
+2026-10-16, as `0004-anchor-refusals.md` amends them. Standard library only, like the reader it builds on
 (`document.py`), which it is handed rather than imports, so that a mutated
 copy of the reader is the one it runs.
 
@@ -329,12 +329,26 @@ def similarity(a: Leaf, b: Leaf) -> tuple[int, int]:
     return lcs_length(a.written_key, b.written_key), len(a.written_key) + len(b.written_key)
 
 
+_SPACE = re.compile(r"[\t\n\r ]+")
+
+
+def words(leaf: Leaf) -> list[str]:
+    """A leaf's words (0004): its text split at runs of tab, LF, CR and
+    space."""
+    return [w for w in _SPACE.split(leaf.text) if w]
+
+
+def word_similarity(a: Leaf, b: Leaf) -> tuple[int, int]:
+    """`(L, T)` over words: the word similarity is `2·L/T` (0004), 0 when
+    either leaf has no words."""
+    wa, wb = words(a), words(b)
+    if not wa or not wb:
+        return 0, 2
+    return lcs_length(wa, wb), len(wa) + len(wb)
+
+
 def at_least_half(sim: tuple[int, int]) -> bool:
     return 4 * sim[0] >= sim[1]
-
-
-def below_one(sim: tuple[int, int]) -> bool:
-    return 2 * sim[0] < sim[1]
 
 
 def exceeds_by_margin(one: tuple[int, int], other: tuple[int, int]) -> bool:
@@ -374,6 +388,7 @@ class Correspondence:
     def __init__(self, base: list[Leaf], current: list[Leaf]) -> None:
         self.base, self.current = base, current
         self._similarity: dict[tuple[int, int], tuple[int, int]] = {}
+        self._words: dict[tuple[int, int], tuple[int, int]] = {}
         base_count = _counts(base)
         current_count = _counts(current)
         unique = {leaf.key: leaf.index for leaf in current if current_count[leaf.key] == 1}
@@ -410,6 +425,11 @@ class Correspondence:
         if (b, c) not in self._similarity:
             self._similarity[(b, c)] = similarity(self.base[b], self.current[c])
         return self._similarity[(b, c)]
+
+    def word_similarity(self, b: int, c: int) -> tuple[int, int]:
+        if (b, c) not in self._words:
+            self._words[(b, c)] = word_similarity(self.base[b], self.current[c])
+        return self._words[(b, c)]
 
     def _edited(self, b: int, c: int, left_base: list[int], left_current: list[int]) -> bool:
         sim = self.similarity(b, c)
@@ -452,12 +472,8 @@ def check_pair(corr: Correspondence, k: int) -> tuple[int, str]:
     unmatched = corr.unmatched()
     gap_base, gap_current = corr.gap(k)
 
-    def near(also_exact: bool) -> bool:
-        for u in unmatched:
-            sim = corr.similarity(k, u)
-            if at_least_half(sim) and (also_exact or below_one(sim)):
-                return True
-        return False
+    def near() -> bool:
+        return any(at_least_half(corr.similarity(k, u)) for u in unmatched)
 
     if kind == EXACT:
         base_copies = [b.index for b in corr.base if b.key == leaf.key]
@@ -466,10 +482,13 @@ def check_pair(corr: Correspondence, k: int) -> tuple[int, str]:
             in_current = sum(1 for d in copies if d in gap_current)
             if in_base != in_current:
                 raise _Refused("repeat")
-        if near(also_exact=False):
+        if any(
+            corr.current[u].key != leaf.key and at_least_half(corr.word_similarity(k, u))
+            for u in unmatched
+        ):
             raise _Refused("near-copy")
     elif kind == MOVED:
-        if near(also_exact=True):
+        if near():
             raise _Refused("near-copy")
         if any(u in gap_current for u in unmatched):
             raise _Refused("refilled-gap")
@@ -478,7 +497,7 @@ def check_pair(corr: Correspondence, k: int) -> tuple[int, str]:
             raise _Refused("exact-copy")
         if any(u in gap_current for u in unmatched):
             raise _Refused("crowded-gap")
-        if near(True):
+        if near():
             raise _Refused("near-copy")
     return c, kind
 
@@ -515,21 +534,51 @@ def span_in_base(anchor: Anchor) -> int:
     return at + len(anchor.prefix)
 
 
-def find_span(anchor: Anchor, start: int, base: Leaf, current: Leaf) -> tuple[str, list | None]:
+def _spaced(text: str) -> str:
+    """`text` with each run of tab, LF, CR and space as one space (0004)."""
+    return _SPACE.sub(" ", text)
+
+
+def _neighbour(text: str, at: int) -> str:
+    """The code point at `at` as 0004 compares a span's neighbours: "" at an
+    end of the text, " " for tab, LF, CR or space, else the code point."""
+    if at < 0 or at >= len(text):
+        return ""
+    return " " if text[at] in "\t\n\r " else text[at]
+
+
+def find_span(
+    anchor: Anchor, start: int, base: Leaf, current: Leaf, both_sides: bool = False
+) -> tuple[str, list | None]:
     """Section 11.5 for an EDITED pair: `EDITED` with the span, `DETACHED`,
-    or `_Refused("span-ambiguous")`."""
+    or `_Refused("span-ambiguous")`. A suggestion needs `both_sides`, and a
+    pair where either leaf is code or a table both sides compared exactly
+    (0004)."""
     text = current.text
+    exact = base.type in ("code", "table") or current.type in ("code", "table")
+    spaced = (lambda t: t) if exact else _spaced
     span, prefix, suffix = anchor.span, anchor.prefix, anchor.suffix
+    end = start + len(span)
+    before_was, after_was = _neighbour(base.text, start - 1), _neighbour(base.text, end)
     hits = []
     for at in occurrences(text, span):
-        before, after = at - len(prefix), at + len(span) + len(suffix)
-        if before < 0 or text[before:at] != prefix or text[at + len(span) : after] != suffix:
+        if _neighbour(text, at - 1) != before_was or _neighbour(text, at + len(span)) != after_was:
             continue
-        if len(prefix) < CONTEXT and before != 0:
-            continue
-        if len(suffix) < CONTEXT and after != len(text):
-            continue
-        hits.append(at)
+        before, after = spaced(text[:at]), spaced(text[at + len(span) :])
+        if len(prefix) < CONTEXT:
+            prefix_holds = before == spaced(prefix)
+        else:
+            prefix_holds = before.endswith(spaced(prefix))
+        if len(suffix) < CONTEXT:
+            suffix_holds = after == spaced(suffix)
+        else:
+            suffix_holds = after.startswith(spaced(suffix))
+        if both_sides or exact or not (prefix or suffix):
+            holds = prefix_holds and suffix_holds
+        else:
+            holds = (prefix_holds and prefix != "") or (suffix_holds and suffix != "")
+        if holds:
+            hits.append(at)
     if not hits:
         return "DETACHED", None
     if len(hits) > 1:
@@ -764,7 +813,9 @@ def resolve_record(reader, repo: Mapping, path: str) -> dict:
             return outcome
         paired = current.leaves[c]
         if kind == EDITED:
-            status, span = find_span(anchor, start, base.leaves[k], paired)
+            status, span = find_span(
+                anchor, start, base.leaves[k], paired, both_sides=record.kind == "suggestion"
+            )
         else:
             status, span = PAIRED_STATUS[kind], [start, start + len(anchor.span)]
     except _Refused as refused:
