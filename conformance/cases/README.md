@@ -327,6 +327,17 @@ the tree's anchor cases list (the merged documents' records checked on
 `git merge-file`'s output, and transclusions with a separate pass over
 §11.9's step 3).
 
+Two cases were written later, against blockspec `main` at `180bcd2`, **by
+the author of the code they cover and knowing it**, so they are not
+independent cases: kindspec/blockspec#42 found that the reader kept
+U+0000, where `SPEC.md` §3 and CommonMark 0.31.2 §2.3 replace it with
+U+FFFD, and the change that makes the reader replace it, and the resolver
+map a replaced character back to the raw one it comes from on write-back,
+added them. Each `WHY.md` quotes the passage that decides it and says how
+it was written. The cases:
+`leaf/u-0000-is-replaced-with-u-fffd`,
+`anchor/suggestion/writes-back-in-a-leaf-holding-u-0000`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
@@ -402,7 +413,8 @@ A leaf is a `paragraph`, `heading`, `code_block`, `html_block`,
 `thematic_break` or `table`, at any depth (0002, *What a leaf is*). Its
 `content` is its parsed content, with container prefixes removed: list-item
 indentation, `>` markers, and lazy continuation handled as CommonMark 0.31.2
-defines it. Inline content is opaque, so inline markup is kept as written.
+defines it. Inline content is opaque, so inline markup is kept as written. A U+0000 in the file is
+U+FFFD in the content (`SPEC.md` §3).
 
 | type | content |
 | --- | --- |
