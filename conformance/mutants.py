@@ -1053,6 +1053,12 @@ ANCHOR_MUTANTS = {
         '    source = snapshot.text.replace("\\x00", "\\ufffd")',
         "    source = snapshot.text",
     ),
+    "U+0000 unmapped in a heading's write-back": (
+        """        start, end, _ = lines[node.start - 1]
+        raw = source[start:end]""",
+        """        start, end, _ = lines[node.start - 1]
+        raw = snapshot.text[start:end]""",
+    ),
     "code block's final line ending written": (
         'if leaf.node.type == "code_block" and b == len(content):',
         "if False:",

@@ -327,7 +327,7 @@ the tree's anchor cases list (the merged documents' records checked on
 `git merge-file`'s output, and transclusions with a separate pass over
 §11.9's step 3).
 
-Two cases were added later, for kindspec/blockspec#42 (the reader kept
+Cases were added later, for kindspec/blockspec#42 (the reader kept
 U+0000, where `SPEC.md` §3 replaces it with U+FFFD), by an author who saw
 no implementation. They worked from `SPEC.md` at blob `9ffce46` (as on
 `main` at `180bcd2`) alone, with this README and four existing cases'
@@ -338,7 +338,10 @@ were then run, unchanged, against the reader and resolver change that #42
 called for. The questions the author found `SPEC.md` does not decide are
 kindspec/blockspec#62, and no case takes a reading on them. The cases:
 `leaf/u0000-is-replaced-in-every-leaf-type`,
-`anchor/suggestion/writes-back-keeping-a-u0000-outside-the-span`.
+`anchor/suggestion/writes-back-keeping-a-u0000-outside-the-span`. The same
+author, under the same constraints, then added a heading suggestion, for
+the heading branch of write-back that the first two left unpinned:
+`anchor/suggestion/writes-back-in-a-heading-keeping-a-u0000-outside-the-span`.
 
 ## Shape
 
