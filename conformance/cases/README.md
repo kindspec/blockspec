@@ -336,12 +336,17 @@ no implementation. They worked from `SPEC.md` at blob `9ffce46` (as on
 read, by hash, and quotes the passages that decide its outcome. The cases
 were then run, unchanged, against the reader and resolver change that #42
 called for. The questions the author found `SPEC.md` does not decide are
-kindspec/blockspec#62, and no case takes a reading on them. The cases:
-`leaf/u0000-is-replaced-in-every-leaf-type`,
+kindspec/blockspec#62. The cases:
+`leaf/u0000-is-replaced-in-heading-paragraph-and-code`,
 `anchor/suggestion/writes-back-keeping-a-u0000-outside-the-span`. The same
 author, under the same constraints, then added a heading suggestion, for
 the heading branch of write-back that the first two left unpinned:
 `anchor/suggestion/writes-back-in-a-heading-keeping-a-u0000-outside-the-span`.
+It takes a reading on one of #62's questions, the fifth: that §11.7's
+list of raw characters no content code point comes from is descriptive,
+not exhaustive, so a heading's `#` run is outside the content by
+Reading 8 although the list does not name it. Its `WHY.md` argues this
+but does not mark it **READING**. The other two cases take no reading.
 
 ## Shape
 
