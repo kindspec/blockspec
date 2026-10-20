@@ -8,8 +8,8 @@
   ],
   "leaves": [
     {"node": [0], "type": "heading", "content": "A\ufffdB"},
-    {"node": [1], "type": "paragraph", "content": "a\ufffdb"},
-    {"node": [2], "type": "code_block", "content": "c\ufffdd\n"}
+    {"node": [1], "type": "paragraph", "content": "C\ufffdD"},
+    {"node": [2], "type": "code_block", "content": "E\ufffdF\n"}
   ],
   "names": {}
 }

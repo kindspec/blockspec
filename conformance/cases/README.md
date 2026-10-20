@@ -327,16 +327,18 @@ the tree's anchor cases list (the merged documents' records checked on
 `git merge-file`'s output, and transclusions with a separate pass over
 §11.9's step 3).
 
-Two cases were written later, against blockspec `main` at `180bcd2`, **by
-the author of the code they cover and knowing it**, so they are not
-independent cases: kindspec/blockspec#42 found that the reader kept
-U+0000, where `SPEC.md` §3 and CommonMark 0.31.2 §2.3 replace it with
-U+FFFD, and the change that makes the reader replace it, and the resolver
-map a replaced character back to the raw one it comes from on write-back,
-added them. Each `WHY.md` quotes the passage that decides it and says how
-it was written. The cases:
-`leaf/u-0000-is-replaced-with-u-fffd`,
-`anchor/suggestion/writes-back-in-a-leaf-holding-u-0000`.
+Two cases were added later, for kindspec/blockspec#42 (the reader kept
+U+0000, where `SPEC.md` §3 replaces it with U+FFFD), by an author who saw
+no implementation. They worked from `SPEC.md` at blob `9ffce46` (as on
+`main` at `180bcd2`) alone, with this README and four existing cases'
+`expect.json` for the format, and no reader, resolver, runner,
+`check_tree.py`, branch or pull request. Each `WHY.md` gives the files
+read, by hash, and quotes the passages that decide its outcome. The cases
+were then run, unchanged, against the reader and resolver change that #42
+called for. The questions the author found `SPEC.md` does not decide are
+kindspec/blockspec#62, and no case takes a reading on them. The cases:
+`leaf/u0000-is-replaced-in-every-leaf-type`,
+`anchor/suggestion/writes-back-keeping-a-u0000-outside-the-span`.
 
 ## Shape
 

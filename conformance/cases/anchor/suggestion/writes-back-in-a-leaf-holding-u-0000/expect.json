@@ -1,7 +1,0 @@
-{
-  "kind": "anchor",
-  "records": {
-    "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B801.md": {"status": "RESOLVED", "leaf": {"node": [2], "type": "paragraph"}, "span": [31, 40], "suggestion": {"gate": "apply", "written": "written/policy.md"}},
-    "policy.md.notes/01J9Z3M8Q4X7V2K6T0R5N1B802.md": {"status": "RESOLVED", "leaf": {"node": [0], "type": "heading"}, "span": [6, 12], "suggestion": {"gate": "apply", "written": "written/policy-heading.md"}}
-  }
-}
