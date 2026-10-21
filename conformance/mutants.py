@@ -283,6 +283,11 @@ MUTANTS = {
         '_WS = f"[ \\\\t\\\\v\\\\f]*(?:{_EOL}[ \\\\t\\\\v\\\\f]*)?"\n'
         '_WS1 = f"(?:[ \\\\t\\\\v\\\\f]+(?:{_EOL}[ \\\\t\\\\v\\\\f]*)?|{_EOL}[ \\\\t\\\\v\\\\f]*)"',
     ),
+    "spacing-after-an-attribute-equals-takes-vertical-tab-and-form-feed": (
+        'f"(?:{_WS}={_WS}(?:[^ \\\\t\\\\n\\\\r\\"\'=<>`]+|\'[^\']*\'|\\"[^\\"]*\\"))?)"',
+        'f"(?:{_WS}=[ \\\\t\\\\v\\\\f]*(?:{_EOL}[ \\\\t\\\\v\\\\f]*)?'
+        '(?:[^ \\\\t\\\\n\\\\r\\"\'=<>`]+|\'[^\']*\'|\\"[^\\"]*\\"))?)"',
+    ),
     "a-tag-may-be-followed-by-vertical-tab-and-form-feed": (
         're.compile(f"^(?:{_OPENTAG}|{_CLOSETAG})[ \\\\t]*$", re.I)',
         're.compile(f"^(?:{_OPENTAG}|{_CLOSETAG})[ \\\\t\\\\v\\\\f]*$", re.I)',
