@@ -348,6 +348,41 @@ not exhaustive, so a heading's `#` run is outside the content by
 Reading 8 although the list does not name it. Its `WHY.md` argues this
 but does not mark it **READING**. The other two cases take no reading.
 
+Cases were added later, for the four questions of #62 that `SPEC.md`
+settled at `5fda73e` (kindspec/blockspec#63), and for CommonMark 0.31.2
+§6.6's unquoted attribute value (kindspec/blockspec#64), by an author who
+saw no implementation. They worked from `SPEC.md` at `5fda73e`, this
+README, `case-body.schema.json`, kindkit's `case-tree/CASE-TREE.md` and
+CommonMark 0.31.2's `spec.txt`. Each `WHY.md` gives the files read, by
+hash, and quotes the passages that decide its outcome. The cases were run
+unchanged against the reference; the two U+0001 and U+001F raw-html
+refusals failed until the reader's unquoted attribute value was made to
+match §6.6. The two questions the author found `SPEC.md` does not decide,
+a pin whose `path` spells `\u0000` and a write-back span at a heading
+content's edge, have no case. The author also found that this README does
+not say whether a fixture's file name, or a `{{blob:PATH}}` path, may be
+non-ASCII. Three of the transclusion cases name their target `p`, U+FFFD,
+`.md`, and pass the runner. Two more cases
+of the set were not added, because their names were already taken by
+different cases. The cases:
+`resolve/a-u0000-in-a-heading-is-in-no-slug`,
+`anchor/record/refused-for-a-raw-u0000-in-the-anchor-line`,
+`anchor/record/refused-for-an-escaped-u0000-in-leaf-text`,
+`anchor/record/resolves-with-a-raw-ufffd-in-the-anchor-line`,
+`anchor/suggestion/writes-back-over-a-u0000-inside-the-span`,
+`anchor/suggestion/writes-back-in-a-heading-over-a-u0000-inside-the-span`,
+`anchor/transclusion/refused-for-a-raw-u0000-in-its-pin-line`,
+`anchor/transclusion/resolves-with-a-raw-ufffd-in-its-pin-line`,
+`anchor/transclusion/resolves-a-destination-holding-a-u0000`,
+`refusal/link-reference-definition/accepts-a-bare-destination-holding-a-u0001`,
+`refusal/link-reference-definition/accepts-an-unclosed-angle-destination-holding-a-u0000`,
+`refusal/link-reference-definition/refuses-a-bare-destination-holding-a-u0000`,
+`refusal/link-reference-definition/refuses-an-angle-destination-holding-a-u0000`,
+`refusal/raw-html/accepts-a-double-quote-in-an-unquoted-attribute-value`,
+`refusal/raw-html/refuses-an-unquoted-attribute-value-holding-u0001`,
+`refusal/raw-html/refuses-an-unquoted-attribute-value-holding-u001f`,
+`refusal/raw-html/refuses-an-unquoted-attribute-value-of-plain-letters`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit

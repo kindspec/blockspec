@@ -1,0 +1,20 @@
+{
+  "kind": "anchor",
+  "transclusions": {
+    "doc.md": [
+      {
+        "leaf": {
+          "node": [
+            0
+          ],
+          "type": "paragraph"
+        },
+        "status": "REFUSED(record-inconsistent)",
+        "unit": null
+      }
+    ]
+  },
+  "controls": [
+    "anchor/transclusion/resolves-with-a-raw-ufffd-in-its-pin-line"
+  ]
+}

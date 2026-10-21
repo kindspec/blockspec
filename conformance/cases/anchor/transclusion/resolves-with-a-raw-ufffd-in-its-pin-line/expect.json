@@ -1,0 +1,25 @@
+{
+  "kind": "anchor",
+  "transclusions": {
+    "doc.md": [
+      {
+        "leaf": {
+          "node": [
+            0
+          ],
+          "type": "paragraph"
+        },
+        "status": "RESOLVED",
+        "unit": {
+          "document": "p\ufffd.md",
+          "target": {
+            "node": [
+              1
+            ],
+            "type": "paragraph"
+          }
+        }
+      }
+    ]
+  }
+}
