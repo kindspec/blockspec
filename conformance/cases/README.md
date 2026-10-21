@@ -327,6 +327,27 @@ the tree's anchor cases list (the merged documents' records checked on
 `git merge-file`'s output, and transclusions with a separate pass over
 §11.9's step 3).
 
+Cases were added later, for kindspec/blockspec#42 (the reader kept
+U+0000, where `SPEC.md` §3 replaces it with U+FFFD), by an author who saw
+no implementation. They worked from `SPEC.md` at blob `9ffce46` (as on
+`main` at `180bcd2`) alone, with this README and four existing cases'
+`expect.json` for the format, and no reader, resolver, runner,
+`check_tree.py`, branch or pull request. Each `WHY.md` gives the files
+read, by hash, and quotes the passages that decide its outcome. The cases
+were then run, unchanged, against the reader and resolver change that #42
+called for. The questions the author found `SPEC.md` does not decide are
+kindspec/blockspec#62. The cases:
+`leaf/u0000-is-replaced-in-heading-paragraph-and-code`,
+`anchor/suggestion/writes-back-keeping-a-u0000-outside-the-span`. The same
+author, under the same constraints, then added a heading suggestion, for
+the heading branch of write-back that the first two left unpinned:
+`anchor/suggestion/writes-back-in-a-heading-keeping-a-u0000-outside-the-span`.
+It takes a reading on one of #62's questions, the fifth: that §11.7's
+list of raw characters no content code point comes from is descriptive,
+not exhaustive, so a heading's `#` run is outside the content by
+Reading 8 although the list does not name it. Its `WHY.md` argues this
+but does not mark it **READING**. The other two cases take no reading.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
@@ -402,7 +423,8 @@ A leaf is a `paragraph`, `heading`, `code_block`, `html_block`,
 `thematic_break` or `table`, at any depth (0002, *What a leaf is*). Its
 `content` is its parsed content, with container prefixes removed: list-item
 indentation, `>` markers, and lazy continuation handled as CommonMark 0.31.2
-defines it. Inline content is opaque, so inline markup is kept as written.
+defines it. Inline content is opaque, so inline markup is kept as written. A U+0000 in the file is
+U+FFFD in the content (`SPEC.md` §3).
 
 | type | content |
 | --- | --- |

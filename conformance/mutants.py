@@ -179,6 +179,15 @@ MUTANTS = {
         self.advance_offset(1, False)
         self.close_unmatched()""",
     ),
+    # --- encoding: SPEC.md section 3, CommonMark 0.31.2 section 2.3 --------
+    "u-0000-is-kept": (
+        '    text = text.replace("\\x00", "\\ufffd")',
+        "    text = text",
+    ),
+    "u-0000-is-dropped": (
+        '    text = text.replace("\\x00", "\\ufffd")',
+        '    text = text.replace("\\x00", "")',
+    ),
     # --- leaves and their content: README "Leaves and their content" -------
     "paragraph-keeps-trailing-spaces": (
         'return "\\n".join(text for _, text in self.lines).rstrip(" \\t")',
@@ -1039,6 +1048,16 @@ ANCHOR_MUTANTS = {
     "line ending after the title refused": (
         "r'(?:[ \\t]+(?:\\n[ \\t]*)?|\\n[ \\t]*)\"transclude\"[ \\t]*(?:\\n[ \\t]*)?\\)'",
         "r'(?:[ \\t]+(?:\\n[ \\t]*)?|\\n[ \\t]*)\"transclude\"[ \\t]*\\)'",
+    ),
+    "U+0000 unmapped in write-back": (
+        '    source = snapshot.text.replace("\\x00", "\\ufffd")',
+        "    source = snapshot.text",
+    ),
+    "U+0000 unmapped in a heading's write-back": (
+        """        start, end, _ = lines[node.start - 1]
+        raw = source[start:end]""",
+        """        start, end, _ = lines[node.start - 1]
+        raw = snapshot.text[start:end]""",
     ),
     "code block's final line ending written": (
         'if leaf.node.type == "code_block" and b == len(content):',

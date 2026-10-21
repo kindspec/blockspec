@@ -900,6 +900,9 @@ class Document:
 
 def parse(text: str) -> Document:
     """Read `text` as a blockspec document, or raise `Refusal`."""
+    # SPEC.md section 3: U+0000 is replaced with U+FFFD (CommonMark 0.31.2
+    # section 2.3), before anything else reads the text.
+    text = text.replace("\x00", "\ufffd")
     lines = _split_lines(text)
     for line in lines:
         if _CONFLICT.match(line):

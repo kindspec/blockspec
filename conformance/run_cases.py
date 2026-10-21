@@ -60,7 +60,7 @@ CASES = os.path.join(HERE, "cases")
 #: The floor. A run that finds fewer cases than this is a tree that shrank, and
 #: is no verdict rather than a pass. Raise it when cases are added; never lower
 #: it to make a run go green.
-MIN_CASES = 505
+MIN_CASES = 508
 
 EXIT_NO_VERDICT = 2
 

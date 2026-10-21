@@ -1,0 +1,15 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {"type": "heading", "lines": [1, 1]},
+    {"type": "paragraph", "lines": [3, 3]},
+    {"type": "code_block", "lines": [5, 7]}
+  ],
+  "leaves": [
+    {"node": [0], "type": "heading", "content": "A\ufffdB"},
+    {"node": [1], "type": "paragraph", "content": "C\ufffdD"},
+    {"node": [2], "type": "code_block", "content": "E\ufffdF\n"}
+  ],
+  "names": {}
+}

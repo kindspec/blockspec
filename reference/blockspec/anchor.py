@@ -617,10 +617,13 @@ def _content_positions(snapshot: Snapshot, leaf: Leaf) -> tuple[str, list]:
     node = leaf.node
     lines = _raw_lines(snapshot.text)
     content = node.content()
+    # The reader gives U+FFFD for each U+0000 (SPEC.md section 3): one raw
+    # character still, so positions into this text are positions into the raw.
+    source = snapshot.text.replace("\x00", "\ufffd")
     positions: list = []
     if node.type == "heading":
         start, end, _ = lines[node.start - 1]
-        raw = snapshot.text[start:end]
+        raw = source[start:end]
         at = raw.index("#")
         while at < len(raw) and raw[at] == "#":
             at += 1
@@ -631,7 +634,7 @@ def _content_positions(snapshot: Snapshot, leaf: Leaf) -> tuple[str, list]:
         return content, [(start + at + k, start + at + k + 1) for k in range(len(content))]
     for number, text in node.lines:
         start, end, after = lines[number - 1]
-        raw = snapshot.text[start:end]
+        raw = source[start:end]
         synthetic = None
         for k in range(4):
             tail = text[k:]
