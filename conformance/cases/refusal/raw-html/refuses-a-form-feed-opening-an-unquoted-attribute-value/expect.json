@@ -1,0 +1,8 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "raw-html",
+  "controls": [
+    "refusal/raw-html/accepts-a-backtick-opening-an-unquoted-attribute-value"
+  ]
+}

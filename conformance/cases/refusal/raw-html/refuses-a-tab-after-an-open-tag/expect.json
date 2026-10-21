@@ -1,0 +1,9 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "raw-html",
+  "controls": [
+    "refusal/raw-html/accepts-a-form-feed-after-an-open-tag",
+    "refusal/raw-html/accepts-a-vertical-tab-after-an-open-tag"
+  ]
+}
