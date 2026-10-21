@@ -383,6 +383,37 @@ different cases. The cases:
 `refusal/raw-html/refuses-an-unquoted-attribute-value-holding-u001f`,
 `refusal/raw-html/refuses-an-unquoted-attribute-value-of-plain-letters`.
 
+Cases were added later, for the spacing CommonMark 0.31.2 allows inside
+an HTML tag (§6.6) and after one (§4.6, start condition 7)
+(kindspec/blockspec#66), by an author who saw no implementation. They
+worked from `SPEC.md`, this README and `case-body.schema.json`, each as on
+`main` at `f7533e4`, kindkit's `case-tree/CASE-TREE.md` and CommonMark
+0.31.2's `spec.txt`. Each `WHY.md` gives those files by hash and quotes the
+passages that decide its outcome. The accepting cases rest on Reading 6,
+which the tree already pins, and no case takes a new reading. The author
+recorded no question the text leaves undecided. The cases were run
+unchanged against the reference: the eight that accept a vertical tab or
+form feed inside or after a tag failed until the reader's tag spacing was
+made spaces, tabs and up to one line ending, and the run after a tag
+spaces and tabs only. The cases:
+`refusal/raw-html/accepts-a-backtick-opening-an-unquoted-attribute-value`,
+`refusal/raw-html/accepts-a-form-feed-after-an-open-tag`,
+`refusal/raw-html/accepts-a-form-feed-before-a-closing-tag-s-bracket`,
+`refusal/raw-html/accepts-a-form-feed-before-an-attribute-equals-sign`,
+`refusal/raw-html/accepts-a-form-feed-before-an-open-tag-s-bracket`,
+`refusal/raw-html/accepts-a-form-feed-between-tag-name-and-attribute`,
+`refusal/raw-html/accepts-a-space-and-form-feed-after-an-open-tag`,
+`refusal/raw-html/accepts-a-vertical-tab-after-an-open-tag`,
+`refusal/raw-html/accepts-a-vertical-tab-between-tag-name-and-attribute`,
+`refusal/raw-html/refuses-a-form-feed-opening-an-unquoted-attribute-value`,
+`refusal/raw-html/refuses-a-space-and-tab-after-an-open-tag`,
+`refusal/raw-html/refuses-a-tab-after-an-open-tag`,
+`refusal/raw-html/refuses-a-tab-before-a-closing-tag-s-bracket`,
+`refusal/raw-html/refuses-a-tab-before-an-attribute-equals-sign`,
+`refusal/raw-html/refuses-a-tab-before-an-open-tag-s-bracket`,
+`refusal/raw-html/refuses-a-tab-before-an-unquoted-attribute-value`,
+`refusal/raw-html/refuses-a-tab-between-tag-name-and-attribute`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
