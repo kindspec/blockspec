@@ -70,7 +70,7 @@ _DELIMITER_CELL = re.compile(r"^:?-+:?$")
 _TAGNAME = "[A-Za-z][A-Za-z0-9-]*"
 _ATTRIBUTE = (
     f"(?:{_WS}+[a-zA-Z_:][a-zA-Z0-9_.:-]*"
-    f"(?:{_WS}*={_WS}*(?:[^\"'=<>`\\x00-\\x20]+|'[^']*'|\"[^\"]*\"))?)"
+    f"(?:{_WS}*={_WS}*(?:[^ \\t\\n\\r\"'=<>`]+|'[^']*'|\"[^\"]*\"))?)"
 )
 _OPENTAG = f"<{_TAGNAME}{_ATTRIBUTE}*{_WS}*/?>"
 _CLOSETAG = f"</{_TAGNAME}{_WS}*>"
