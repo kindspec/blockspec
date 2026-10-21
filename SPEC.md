@@ -68,7 +68,8 @@ decides. No refusal code exists yet for a file that is not UTF-8 (§12).
 before anything else reads the file: before §4.4's conflict-marker scan,
 §5's frontmatter read and block parsing. No current shape depends on that
 order, since U+0000 and U+FFFD are both outside every marker and fence
-grammar. A record's anchor line is the exception (§11.1).
+grammar. (The order is the precision of 0003's addendum of 2026-10-20, not
+the owner's ruling.) A record's anchor line is the exception (§11.1).
 
 Lines, line endings and tabs are CommonMark 0.31.2's (§2.1 and §2.2 of its
 spec): a line ends at a line feed, a carriage return, or the pair, and a tab
@@ -616,10 +617,10 @@ present on a comment or missing on a suggestion. And it is
 `prefix` or `suffix` is longer than 32 code points (item 1); when its
 `reply-to` string is not a ULID in the form above (item 5); or when the
 profile refuses its body (item 8), since a record is a blockspec document.
-It is also `REFUSED(record-inconsistent)` (the owner's ruling of
-2026-10-20, issue #62) when its anchor line holds a raw U+0000: the line is
-checked as the file holds it, before §3's replacement, and the canonical
-form spells that code point `\u0000`.
+It is also `REFUSED(record-inconsistent)` (0003, addendum of 2026-10-20)
+when its anchor line holds a raw U+0000: the line is checked as the file
+holds it, before §3's replacement, and the canonical form spells that code
+point `\u0000`.
 
 **Re-anchoring** replaces the whole anchor line with one made against a
 newer blob of the document, at the position the current resolution gives.

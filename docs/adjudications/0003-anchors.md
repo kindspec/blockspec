@@ -1084,3 +1084,26 @@ and is reported, as a record that does not resolve is. *Reason*: the old
 wording already conflicted with §11.1 for every `MOVED` record, which
 §11.1 did not let a tool re-base; the decision leaves that conflict only
 for suggestions, and this reading removes it.
+
+## Addendum, 2026-10-20: a raw U+0000 in a record
+
+The owner's decision of 2026-10-20, on kindspec/blockspec#62, item 4. The
+numbered item is the owner's. Where this write-up adds precision of its
+own, it says so, marked **(precision, not the owner's)**, with the reason.
+`SPEC.md` §3 and §11.1 carry the rules.
+
+**1. A raw U+0000 in a record's anchor line is
+`REFUSED(record-inconsistent)`.** `SPEC.md` §3 replaces U+0000 with U+FFFD,
+as CommonMark 0.31.2 §2.3 requires, and a record is a blockspec document,
+so the replacement could have reached the anchor line before its canonical
+form is checked. It does not: the anchor line is checked as the file holds
+it. The first addendum's string grammar spells U+0000 `\u0000`, so a raw
+U+0000 there is not in the canonical form. Read the other way, the line
+would hold a raw U+FFFD, which that grammar writes as itself.
+
+**(precision, not the owner's)** In every other place, the replacement comes
+before anything else reads the file: before `SPEC.md` §4.4's
+conflict-marker scan, §5's frontmatter read and block parsing. *Reason*:
+CommonMark §2.3 names no stage, and the reference replaces first. No current
+shape depends on the order, since U+0000 and U+FFFD are both outside every
+marker and fence grammar.
