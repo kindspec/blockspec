@@ -277,6 +277,21 @@ MUTANTS = {
             ):""",
         "            if False:",
     ),
+    "tag-spacing-takes-vertical-tab-and-form-feed": (
+        '_WS = f"[ \\\\t]*(?:{_EOL}[ \\\\t]*)?"\n'
+        '_WS1 = f"(?:[ \\\\t]+(?:{_EOL}[ \\\\t]*)?|{_EOL}[ \\\\t]*)"',
+        '_WS = f"[ \\\\t\\\\v\\\\f]*(?:{_EOL}[ \\\\t\\\\v\\\\f]*)?"\n'
+        '_WS1 = f"(?:[ \\\\t\\\\v\\\\f]+(?:{_EOL}[ \\\\t\\\\v\\\\f]*)?|{_EOL}[ \\\\t\\\\v\\\\f]*)"',
+    ),
+    "spacing-after-an-attribute-equals-takes-vertical-tab-and-form-feed": (
+        'f"(?:{_WS}={_WS}(?:[^ \\\\t\\\\n\\\\r\\"\'=<>`]+|\'[^\']*\'|\\"[^\\"]*\\"))?)"',
+        'f"(?:{_WS}=[ \\\\t\\\\v\\\\f]*(?:{_EOL}[ \\\\t\\\\v\\\\f]*)?'
+        '(?:[^ \\\\t\\\\n\\\\r\\"\'=<>`]+|\'[^\']*\'|\\"[^\\"]*\\"))?)"',
+    ),
+    "a-tag-may-be-followed-by-vertical-tab-and-form-feed": (
+        're.compile(f"^(?:{_OPENTAG}|{_CLOSETAG})[ \\\\t]*$", re.I)',
+        're.compile(f"^(?:{_OPENTAG}|{_CLOSETAG})[ \\\\t\\\\v\\\\f]*$", re.I)',
+    ),
     "any-comment-is-a-marker": (
         'r"^[ \\t]*<!--[ \\t]*#([a-z0-9][a-z0-9-]*)(:begin|:end)?[ \\t]*-->[ \\t]*$"',
         'r"^[ \\t]*<!--[ \\t]*#?([^:]*?)(:begin|:end)?[ \\t]*-->[ \\t]*$"',

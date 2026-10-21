@@ -1,0 +1,8 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "raw-html",
+  "controls": [
+    "refusal/raw-html/accepts-a-space-and-form-feed-after-an-open-tag"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "raw-html",
+  "controls": [
+    "refusal/raw-html/accepts-a-form-feed-before-a-single-quoted-attribute-value",
+    "refusal/raw-html/accepts-a-vertical-tab-before-a-single-quoted-attribute-value"
+  ]
+}

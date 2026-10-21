@@ -48,7 +48,11 @@ LEAVES = ("paragraph", "heading", "code_block", "html_block", "thematic_break", 
 CONTAINERS = ("document", "block_quote", "list", "list_item")
 
 _PUNCT = frozenset(string.punctuation)
-_WS = "[ \\t\\n\\v\\f\\r]"
+# CommonMark 0.31.2 section 6.6's spacing in a tag: "spaces, tabs, and up to
+# one line ending". _WS may be empty; _WS1, before an attribute, may not.
+_EOL = "(?:\\r\\n|\\r|\\n)"
+_WS = f"[ \\t]*(?:{_EOL}[ \\t]*)?"
+_WS1 = f"(?:[ \\t]+(?:{_EOL}[ \\t]*)?|{_EOL}[ \\t]*)"
 
 # A git conflict-marker line: a column-0 run of seven or more `<`, `>` or `|`
 # followed by a space or the end of the line, or seven or more `=` alone
@@ -69,11 +73,11 @@ _DELIMITER_CELL = re.compile(r"^:?-+:?$")
 
 _TAGNAME = "[A-Za-z][A-Za-z0-9-]*"
 _ATTRIBUTE = (
-    f"(?:{_WS}+[a-zA-Z_:][a-zA-Z0-9_.:-]*"
-    f"(?:{_WS}*={_WS}*(?:[^ \\t\\n\\r\"'=<>`]+|'[^']*'|\"[^\"]*\"))?)"
+    f"(?:{_WS1}[a-zA-Z_:][a-zA-Z0-9_.:-]*"
+    f"(?:{_WS}={_WS}(?:[^ \\t\\n\\r\"'=<>`]+|'[^']*'|\"[^\"]*\"))?)"
 )
-_OPENTAG = f"<{_TAGNAME}{_ATTRIBUTE}*{_WS}*/?>"
-_CLOSETAG = f"</{_TAGNAME}{_WS}*>"
+_OPENTAG = f"<{_TAGNAME}{_ATTRIBUTE}*{_WS}/?>"
+_CLOSETAG = f"</{_TAGNAME}{_WS}>"
 _BLOCK_TAGS = (
     "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|"
     "details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|"
@@ -89,7 +93,7 @@ _HTML_OPEN = (
     re.compile(r"^<![A-Za-z]"),
     re.compile(r"^<!\[CDATA\["),
     re.compile(f"^</?(?:{_BLOCK_TAGS})(?:[ \\t]|/?>|$)", re.I),
-    re.compile(f"^(?:{_OPENTAG}|{_CLOSETAG}){_WS}*$", re.I),
+    re.compile(f"^(?:{_OPENTAG}|{_CLOSETAG})[ \\t]*$", re.I),
 )
 
 
