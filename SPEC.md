@@ -65,11 +65,15 @@ decides. No refusal code exists yet for a file that is not UTF-8 (§12).
 
 **U+0000 is replaced with U+FFFD**, as the pinned grammar requires
 (CommonMark 0.31.2 §2.3, "Insecure characters"). The replacement comes
-before anything else reads the file: before §4.4's conflict-marker scan,
-§5's frontmatter read and block parsing. No current shape depends on that
-order, since U+0000 and U+FFFD are both outside every marker and fence
-grammar. (The order is the precision of 0003's addendum of 2026-10-20, not
-the owner's ruling.) A record's anchor line is the exception (§11.1).
+before §4.4's conflict-marker scan, §5's frontmatter read and block
+parsing. None of them depends on that order, since U+0000 and U+FFFD are
+both outside every marker, fence and conflict-marker grammar. A record's
+frontmatter lines (§11.1) and a referrer's pin lines (§11.9) are checked as
+the file holds them, before the replacement. That shows only in a record's
+anchor line and in a pin line, whose canonical form spells U+0000
+`\u0000`, so a raw U+0000 there is refused. (0003's addendum of 2026-10-20
+records the anchor line as the owner's ruling, and the rest as its
+precision.)
 
 Lines, line endings and tabs are CommonMark 0.31.2's (§2.1 and §2.2 of its
 spec): a line ends at a line feed, a carriage return, or the pair, and a tab
@@ -620,7 +624,10 @@ profile refuses its body (item 8), since a record is a blockspec document.
 It is also `REFUSED(record-inconsistent)` (0003, addendum of 2026-10-20)
 when its anchor line holds a raw U+0000: the line is checked as the file
 holds it, before §3's replacement, and the canonical form spells that code
-point `\u0000`.
+point `\u0000`. That escape does not anchor text holding a U+0000: a leaf's
+text holds U+FFFD, written as itself, wherever the file held U+0000, so a
+`leaf.text` spelling `\u0000` names no leaf of `base`. In `replace`, it
+writes a raw U+0000 back (§11.7).
 
 **Re-anchoring** replaces the whole anchor line with one made against a
 newer blob of the document, at the position the current resolution gives.
@@ -942,9 +949,9 @@ The rest of the frontmatter stays opaque (§5): the resolver reads the pin
 lines as text, not through a YAML reader. **Every transclusion in the
 referrer is `REFUSED(record-inconsistent)`** when the frontmatter has more
 than one line that begins with `pins:`, a line that begins with `pins:` and
-is not exactly `pins:`, a pin line not in the canonical form, pins out of
-order, one `path` twice, or such a `  - ` line after the pins have
-ended.
+is not exactly `pins:`, a pin line not in the canonical form (one holding
+a raw U+0000 included, §3), pins out of order, one `path` twice, or such a
+`  - ` line after the pins have ended.
 
 Two branches that add or re-pin different targets merge cleanly when an
 unchanged line lies between their changes, and conflict when the changes

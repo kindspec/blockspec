@@ -1085,12 +1085,12 @@ wording already conflicted with §11.1 for every `MOVED` record, which
 §11.1 did not let a tool re-base; the decision leaves that conflict only
 for suggestions, and this reading removes it.
 
-## Addendum, 2026-10-20: a raw U+0000 in a record
+## Addendum, 2026-10-20: a raw U+0000 in a record or a pin
 
-The owner's decision of 2026-10-20, on kindspec/blockspec#62, item 4. The
-numbered item is the owner's. Where this write-up adds precision of its
-own, it says so, marked **(precision, not the owner's)**, with the reason.
-`SPEC.md` §3 and §11.1 carry the rules.
+The owner's decision of 2026-10-20, on kindspec/blockspec#62, item 4,
+recorded there. The numbered item is the owner's. Where this write-up adds
+precision of its own, it says so, marked **(precision, not the owner's)**,
+with the reason. `SPEC.md` §3, §11.1 and §11.9 carry the rules.
 
 **1. A raw U+0000 in a record's anchor line is
 `REFUSED(record-inconsistent)`.** `SPEC.md` §3 replaces U+0000 with U+FFFD,
@@ -1101,9 +1101,21 @@ it. The first addendum's string grammar spells U+0000 `\u0000`, so a raw
 U+0000 there is not in the canonical form. Read the other way, the line
 would hold a raw U+FFFD, which that grammar writes as itself.
 
-**(precision, not the owner's)** In every other place, the replacement comes
-before anything else reads the file: before `SPEC.md` §4.4's
-conflict-marker scan, §5's frontmatter read and block parsing. *Reason*:
-CommonMark §2.3 names no stage, and the reference replaces first. No current
-shape depends on the order, since U+0000 and U+FFFD are both outside every
-marker and fence grammar.
+**(precision, not the owner's)** A referrer's pin lines (`SPEC.md` §11.9)
+are checked the same way, as the file holds them, so a raw U+0000 in one is
+`REFUSED(record-inconsistent)` for every transclusion in the referrer.
+*Reason*: a pin line is in the first addendum's canonical form too, so item
+1's argument applies to it unchanged; read the other way, a pin `path`
+holding a raw U+0000 would read as one holding a raw U+FFFD. It is what the
+reference does.
+
+**(precision, not the owner's)** A record's other frontmatter lines are
+checked as the file holds them too. *Reason*: it changes nothing, since a
+U+0000 or a U+FFFD in a `kind`, `status` or `reply-to` line breaks the
+grammar either way, and it is what the reference does.
+
+**(precision, not the owner's)** The replacement comes before `SPEC.md`
+§4.4's conflict-marker scan, §5's frontmatter read and block parsing.
+*Reason*: CommonMark §2.3 names no stage, and the reference replaces first.
+None of the three depends on the order, since U+0000 and U+FFFD are both
+outside every marker, fence and conflict-marker grammar.
