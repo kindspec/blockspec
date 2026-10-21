@@ -65,15 +65,26 @@ decides. No refusal code exists yet for a file that is not UTF-8 (§12).
 
 **U+0000 is replaced with U+FFFD**, as the pinned grammar requires
 (CommonMark 0.31.2 §2.3, "Insecure characters"). The replacement comes
-before §4.4's conflict-marker scan, §5's frontmatter read and block
-parsing. None of them depends on that order, since U+0000 and U+FFFD are
-both outside every marker, fence and conflict-marker grammar. A record's
-frontmatter lines (§11.1) and a referrer's pin lines (§11.9) are checked as
-the file holds them, before the replacement. That shows only in a record's
-anchor line and in a pin line, whose canonical form spells U+0000
-`\u0000`, so a raw U+0000 there is refused. (0003's addendum of 2026-10-20
-records the anchor line as the owner's ruling, and the rest as its
-precision.)
+first, before §4.4's conflict-marker scan, §5's frontmatter read and block
+parsing: §2.3 states it among CommonMark's preliminaries, before any block
+structure, and the reference replaces first. The conflict scan and the
+frontmatter read do not depend on that order, since U+0000 and U+FFFD are
+both outside their grammars. Block parsing does, in two places, each of
+which takes U+FFFD and not U+0000: a link reference definition's
+destination, which holds no ASCII control character (CommonMark §4.7), and
+an unquoted attribute value in HTML block type 7's start condition (§4.6),
+as the reference reads it. So `[a]: x`, U+0000, `y` is refused as
+`link-reference-definition`, and `<a b=x`, U+0000, `y>` as `raw-html`,
+where without the replacement each would be a paragraph.
+
+A record's frontmatter lines (§11.1) and a referrer's pin lines (§11.9) are
+checked as the file holds them, before the replacement. That shows only in
+a record's anchor line and in a pin line, whose canonical form spells
+U+0000 `\u0000`, so a raw U+0000 there is refused. A pin `path` spelling
+`\u0000` matches no transclusion: a link's destination holds U+FFFD,
+written as itself, wherever the file held U+0000. (0003's addendum of
+2026-10-20 records the anchor line as the owner's ruling, and the rest as
+its precision.)
 
 Lines, line endings and tabs are CommonMark 0.31.2's (§2.1 and §2.2 of its
 spec): a line ends at a line feed, a carriage return, or the pair, and a tab

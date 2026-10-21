@@ -1101,9 +1101,10 @@ it. The first addendum's string grammar spells U+0000 `\u0000`, so a raw
 U+0000 there is not in the canonical form. Read the other way, the line
 would hold a raw U+FFFD, which that grammar writes as itself.
 
-**(precision, not the owner's)** A referrer's pin lines (`SPEC.md` §11.9)
-are checked the same way, as the file holds them, so a raw U+0000 in one is
-`REFUSED(record-inconsistent)` for every transclusion in the referrer.
+**(precision, not the owner's, extending item 1)** A referrer's pin lines
+(`SPEC.md` §11.9) are checked the same way, as the file holds them, so a
+raw U+0000 in one is `REFUSED(record-inconsistent)` for every transclusion
+in the referrer.
 *Reason*: a pin line is in the first addendum's canonical form too, so item
 1's argument applies to it unchanged; read the other way, a pin `path`
 holding a raw U+0000 would read as one holding a raw U+FFFD. It is what the
@@ -1114,8 +1115,15 @@ checked as the file holds them too. *Reason*: it changes nothing, since a
 U+0000 or a U+FFFD in a `kind`, `status` or `reply-to` line breaks the
 grammar either way, and it is what the reference does.
 
-**(precision, not the owner's)** The replacement comes before `SPEC.md`
-§4.4's conflict-marker scan, §5's frontmatter read and block parsing.
-*Reason*: CommonMark §2.3 names no stage, and the reference replaces first.
-None of the three depends on the order, since U+0000 and U+FFFD are both
-outside every marker, fence and conflict-marker grammar.
+**(precision, not the owner's)** Everywhere else the replacement comes
+first, before `SPEC.md` §4.4's conflict-marker scan, §5's frontmatter read
+and block parsing. *Reason*: CommonMark §2.3 states it among the
+preliminaries, before any block structure, and the reference replaces
+first. The conflict scan and the frontmatter read do not depend on the
+order, since U+0000 and U+FFFD are both outside their grammars. Block
+parsing does, in two places that take U+FFFD and not U+0000: a link
+reference definition's destination, which holds no ASCII control character
+(CommonMark §4.7), and an unquoted attribute value in HTML block type 7's
+start condition (§4.6), as the reference reads it. There a line that would
+be a paragraph without the replacement is refused with it, as
+`link-reference-definition` or `raw-html`.
