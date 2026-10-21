@@ -120,7 +120,7 @@ none.
 
 The spike (blockspec#2) has since returned a binding FOUND, under an owner
 ruling that overrides frozen rules of its pre-registration (`spike/LOG.md`
-§34–§35). blockspec#2 stays open. `spike/README.md` says what the verdict
+§34–§35), and blockspec#2 is closed. `spike/README.md` says what the verdict
 rests on.
 
 ## 3. The method that must carry over
