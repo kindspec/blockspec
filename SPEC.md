@@ -64,7 +64,11 @@ A document is UTF-8 text, one document per file, as `DESIGN-BRIEF.md` §1
 decides. No refusal code exists yet for a file that is not UTF-8 (§12).
 
 **U+0000 is replaced with U+FFFD**, as the pinned grammar requires
-(CommonMark 0.31.2 §2.3, "Insecure characters").
+(CommonMark 0.31.2 §2.3, "Insecure characters"). The replacement comes
+before anything else reads the file: before §4.4's conflict-marker scan,
+§5's frontmatter read and block parsing. No current shape depends on that
+order, since U+0000 and U+FFFD are both outside every marker and fence
+grammar. A record's anchor line is the exception (§11.1).
 
 Lines, line endings and tabs are CommonMark 0.31.2's (§2.1 and §2.2 of its
 spec): a line ends at a line feed, a carriage return, or the pair, and a tab
@@ -376,7 +380,9 @@ class of github-slugger 2.0.0's `regex.js` is removed, and each space becomes
 `-`.
 
 - The class is github-slugger's own, not a Unicode category rule: it removes
-  `²`, and keeps `‿`, `Ⓐ`, `-` and `_`. `tools/slugger/` generates the
+  `²` and U+FFFD, and keeps `‿`, `Ⓐ`, `-` and `_`. Since §3 replaces
+  U+0000 with U+FFFD, a U+0000 in a heading is in no slug: `a`, U+0000,
+  `b` slugs to `ab`. `tools/slugger/` generates the
   reference's copy of the class and checks it against the original.
 - Lower-casing is the reader's runtime's own, so it follows that runtime's
   Unicode version: U+A7CB and U+A7DC lower-case under node 24 (Unicode 17)
@@ -610,6 +616,10 @@ present on a comment or missing on a suggestion. And it is
 `prefix` or `suffix` is longer than 32 code points (item 1); when its
 `reply-to` string is not a ULID in the form above (item 5); or when the
 profile refuses its body (item 8), since a record is a blockspec document.
+It is also `REFUSED(record-inconsistent)` (the owner's ruling of
+2026-10-20, issue #62) when its anchor line holds a raw U+0000: the line is
+checked as the file holds it, before §3's replacement, and the canonical
+form spells that code point `\u0000`.
 
 **Re-anchoring** replaces the whole anchor line with one made against a
 newer blob of the document, at the position the current resolution gives.
@@ -809,7 +819,9 @@ markers and list-item indentation), the indentation a paragraph line loses,
 and line endings, carriage returns included, are raw characters no content
 code point comes from; a `\n` in the content stands for the line ending,
 whichever it is. In a file whose lines end in a bare CR, that `\n` comes
-from the CR.
+from the CR. A U+FFFD that §3 gives for a U+0000 comes from that U+0000,
+so a U+0000 inside the span's raw range is replaced with the rest of it
+(steps 2 and 3), and one outside it is left as it is.
 
 1. Let `a` and `b` be the positions in the leaf's content, before NFC, such
    that the NFC form of the content before `a` is `leaf.text` before the
