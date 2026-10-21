@@ -1,0 +1,8 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "link-reference-definition",
+  "controls": [
+    "refusal/link-reference-definition/accepts-an-unclosed-angle-destination-holding-a-u0000"
+  ]
+}
