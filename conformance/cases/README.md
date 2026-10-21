@@ -352,13 +352,17 @@ Cases were added later, for the four questions of #62 that `SPEC.md`
 settled at `5fda73e` (kindspec/blockspec#63), and for CommonMark 0.31.2
 §6.6's unquoted attribute value (kindspec/blockspec#64), by an author who
 saw no implementation. They worked from `SPEC.md` at `5fda73e`, this
-README and `case-body.schema.json`. Each `WHY.md` gives the files read, by
+README, `case-body.schema.json`, kindkit's `case-tree/CASE-TREE.md` and
+CommonMark 0.31.2's `spec.txt`. Each `WHY.md` gives the files read, by
 hash, and quotes the passages that decide its outcome. The cases were run
 unchanged against the reference; the two U+0001 and U+001F raw-html
 refusals failed until the reader's unquoted attribute value was made to
-match §6.6. The questions the author found `SPEC.md` does not decide (a
-pin whose `path` spells `\u0000`, a write-back span at a heading
-content's edge, and non-ASCII fixture names) have no case. Two more cases
+match §6.6. The two questions the author found `SPEC.md` does not decide,
+a pin whose `path` spells `\u0000` and a write-back span at a heading
+content's edge, have no case. The author also found that this README does
+not say whether a fixture's file name, or a `{{blob:PATH}}` path, may be
+non-ASCII. Three of the transclusion cases name their target `p`, U+FFFD,
+`.md`, and pass the runner. Two more cases
 of the set were not added, because their names were already taken by
 different cases. The cases:
 `resolve/a-u0000-in-a-heading-is-in-no-slug`,
