@@ -1116,14 +1116,15 @@ U+0000 or a U+FFFD in a `kind`, `status` or `reply-to` line breaks the
 grammar either way, and it is what the reference does.
 
 **(precision, not the owner's)** Everywhere else the replacement comes
-first, before `SPEC.md` §4.4's conflict-marker scan, §5's frontmatter read
-and block parsing. *Reason*: CommonMark §2.3 states it among the
-preliminaries, before any block structure, and the reference replaces
-first. The conflict scan and the frontmatter read do not depend on the
-order, since U+0000 and U+FFFD are both outside their grammars. Block
-parsing does, in two places that take U+FFFD and not U+0000: a link
-reference definition's destination, which holds no ASCII control character
-(CommonMark §4.7), and an unquoted attribute value in HTML block type 7's
-start condition (§4.6), as the reference reads it. There a line that would
-be a paragraph without the replacement is refused with it, as
-`link-reference-definition` or `raw-html`.
+first, before `SPEC.md` §4.4's conflict-marker scan, §5's frontmatter read,
+block parsing and §11.9's reading of a transclusion. *Reason*: CommonMark
+§2.3 states it among the preliminaries, before any block structure, and
+the reference replaces first. The conflict scan and the frontmatter read do
+not depend on the order, since U+0000 and U+FFFD are both outside their
+grammars. A link destination not in angle brackets does: it holds no ASCII
+control character (CommonMark §4.7, with §6.3's link destination), so it
+takes U+FFFD and not U+0000. With the replacement, a link reference
+definition whose destination held a U+0000 is refused as
+`link-reference-definition`, and a link titled `"transclude"` whose
+destination held one is a transclusion; without it, a line of either can
+be a plain paragraph.

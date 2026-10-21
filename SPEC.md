@@ -65,17 +65,17 @@ decides. No refusal code exists yet for a file that is not UTF-8 (§12).
 
 **U+0000 is replaced with U+FFFD**, as the pinned grammar requires
 (CommonMark 0.31.2 §2.3, "Insecure characters"). The replacement comes
-first, before §4.4's conflict-marker scan, §5's frontmatter read and block
-parsing: §2.3 states it among CommonMark's preliminaries, before any block
-structure, and the reference replaces first. The conflict scan and the
-frontmatter read do not depend on that order, since U+0000 and U+FFFD are
-both outside their grammars. Block parsing does, in two places, each of
-which takes U+FFFD and not U+0000: a link reference definition's
-destination, which holds no ASCII control character (CommonMark §4.7), and
-an unquoted attribute value in HTML block type 7's start condition (§4.6),
-as the reference reads it. So `[a]: x`, U+0000, `y` is refused as
-`link-reference-definition`, and `<a b=x`, U+0000, `y>` as `raw-html`,
-where without the replacement each would be a paragraph.
+first, before §4.4's conflict-marker scan, §5's frontmatter read, block
+parsing and §11.9's reading of a transclusion: §2.3 states it among
+CommonMark's preliminaries, before any block structure, and the reference
+replaces first. The conflict scan and the frontmatter read do not depend on
+that order, since U+0000 and U+FFFD are both outside their grammars. A link
+destination not in angle brackets does: it holds no ASCII control
+character (CommonMark §4.7, with §6.3's link destination), so it takes
+U+FFFD and not U+0000. With the replacement, the one line `[a]: x`,
+U+0000, `y` is refused as `link-reference-definition`, and the paragraph
+`[x](t`, U+0000, `.md#s "transclude")` is a transclusion; without it, each
+would be a plain paragraph.
 
 A record's frontmatter lines (§11.1) and a referrer's pin lines (§11.9) are
 checked as the file holds them, before the replacement. That shows only in
