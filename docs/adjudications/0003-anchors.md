@@ -1084,3 +1084,47 @@ and is reported, as a record that does not resolve is. *Reason*: the old
 wording already conflicted with §11.1 for every `MOVED` record, which
 §11.1 did not let a tool re-base; the decision leaves that conflict only
 for suggestions, and this reading removes it.
+
+## Addendum, 2026-10-20: a raw U+0000 in a record or a pin
+
+The owner's decision of 2026-10-20, on kindspec/blockspec#62, item 4,
+recorded there. The numbered item is the owner's. Where this write-up adds
+precision of its own, it says so, marked **(precision, not the owner's)**,
+with the reason. `SPEC.md` §3, §11.1 and §11.9 carry the rules.
+
+**1. A raw U+0000 in a record's anchor line is
+`REFUSED(record-inconsistent)`.** `SPEC.md` §3 replaces U+0000 with U+FFFD,
+as CommonMark 0.31.2 §2.3 requires, and a record is a blockspec document,
+so the replacement could have reached the anchor line before its canonical
+form is checked. It does not: the anchor line is checked as the file holds
+it. The first addendum's string grammar spells U+0000 `\u0000`, so a raw
+U+0000 there is not in the canonical form. Read the other way, the line
+would hold a raw U+FFFD, which that grammar writes as itself.
+
+**(precision, not the owner's, extending item 1)** A referrer's pin lines
+(`SPEC.md` §11.9) are checked the same way, as the file holds them, so a
+raw U+0000 in one is `REFUSED(record-inconsistent)` for every transclusion
+in the referrer.
+*Reason*: a pin line is in the first addendum's canonical form too, so item
+1's argument applies to it unchanged; read the other way, a pin `path`
+holding a raw U+0000 would read as one holding a raw U+FFFD. It is what the
+reference does.
+
+**(precision, not the owner's)** A record's other frontmatter lines are
+checked as the file holds them too. *Reason*: it changes nothing, since a
+U+0000 or a U+FFFD in a `kind`, `status` or `reply-to` line breaks the
+grammar either way, and it is what the reference does.
+
+**(precision, not the owner's)** Everywhere else the replacement comes
+first, before `SPEC.md` §4.4's conflict-marker scan, §5's frontmatter read,
+block parsing and §11.9's reading of a transclusion. *Reason*: CommonMark
+§2.3 states it among the preliminaries, before any block structure, and
+the reference replaces first. The conflict scan and the frontmatter read do
+not depend on the order, since U+0000 and U+FFFD are both outside their
+grammars. A link destination not in angle brackets does: it holds no ASCII
+control character (CommonMark §4.7, with §6.3's link destination), so it
+takes U+FFFD and not U+0000. With the replacement, a link reference
+definition whose destination held a U+0000 is refused as
+`link-reference-definition`, and a link titled `"transclude"` whose
+destination held one is a transclusion; without it, a line of either can
+be a plain paragraph.
