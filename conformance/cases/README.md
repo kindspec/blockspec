@@ -414,6 +414,23 @@ spaces and tabs only. The cases:
 `refusal/raw-html/refuses-a-tab-before-an-unquoted-attribute-value`,
 `refusal/raw-html/refuses-a-tab-between-tag-name-and-attribute`.
 
+Review then found that no case pinned the spacing after an attribute's
+`=`: with vertical tab and form feed put back there alone, every case
+passed. The same author, from the same files and under the same
+constraints, added five more, and recorded no question the text leaves
+undecided. The accepting four rest on Reading 6, and none takes a new
+reading. They were run unchanged against the reference with the fix
+above, and pass. The four accepting cases fail against the reader as it
+was at `f7533e4`. Two of them are the vertical-tab twins of
+`refusal/raw-html/refuses-a-tab-before-an-attribute-equals-sign` and
+`refusal/raw-html/refuses-a-tab-before-an-open-tag-s-bracket`, which were
+left as they were and so do not list them as controls. The cases:
+`refusal/raw-html/accepts-a-form-feed-before-a-single-quoted-attribute-value`,
+`refusal/raw-html/accepts-a-vertical-tab-before-a-single-quoted-attribute-value`,
+`refusal/raw-html/accepts-a-vertical-tab-before-an-attribute-equals-sign`,
+`refusal/raw-html/accepts-a-vertical-tab-before-an-open-tag-s-bracket`,
+`refusal/raw-html/refuses-a-tab-before-a-single-quoted-attribute-value`.
+
 ## Shape
 
 The tree follows kindkit's case-tree convention (kindspec/kindkit
