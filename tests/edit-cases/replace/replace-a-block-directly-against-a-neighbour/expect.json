@@ -1,0 +1,7 @@
+{
+  "op": "replace",
+  "node": [
+    1
+  ],
+  "result": "output.md"
+}

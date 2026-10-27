@@ -1,0 +1,1 @@
+Pins the end-of-file rule after frontmatter: the old last line `---` gains E (the first line ending in the file, LF, since the line before the first new line has none), a blank line ending in E is added, and the new last line has no line ending (*Where the lines go*, `insert_block`).

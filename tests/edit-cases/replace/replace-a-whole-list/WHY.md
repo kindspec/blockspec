@@ -1,0 +1,1 @@
+Pins that a list is replaced as one block (*API shape*: the whole list can be replaced): the 2 lines of the bullet list are removed and the 3 source lines added (the shape table: `n` removed, `m` added). Each new line but the last ends in E, the LF of the blank line before the block; the last ends as the block's last line did.

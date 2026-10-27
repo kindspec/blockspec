@@ -1,0 +1,10 @@
+{
+  "op": "replace",
+  "node": [
+    0
+  ],
+  "refusal": "setext-heading",
+  "controls": [
+    "replace/replace-a-heading-over-a-thematic-break"
+  ]
+}

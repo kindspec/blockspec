@@ -1,0 +1,1 @@
+Pins the final line ending of a replace: the first new line ends in E (the LF of the blank line before the block), and the last new line ends as the block's last line did, which is no line ending because the block ended the file without one (*Where the lines go*, `replace_block`). The source's own final LF is dropped (*API shape*, `source`).

@@ -1,0 +1,1 @@
+Pins that no blank line is added next to an existing one: with no blocks the source goes after the file's last line, which is blank, and nothing follows, so the source lines are the only lines added (*Where the lines go*, `insert_block`).

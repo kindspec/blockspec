@@ -1,0 +1,1 @@
+Pins E's fallback: block [0] starts the file, so there is no line before the first new line, and E is the first line ending in the file, the CRLF of `Old.` itself. `Y` ends as the block's last line did, also CRLF; `B.`'s LF is untouched (*Where the lines go*, E).

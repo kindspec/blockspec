@@ -1,0 +1,8 @@
+{
+  "op": "delete",
+  "node": [],
+  "refusal": "no-such-block",
+  "controls": [
+    "delete/delete-the-last-block"
+  ]
+}

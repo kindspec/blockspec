@@ -1,0 +1,1 @@
+Pins E's fallback at the end of a file with no final line ending: `B.` has no line ending, so E is the first line ending in the file, CRLF; `B.` gains it, the added blank line ends in it, and `C.` has none (*Where the lines go*, E and `insert_block`).

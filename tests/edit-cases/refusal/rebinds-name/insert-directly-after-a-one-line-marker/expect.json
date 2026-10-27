@@ -1,0 +1,10 @@
+{
+  "op": "insert",
+  "after": [
+    0
+  ],
+  "refusal": "rebinds-name",
+  "controls": [
+    "insert/insert-after-the-block-a-marker-names"
+  ]
+}

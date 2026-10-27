@@ -1,0 +1,1 @@
+Pins that a one-line marker is a block that can be replaced (*API shape*), and that `rebinds-name` allows it: a name declared by a marker in the block replaced may go (`old`), and a name declared by the new block may appear (`new`), binding the same paragraph (*Refusal rules* 4).

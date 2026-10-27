@@ -1,0 +1,1 @@
+Pins `after=`: the source goes directly after block [0]'s last line. A blank line is added between it and `A.` (non-blank), none between it and the existing blank line after (*Where the lines go*, `insert_block`).

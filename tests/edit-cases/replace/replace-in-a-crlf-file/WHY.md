@@ -1,0 +1,1 @@
+Pins E in a CRLF file: the line before the block is a blank line ending in CRLF, so the first new line ends in CRLF; the last ends as the block's last line did, CRLF. The source's LF line endings are not kept: its lines are split and each new line gets E (*Where the lines go*).

@@ -1,0 +1,1 @@
+Control for `table-not-blank-below/replace-puts-a-table-directly-over-a-heading`: with a blank line kept below the block, the new table has the file's edge above and a blank line below, and is accepted (`replace_block` keeps the lines around the block). E falls back to the first line ending in the file, LF.

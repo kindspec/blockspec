@@ -1,0 +1,1 @@
+Pins reading into a neighbour through replace, which adds no blank line (*Where the lines go*): `Plain.` directly above `Text.` makes one paragraph of two lines, so the new lines are not exactly one block (*Refusal rules* 4, checked before `changes-another-block`).

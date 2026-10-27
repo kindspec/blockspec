@@ -1,0 +1,1 @@
+Control for `dangling-marker/insert-a-one-line-marker-after-the-last-block`: the same marker inserted before the block names it and is accepted. No line precedes the insertion point, so only the blank line after is added; E falls back to the first line ending in the file, LF (*Where the lines go*).

@@ -1,0 +1,12 @@
+{
+  "op": "replace",
+  "node": [
+    1,
+    0,
+    0
+  ],
+  "refusal": "nested-node",
+  "controls": [
+    "replace/replace-a-whole-list"
+  ]
+}

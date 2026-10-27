@@ -1,0 +1,1 @@
+Control for `not-one-block/insert-a-list-item-that-joins-the-list-above`: a change of bullet character starts a new list (`SPEC.md` §6.1), so the new lines are exactly one block and no other block changes. Blank added before the source only; the existing blank is kept after (*Where the lines go*).

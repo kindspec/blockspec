@@ -1,0 +1,1 @@
+Control for `table-not-blank-above/delete-a-heading-between-a-paragraph-and-a-table`: with a blank line before the heading, the table keeps a blank line above it after the run after the heading is removed.

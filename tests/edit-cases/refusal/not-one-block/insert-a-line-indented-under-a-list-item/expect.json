@@ -1,0 +1,10 @@
+{
+  "op": "insert",
+  "after": [
+    0
+  ],
+  "refusal": "not-one-block",
+  "controls": [
+    "insert/insert-an-unindented-paragraph-after-a-list"
+  ]
+}

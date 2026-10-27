@@ -1,0 +1,1 @@
+Control for `dangling-marker/delete-the-last-block-leaves-its-marker`: deleting the marker rather than the block it names is accepted; `B.` follows directly, so no blank line is removed (*Where the lines go*, `delete_block`).

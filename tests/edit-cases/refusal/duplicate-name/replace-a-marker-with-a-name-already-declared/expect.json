@@ -1,0 +1,10 @@
+{
+  "op": "replace",
+  "node": [
+    2
+  ],
+  "refusal": "duplicate-name",
+  "controls": [
+    "replace/replace-a-marker-with-a-marker-of-a-new-name"
+  ]
+}

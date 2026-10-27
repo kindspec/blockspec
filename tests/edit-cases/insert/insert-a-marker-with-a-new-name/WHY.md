@@ -1,0 +1,1 @@
+Control for `duplicate-name/insert-a-marker-with-a-name-already-declared`: a marker with a name the document does not declare is accepted and names `B.`; `m` still names `A.` (*Refusal rules* 4, `rebinds-name`).

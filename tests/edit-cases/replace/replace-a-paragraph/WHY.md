@@ -1,0 +1,1 @@
+Pins the plain replace: block [1]'s one line is swapped for the source's one line, and the blank lines around it are kept, since `replace_block` adds no blank line (*Where the lines go*, `replace_block`). The last new line ends as the block's last line did (LF).

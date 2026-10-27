@@ -1,0 +1,1 @@
+Pins *Refusal rules* 3's "a table put directly against a line": replace keeps the lines around the block and adds no blank, so the table sits directly under the heading, refused as `table-not-blank-above` (`SPEC.md` §4.3).

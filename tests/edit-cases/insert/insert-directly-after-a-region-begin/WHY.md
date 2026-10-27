@@ -1,0 +1,1 @@
+Pins that a `:begin` marker is not a one-line marker: inserting directly after it makes the new block the region's first member, which *Refusal rules* 4 allows ("gain the block inserted between its markers"); no name binds to the next node. Blank lines are added on both sides (*Where the lines go*).

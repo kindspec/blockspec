@@ -1,0 +1,10 @@
+{
+  "op": "replace",
+  "node": [
+    1
+  ],
+  "refusal": "table-not-blank-above",
+  "controls": [
+    "replace/replace-a-paragraph-with-a-table-after-a-blank-line"
+  ]
+}

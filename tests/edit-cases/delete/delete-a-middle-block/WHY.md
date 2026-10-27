@@ -1,0 +1,1 @@
+Pins delete's blank-line run: a non-blank line (`C.`) follows the block, so the blank lines between the block's last line and it are removed with the block, and the blank line before is kept (*Where the lines go*, `delete_block`).

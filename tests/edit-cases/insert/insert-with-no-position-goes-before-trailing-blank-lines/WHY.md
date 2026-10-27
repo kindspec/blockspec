@@ -1,0 +1,1 @@
+Pins that the default position is directly after the last block's last line, not the end of the file: the source goes after `A.` with one blank added before it, and the trailing blank lines follow it unchanged, so none is added after (*Where the lines go*, `insert_block`).

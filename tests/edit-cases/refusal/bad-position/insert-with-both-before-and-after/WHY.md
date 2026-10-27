@@ -1,0 +1,1 @@
+Pins *Refusal rules* 2, `bad-position`: `insert_block` takes at most one of `before=` and `after=` (*API shape*). Both name real blocks and both would place `C.` in the same place, so only the request shape is wrong.

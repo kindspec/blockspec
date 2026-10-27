@@ -13,3 +13,5 @@ go.sum linguist-generated
 # line-ending preservation -- the first commit warned it was about to do this.
 # `-text` disables all normalisation for the tree.
 conformance/cases/** -text
+# The editing API's cases are exact bytes too, for the same reason.
+tests/edit-cases/** -text

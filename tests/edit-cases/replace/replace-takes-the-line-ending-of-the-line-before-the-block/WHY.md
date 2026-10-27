@@ -1,0 +1,1 @@
+Pins which line E comes from in a mixed file: the line directly before the first new line is the blank line before the block, which ends in CRLF, so `X` ends in CRLF although the file's first line ending is LF; `Y`, the last new line, ends as the block's last line did, LF (*Where the lines go*, E and `replace_block`).

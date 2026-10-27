@@ -1,0 +1,1 @@
+Pins *Refusal rules* 4's unclosed fence: inserted after `A.`, the fence runs to the end of the document and takes in `B.`, so the code block is more than the new lines. The reader accepts an unclosed fence, so no §9 refusal comes first.

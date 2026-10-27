@@ -1,0 +1,10 @@
+{
+  "op": "delete",
+  "node": [
+    1
+  ],
+  "refusal": "rebinds-name",
+  "controls": [
+    "delete/delete-a-one-line-marker"
+  ]
+}

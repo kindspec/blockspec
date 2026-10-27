@@ -1,0 +1,10 @@
+{
+  "op": "replace",
+  "node": [
+    0
+  ],
+  "refusal": "not-one-block",
+  "controls": [
+    "replace/replace-a-heading-against-a-paragraph"
+  ]
+}

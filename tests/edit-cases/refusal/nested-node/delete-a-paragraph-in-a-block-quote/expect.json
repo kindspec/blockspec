@@ -1,0 +1,11 @@
+{
+  "op": "delete",
+  "node": [
+    1,
+    0
+  ],
+  "refusal": "nested-node",
+  "controls": [
+    "delete/delete-a-whole-block-quote"
+  ]
+}

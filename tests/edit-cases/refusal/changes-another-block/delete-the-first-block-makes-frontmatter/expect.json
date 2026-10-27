@@ -1,0 +1,10 @@
+{
+  "op": "delete",
+  "node": [
+    0
+  ],
+  "refusal": "changes-another-block",
+  "controls": [
+    "delete/delete-the-thematic-break-before-a-paragraph"
+  ]
+}

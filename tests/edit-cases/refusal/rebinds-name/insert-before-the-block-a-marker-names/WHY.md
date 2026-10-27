@@ -1,0 +1,1 @@
+Pins that `before=` the named block is the same position as `after=` the marker: the marker is the line before the insertion point, so a blank is added after it and `m` would move to `B.` (*Refusal rules* 4, `rebinds-name`).

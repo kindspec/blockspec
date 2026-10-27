@@ -1,0 +1,1 @@
+Pins inserting into a document whose only content is frontmatter: there are no blocks, so the source goes after the file's last line, the closing `---`, which is a non-blank line like any other, so a blank line is added between them (*Where the lines go*, `insert_block`).

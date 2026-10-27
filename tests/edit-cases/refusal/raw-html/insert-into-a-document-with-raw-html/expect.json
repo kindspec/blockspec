@@ -1,0 +1,10 @@
+{
+  "op": "insert",
+  "after": [
+    1
+  ],
+  "refusal": "raw-html",
+  "controls": [
+    "insert/insert-after-a-block"
+  ]
+}

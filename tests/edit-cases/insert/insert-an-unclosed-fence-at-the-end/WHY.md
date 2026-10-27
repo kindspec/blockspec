@@ -1,0 +1,1 @@
+Pins that an unclosed fence is refused only when it reads into a neighbour (*Refusal rules* 4, `not-one-block`): inserted after the last block it runs to the end of the document, which holds exactly its own lines, so it is exactly one block and is accepted. The second control for `not-one-block/insert-an-unclosed-fence-before-a-block`.

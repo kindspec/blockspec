@@ -1,0 +1,1 @@
+Pins deleting a one-line marker: its line goes (no blank line follows it), and its name with it, which *Refusal rules* 4 allows ("a name declared by a marker in the block … deleted may go"). The control for `rebinds-name/delete-the-block-a-marker-names`.

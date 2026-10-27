@@ -1,0 +1,10 @@
+{
+  "op": "insert",
+  "before": [
+    0
+  ],
+  "refusal": "no-such-block",
+  "controls": [
+    "insert/insert-into-a-file-of-one-blank-line"
+  ]
+}

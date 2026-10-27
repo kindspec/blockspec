@@ -1,0 +1,1 @@
+Pins *Refusal rules* 4's `---` pair: inserted before block [0] the lines start the file, `---` on line 1 with a non-blank line 2 opens frontmatter and the third line closes it (`SPEC.md` §5), so the result is accepted by the reader and the new lines are no block.

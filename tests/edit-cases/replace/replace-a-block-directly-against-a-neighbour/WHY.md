@@ -1,0 +1,1 @@
+Pins that replace adds no blank line: the paragraph sits directly under the heading and still does, and the heading still reads as it did, so the read-back accepts it (*Where the lines go*, `replace_block`: "a block that sits directly against a neighbour still does").

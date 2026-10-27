@@ -1,0 +1,1 @@
+Control for the `changes-another-block` heading deletes: with a blank line kept before the heading, the paragraphs stay apart after the blank run after it is removed (*Where the lines go*, `delete_block`).

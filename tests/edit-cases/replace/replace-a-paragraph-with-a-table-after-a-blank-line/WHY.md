@@ -1,0 +1,1 @@
+Control for `table-not-blank-above/replace-puts-a-table-directly-under-a-heading`: with a blank line kept above the block, the table has a blank line above and the end of the file below, so it is accepted (`replace_block` keeps the lines around the block).

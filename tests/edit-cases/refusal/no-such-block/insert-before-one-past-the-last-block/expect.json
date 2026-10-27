@@ -1,0 +1,11 @@
+{
+  "op": "insert",
+  "before": [
+    2
+  ],
+  "refusal": "no-such-block",
+  "controls": [
+    "insert/insert-before-a-block",
+    "insert/insert-with-no-position"
+  ]
+}

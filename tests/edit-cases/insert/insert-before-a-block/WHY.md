@@ -1,0 +1,1 @@
+Pins `before=`: the source goes directly before block [1]'s first line. The line before the insertion point is blank, so no blank is added there; `B.` follows directly, so one is added after (*Where the lines go*, `insert_block`).

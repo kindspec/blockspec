@@ -1,0 +1,10 @@
+{
+  "op": "insert",
+  "before": [
+    0
+  ],
+  "refusal": "dangling-marker",
+  "controls": [
+    "insert/insert-a-one-line-marker-before-a-block"
+  ]
+}

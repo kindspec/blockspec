@@ -1,0 +1,11 @@
+{
+  "op": "delete",
+  "node": [
+    0,
+    0
+  ],
+  "refusal": "no-such-block",
+  "controls": [
+    "delete/delete-the-first-block"
+  ]
+}
