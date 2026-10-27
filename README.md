@@ -40,6 +40,26 @@ part of every one of them:
 | **blockspec** | blocks | **deliberately no minted ids** | draft 0: decisions, cases, reference |
 | [nodespec](https://github.com/kindspec/nodespec) | nodes | named, not positional | specification draft 0, conformance cases and reference checker |
 
+## The reference's API
+
+`reference/blockspec/` is standard library only, and run from its source
+tree (`pythonpath = ["reference"]`).
+
+| function | what it does |
+| --- | --- |
+| `parse(text)` | reads a document, or raises `Refusal` with a `SPEC.md` §9 code; the `Document` has `frontmatter`, `blocks`, `leaves`, `names` and `resolve(name)` |
+| `conform(text, queries)` | `parse` as the conformance runner calls it |
+| `resolve(repo, queries)` | §11's anchors and transclusions, as the runner calls it (`anchor.py`) |
+| `edit.replace_block(text, node, source)` | the text with block `node`'s lines replaced by `source` |
+| `edit.insert_block(text, source, before=, after=)` | the text with `source` inserted as a block before or after a block, or after the last |
+| `edit.delete_block(text, node)` | the text without block `node` |
+
+A block is named by its node path, `[i]`. Each `edit` function reads its
+result back and raises `Refusal`, or its subclass `edit.EditRefused` for the
+API's own reasons, rather than return a document whose other blocks or names
+read differently. It never touches a `<doc>.notes/` record.
+`docs/editing-api.md` gives the rules, and `tests/edit-cases/` pins them.
+
 ## The thing that makes this different from rowspec
 
 A row gets an opaque id. **A prose block does not**, and that is a measured
