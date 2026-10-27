@@ -1,0 +1,10 @@
+{
+  "op": "delete",
+  "node": [
+    1
+  ],
+  "refusal": "changes-another-block",
+  "controls": [
+    "delete/delete-a-middle-block"
+  ]
+}

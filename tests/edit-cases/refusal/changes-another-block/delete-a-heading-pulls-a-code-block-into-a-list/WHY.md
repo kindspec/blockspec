@@ -1,0 +1,1 @@
+Pins *Refusal rules* 4's block-by-block comparison on its own: deleting `# H` leaves `- a` directly above the indented fence line, which the reader then takes into the list item, so block [0] reads differently. The count is what a delete expects (three blocks before: list, heading, code block; two after: list, code block), so only the comparison catches it.
