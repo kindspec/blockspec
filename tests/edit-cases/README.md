@@ -63,3 +63,8 @@ a replaced block stays on its replacement; and the unchanged-replacement
 comparison ignores line endings. Inserting into an empty file and the
 argument type checks are pinned in `tests/test_edit.py` instead, since this
 format has no field for a `TypeError`.
+
+One case was added later, with the implementation in hand, so it is not
+blind: `refusal/changes-another-block/delete-a-heading-pulls-a-code-block-into-a-list`,
+the one input found on which the block-by-block comparison refuses and the
+block count does not.
