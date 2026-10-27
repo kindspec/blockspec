@@ -1,0 +1,1 @@
+Control for `changes-another-block/delete-the-first-block-makes-frontmatter`: deleting the first `---` instead leaves the paragraph and the last thematic break as they were. `t: x` follows the deleted line directly, so no blank is removed (*Where the lines go*, `delete_block`).

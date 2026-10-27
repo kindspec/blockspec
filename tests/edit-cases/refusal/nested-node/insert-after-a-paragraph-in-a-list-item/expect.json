@@ -1,0 +1,12 @@
+{
+  "op": "insert",
+  "after": [
+    1,
+    1,
+    0
+  ],
+  "refusal": "nested-node",
+  "controls": [
+    "insert/insert-after-a-whole-list"
+  ]
+}

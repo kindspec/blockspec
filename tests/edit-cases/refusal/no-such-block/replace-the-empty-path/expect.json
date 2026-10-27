@@ -1,0 +1,8 @@
+{
+  "op": "replace",
+  "node": [],
+  "refusal": "no-such-block",
+  "controls": [
+    "replace/replace-the-last-of-two-paragraphs"
+  ]
+}

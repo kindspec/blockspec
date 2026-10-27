@@ -1,0 +1,1 @@
+Control for `changes-another-block/delete-a-paragraph-between-two-lists-of-one-kind`: a change of bullet character keeps the two lists apart (`SPEC.md` §6.1), so each still reads as it did and the delete is accepted.

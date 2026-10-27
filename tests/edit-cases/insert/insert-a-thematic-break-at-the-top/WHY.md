@@ -1,0 +1,1 @@
+Control for `not-one-block/insert-a-dash-pair-at-the-top-becomes-frontmatter`: a lone `---` inserted at the top is followed by the added blank line, and a `---` on line 1 with a blank line 2 is a thematic break, not frontmatter (`SPEC.md` §5), so the new line is one block.

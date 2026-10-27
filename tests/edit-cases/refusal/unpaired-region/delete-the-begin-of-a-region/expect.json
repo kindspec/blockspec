@@ -1,0 +1,10 @@
+{
+  "op": "delete",
+  "node": [
+    0
+  ],
+  "refusal": "unpaired-region",
+  "controls": [
+    "delete/delete-a-block-inside-a-region-keeps-the-region"
+  ]
+}

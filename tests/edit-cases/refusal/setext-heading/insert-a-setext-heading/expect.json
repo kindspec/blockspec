@@ -1,0 +1,10 @@
+{
+  "op": "insert",
+  "after": [
+    0
+  ],
+  "refusal": "setext-heading",
+  "controls": [
+    "insert/insert-an-atx-heading"
+  ]
+}

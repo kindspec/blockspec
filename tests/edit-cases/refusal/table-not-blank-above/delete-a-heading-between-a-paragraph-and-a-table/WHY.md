@@ -1,0 +1,1 @@
+Pins `table-not-blank-above` reached by delete: a non-blank line follows the heading, so the blank between it and the table goes with it, and the table's header now sits directly under `A.` (*Where the lines go*, `delete_block`; *Refusal rules* 3).

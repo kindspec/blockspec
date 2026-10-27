@@ -1,0 +1,13 @@
+{
+  "op": "insert",
+  "before": [
+    7
+  ],
+  "after": [
+    9
+  ],
+  "refusal": "bad-position",
+  "controls": [
+    "insert/insert-after-a-block"
+  ]
+}

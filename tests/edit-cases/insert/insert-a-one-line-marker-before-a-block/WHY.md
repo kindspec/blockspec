@@ -1,0 +1,1 @@
+Pins that a one-line marker may be inserted (*API shape*) and names the next block, across the blank line added after it (`SPEC.md` §7.2). A name declared by the new block may appear (*Refusal rules* 4). Bytes follow *Where the lines go*, `insert_block`.

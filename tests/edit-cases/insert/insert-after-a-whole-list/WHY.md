@@ -1,0 +1,1 @@
+Pins that a list is a position for insertion only as a whole block (*API shape*): `after=[1]` goes after the list's last line, with a blank added before the source and the existing blank kept after. Control for `nested-node/insert-after-a-paragraph-in-a-list-item`.

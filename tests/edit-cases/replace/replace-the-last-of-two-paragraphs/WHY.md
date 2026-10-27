@@ -1,0 +1,1 @@
+Pins replacing the last block of a two-paragraph file, the control for the no-such-block and not-one-block replace refusals on the same input. The last new line takes the block's own final LF (*Where the lines go*, `replace_block`).

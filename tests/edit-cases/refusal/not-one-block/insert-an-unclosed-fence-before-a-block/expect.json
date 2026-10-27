@@ -1,0 +1,11 @@
+{
+  "op": "insert",
+  "after": [
+    0
+  ],
+  "refusal": "not-one-block",
+  "controls": [
+    "insert/insert-a-closed-fence",
+    "insert/insert-an-unclosed-fence-at-the-end"
+  ]
+}

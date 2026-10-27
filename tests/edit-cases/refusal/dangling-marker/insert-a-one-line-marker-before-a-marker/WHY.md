@@ -1,0 +1,1 @@
+Pins `dangling-marker` for a marker whose next sibling is a marker (`SPEC.md` §7.2): `n` inserted before `<!-- #m -->` would name a marker, which the result's read refuses (*Refusal rules* 3) before any read-back.

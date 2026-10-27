@@ -1,0 +1,1 @@
+Pins *Refusal rules* 4's "or the frontmatter differs": deleting `A.` and the blank after it puts `---` on line 1 over the non-blank `t: x`, which opens frontmatter closed by the last `---` (`SPEC.md` §5); the reader accepts it, and the thematic breaks and paragraph are gone.

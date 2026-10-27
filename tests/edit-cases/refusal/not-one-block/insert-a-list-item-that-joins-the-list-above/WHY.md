@@ -1,0 +1,1 @@
+Pins the first example of reading into a neighbour (*Refusal rules* 4): after the blank line added before it, `- c` is a third item of the same bullet list, so the new line is not a block of its own. `not-one-block` is checked before `changes-another-block`, which the grown list would also meet.

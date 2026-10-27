@@ -1,0 +1,1 @@
+Pins that a region may lose a block only while it keeps one: deleting its only member leaves `:begin` directly followed by `:end`, an empty region, refused as `dangling-marker` (`SPEC.md` §7.3; *Refusal rules* 3).

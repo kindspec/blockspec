@@ -1,0 +1,1 @@
+Pins the no-final-line-ending rule: the old last line `B.` gains E, the added blank line ends in E, and the new last line has no line ending, so the file still ends as it did. E is LF: the line before the first new line (`B.`) has no line ending, so E is the first line ending in the file (*Where the lines go*, `insert_block`).

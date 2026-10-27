@@ -1,0 +1,1 @@
+Pins that the existing blank lines before the insertion point are kept and none is added on that side, while one is added between the source and `B.` (*Where the lines go*, `insert_block`). Compare `insert/insert-after-a-block-before-two-blank-lines`: the same source lands on the other side of the blank run.

@@ -1,0 +1,1 @@
+Pins inserting into a region: the source goes between `A.` and the `:end` marker, both non-blank, so blank lines are added on both sides (*Where the lines go*). The region gains the block inserted between its markers, which `rebinds-name` allows (*Refusal rules* 4).

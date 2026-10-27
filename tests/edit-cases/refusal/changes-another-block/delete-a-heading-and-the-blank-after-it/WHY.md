@@ -1,0 +1,1 @@
+Pins that the run removed is the one after the block when a non-blank line follows (*Where the lines go*, `delete_block`): the blank between `# H` and `B.` goes, so `A.` and `B.` join into one paragraph, refused as `changes-another-block`.

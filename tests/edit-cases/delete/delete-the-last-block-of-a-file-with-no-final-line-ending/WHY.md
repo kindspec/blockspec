@@ -1,0 +1,1 @@
+Pins the no-final-line-ending rule for delete: the lines removed (`B.` and the blank before it) include the file's last line, so the new last line, `A.`, loses its line ending (*Where the lines go*, `delete_block`).

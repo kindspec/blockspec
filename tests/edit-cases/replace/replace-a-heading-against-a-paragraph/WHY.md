@@ -1,0 +1,1 @@
+Pins replacing a block that sits directly above a neighbour with one that does not read into it: an ATX heading cannot take a following line, so `Text.` is still its own paragraph and the edit is accepted (*Where the lines go*, `replace_block`). Control for `not-one-block/replace-a-heading-with-a-paragraph-that-takes-the-next-line`.

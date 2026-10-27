@@ -1,0 +1,11 @@
+{
+  "op": "delete",
+  "node": [
+    1,
+    1
+  ],
+  "refusal": "nested-node",
+  "controls": [
+    "delete/delete-a-whole-list"
+  ]
+}

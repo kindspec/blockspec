@@ -1,0 +1,10 @@
+{
+  "op": "insert",
+  "before": [
+    2
+  ],
+  "refusal": "duplicate-name",
+  "controls": [
+    "insert/insert-a-marker-with-a-new-name"
+  ]
+}

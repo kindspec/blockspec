@@ -1,0 +1,1 @@
+Pins that frontmatter is untouched by a delete next to it: `B.` follows, so the run removed is the blank after `A.`, and the blank between the closing `---` and the block is kept (*Where the lines go*, `delete_block`).

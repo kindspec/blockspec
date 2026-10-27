@@ -1,0 +1,1 @@
+Pins *Refusal rules* 3 for a delete: `B.` is the last block and the marker directly before it stays, now with no next sibling, so the result is refused as `dangling-marker` (checked before `rebinds-name`).

@@ -1,0 +1,10 @@
+{
+  "op": "delete",
+  "node": [
+    1
+  ],
+  "refusal": "table-not-blank-above",
+  "controls": [
+    "delete/delete-a-heading-above-a-table-after-a-blank-line"
+  ]
+}

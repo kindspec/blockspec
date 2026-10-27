@@ -1,0 +1,1 @@
+Pins that a table is replaced as a whole block (*API shape*: no operation writes a cell). The blank lines on both sides are kept, so the new table has a blank line above and below and reads as one table (*Where the lines go*, `replace_block`).

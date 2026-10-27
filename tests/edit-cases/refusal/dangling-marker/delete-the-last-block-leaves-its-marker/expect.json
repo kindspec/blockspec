@@ -1,0 +1,10 @@
+{
+  "op": "delete",
+  "node": [
+    2
+  ],
+  "refusal": "dangling-marker",
+  "controls": [
+    "delete/delete-a-marker-before-the-last-block"
+  ]
+}

@@ -1,0 +1,1 @@
+Pins the default position: with neither keyword the block goes after the last block's last line (*API shape*), with a blank line added after `B.`; nothing follows, so nothing is added after (*Where the lines go*, `insert_block`).

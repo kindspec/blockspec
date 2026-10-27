@@ -1,0 +1,1 @@
+Pins replacing a heading block with a heading of another level; the type of the replaced block may change, since only the other blocks are compared (*Refusal rules* 4, `changes-another-block`). Bytes follow *Where the lines go*, `replace_block`.

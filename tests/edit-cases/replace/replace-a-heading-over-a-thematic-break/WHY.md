@@ -1,0 +1,1 @@
+Control for `setext-heading/replace-makes-a-paragraph-over-a-thematic-break`: an ATX heading cannot be underlined, so `---` stays a thematic break and the edit is accepted (`replace_block` adds no blank line).

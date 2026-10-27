@@ -1,0 +1,10 @@
+{
+  "op": "delete",
+  "node": [
+    1
+  ],
+  "refusal": "dangling-marker",
+  "controls": [
+    "delete/delete-a-block-inside-a-region-keeps-the-region"
+  ]
+}

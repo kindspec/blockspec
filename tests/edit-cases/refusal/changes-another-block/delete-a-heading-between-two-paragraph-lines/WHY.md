@@ -1,0 +1,1 @@
+Pins a join derived from `delete_block`'s placement: no blank lines touch the heading, so only its line goes, `A.` and `B.` become one paragraph, and the document has a block fewer than the delete makes (*Refusal rules* 4).

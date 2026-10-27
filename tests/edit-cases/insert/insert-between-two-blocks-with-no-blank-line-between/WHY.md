@@ -1,0 +1,1 @@
+Pins both added blank lines: the line before the insertion point (`# Title`) and the line after it (`Text.`) are both non-blank, so an empty line ending in E is added on each side (*Where the lines go*, `insert_block`; the shape table's "up to 2 blank lines").

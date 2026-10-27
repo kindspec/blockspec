@@ -1,0 +1,1 @@
+Pins deleting one member of a region: `B.` follows, so the blank between goes with `A.`; the region loses the block deleted and keeps `B.`, which *Refusal rules* 4 allows (*Where the lines go*, `delete_block`).

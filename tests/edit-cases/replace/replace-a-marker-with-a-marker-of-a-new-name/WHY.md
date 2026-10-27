@@ -1,0 +1,1 @@
+Control for `duplicate-name/replace-a-marker-with-a-name-already-declared`: the same replacement with a name the document does not declare is accepted, since the replaced marker's name may go and the new one may appear (*Refusal rules* 4, `rebinds-name`).

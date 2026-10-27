@@ -1,0 +1,7 @@
+{
+  "op": "insert",
+  "before": [
+    2
+  ],
+  "result": "output.md"
+}

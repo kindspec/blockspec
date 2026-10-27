@@ -1,0 +1,1 @@
+Pins that blank lines after the document's last block, at the end of the file, are kept: no non-blank line follows `B.`, so the run removed is the one blank line before it, and the two trailing blank lines stay (*Where the lines go*, `delete_block`).

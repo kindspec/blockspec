@@ -1,0 +1,1 @@
+Pins *Refusal rules* 3 reached through replace's kept neighbours: replace adds no blank line, so the paragraph `Text.` sits directly over `---`, which then reads as a setext underline, and the result is refused as `setext-heading`.

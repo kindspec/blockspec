@@ -1,0 +1,10 @@
+{
+  "op": "delete",
+  "node": [
+    0
+  ],
+  "refusal": "indented-code",
+  "controls": [
+    "delete/delete-the-first-block"
+  ]
+}

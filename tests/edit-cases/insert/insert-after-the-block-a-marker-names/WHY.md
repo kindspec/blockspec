@@ -1,0 +1,1 @@
+Control for the `rebinds-name` inserts: one block later than directly after the marker, `m` still names `A.` and the edit is accepted. Only the blank before the source is added, since nothing follows (*Where the lines go*).

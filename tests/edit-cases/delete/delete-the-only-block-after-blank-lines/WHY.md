@@ -1,0 +1,1 @@
+Pins the run before the block reaching the start of the file: nothing non-blank follows, so the blank lines between the block's first line and the start of the file are removed, and the file is empty (*Where the lines go*, `delete_block`).

@@ -1,0 +1,1 @@
+Control for `not-one-block/insert-a-line-indented-under-a-list-item`: at column 0 after a blank line the line ends the list and is its own paragraph. A blank is added before the source, and the existing one kept after (*Where the lines go*).

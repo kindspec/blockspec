@@ -1,0 +1,1 @@
+Pins E in a CRLF file for insert: the first new line is the added blank line, and the line before it (`A.`) ends in CRLF, so the added blank and the source line end in CRLF, whatever the source's own line endings (*Where the lines go*).
