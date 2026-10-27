@@ -105,7 +105,10 @@ and one run of blank lines beside it:
 Blank lines after the document's last block, at the end of the file, are
 kept. When the file has no final line ending and the lines removed include
 its last line, the new last line loses its line ending. (That line is never
-blank: the blank run before the block was removed with it.) A document whose
+blank: the blank run before the block was removed with it.) When the line
+left before those kept blank lines ends in a bare CR and the first of them is
+empty and ends in LF, the two endings read as one CRLF, so that blank line is
+gone: no bytes can hold a bare CR followed by an empty LF line. A document whose
 only block is deleted keeps its frontmatter and the blank lines after the
 block, if it had any, and is otherwise empty.
 

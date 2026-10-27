@@ -39,3 +39,9 @@ def test_an_api_refusal_is_a_refusal_with_a_reason_of_its_own():
     assert isinstance(caught.value, Refusal)
     assert caught.value.code == "no-such-block"
     assert caught.value.code in edit.REASONS
+
+
+def test_a_bare_cr_before_a_kept_lf_blank_line_reads_as_one_crlf():
+    # editing-api.md, delete_block: no bytes hold a bare CR and then an empty
+    # LF line, so that blank line is lost; no block changes
+    assert edit.delete_block("A.\r\rB.\n\n", [1]) == "A.\r\n"
