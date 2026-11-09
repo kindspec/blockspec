@@ -958,21 +958,24 @@ def _refuse_shadowed_slugs(doc: Document) -> None:
 
 
 _ASCII_PUNCTUATION = set(string.punctuation)
-_INLINE_HTML = re.compile(
-    r"<!--.*?-->|<\?.*?\?>|<![A-Za-z][^>]*>|<!\[CDATA\[.*?\]\]>"
-    r"|</[A-Za-z][A-Za-z0-9-]*[ \t\n]*>"
-    r"|<[A-Za-z][A-Za-z0-9-]*"
-    r"(?:[ \t\n]+[A-Za-z_:][A-Za-z0-9_.:-]*"
-    r"(?:[ \t\n]*=[ \t\n]*(?:[^ \t\n\"'=<>`]+|'[^']*'|\"[^\"]*\"))?)*"
-    r"[ \t\n]*/?>",
+_HTML_OTHER = re.compile(
+    r"<!-->|<!--->|<!--.*?-->|<\?.*?\?>|<![A-Za-z][^>]*>|<!\[CDATA\[.*?\]\]>|"
+    r"</[A-Za-z][A-Za-z0-9-]*[ \t\n]*>",
     re.S,
 )
+_ATTRIBUTE = (
+    r"[ \t\n]+([A-Za-z_:][A-Za-z0-9_.:-]*)"
+    r"(?:[ \t\n]*=[ \t\n]*([^ \t\n\"'=<>`]+|'[^']*'|\"[^\"]*\"))?"
+)
+_OPEN_TAG = re.compile(
+    r"<[A-Za-z][A-Za-z0-9-]*(?:" + _ATTRIBUTE.replace("(", "(?:", 1) + r")*[ \t\n]*/?>"
+)
+_ONE_ATTRIBUTE = re.compile(_ATTRIBUTE)
 _AUTOLINK = re.compile(
     r"<[A-Za-z][A-Za-z0-9.+-]{1,31}:[^\x00-\x20<>]*>"
     r"|<[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+>"
 )
 _LINK_NAME = re.compile(r"[a-z0-9][a-z0-9-]*\Z")
-_ANCHOR_ATTRIBUTE = re.compile(r"\b(?:id|name)\s*=\s*(?:\"([^\"]*)\"|'([^']*)'|([^\s>]+))", re.I)
 _HEADING_ID = re.compile(r"\{#([^\s}]+)\}[ \t]*$")
 
 
@@ -1029,10 +1032,12 @@ def _link_tail(text: str, at: int) -> tuple[str, str | None, int] | None:
     return destination, title, after + 1
 
 
-def _inline_links(text: str):
-    """Each inline link's destination and title, by CommonMark's rules: code
-    spans, autolinks and inline HTML bind tighter, a link holds no link, and
-    an image is not a link."""
+def _scan_inlines(text: str) -> tuple[list[dict], list[tuple[int, int, str]]]:
+    """The inline links and images in `text`, and its inline HTML as `(start,
+    end, text)`, by CommonMark's rules: code spans, autolinks and inline HTML
+    bind tighter than links, and a link holds no link."""
+    links: list[dict] = []
+    html: list[tuple[int, int, str]] = []
     brackets: list[dict] = []
     i = 0
     while i < len(text):
@@ -1047,13 +1052,16 @@ def _inline_links(text: str):
             )
             i = i + run + ticks.end() if ticks else i + run
         elif c == "<":
-            tag = _AUTOLINK.match(text, i) or _INLINE_HTML.match(text, i)
-            i = tag.end() if tag else i + 1
+            auto = _AUTOLINK.match(text, i)
+            tag = None if auto else (_OPEN_TAG.match(text, i) or _HTML_OTHER.match(text, i))
+            if tag:
+                html.append((tag.start(), tag.end(), tag.group()))
+            i = (auto or tag).end() if (auto or tag) else i + 1
         elif c == "!" and text[i + 1 : i + 2] == "[":
-            brackets.append({"image": True, "active": True})
+            brackets.append({"image": True, "active": True, "at": i, "open": 2})
             i += 2
         elif c == "[":
-            brackets.append({"image": False, "active": True})
+            brackets.append({"image": False, "active": True, "at": i, "open": 1})
             i += 1
         elif c == "]":
             opener = brackets.pop() if brackets else None
@@ -1061,47 +1069,51 @@ def _inline_links(text: str):
             if tail is None:
                 i += 1
                 continue
+            links.append(
+                {
+                    "image": opener["image"],
+                    "destination": tail[0],
+                    "title": tail[1],
+                    "start": opener["at"],
+                    "open": opener["open"],
+                    "close": i,
+                    "end": tail[2],
+                }
+            )
             if not opener["image"]:
-                yield tail[0], tail[1]
                 for earlier in brackets:
                     if not earlier["image"]:
                         earlier["active"] = False
             i = tail[2]
         else:
             i += 1
-
-
-def _inline_html_tags(text: str):
-    """Each inline HTML tag in `text`, outside code spans and escapes."""
-    i = 0
-    while i < len(text):
-        c = text[i]
-        if c == "\\" and text[i + 1 : i + 2] in _ASCII_PUNCTUATION and i + 1 < len(text):
-            i += 2
-        elif c == "`":
-            run = re.compile("`+").match(text, i).end() - i
-            ticks = next(
-                (m for m in re.finditer("`+", text[i + run :]) if len(m.group()) == run),
-                None,
-            )
-            i = i + run + ticks.end() if ticks else i + run
-        elif c == "<":
-            link = _AUTOLINK.match(text, i)
-            tag = None if link else _INLINE_HTML.match(text, i)
-            if tag:
-                yield tag.group()
-            i = (link or tag).end() if (link or tag) else i + 1
-        else:
-            i += 1
+    return links, html
 
 
 def _rendered_slugs(raw: str) -> set[str]:
     """The slugs a renderer could give a heading whose raw content is `raw`."""
-    text = _INLINE_HTML.sub("", raw)
-    text = re.sub(r"!?\[([^\]]*)\]\([^)]*\)", r"\1", text)
+    links, html = _scan_inlines(raw)
+    drop = [False] * len(raw)
+    for start, end, _tag in html:
+        drop[start:end] = [True] * (end - start)
+    for link in links:
+        drop[link["start"] : link["start"] + link["open"]] = [True] * link["open"]
+        drop[link["close"] : link["end"]] = [True] * (link["end"] - link["close"])
+    text = "".join(c for c, gone in zip(raw, drop, strict=True) if not gone)
     found = set()
     for variant in (text, re.sub(r"[*`]", "", text), re.sub(r"[*_`]", "", text)):
         found.add(_SLUG_REMOVED.sub("", variant.lower()).replace(" ", "-"))
+    return found
+
+
+def _tag_anchors(tag: str) -> list[str]:
+    """The `id` and `name` attribute values of an inline HTML open tag."""
+    if not _OPEN_TAG.fullmatch(tag):
+        return []
+    found = []
+    for match in _ONE_ATTRIBUTE.finditer(tag):
+        if match.group(1).lower() in ("id", "name") and match.group(2):
+            found.append(match.group(2).strip("\"'"))
     return found
 
 
@@ -1127,9 +1139,8 @@ def _possible_targets(doc: Document) -> set[str]:
         else:
             continue
         for text in texts:
-            for tag in _inline_html_tags(text):
-                for match in _ANCHOR_ATTRIBUTE.finditer(tag):
-                    targets.add(next(g for g in match.groups() if g is not None))
+            for _start, _end, tag in _scan_inlines(text)[1]:
+                targets.update(_tag_anchors(tag))
     return targets
 
 
@@ -1145,8 +1156,11 @@ def _refuse_dangling_links(doc: Document) -> None:
         else:
             continue
         for text in texts:
-            for destination, title in _inline_links(text):
-                if not destination.startswith("#") or title == '"transclude"':
+            for link in _scan_inlines(text)[0]:
+                destination = link["destination"]
+                if link["image"] or not destination.startswith("#"):
+                    continue
+                if link["title"] == '"transclude"':
                     continue
                 name = destination[1:]
                 if not _LINK_NAME.match(name):
