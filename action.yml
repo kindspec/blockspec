@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+# At the repository root so that `uses: kindspec/blockspec@vX.Y.Z` resolves. By
+# default it installs the blockspec version matching its own tag, and
+# `release.yml` refuses to build if the two disagree. The `install` input
+# exists for this repository's own test, which installs the checkout.
+name: blockspec
+description: Check that prose documents will survive version control
+branding:
+  icon: check-square
+  color: blue
+
+inputs:
+  paths:
+    description: Files or directories to check. Space-separated.
+    required: false
+    default: "."
+  python-version:
+    description: Python used to run blockspec. It has no dependencies.
+    required: false
+    default: "3.12"
+  install:
+    description: What pip installs. Leave it alone; the default is the release this tag names.
+    required: false
+    default: "blockspec==0.1.0"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: install blockspec
+      shell: bash
+      env:
+        INSTALL: ${{ inputs.install }}
+      run: pip install --disable-pip-version-check "$INSTALL"
+
+    - name: blockspec check
+      shell: bash
+      env:
+        PATHS: ${{ inputs.paths }}
+      # Word splitting is the point: `paths` is space-separated.
+      run: blockspec check --format github $PATHS

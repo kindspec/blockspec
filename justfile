@@ -32,6 +32,10 @@ check: fmt-check lint
 test:
     uv run --exact pytest -q
 
+# Check documents against the profile
+run *ARGS:
+    uv run blockspec check {{ARGS}}
+
 # The conformance tree against the reference implementation
 conform:
     uv run python conformance/run_cases.py --impl reference/blockspec/document.py

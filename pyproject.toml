@@ -1,6 +1,6 @@
 [project]
 name = "blockspec"
-version = "0.0.0"
+version = "0.1.0"
 description = "A specification and conformance suite for prose documents that must survive version control"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -9,6 +9,51 @@ requires-python = ">=3.11"
 # fails if anything under `reference/` imports outside the standard library.
 dependencies = []
 license = "Apache-2.0 OR MIT"
+license-files = ["LICENSE", "LICENSES/*.txt"]
+authors = [{ name = "Cameron Brooks" }]
+keywords = ["markdown", "git", "merge", "conformance", "specification"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Version Control :: Git",
+  "Topic :: Text Processing :: Markup :: Markdown",
+]
+
+[project.urls]
+Homepage = "https://github.com/kindspec/blockspec"
+Source = "https://github.com/kindspec/blockspec"
+Issues = "https://github.com/kindspec/blockspec/issues"
+Specification = "https://github.com/kindspec/blockspec/blob/main/SPEC.md"
+
+[project.scripts]
+blockspec = "blockspec.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["reference/blockspec"]
+
+# The sdist carries the spec and the fixture tree, and leaves out spike/, which
+# is hundreds of megabytes of measurement.
+[tool.hatch.build.targets.sdist]
+include = [
+  "/reference",
+  "/conformance",
+  "/.github/workflows",
+  "/tests",
+  "/docs",
+  "/SPEC.md",
+  "/README.md",
+  "/DESIGN-BRIEF.md",
+  "/NOTICE",
+  "/LICENSE",
+  "/LICENSES",
+  "/justfile",
+  "/pyproject.toml",
+]
 
 # kindkit is the shared conformance machinery: the tree-driven runner and the
 # mutation gate. A DEV dependency, so `reference/` still imports the standard
@@ -23,11 +68,6 @@ dev = [
   "ruff>=0.6",
   "kindkit @ git+https://github.com/kindspec/kindkit@6ebd80daba23e0d49a19e24b7ee4c85cedb926df",
 ]
-
-[tool.uv]
-# Nothing here is built or published yet: the reference is run from its
-# source tree, by path, as the conformance runner and the mutation gate load it.
-package = false
 
 [tool.ruff]
 line-length = 100
