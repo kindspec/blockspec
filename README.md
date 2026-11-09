@@ -29,8 +29,8 @@ from content where it can be, and named by an author where it must be.
 
 Draft 0. [`SPEC.md`](SPEC.md) is the format, `conformance/cases/` encodes it,
 and `reference/blockspec/` is the reference. `reference/blockspec_alt/`, written
-from the spec by an author who never read it, passes the same cases. It is not on
-PyPI.
+from the spec by an author who never read it, passes the same cases. Released on
+[PyPI](https://pypi.org/project/blockspec/).
 
 The experiment behind the format found that prose does have a silent wrong
 merge worth a format. That verdict came from a second run under an owner ruling
@@ -61,7 +61,9 @@ pip install blockspec
 blockspec check docs/    # refuses a document the profile cannot read safely
 ```
 
-It exits 0 when every document reads, 1 when one is refused, and 2 when
+A document is refused for what would quietly break under a merge, including a
+link to a section that no longer exists and a marker that takes a name from a
+heading. It exits 0 when every document reads, 1 when one is refused, and 2 when
 nothing was checked or a file could not be read. `--format github` writes annotations. In CI:
 
 ```yaml
