@@ -8,7 +8,7 @@ deliberate, not an oversight.
   tools/                    Apache-2.0 OR MIT
   justfile, pyproject.toml,
   uv.lock                   Apache-2.0 OR MIT
-  README.md, AGENTS.md,
+  README.md, AGENTS.md, CHANGELOG.md,
   DESIGN-BRIEF.md           CC-BY-4.0
   .editorconfig,
   .gitattributes,
