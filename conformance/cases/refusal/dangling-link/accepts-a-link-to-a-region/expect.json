@@ -1,0 +1,88 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "html_block",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        2,
+        2
+      ]
+    },
+    {
+      "type": "html_block",
+      "lines": [
+        3,
+        3
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        5,
+        5
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "html_block",
+      "content": "<!-- #part:begin -->\n"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "paragraph",
+      "content": "First."
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "html_block",
+      "content": "<!-- #part:end -->\n"
+    },
+    {
+      "node": [
+        3
+      ],
+      "type": "paragraph",
+      "content": "See [x](#part)."
+    }
+  ],
+  "names": {
+    "part": {
+      "region": [
+        {
+          "node": [
+            1
+          ],
+          "type": "paragraph"
+        }
+      ]
+    }
+  },
+  "resolve": {
+    "part": {
+      "region": [
+        {
+          "node": [
+            1
+          ],
+          "type": "paragraph"
+        }
+      ]
+    }
+  }
+}

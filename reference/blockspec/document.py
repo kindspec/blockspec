@@ -153,7 +153,7 @@ def _blank(line: str) -> bool:
 
 def _has_pipe(text: str) -> bool:
     """Whether `text` holds a `|` that no backslash escapes."""
-    return re.search(r"(?:^|[^\\])(?:\\\\)*\|", text) is not None
+    return re.search(r"(?:^|[^\\])\|", text) is not None
 
 
 #: A delimiter-like line once form feeds and vertical tabs are allowed in it:
@@ -173,8 +173,8 @@ def _split_row(text: str, keep_lead: bool = False) -> list[str]:
     i = 0
     while i < len(row):
         c = row[i]
-        if c == "\\" and i + 1 < len(row):
-            cell.append("|" if row[i + 1] == "|" else row[i : i + 2])
+        if c == "\\" and row[i + 1 : i + 2] == "|":
+            cell.append("|")
             i += 2
             ends_with_pipe = False
             continue
@@ -817,7 +817,7 @@ def _slug(text: str) -> str | None:
     lower-case under node 24's Unicode 17, not under Python 3.12's 15.0)."""
     if _INLINE_MARKUP.intersection(text):
         return None
-    return _SLUG_REMOVED.sub("", text.lower()).replace(" ", "-")
+    return _SLUG_REMOVED.sub("", text.lower()).replace(" ", "-") or None
 
 
 class Document:
@@ -868,6 +868,7 @@ class Document:
                     target = siblings[i + 1] if i + 1 < len(siblings) else None
                     if target is None or target.marker is not None:
                         dangling.append(f"#{name} names no node")
+                        declared.setdefault(name, []).append({"dangling": True})
                     else:
                         declared.setdefault(name, []).append(target.ref())
                 elif form == ":begin":
@@ -928,7 +929,70 @@ def parse(text: str) -> Document:
         at = siblings.index(node)
         if at + 1 < len(siblings) and siblings[at + 1].start == node.end + 1:
             raise Refusal("table-not-blank-below", "a table directly above a non-blank line")
-    return Document(root, lines, frontmatter)
+    doc = Document(root, lines, frontmatter)
+    _refuse_shadowed_slugs(doc)
+    _refuse_dangling_links(doc)
+    return doc
+
+
+def _refuse_shadowed_slugs(doc: Document) -> None:
+    """A marker whose name is the slug of a heading it does not bind takes the
+    name from that heading (SPEC.md section 9; 0005 item 11)."""
+    for node in doc.nodes:
+        if node.type != "heading":
+            continue
+        slug = _slug(node.text)
+        target = doc.names.get(slug)
+        if target is None or target == node.ref():
+            continue
+        if "region" in target and node.ref() in target["region"]:
+            continue
+        raise Refusal("name-shadows-slug", f"the marker {slug!r} reuses a heading's slug")
+
+
+#: An inline link to a name in this document: `](#name)`, perhaps with a title.
+_SAME_FILE_LINK = re.compile(r'(?<!\\)\]\(#([^\s)]*)(?:\s+("(?:[^"\\]|\\.)*"|\S[^)]*))?\)')
+_LINK_NAME = re.compile(r"[a-z0-9][a-z0-9-]*\Z")
+
+
+def _without_code_spans(text: str) -> str:
+    """`text` with each code span blanked, by CommonMark's rule: a backtick
+    run opens one, and the next run of the same length closes it."""
+    out, at = [], 0
+    runs = list(re.finditer(r"`+", text))
+    i = 0
+    while i < len(runs):
+        close = next(
+            (j for j in range(i + 1, len(runs)) if len(runs[j].group()) == len(runs[i].group())),
+            None,
+        )
+        if close is None:
+            i += 1
+            continue
+        out.append(text[at : runs[i].start()])
+        at = runs[close].end()
+        i = close + 1
+    out.append(text[at:])
+    return " ".join(out)
+
+
+def _refuse_dangling_links(doc: Document) -> None:
+    """A link to `#name` that resolves to nothing (SPEC.md section 9; 0005
+    item 10)."""
+    for leaf in doc.leaves:
+        if leaf["type"] in ("paragraph", "heading"):
+            texts = [leaf["content"]]
+        elif leaf["type"] == "table":
+            texts = [cell for row in leaf["content"] for cell in row]
+        else:
+            continue
+        for text in texts:
+            for match in _SAME_FILE_LINK.finditer(_without_code_spans(text)):
+                name, title = match.group(1), match.group(2)
+                if title == '"transclude"' or not _LINK_NAME.match(name):
+                    continue
+                if isinstance(doc.resolve(name), str):
+                    raise Refusal("dangling-link", f"a link to {name!r}, which names nothing")
 
 
 def _tables(node: Node):

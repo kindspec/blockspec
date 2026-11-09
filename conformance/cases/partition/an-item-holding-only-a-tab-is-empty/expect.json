@@ -1,0 +1,15 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "list",
+      "lines": [
+        1,
+        1
+      ]
+    }
+  ],
+  "leaves": [],
+  "names": {}
+}

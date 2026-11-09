@@ -1,0 +1,72 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "html_block",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        2,
+        2
+      ]
+    },
+    {
+      "type": "heading",
+      "lines": [
+        4,
+        4
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "html_block",
+      "content": "<!-- #setup -->\n"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "paragraph",
+      "content": "Text."
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "heading",
+      "content": "Setup guide"
+    }
+  ],
+  "names": {
+    "setup": {
+      "node": [
+        1
+      ],
+      "type": "paragraph"
+    }
+  },
+  "resolve": {
+    "setup": {
+      "node": [
+        1
+      ],
+      "type": "paragraph"
+    },
+    "setup-guide": {
+      "node": [
+        2
+      ],
+      "type": "heading"
+    }
+  }
+}

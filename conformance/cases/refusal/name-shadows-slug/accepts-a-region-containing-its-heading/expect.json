@@ -1,0 +1,100 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "html_block",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "heading",
+      "lines": [
+        2,
+        2
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        4,
+        4
+      ]
+    },
+    {
+      "type": "html_block",
+      "lines": [
+        5,
+        5
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "html_block",
+      "content": "<!-- #setup:begin -->\n"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "heading",
+      "content": "Setup"
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "paragraph",
+      "content": "Text."
+    },
+    {
+      "node": [
+        3
+      ],
+      "type": "html_block",
+      "content": "<!-- #setup:end -->\n"
+    }
+  ],
+  "names": {
+    "setup": {
+      "region": [
+        {
+          "node": [
+            1
+          ],
+          "type": "heading"
+        },
+        {
+          "node": [
+            2
+          ],
+          "type": "paragraph"
+        }
+      ]
+    }
+  },
+  "resolve": {
+    "setup": {
+      "region": [
+        {
+          "node": [
+            1
+          ],
+          "type": "heading"
+        },
+        {
+          "node": [
+            2
+          ],
+          "type": "paragraph"
+        }
+      ]
+    }
+  }
+}

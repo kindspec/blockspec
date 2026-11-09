@@ -1,0 +1,9 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "name-shadows-slug",
+  "controls": [
+    "refusal/name-shadows-slug/accepts-a-marker-directly-above-its-heading",
+    "refusal/name-shadows-slug/accepts-a-region-containing-both-headings-sharing-its-slug"
+  ]
+}

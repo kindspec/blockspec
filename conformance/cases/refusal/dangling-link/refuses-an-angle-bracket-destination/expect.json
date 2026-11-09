@@ -1,0 +1,9 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "dangling-link",
+  "controls": [
+    "refusal/dangling-link/accepts-a-link-to-a-marker",
+    "refusal/dangling-link/accepts-a-link-to-a-slug"
+  ]
+}

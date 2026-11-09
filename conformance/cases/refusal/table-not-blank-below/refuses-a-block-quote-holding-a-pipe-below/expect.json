@@ -1,0 +1,9 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "table-not-blank-below",
+  "controls": [
+    "table/a-line-with-a-pipe-is-another-row",
+    "refusal/table-not-blank-below/accepts-a-blank-line-below"
+  ]
+}

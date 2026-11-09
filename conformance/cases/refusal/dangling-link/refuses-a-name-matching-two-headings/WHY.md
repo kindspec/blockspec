@@ -1,0 +1,18 @@
+# A link to a slug two headings share
+
+Two targets is `#REF!(dup)` under §8.1, and item 10 refuses what resolves to
+`#REF!(name)`, not only what matches nothing.
+
+docs/adjudications/0005-closing-draft-0s-gaps.md, item 10:
+
+> A paragraph, heading or table cell holding an inline link whose
+> destination is `#name`, where `name` matches §7.1's name grammar and
+> resolves to `#REF!(name)` under §8, is refused. Text inside a code
+> span is not a link. A link titled `"transclude"` is a transclusion and
+> is read under §11.9. A destination that does not start with `#`, or
+> whose name does not match the grammar, is not read.
+
+SPEC.md, §8.1:
+
+> **A name that matches zero targets, or more than one, is
+> `#REF!(name)`.**

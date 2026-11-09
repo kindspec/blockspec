@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": false,
+  "refusal": "name-shadows-slug",
+  "controls": [
+    "merge/named/marker-added-while-a-heading-with-another-slug-is-added"
+  ]
+}

@@ -387,8 +387,9 @@ markers that name nothing).
 **A name is tried against region markers first, then heading slugs**, per D8
 §7.2's order (0001, *What draft 0 carries*). **A name that matches zero
 targets, or more than one, is `#REF!(name)`.** A marker's name never matches
-more than one target, since a duplicate is refused (§7.4), so a marker name
-resolves even where two headings share it as a slug.
+more than one target, since a duplicate is refused (§7.4). A marker that would
+take a name from a heading it does not bind is refused (`name-shadows-slug`,
+§9).
 
 What a name resolves to is the node a marker binds (§7.2) or the nodes of a
 region (§7.3). For a heading slug, whether it names the heading or its
@@ -473,10 +474,12 @@ An implementation MUST refuse:
 12. `dangling-link`: a paragraph, heading or table cell holding an inline link
     whose destination is `#name`, where `name` matches §7.1's name grammar and
     resolves to `#REF!(name)` under §8. Text inside a code span is not a link,
-    and a link titled `"transclude"` is read under §11.9 (0005 item 10)
+    a link titled `"transclude"` is not read by this rule, and a table cell past
+    the header's width is dropped first (0005 item 10)
 13. `name-shadows-slug`: a marker whose name is the slug of a heading it does
     not bind. A one-line marker directly above that heading binds it and is
-    allowed; a region's name is never bound to a heading (§8.1; 0005 item 11)
+    allowed, as is a region whose nodes include that heading (§8.1; 0005 item
+    11)
 
 **Two orders between refusals are fixed** (0002, addendum on markers that
 name nothing, and three defaults; addendum on ambiguous tables):
@@ -882,7 +885,8 @@ in any normalisation form and may span several prefixed or CRLF lines.
 Where the span does not map, the suggestion is stale, with the reason
 `unmappable-offset`.
 
-A suggestion on a table is stale, as `unmappable-offset`. A `\n` in `replace`
+An open suggestion on a table whose anchor is `RESOLVED` or `EDITED` is stale, as
+`unmappable-offset`. A `\n` in `replace`
 breaks the line where the span starts, and the result is not re-checked against
 the profile when it is written (0005 item 7).
 

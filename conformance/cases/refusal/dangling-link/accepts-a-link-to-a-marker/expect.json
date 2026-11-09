@@ -1,0 +1,66 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "html_block",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        2,
+        2
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        4,
+        4
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "html_block",
+      "content": "<!-- #intro -->\n"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "paragraph",
+      "content": "First."
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "paragraph",
+      "content": "See [x](#intro)."
+    }
+  ],
+  "names": {
+    "intro": {
+      "node": [
+        1
+      ],
+      "type": "paragraph"
+    }
+  },
+  "resolve": {
+    "intro": {
+      "node": [
+        1
+      ],
+      "type": "paragraph"
+    }
+  }
+}
