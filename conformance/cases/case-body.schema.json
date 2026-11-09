@@ -156,7 +156,9 @@
               "unpaired-region",
               "table-not-blank-above",
               "table-not-blank-below",
-              "ambiguous-table"
+              "ambiguous-table",
+              "dangling-link",
+              "name-shadows-slug"
             ]
           },
           "controls": {
