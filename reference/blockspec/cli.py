@@ -41,6 +41,12 @@ def collect(targets: Iterable[str]) -> list[str]:
     return sorted({os.path.normpath(f) for f in files})
 
 
+def _is_record(path: str) -> bool:
+    """Whether `path` is in `<doc>.notes/`, beside its document (SPEC.md 11.1)."""
+    parent = os.path.dirname(os.path.abspath(path))
+    return parent.endswith(".notes") and os.path.isfile(parent[: -len(".notes")])
+
+
 class Unreadable(Exception):
     """The file holds no answer either way: nothing was checked."""
 
@@ -60,7 +66,7 @@ def check_file(path: str) -> tuple[str | None, str] | None:
     except UnicodeDecodeError:
         return None, "is not UTF-8"
     try:
-        parse(text, record=os.path.basename(os.path.dirname(path)).endswith(".notes"))
+        parse(text, record=_is_record(path))
     except Refusal as refusal:
         return refusal.code, refusal.message
     except RecursionError as exc:

@@ -101,7 +101,7 @@
             "type": "object",
             "minProperties": 1,
             "propertyNames": {
-              "$ref": "#/$defs/name"
+              "type": "string"
             },
             "additionalProperties": {
               "oneOf": [
@@ -110,7 +110,7 @@
                 },
                 {
                   "type": "string",
-                  "pattern": "^#REF!\\([a-z0-9][a-z0-9-]*\\)$"
+                  "pattern": "^#REF!\\(([a-z0-9][a-z0-9-]*)?\\)$"
                 }
               ]
             }

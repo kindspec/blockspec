@@ -1,0 +1,9 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "dangling-link",
+  "controls": [
+    "refusal/dangling-link/accepts-the-second-duplicate-as-suffix-one",
+    "refusal/dangling-link/accepts-suffix-two-with-three-headings"
+  ]
+}

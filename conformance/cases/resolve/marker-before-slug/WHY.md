@@ -1,3 +1,5 @@
+Before 0005, the reasoning below held and this was accepted.
+
 0001: a name is tried against region markers first, then slugs. The marker
 matches, so the heading's slug is never consulted.
 

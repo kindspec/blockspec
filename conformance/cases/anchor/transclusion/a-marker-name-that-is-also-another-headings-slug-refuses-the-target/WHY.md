@@ -1,4 +1,6 @@
-# RESOLVED: a marker name that a heading's slug also matches
+# Refused: a marker name that another heading's slug also matches
+
+Before 0005 this resolved to the marker's paragraph.
 
 The target's heading `Scram threshold` has the slug `scram-threshold`, and
 a marker of that name names the paragraph. Markers come first, so the name

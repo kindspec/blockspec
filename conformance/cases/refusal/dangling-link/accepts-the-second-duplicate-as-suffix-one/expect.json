@@ -1,0 +1,51 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "heading",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "heading",
+      "lines": [
+        3,
+        3
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        5,
+        5
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "heading",
+      "content": "Example"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "heading",
+      "content": "Example"
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "paragraph",
+      "content": "See [x](#example-1)."
+    }
+  ],
+  "names": {}
+}

@@ -1,6 +1,6 @@
 # A heading whose slug comes out empty
 
-The empty name does not reach the heading, and neither does its text.
+The empty name does not reach the heading.
 
 docs/adjudications/0005-closing-draft-0s-gaps.md, item 8:
 

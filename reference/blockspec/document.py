@@ -950,61 +950,175 @@ def _refuse_shadowed_slugs(doc: Document) -> None:
             continue
         if "region" in target and node.ref() in target["region"]:
             continue
+        siblings = node.parent.children
+        following = siblings[siblings.index(node) + 1 : siblings.index(node) + 2]
+        if following and following[0].marker == (slug, ":begin"):
+            continue
         raise Refusal("name-shadows-slug", f"the marker {slug!r} reuses a heading's slug")
 
 
-#: The end of an inline link to a name in this document, perhaps with a title.
-_SAME_FILE_LINK = re.compile(
-    r'\]\(\s*(?:#([^\s<>)]*)|<#([^>\n]*)>)(?:\s+("(?:[^"\\]|\\.)*"|\S[^)]*))?\s*\)'
+_ASCII_PUNCTUATION = set(string.punctuation)
+_INLINE_HTML = re.compile(
+    r"<!--.*?-->|<\?.*?\?>|<![A-Za-z][^>]*>|<!\[CDATA\[.*?\]\]>"
+    r"|</[A-Za-z][A-Za-z0-9-]*[ \t\n]*>"
+    r"|<[A-Za-z][A-Za-z0-9-]*"
+    r"(?:[ \t\n]+[A-Za-z_:][A-Za-z0-9_.:-]*"
+    r"(?:[ \t\n]*=[ \t\n]*(?:[^ \t\n\"'=<>`]+|'[^']*'|\"[^\"]*\"))?)*"
+    r"[ \t\n]*/?>",
+    re.S,
+)
+_AUTOLINK = re.compile(
+    r"<[A-Za-z][A-Za-z0-9.+-]{1,31}:[^\x00-\x20<>]*>"
+    r"|<[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+>"
 )
 _LINK_NAME = re.compile(r"[a-z0-9][a-z0-9-]*\Z")
+_ANCHOR_ATTRIBUTE = re.compile(r"\b(?:id|name)\s*=\s*(?:\"([^\"]*)\"|'([^']*)'|([^\s>]+))", re.I)
+_HEADING_ID = re.compile(r"\{#([^\s}]+)\}[ \t]*$")
 
 
-def _is_link_end(text: str, close: int) -> bool:
-    """Whether the `]` at `close` ends an inline link: it is not escaped, its
-    `[` is, and that `[` is not an image's."""
+def _link_tail(text: str, at: int) -> tuple[str, str | None, int] | None:
+    """The `(destination title)` at `text[at]`, as CommonMark reads one: the
+    destination's raw text, the title as written or None, and where it ends."""
 
-    def escaped(at: int) -> bool:
-        return at > 0 and text[at - 1] == "\\"
-
-    if escaped(close):
-        return False
-    depth, at = 0, close - 1
-    while at >= 0:
-        if text[at] == "]" and not escaped(at):
-            depth += 1
-        elif text[at] == "[" and not escaped(at):
-            if depth == 0:
-                return not (at > 0 and text[at - 1] == "!")
-            depth -= 1
-        at -= 1
-    return False
-
-
-def _without_code_spans(text: str) -> str:
-    """`text` with each code span blanked, by CommonMark's rule: a backtick
-    run opens one, and the next run of the same length closes it."""
-    out, at = [], 0
-    runs = list(re.finditer(r"`+", text))
-    i = 0
-    while i < len(runs):
-        close = next(
-            (j for j in range(i + 1, len(runs)) if len(runs[j].group()) == len(runs[i].group())),
-            None,
-        )
-        if close is None:
+    def spaces(i: int) -> int:
+        while i < len(text) and text[i] in " \t\n":
             i += 1
-            continue
-        out.append(text[at : runs[i].start()])
-        at = runs[close].end()
-        i = close + 1
-    out.append(text[at:])
-    return " ".join(out)
+        return i
+
+    if text[at : at + 1] != "(":
+        return None
+    i = spaces(at + 1)
+    if text[i : i + 1] == "<":
+        j = i + 1
+        while j < len(text) and text[j] not in "<>\n":
+            j += 2 if text[j] == "\\" else 1
+        if text[j : j + 1] != ">":
+            return None
+        destination, i = text[i + 1 : j], j + 1
+    else:
+        j, depth = i, 0
+        while j < len(text):
+            c = text[j]
+            if c == "\\" and text[j + 1 : j + 2] in _ASCII_PUNCTUATION and j + 1 < len(text):
+                j += 2
+                continue
+            if c <= " " or c == "\x7f":
+                break
+            if c == "(":
+                depth += 1
+            elif c == ")":
+                if depth == 0:
+                    break
+                depth -= 1
+            j += 1
+        if depth:
+            return None
+        destination, i = text[i:j], j
+    after = spaces(i)
+    title = None
+    if after > i and text[after : after + 1] in ('"', "'", "("):
+        close = ")" if text[after] == "(" else text[after]
+        j = after + 1
+        while j < len(text) and text[j] != close:
+            j += 2 if text[j] == "\\" else 1
+        if j >= len(text):
+            return None
+        title, after = text[after : j + 1], spaces(j + 1)
+    if text[after : after + 1] != ")":
+        return None
+    return destination, title, after + 1
 
 
-def _refuse_dangling_links(doc: Document) -> None:
-    """A link to `#name` that resolves to nothing (SPEC.md section 9; 0005
-    item 10)."""
+def _inline_links(text: str):
+    """Each inline link's destination and title, by CommonMark's rules: code
+    spans, autolinks and inline HTML bind tighter, a link holds no link, and
+    an image is not a link."""
+    brackets: list[dict] = []
+    i = 0
+    while i < len(text):
+        c = text[i]
+        if c == "\\" and text[i + 1 : i + 2] in _ASCII_PUNCTUATION and i + 1 < len(text):
+            i += 2
+        elif c == "`":
+            run = re.compile("`+").match(text, i).end() - i
+            ticks = next(
+                (m for m in re.finditer("`+", text[i + run :]) if len(m.group()) == run),
+                None,
+            )
+            i = i + run + ticks.end() if ticks else i + run
+        elif c == "<":
+            tag = _AUTOLINK.match(text, i) or _INLINE_HTML.match(text, i)
+            i = tag.end() if tag else i + 1
+        elif c == "!" and text[i + 1 : i + 2] == "[":
+            brackets.append({"image": True, "active": True})
+            i += 2
+        elif c == "[":
+            brackets.append({"image": False, "active": True})
+            i += 1
+        elif c == "]":
+            opener = brackets.pop() if brackets else None
+            tail = _link_tail(text, i + 1) if opener and opener["active"] else None
+            if tail is None:
+                i += 1
+                continue
+            if not opener["image"]:
+                yield tail[0], tail[1]
+                for earlier in brackets:
+                    if not earlier["image"]:
+                        earlier["active"] = False
+            i = tail[2]
+        else:
+            i += 1
+
+
+def _inline_html_tags(text: str):
+    """Each inline HTML tag in `text`, outside code spans and escapes."""
+    i = 0
+    while i < len(text):
+        c = text[i]
+        if c == "\\" and text[i + 1 : i + 2] in _ASCII_PUNCTUATION and i + 1 < len(text):
+            i += 2
+        elif c == "`":
+            run = re.compile("`+").match(text, i).end() - i
+            ticks = next(
+                (m for m in re.finditer("`+", text[i + run :]) if len(m.group()) == run),
+                None,
+            )
+            i = i + run + ticks.end() if ticks else i + run
+        elif c == "<":
+            link = _AUTOLINK.match(text, i)
+            tag = None if link else _INLINE_HTML.match(text, i)
+            if tag:
+                yield tag.group()
+            i = (link or tag).end() if (link or tag) else i + 1
+        else:
+            i += 1
+
+
+def _rendered_slugs(raw: str) -> set[str]:
+    """The slugs a renderer could give a heading whose raw content is `raw`."""
+    text = _INLINE_HTML.sub("", raw)
+    text = re.sub(r"!?\[([^\]]*)\]\([^)]*\)", r"\1", text)
+    found = set()
+    for variant in (text, re.sub(r"[*`]", "", text), re.sub(r"[*_`]", "", text)):
+        found.add(_SLUG_REMOVED.sub("", variant.lower()).replace(" ", "-"))
+    return found
+
+
+def _possible_targets(doc: Document) -> set[str]:
+    """Everything in the document a same-file link could mean (0005 item 10)."""
+    targets = {"top", *doc.names}
+    seen: dict[str, int] = {}
+    for node in doc.nodes:
+        if node.type == "heading":
+            custom = _HEADING_ID.search(node.text)
+            if custom:
+                targets.add(custom.group(1))
+            bare = _HEADING_ID.sub("", node.text).rstrip()
+            for slug in _rendered_slugs(bare):
+                count = seen.get(slug, 0)
+                seen[slug] = count + 1
+                targets.add(slug if count == 0 else f"{slug}-{count}")
     for leaf in doc.leaves:
         if leaf["type"] in ("paragraph", "heading"):
             texts = [leaf["content"]]
@@ -1013,14 +1127,33 @@ def _refuse_dangling_links(doc: Document) -> None:
         else:
             continue
         for text in texts:
-            read = _without_code_spans(text)
-            for match in _SAME_FILE_LINK.finditer(read):
-                name = match.group(1) if match.group(1) is not None else match.group(2)
-                if match.group(3) == '"transclude"' or not _LINK_NAME.match(name):
+            for tag in _inline_html_tags(text):
+                for match in _ANCHOR_ATTRIBUTE.finditer(tag):
+                    targets.add(next(g for g in match.groups() if g is not None))
+    return targets
+
+
+def _refuse_dangling_links(doc: Document) -> None:
+    """A link to `#name` where nothing could be its target (SPEC.md section 9;
+    0005 item 10)."""
+    targets = None
+    for leaf in doc.leaves:
+        if leaf["type"] in ("paragraph", "heading"):
+            texts = [leaf["content"]]
+        elif leaf["type"] == "table":
+            texts = [cell for row in leaf["content"] for cell in row]
+        else:
+            continue
+        for text in texts:
+            for destination, title in _inline_links(text):
+                if not destination.startswith("#") or title == '"transclude"':
                     continue
-                if not _is_link_end(read, match.start()):
+                name = destination[1:]
+                if not _LINK_NAME.match(name):
                     continue
-                if isinstance(doc.resolve(name), str):
+                if targets is None:
+                    targets = _possible_targets(doc)
+                if name not in targets:
                     raise Refusal("dangling-link", f"a link to {name!r}, which names nothing")
 
 

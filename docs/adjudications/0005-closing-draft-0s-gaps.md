@@ -46,16 +46,31 @@ reference to it is `#REF!(name)`, and so is the empty name.
 anchor is paired with in the current document, not from the record's stored
 base text.
 
-**10. `dangling-link`, a new refusal.** A paragraph, heading or table cell
-holding an inline link whose destination is `#name`, where `name` matches
-§7.1's name grammar and resolves to `#REF!(name)` under §8, is refused. Text
-inside a code span is not a link, a link titled `"transclude"` is not read by
-this rule, and a cell past the header's width is dropped before this rule
-reads it. A destination that does not start with
-`#`, or whose name does not match the grammar, is not read. The destination is
-read raw, with no escape or entity decoded, and may be in angle brackets. A
-record, a comment or a suggestion, is exempt: a name in its body means the
-commented document, not the record (§11.1).
+**10. `dangling-link`, a new refusal.** A paragraph, heading or table cell holding
+an inline link whose destination is `#name`, where `name` matches §7.1's name
+grammar and nothing in the document could be its target, is refused. Links are
+found by CommonMark's inline rules: code spans, autolinks and inline HTML bind
+tighter than links, a link holds no other link, and an image is not a link. The
+destination is read raw, with no escape or entity decoded, and may be in angle
+brackets. A link titled `"transclude"` is not read by this rule, and a cell past
+the header's width is dropped before this rule reads it.
+
+**A possible target** is any of:
+
+- a marker's name;
+- `top`, which browsers resolve to the start of the page;
+- the GitHub slug of any heading: its raw content with inline HTML tags removed
+  and each `[text](destination)` reduced to `text`, slugged as §8.2 does but also
+  with `*`, `_` and backticks removed, so a heading holding them still counts.
+  The slug of the second heading with that slug, and so on, also counts with
+  `-1`, `-2` and so on after it, as GitHub numbers duplicates;
+- an `{#id}` at the end of a heading;
+- the value of an `id` or `name` attribute in inline HTML.
+
+This is deliberately wider than §8's resolution. A link that works in a renderer
+is not refused because blockspec would not resolve it. A record, a comment or a
+suggestion, is exempt: a name in its body means the commented document, not the
+record (§11.1).
 
 This is the one place the profile looks inside inline content for a reason
 other than transclusion. One branch deleting a section while another keeps a
@@ -66,7 +81,7 @@ reports.
 a heading it does not bind is refused. Markers resolve first (§8.1), so such a
 marker silently takes the name from the heading. A one-line marker directly
 above that heading binds it and is allowed, and so is a region whose nodes
-include that heading. Two headings sharing the slug are both read: a marker
+include that heading, or whose `:begin` is the next sibling after it. Two headings sharing the slug are both read: a marker
 binding one of them still does not bind the other. This narrows 0001's
 "markers first": that order now decides only where the marker and the heading
 are the same target.

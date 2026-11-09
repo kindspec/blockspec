@@ -564,7 +564,7 @@ likes; the code is what the case compares.
 | `unpaired-region` | 0002 §3 | a `:begin` and its `:end` that are not siblings in one container |
 | `table-not-blank-above` | 0002 §6 | a table with a non-blank line directly above it in its container |
 | `table-not-blank-below` | 0002 §6 | a table with a non-blank line directly below it in its container |
-| `dangling-link` | 0005 | a link to `#name` in the same document, where the name resolves to nothing |
+| `dangling-link` | 0005 | a link to `#name` in the same document where nothing could be its target |
 | `name-shadows-slug` | 0005 | a marker whose name is the slug of a heading it does not bind |
 | `ambiguous-table` | 0002, addendum | a delimiter line and the paragraph line over it, judged without the line above, when either holds a form feed or vertical tab, or when they are a table candidate with no unescaped pipe in one of the two lines; at top level, in a block quote or a list item; it wins over `table-not-blank-above` |
 

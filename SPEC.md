@@ -145,7 +145,7 @@ parsed, so emphasis, links, code spans and entity references are characters
 of the leaf's content (§6.3), not structure.
 
 **Two exceptions.** A link to a name in the same document is read for
-`dangling-link` (§9; 0005 item 10). And a paragraph whose content is exactly one inline link
+`dangling-link`, by CommonMark's inline rules (§9; 0005 item 10). And a paragraph whose content is exactly one inline link
 titled `transclude` is a transclusion (§11.9). 0003 Q5 amends 0001 to add
 it. The paragraph is still a leaf, and its content is still its raw text.
 
@@ -473,14 +473,12 @@ An implementation MUST refuse:
     in one of the two lines (§4.3)
 12. `dangling-link`: a paragraph, heading or table cell holding an inline link
     whose destination is `#name`, where `name` matches §7.1's name grammar and
-    resolves to `#REF!(name)` under §8. Text inside a code span is not a link,
-    a link titled `"transclude"` is not read by this rule, a table cell past
-    the header's width is dropped first, and a record is exempt, since a name in
-    its body means the commented document (0005 item 10)
+    nothing in the document could be its target. 0005 item 10 lists the possible
+    targets, which are wider than §8's resolution. A record is exempt
 13. `name-shadows-slug`: a marker whose name is the slug of a heading it does
     not bind. A one-line marker directly above that heading binds it and is
-    allowed, as is a region whose nodes include that heading (§8.1; 0005 item
-    11)
+    allowed, as is a region whose nodes include that heading or whose `:begin`
+    is the next sibling after it (§8.1; 0005 item 11)
 
 **Two orders between refusals are fixed** (0002, addendum on markers that
 name nothing, and three defaults; addendum on ambiguous tables):
