@@ -1,7 +1,8 @@
 # A heading renamed on one side, and the old heading text added on the other
 
 Ours renames `# Scope` to `# Range`; theirs adds a new `# Scope` at the end.
-Each alone leaves one heading with that slug. After the merge the slug `scope`
+Neither side alone resolves `scope` to one heading: ours has no heading with
+that slug, and theirs has two. After the merge the slug `scope`
 resolves to the heading theirs added, where it resolved to the first heading
 at the base. Anything that used the slug follows it to new content, with no
 sign. The format says so itself: slugs are not durable.

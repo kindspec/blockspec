@@ -4,6 +4,6 @@
   "accept": false,
   "refusal": "conflict-marker",
   "controls": [
-    "merge/list/item-edited-and-another-split"
+    "merge/list/item-edited-and-another-appended"
   ]
 }

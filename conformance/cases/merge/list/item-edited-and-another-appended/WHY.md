@@ -1,7 +1,7 @@
-# One branch edits an item while the other splits a different one
+# One branch edits an item while the other adds one at the end
 
-The edit and the split are two unchanged items apart. The merged list has five
-items, and it is still one block.
+The edit and the new item have unchanged items between them. The merged list
+has five items, and it is still one block.
 
 0002 §1 is the partition rule this case relies on (SPEC.md §6.1):
 

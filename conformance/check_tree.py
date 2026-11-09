@@ -103,6 +103,8 @@ def merge_file_problems(case: dict):
     for side in ("base", "ours", "theirs"):
         if f"{side}.md" not in names:
             yield f"no {side}.md"
+    if "WHY.md" not in names:
+        yield "no WHY.md"
     if expect.get("merge") not in ("clean", "conflict"):
         yield f"merge is {expect.get('merge')!r}, not clean or conflict"
     if (expect.get("merge") == "clean") != ("merged.md" in names):

@@ -6,7 +6,7 @@ rejects broken ones, with kindkit's own validator.
 
 The bodies are synthetic and written to a temporary tree; none is a
 conformance case, and none says anything about how an anchor resolves. Each
-broken body breaks one rule of the schema's `anchor` branch, and each is
+broken body breaks one rule of the schema's `anchor` or `merge` branch, and each is
 validated in a tree of its own, so every rule is seen to reject on its own.
 Exit 0 when the good body validates and every broken one is rejected; 1
 otherwise; 2 when the validator cannot be run.

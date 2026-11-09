@@ -41,9 +41,9 @@ jobs:
         if: ${{ !cancelled() }}
         run: python3 conformance/check_tree.py
 
-      # The anchor kind's branch of the schema, against synthetic bodies: one
-      # that must validate, and broken ones that must each be rejected.
-      - name: the case-body schema accepts an anchor body and rejects broken ones
+      # The anchor and merge branches of the schema, against synthetic bodies:
+      # good ones that must validate, broken ones that must each be rejected.
+      - name: the case-body schema accepts good bodies and rejects broken ones
         if: ${{ !cancelled() }}
         run: python3 conformance/schema_selftest.py .kindkit
 
