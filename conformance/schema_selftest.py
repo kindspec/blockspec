@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
-"""Check that case-body.schema.json accepts an `anchor` body and rejects
-broken ones, with kindkit's own validator.
+"""Check that case-body.schema.json accepts an `anchor` and a `merge` body and
+rejects broken ones, with kindkit's own validator.
 
     python3 conformance/schema_selftest.py <kindkit checkout>
 
@@ -193,6 +193,40 @@ def _broken():
     )
 
 
+MERGE_GOOD = {
+    "kind": "merge",
+    "merge": "clean",
+    "accept": True,
+    "blocks": [{"type": "paragraph", "lines": [1, 1]}],
+    "leaves": [{"node": [0], "type": "paragraph", "content": "x"}],
+    "names": {},
+}
+CONTROLS = ["merge/clean/control"]
+
+
+def _broken_merge():
+    """Each breaks one rule of the schema's `merge` branches."""
+
+    def without(field):
+        return {k: v for k, v in MERGE_GOOD.items() if k != field}
+
+    yield "a merge case with no merge field", without("merge")
+    yield "a merge case with no accept", without("accept")
+    yield "a merge outcome that is neither clean nor conflict", {**MERGE_GOOD, "merge": "maybe"}
+    yield "a conflict that is accepted", {**MERGE_GOOD, "merge": "conflict"}
+    yield (
+        "a conflict refused with another code",
+        {
+            "kind": "merge",
+            "merge": "conflict",
+            "accept": False,
+            "refusal": "raw-html",
+            "controls": CONTROLS,
+        },
+    )
+    yield "a parse case with a merge field", {**MERGE_GOOD, "kind": "parse"}
+
+
 def _validate(validator: str, body: dict, workdir: str) -> int:
     root = tempfile.mkdtemp(dir=workdir)
     shutil.copy(SCHEMA, root)
@@ -222,7 +256,14 @@ def main(argv: list[str]) -> int:
             print(f"HARD FAILURE: the good body did not validate (exit {code})", file=sys.stderr)
             return 2
         print("  accepted  the good body")
-        for label, body in _broken():
+        code = _validate(validator, MERGE_GOOD, workdir)
+        if code != 0:
+            print(
+                f"HARD FAILURE: the good merge body did not validate (exit {code})", file=sys.stderr
+            )
+            return 2
+        print("  accepted  the good merge body")
+        for label, body in [*_broken(), *_broken_merge()]:
             code = _validate(validator, body, workdir)
             verdict = "rejected" if code == 1 else f"exit {code}"
             print(f"  {verdict:<9} {label}")
