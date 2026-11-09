@@ -18,7 +18,7 @@ CONFLICT = re.compile(r"(?:<{7,}|>{7,}|\|{7,})(?: |\Z)|={7,}\Z")
 EOL = re.compile(r"\r\n|\n|\r")
 
 RE_ATX = re.compile(r"#{1,6}(?:[ \t]+|\Z)")
-RE_ATX_ONLY_CLOSE = re.compile(r"[ \t]*#+[ \t]*\Z")
+RE_ATX_ONLY_CLOSE = re.compile(r"\A[ \t]*#+[ \t]*\Z")
 RE_ATX_CLOSE = re.compile(r"[ \t]+#+[ \t]*\Z")
 RE_FENCE = re.compile(r"`{3,}(?!.*`)|~{3,}")
 RE_FENCE_CLOSE = re.compile(r"(?:`{3,}|~{3,})(?=[ \t]*\Z)")
@@ -301,6 +301,7 @@ class Parser:
         self.prefix_partial = False
         self.first_of_item = False
         self.line_info: dict[int, LineInfo] = {}
+        self.item_blank_lines: set[int] = set()
 
     # Moving along a line.
 
@@ -362,6 +363,11 @@ class Parser:
     def finalize(self, node: Node, line: int) -> None:
         node.open = False
         node.end = line
+        if node.type in ("list", "list_item"):
+            # An item continues through blank lines. Those are not its lines,
+            # and they stay blank in the item's own container (`>` included).
+            while node.end > node.start and node.end in self.item_blank_lines:
+                node.end -= 1
         if node.type == "paragraph":
             self.finish_paragraph(node)
         self.tip = node.parent  # type: ignore[assignment]
@@ -405,7 +411,9 @@ class Parser:
                 self.old_tip = parent  # type: ignore[assignment]
             self.all_closed = True
 
-    def add_line(self, lazy: bool = False) -> None:
+    def remainder(self) -> tuple[str, list[int | None]]:
+        """The rest of the line and each character's raw offset. What is left
+        of a partly consumed tab is spaces that come from no raw character."""
         text, srcs = "", []
         offset = self.offset
         if self.partial:
@@ -416,6 +424,10 @@ class Parser:
         rest = self.line[offset:]
         text += rest
         srcs += list(range(self.base + offset, self.base + len(self.line)))
+        return text, srcs
+
+    def add_line(self, lazy: bool = False) -> None:
+        text, srcs = self.remainder()
         as_it_stands = self.line[self.prefix_end :] if lazy else text
         self.tip.lines.append(Line(text, srcs, self.number, lazy, as_it_stands))
         self.note_line(lazy)
@@ -496,6 +508,7 @@ class Parser:
             if self.is_blank:
                 if not c.children:
                     return 1
+                self.item_blank_lines.add(self.number)
                 self.advance_next_nonspace()
             elif self.indent >= c.marker_offset + c.padding:
                 self.advance_offset(c.marker_offset + c.padding, True)
@@ -586,7 +599,7 @@ class Parser:
         self.close_unmatched()
         node = self.add_child("html_block")
         node.marker = (m.group(1), m.group(2)[1:] if m.group(2) else None)
-        node.content = self.line[self.offset :] + "\n"
+        node.content = self.remainder()[0] + "\n"
         self.finalize(node, self.number)
         return 2
 

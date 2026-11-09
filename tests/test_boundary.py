@@ -44,3 +44,11 @@ def test_reference_imports_only_the_standard_library():
         if name not in allowed
     }
     assert not outside, sorted(outside)
+
+
+def test_the_two_implementations_import_nothing_of_each_other():
+    """The second implementation is only evidence while it stands alone."""
+    for path in _python_files():
+        package = os.path.relpath(path, REFERENCE).split(os.sep)[0]
+        other = {"blockspec": "blockspec_alt", "blockspec_alt": "blockspec"}[package]
+        assert other not in set(_imports(path)), os.path.relpath(path, ROOT)

@@ -29,6 +29,13 @@ tree, and the runner and tree checker with the implementation left out. `merge`
 and `merged.md` come from a real `git merge`; each reading was derived by hand
 from those texts. The reference then ran them with no case changed and passed.
 
+`reference/blockspec_alt/` was written from `SPEC.md`, `docs/adjudications/`,
+this tree and the runner, by an author with no `reference/blockspec/` in reach.
+`table/a-lone-pipe-over-a-delimiter-is-a-paragraph` and
+`table/two-pipes-over-a-delimiter-is-a-table` were written afterwards, when
+the two implementations were compared, and cross-checked with
+markdown-it-py 3.0.0.
+
 The cases listed at the end of this paragraph were added later, against
 blockspec `926d7a1`, after an implementation existed on an unmerged branch
 (`feat/reference-parser`, kindspec/blockspec#37). Their author did not read
