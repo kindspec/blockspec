@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "conflict",
+  "accept": false,
+  "refusal": "conflict-marker",
+  "controls": [
+    "merge/identical/same-edit-on-both-sides"
+  ]
+}

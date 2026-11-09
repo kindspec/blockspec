@@ -489,7 +489,7 @@ combines only refusals whose order is fixed here.
 CC0, so it can be copied into an implementation in any language.
 `conformance/cases/README.md` defines every field.
 
-Every case has the one kind `parse`: the implementation reads `input.md` and
+For a case of the kind `parse`, the implementation reads `input.md` and
 either refuses it, with one identifier from §9, or accepts it and reports:
 
 - **frontmatter**: its line range, or none (§5);

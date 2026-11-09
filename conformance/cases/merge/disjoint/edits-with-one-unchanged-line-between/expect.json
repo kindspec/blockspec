@@ -1,0 +1,87 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "heading",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "html_block",
+      "lines": [
+        3,
+        3
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        4,
+        4
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        6,
+        6
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "heading",
+      "content": "Policy"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "html_block",
+      "content": "<!-- #limit -->\n"
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "paragraph",
+      "content": "The limit is five."
+    },
+    {
+      "node": [
+        3
+      ],
+      "type": "paragraph",
+      "content": "The window is twelve seconds."
+    }
+  ],
+  "names": {
+    "limit": {
+      "node": [
+        2
+      ],
+      "type": "paragraph"
+    }
+  },
+  "resolve": {
+    "limit": {
+      "node": [
+        2
+      ],
+      "type": "paragraph"
+    },
+    "policy": {
+      "node": [
+        0
+      ],
+      "type": "heading"
+    }
+  }
+}

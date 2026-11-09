@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "conflict",
+  "accept": false,
+  "refusal": "conflict-marker",
+  "controls": [
+    "merge/frontmatter/different-keys-with-one-unchanged-between"
+  ]
+}

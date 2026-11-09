@@ -1,0 +1,23 @@
+{
+  "kind": "anchor",
+  "merge": {
+    "policy.md": "clean"
+  },
+  "transclusions": {
+    "guide.md": [
+      {
+        "leaf": {
+          "node": [
+            1
+          ],
+          "type": "paragraph"
+        },
+        "status": "REFUSED(pinned-orphaned)",
+        "unit": null
+      }
+    ]
+  },
+  "controls": [
+    "anchor/merge/two-edits-to-the-named-paragraph-resolve"
+  ]
+}

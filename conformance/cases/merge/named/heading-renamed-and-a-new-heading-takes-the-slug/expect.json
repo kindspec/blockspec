@@ -1,0 +1,108 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "heading",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        3,
+        3
+      ]
+    },
+    {
+      "type": "heading",
+      "lines": [
+        5,
+        5
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        7,
+        7
+      ]
+    },
+    {
+      "type": "heading",
+      "lines": [
+        9,
+        9
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        11,
+        11
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "heading",
+      "content": "Range"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "paragraph",
+      "content": "What this covers."
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "heading",
+      "content": "Process"
+    },
+    {
+      "node": [
+        3
+      ],
+      "type": "paragraph",
+      "content": "Steps."
+    },
+    {
+      "node": [
+        4
+      ],
+      "type": "heading",
+      "content": "Scope"
+    },
+    {
+      "node": [
+        5
+      ],
+      "type": "paragraph",
+      "content": "A new section."
+    }
+  ],
+  "names": {},
+  "resolve": {
+    "scope": {
+      "node": [
+        4
+      ],
+      "type": "heading"
+    },
+    "range": {
+      "node": [
+        0
+      ],
+      "type": "heading"
+    }
+  }
+}

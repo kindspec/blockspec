@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "conflict",
+  "accept": false,
+  "refusal": "conflict-marker",
+  "controls": [
+    "merge/table/rows-added-at-either-end"
+  ]
+}

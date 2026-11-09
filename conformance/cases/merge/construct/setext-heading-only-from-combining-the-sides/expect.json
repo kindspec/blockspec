@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": false,
+  "refusal": "setext-heading",
+  "controls": [
+    "merge/construct/fence-lines-removed-text-becomes-prose"
+  ]
+}

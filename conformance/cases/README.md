@@ -21,6 +21,14 @@ the brief, the two adjudications, the org contract, kindkit `6ebd80d`
 `conformance/cases/` with its README. Every fixture was written for this tree;
 none is taken from a corpus.
 
+The `merge` cases, and the seven under `anchor/merge` added with them, were
+written against blockspec `0f2fcec`, by an author working in an exported
+directory with no `reference/`, no `tests/`, no mutation gate and no git
+history. They had `SPEC.md`, `DESIGN-BRIEF.md`, `docs/adjudications/`, this
+tree, and the runner and tree checker with the implementation left out. `merge`
+and `merged.md` come from a real `git merge`; each reading was derived by hand
+from those texts. The reference then ran them with no case changed and passed.
+
 The cases listed at the end of this paragraph were added later, against
 blockspec `926d7a1`, after an implementation existed on an unmerged branch
 (`feat/reference-parser`, kindspec/blockspec#37). Their author did not read

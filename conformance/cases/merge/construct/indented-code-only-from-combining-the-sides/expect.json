@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": false,
+  "refusal": "indented-code",
+  "controls": [
+    "merge/construct/fence-lines-removed-text-becomes-prose"
+  ]
+}

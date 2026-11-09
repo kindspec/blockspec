@@ -1,0 +1,49 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "table",
+      "lines": [
+        1,
+        7
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "table",
+      "content": [
+        [
+          "item",
+          "value"
+        ],
+        [
+          "zero",
+          "0"
+        ],
+        [
+          "one",
+          "1"
+        ],
+        [
+          "two",
+          "2"
+        ],
+        [
+          "three",
+          "3"
+        ],
+        [
+          "four",
+          "4"
+        ]
+      ]
+    }
+  ],
+  "names": {}
+}

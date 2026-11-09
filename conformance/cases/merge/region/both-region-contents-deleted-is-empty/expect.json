@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": false,
+  "refusal": "dangling-marker",
+  "controls": [
+    "merge/disjoint/edits-far-apart"
+  ]
+}

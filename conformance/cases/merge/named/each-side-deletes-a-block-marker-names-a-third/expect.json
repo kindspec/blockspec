@@ -1,0 +1,53 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "html_block",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        4,
+        4
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "html_block",
+      "content": "<!-- #a -->\n"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "paragraph",
+      "content": "Three."
+    }
+  ],
+  "names": {
+    "a": {
+      "node": [
+        1
+      ],
+      "type": "paragraph"
+    }
+  },
+  "resolve": {
+    "a": {
+      "node": [
+        1
+      ],
+      "type": "paragraph"
+    }
+  }
+}

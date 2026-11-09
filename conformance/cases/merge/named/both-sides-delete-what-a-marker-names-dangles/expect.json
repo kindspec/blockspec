@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": false,
+  "refusal": "dangling-marker",
+  "controls": [
+    "merge/named/each-side-deletes-a-block-marker-names-a-third"
+  ]
+}

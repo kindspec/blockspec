@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": false,
+  "refusal": "duplicate-name",
+  "controls": [
+    "merge/region/one-side-moves-a-marker"
+  ]
+}
