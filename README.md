@@ -1,44 +1,57 @@
 # blockspec
 
-**Status: draft 0, defined by its decisions and its conformance cases.**
-Draft 0 is what `docs/adjudications/` decides, and `SPEC.md` writes it up:
-0001, a pinned CommonMark 0.31.2 block-level profile with `<!-- #name -->`
-region markers, and 0002, what a block is, each with addenda, and 0003,
-how comments, suggestions and transclusions anchor, amended by 0004 after a
-replay of real history. `conformance/cases/` encodes all four. Its
-0001 and 0002 cases came first, before any implementation existed. Its 0003
-cases, under `conformance/cases/anchor/`,
-were written from `SPEC.md` by an author who had not read the resolver,
-which was written before them. 0004's cases were written the same way,
-after its resolver change, which was then run against them with no case
-changed. `reference/blockspec/` is a
-standard-library-only implementation, the reader (`document.py`) and the
-anchor resolver (`anchor.py`), run against that tree with no case changed,
-and CI runs the tree against it (`just conform`). There is one
-implementation, so nothing disagrees with it yet.
+A file format and test suite for prose documents that must survive version
+control.
 
-The pre-registered spike, `spike/` (blockspec#2), asked whether prose has a
-silent-wrong-merge worth a format. Its binding verdict is **FOUND**:
-pre-registration 3's tier-run, run a second time under an owner ruling that
-overrides four of that document's frozen rules (`spike/LOG.md` §34–§35). The
-ruling was made after run 1's answers and its INCONCLUSIVE verdict were
-public, and run 2 is what turned the verdict into FOUND.
-Read the ruling, its disclosures and the noise figures beside the verdict
-before relying on it. Start at `spike/README.md`.
+A blockspec document is a markdown file that renders and edits correctly in
+today's markdown tools. It adds one convention, a marker that lets an author
+name a part of the document. It refuses the markdown constructs that mature
+parsers read differently, or that hide what a merge did.
 
-blockspec is the **block kind** in [kindspec](https://github.com/kindspec) — a
-specification and conformance suite for prose documents that must survive
-version control, alongside [rowspec](https://github.com/kindspec/rowspec) (the
-row kind).
+```markdown
+# Runbook
 
-Each kind is named after its **unit of identity**, because identity is the hard
-part of every one of them:
+<!-- #restart -->
+## Restart the service
 
-| | unit | identity | status |
-|---|---|---|---|
-| [rowspec](https://github.com/kindspec/rowspec) | rows | opaque row ids | draft 0, published |
-| **blockspec** | blocks | **deliberately no minted ids** | draft 0: decisions, cases, reference |
-| [nodespec](https://github.com/kindspec/nodespec) | nodes | named, not positional | specification draft 0, conformance cases and reference checker |
+Run `systemctl restart app`, then check the logs.
+```
+
+The marker names the heading after it, and renders as nothing. A comment or a
+transclusion can point at `restart` and keep working when the text around it moves.
+
+Unlike a [rowspec](https://github.com/kindspec/rowspec) row, **a block gets no
+minted id**, so nothing has to be written into the prose. Identity is computed
+from content where it can be, and named by an author where it must be.
+[`DESIGN-BRIEF.md`](DESIGN-BRIEF.md) has the measurement behind that.
+
+## Status
+
+Draft 0. [`SPEC.md`](SPEC.md) is the format, `conformance/cases/` encodes it,
+and `reference/blockspec/` is the only implementation so far. It is not on
+PyPI.
+
+The experiment behind the format found that prose does have a silent wrong
+merge worth a format. That verdict came from a second run under an owner ruling
+made after the first run's result was public, so read
+[the status page](docs/status.md) before relying on it.
+
+## Try it
+
+From a clone, with Python 3.11 or newer and no dependencies:
+
+```sh
+git clone https://github.com/kindspec/blockspec
+cd blockspec
+PYTHONPATH=reference python3 -c '
+import blockspec
+doc = blockspec.parse("<!-- #intro -->\nHello.\n")
+print(doc.names)
+'
+```
+
+`parse` raises `Refusal`, with a `SPEC.md` §9 code, on a document it won't
+accept.
 
 ## The reference's API
 
@@ -58,20 +71,22 @@ A block is named by its node path, `[i]`. Each `edit` function reads its
 result back and raises `Refusal`, or its subclass `edit.EditRefused` for the
 API's own reasons, rather than return a document whose other blocks or names
 read differently. It never touches a `<doc>.notes/` record.
-`docs/editing-api.md` gives the rules, and `tests/edit-cases/` pins them.
+[`docs/editing-api.md`](docs/editing-api.md) gives the rules, and `tests/edit-cases/` pins them.
 
-## The thing that makes this different from rowspec
+## Develop
 
-A row gets an opaque id. **A prose block does not**, and that is a measured
-decision rather than a stylistic one — see `DESIGN-BRIEF.md`.
+```sh
+just setup      # install dependencies
+just check      # format and lint
+just test       # the tests
+just conform    # the conformance tree against the reference
+just mutants    # break the reference; the suite must notice
+```
 
-That single difference is why this is a fresh design pass and not a port. The
-prior research is explicit about the trap: *"Do not use one syntax for documents
-+ tables + slides. One syntax is a trap; one MODEL, several grammars is the
-sound version."*
+## More
 
-## Before writing anything
-
-Read `DESIGN-BRIEF.md`. It carries what is already decided and measured, what is
-still open, and — most importantly — the one process question that must be
-settled first.
+- [`DESIGN-BRIEF.md`](DESIGN-BRIEF.md): what was decided and measured before the
+  format was written.
+- [`docs/adjudications/`](docs/adjudications/): the decisions that define draft 0.
+- [`spike/`](spike/README.md): the experiment.
+- [kindspec](https://github.com/kindspec): the other formats.
