@@ -501,6 +501,11 @@ either refuses it, with one identifier from §9, or accepts it and reports:
 - **names**: every name a marker declares, and what it binds to (§7);
 - **resolve**: for the names a case lists, what each resolves to (§8).
 
+A case of the kind `merge` runs stock `git merge` over three versions of a
+document, checks what git reports and the merged bytes, and then reads the
+merged text as above. Such a case says what this format does with a real
+merge: the document it leaves, or the refusal.
+
 0002 §5 makes the tree pin the partition and the leaves, so each accepting
 case lists every block, every leaf and every name, and a missing or extra
 entry fails it.

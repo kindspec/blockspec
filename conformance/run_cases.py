@@ -25,6 +25,9 @@ returned object has `records` and `transclusions`, shaped as the case's
 anchor case. An implementation in another language needs a FILE that calls
 out to it.
 
+For the `merge` kind, `conform` is all FILE needs: the runner runs stock
+`git merge` over the case's three versions and hands it the merged text.
+
 Nothing is checked without an implementation, so there is no pass to report:
 
     no --impl                  exit 2, no verdict
@@ -146,6 +149,33 @@ def anchor_handler(resolve: Callable[[dict, dict], object] | None):
     return anchor
 
 
+def merge_handler(conform: Callable[[str, list[str]], object]):
+    def merge(case) -> Iterator[str]:
+        missing = [side for side in ("base", "ours", "theirs") if side not in case.files]
+        if missing:
+            yield f"the case is malformed: no {', '.join(missing)}.md"
+            return
+        from kindkit.gitmerge import merge as git_merge
+
+        outcome, text = git_merge(
+            case.files["base"], [case.files["ours"], case.files["theirs"]], "document.md"
+        )
+        if outcome != case.expect["merge"]:
+            yield f"expected stock git to report {case.expect['merge']}, it reported {outcome}"
+            return
+        if outcome == "clean":
+            if "merged" not in case.files:
+                yield "the case is malformed: a clean merge has no merged.md"
+                return
+            if text != case.files["merged"]:
+                yield "stock git's merged text is not the case's merged.md"
+                return
+        queries = list(case.expect.get("resolve", {}))
+        yield from compare(case.expect, conform(text, queries))
+
+    return merge
+
+
 def load(path: str):
     spec = importlib.util.spec_from_file_location("blockspec_under_test", path)
     if spec is None or spec.loader is None:
@@ -188,7 +218,11 @@ def main(argv: list[str]) -> int:
         return EXIT_NO_VERDICT
     adapter = Adapter(
         fixture_suffixes=(".md",),
-        handlers={"parse": handler(conform), "anchor": anchor_handler(resolve)},
+        handlers={
+            "parse": handler(conform),
+            "anchor": anchor_handler(resolve),
+            "merge": merge_handler(conform),
+        },
     )
     return cli.main(
         adapter,

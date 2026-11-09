@@ -39,6 +39,11 @@ placeholder itself, every record and referrer it lists is a file under
 suggestion's written file exists. A case that expects a `REFUSED(...)`
 outcome names at least one control, an other `anchor` case of this tree.
 
+A `merge` case (cases/README.md, *The kind `merge`*) gets checks 2 to 6 as a
+`parse` case does, over its merged.md, and its files are checked: it has its
+three versions, merged.md exactly when the merge is clean, and a conflict is
+refused with `conflict-marker`.
+
 Exit codes follow kindkit's: 0 every check passed, 1 at least one failed, 2 no
 verdict (the tree is missing or empty).
 """
@@ -71,12 +76,39 @@ def load_tree(root: str) -> dict[str, dict]:
         if expect.get("kind") == "anchor":
             cases[cid] = {"expect": expect, "files": anchor_cases.read_case_files(dirpath)}
             continue
+        if expect.get("kind") == "merge":
+            cases[cid] = {"expect": expect, "input": _merged_text(dirpath), "names": set(names)}
+            continue
         with open(os.path.join(dirpath, "input.md"), encoding="utf-8", newline="") as handle:
             text = handle.read()
         cases[cid] = {"expect": expect, "input": text}
     if not cases:
         raise SystemExit(_no_verdict(f"no cases under {root!r}"))
     return cases
+
+
+def _merged_text(dirpath: str) -> str:
+    """A `merge` case's merged.md, or "" where the merge conflicts and has none."""
+    path = os.path.join(dirpath, "merged.md")
+    if not os.path.exists(path):
+        return ""
+    with open(path, encoding="utf-8", newline="") as handle:
+        return handle.read()
+
+
+def merge_file_problems(case: dict):
+    """A `merge` case has its three versions, and merged.md exactly when clean;
+    a conflict is refused for its markers."""
+    expect, names = case["expect"], case["names"]
+    for side in ("base", "ours", "theirs"):
+        if f"{side}.md" not in names:
+            yield f"no {side}.md"
+    if expect.get("merge") not in ("clean", "conflict"):
+        yield f"merge is {expect.get('merge')!r}, not clean or conflict"
+    if (expect.get("merge") == "clean") != ("merged.md" in names):
+        yield "merged.md must exist exactly when the merge is clean"
+    if expect.get("merge") == "conflict" and expect.get("refusal") != "conflict-marker":
+        yield "a conflicted merge is refused with conflict-marker"
 
 
 def _no_verdict(message: str) -> int:
@@ -242,6 +274,8 @@ def check(root: str) -> list[str]:
         if expect.get("kind") == "anchor":
             problems += [f"{cid}: {p}" for p in check_anchor(cid, case, cases)]
             continue
+        if expect.get("kind") == "merge":
+            problems += [f"{cid}: {p}" for p in merge_file_problems(case)]
         misses = list(compare(expect, answer(expect)))
         if misses:
             problems.append(f"{cid}: fails its own right answer: {misses[0]}")

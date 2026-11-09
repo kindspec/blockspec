@@ -867,6 +867,32 @@ the blobs and run the merges.
   does not occur exactly once, and a referrer's re-pin (§11.9). A case asserts
   how existing records and pins resolve, not what a tool would write.
 
+## The kind `merge`
+
+A case with `"kind": "merge"` asserts what a real merge leaves behind. The
+runner commits `base.md`, makes `ours.md` and `theirs.md` on two branches, and
+runs stock `git merge`, with no driver and no configuration from the machine.
+It checks what git reports, then hands the merged text to the implementation
+and checks the reading.
+
+| file | what it is |
+| --- | --- |
+| `base.md` | the common ancestor |
+| `ours.md` | the branch merged into |
+| `theirs.md` | the branch merged in |
+| `merged.md` | what stock git must produce, byte for byte. Exactly when the merge is clean |
+| `WHY.md` | what the case is for, and the passage it rests on |
+
+| field | what it asserts |
+| --- | --- |
+| `merge` | `clean` or `conflict`: what stock git must report |
+| the rest | as for `parse`, over the merged text |
+
+A conflicted merge leaves markers in the text, so its reading is the refusal
+`conflict-marker`. A clean merge either reads as the document the case lists
+or is refused, with the refusal's controls, which are accepting `merge` or
+`parse` cases.
+
 ## Running it
 
 `conformance/check_tree.py` checks the tree itself and needs nothing else: the
