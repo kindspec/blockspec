@@ -13,7 +13,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REFERENCE = os.path.join(ROOT, "reference")
-INTERNAL = {"blockspec"}
+INTERNAL = {"blockspec", "blockspec_alt"}
 
 
 def _imports(path):

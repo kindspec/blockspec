@@ -40,6 +40,10 @@ run *ARGS:
 conform:
     uv run python conformance/run_cases.py --impl reference/blockspec/document.py
 
+# The second implementation, written from SPEC.md alone, against the same tree
+conform-alt:
+    uv run python conformance/run_cases.py --impl reference/blockspec_alt/impl.py
+
 # The tree itself, with no implementation: the floor, that every case can
 # fail, and that every refusal has a control
 tree:
