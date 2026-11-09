@@ -52,7 +52,10 @@ holding an inline link whose destination is `#name`, where `name` matches
 inside a code span is not a link, a link titled `"transclude"` is not read by
 this rule, and a cell past the header's width is dropped before this rule
 reads it. A destination that does not start with
-`#`, or whose name does not match the grammar, is not read.
+`#`, or whose name does not match the grammar, is not read. The destination is
+read raw, with no escape or entity decoded, and may be in angle brackets. A
+comment record is exempt: a name in its body means the commented document, not
+the record (§11.1).
 
 This is the one place the profile looks inside inline content for a reason
 other than transclusion. One branch deleting a section while another keeps a

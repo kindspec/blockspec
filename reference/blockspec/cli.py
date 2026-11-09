@@ -60,7 +60,7 @@ def check_file(path: str) -> tuple[str | None, str] | None:
     except UnicodeDecodeError:
         return None, "is not UTF-8"
     try:
-        parse(text)
+        parse(text, record=os.path.basename(os.path.dirname(path)).endswith(".notes"))
     except Refusal as refusal:
         return refusal.code, refusal.message
     except RecursionError as exc:

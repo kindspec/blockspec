@@ -903,8 +903,10 @@ class Document:
         return f"#REF!({name})"
 
 
-def parse(text: str) -> Document:
-    """Read `text` as a blockspec document, or raise `Refusal`."""
+def parse(text: str, *, record: bool = False) -> Document:
+    """Read `text` as a blockspec document, or raise `Refusal`. A comment
+    record's body names things in the commented document, so `record` leaves
+    its links unread (SPEC.md section 9, `dangling-link`)."""
     # SPEC.md section 3: U+0000 is replaced with U+FFFD (CommonMark 0.31.2
     # section 2.3), before anything else reads the text.
     text = text.replace("\x00", "\ufffd")
@@ -931,7 +933,8 @@ def parse(text: str) -> Document:
             raise Refusal("table-not-blank-below", "a table directly above a non-blank line")
     doc = Document(root, lines, frontmatter)
     _refuse_shadowed_slugs(doc)
-    _refuse_dangling_links(doc)
+    if not record:
+        _refuse_dangling_links(doc)
     return doc
 
 

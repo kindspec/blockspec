@@ -825,7 +825,7 @@ def _read_record(reader, text: str, fm: list[str] | None, object_format: str) ->
     """The record, or `record-inconsistent` for its grammar or for a body the
     profile refuses (section 11.1)."""
     try:
-        reader.parse(text)
+        reader.parse(text, record=True)
     except reader.Refusal as refusal:
         raise _Refused("record-inconsistent") from refusal
     record = read_record(fm, object_format)

@@ -474,8 +474,9 @@ An implementation MUST refuse:
 12. `dangling-link`: a paragraph, heading or table cell holding an inline link
     whose destination is `#name`, where `name` matches §7.1's name grammar and
     resolves to `#REF!(name)` under §8. Text inside a code span is not a link,
-    a link titled `"transclude"` is not read by this rule, and a table cell past
-    the header's width is dropped first (0005 item 10)
+    a link titled `"transclude"` is not read by this rule, a table cell past
+    the header's width is dropped first, and a comment record is exempt, since a
+    name in its body means the commented document (0005 item 10)
 13. `name-shadows-slug`: a marker whose name is the slug of a heading it does
     not bind. A one-line marker directly above that heading binds it and is
     allowed, as is a region whose nodes include that heading (§8.1; 0005 item
