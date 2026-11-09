@@ -18,7 +18,7 @@ Run `systemctl restart app`, then check the logs.
 ```
 
 The marker names the heading after it, and renders as nothing. A comment or a
-link can point at `restart` and keep working when the text around it moves.
+transclusion can point at `restart` and keep working when the text around it moves.
 
 Unlike a [rowspec](https://github.com/kindspec/rowspec) row, **a block gets no
 minted id**, so nothing has to be written into the prose. Identity is computed
