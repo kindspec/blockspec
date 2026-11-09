@@ -1,0 +1,42 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+# Status of blockspec
+
+**Status: draft 0, defined by its decisions and its conformance cases.**
+Draft 0 is what `docs/adjudications/` decides, and `SPEC.md` writes it up:
+0001, a pinned CommonMark 0.31.2 block-level profile with `<!-- #name -->`
+region markers, and 0002, what a block is, each with addenda, and 0003,
+how comments, suggestions and transclusions anchor, amended by 0004 after a
+replay of real history. `conformance/cases/` encodes all four. Its
+0001 and 0002 cases came first, before any implementation existed. Its 0003
+cases, under `conformance/cases/anchor/`,
+were written from `SPEC.md` by an author who had not read the resolver,
+which was written before them. 0004's cases were written the same way,
+after its resolver change, which was then run against them with no case
+changed. `reference/blockspec/` is a
+standard-library-only implementation, the reader (`document.py`) and the
+anchor resolver (`anchor.py`), run against that tree with no case changed,
+and CI runs the tree against it (`just conform`). There is one
+implementation, so nothing disagrees with it yet.
+
+The pre-registered spike, `spike/` (blockspec#2), asked whether prose has a
+silent-wrong-merge worth a format. Its binding verdict is **FOUND**:
+pre-registration 3's tier-run, run a second time under an owner ruling that
+overrides four of that document's frozen rules (`spike/LOG.md` §34–§35). The
+ruling was made after run 1's answers and its INCONCLUSIVE verdict were
+public, and run 2 is what turned the verdict into FOUND.
+Read the ruling, its disclosures and the noise figures beside the verdict
+before relying on it. Start at `spike/README.md`.
+
+blockspec is the **block kind** in [kindspec](https://github.com/kindspec) — a
+specification and conformance suite for prose documents that must survive
+version control, alongside [rowspec](https://github.com/kindspec/rowspec) (the
+row kind).
+
+Each kind is named after its **unit of identity**, because identity is the hard
+part of every one of them:
+
+| | unit | identity | status |
+|---|---|---|---|
+| [rowspec](https://github.com/kindspec/rowspec) | rows | opaque row ids | draft 0, published |
+| **blockspec** | blocks | **deliberately no minted ids** | draft 0: decisions, cases, reference |
+| [nodespec](https://github.com/kindspec/nodespec) | nodes | named, not positional | specification draft 0, conformance cases and reference checker |
