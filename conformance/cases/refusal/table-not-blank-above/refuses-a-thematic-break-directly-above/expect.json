@@ -1,0 +1,9 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "table-not-blank-above",
+  "controls": [
+    "frontmatter/a-table-directly-below-the-closing-line",
+    "refusal/table-not-blank-above/accepts-a-blank-line-above"
+  ]
+}

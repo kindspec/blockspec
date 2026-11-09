@@ -1,55 +1,9 @@
 {
   "kind": "merge",
   "merge": "clean",
-  "accept": true,
-  "blocks": [
-    {
-      "type": "heading",
-      "lines": [
-        1,
-        1
-      ]
-    },
-    {
-      "type": "paragraph",
-      "lines": [
-        3,
-        3
-      ]
-    },
-    {
-      "type": "paragraph",
-      "lines": [
-        5,
-        5
-      ]
-    }
-  ],
-  "leaves": [
-    {
-      "node": [
-        0
-      ],
-      "type": "heading",
-      "content": "Policy"
-    },
-    {
-      "node": [
-        1
-      ],
-      "type": "paragraph",
-      "content": "Middle paragraph."
-    },
-    {
-      "node": [
-        2
-      ],
-      "type": "paragraph",
-      "content": "See [limit](#limit) for the value now in force."
-    }
-  ],
-  "names": {},
-  "resolve": {
-    "limit": "#REF!(limit)"
-  }
+  "accept": false,
+  "refusal": "dangling-link",
+  "controls": [
+    "merge/disjoint/edits-far-apart"
+  ]
 }

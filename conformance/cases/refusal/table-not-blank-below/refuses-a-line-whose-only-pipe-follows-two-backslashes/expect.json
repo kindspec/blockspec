@@ -1,0 +1,9 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "table-not-blank-below",
+  "controls": [
+    "table/a-row-with-a-pipe-after-a-spaced-backslash",
+    "refusal/table-not-blank-below/accepts-a-blank-line-below"
+  ]
+}

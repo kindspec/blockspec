@@ -711,10 +711,7 @@ def write_back(snapshot: Snapshot, leaf: Leaf, span: list[int], replace: str) ->
     """The document's text with `replace` written over the span (section
     11.7 steps 1 to 3), or `_Unmappable`."""
     if leaf.type == "table":
-        raise Undecided(
-            "writing a suggestion back into a table, whose text holds separators, "
-            "escapes and padding that no raw character gives"
-        )
+        raise _Unmappable()  # 0005 item 7
     content, positions = _content_positions(snapshot, leaf)
     a, b = _map_span(content, leaf.text, *span)
     if leaf.node.type == "code_block" and b == len(content):
@@ -731,18 +728,11 @@ def write_back(snapshot: Snapshot, leaf: Leaf, span: list[int], replace: str) ->
         for number, (start, _end, after) in enumerate(lines, 1):
             for p in range(start, after):
                 line_of[p] = number
-        breaks = {line_of[first], line_of[positions[b - 1][0]]}
-        endings, prefixes = set(), set()
-        for number in breaks:
-            start, end, after = lines[number - 1]
-            endings.add(snapshot.text[end:after])
-            prefixes.add(_container_prefix(leaf, snapshot.text[start:end], number))
-        if len(endings) > 1 or len(prefixes) > 1:
-            raise Undecided(
-                "a line break written over a span whose lines end or are prefixed "
-                "differently: which line it breaks"
-            )
-        ending, prefix = endings.pop(), prefixes.pop()
+        # the line where the span starts (0005 item 7)
+        number = line_of[first]
+        start, end, after = lines[number - 1]
+        ending = snapshot.text[end:after]
+        prefix = _container_prefix(leaf, snapshot.text[start:end], number)
         if not ending:
             raise _Unmappable()  # the file's last line, with no line ending to copy
         replace = replace.replace("\n", ending + prefix)
@@ -835,7 +825,7 @@ def _read_record(reader, text: str, fm: list[str] | None, object_format: str) ->
     """The record, or `record-inconsistent` for its grammar or for a body the
     profile refuses (section 11.1)."""
     try:
-        reader.parse(text)
+        reader.parse(text, record=True)
     except reader.Refusal as refusal:
         raise _Refused("record-inconsistent") from refusal
     record = read_record(fm, object_format)
@@ -1032,6 +1022,8 @@ def classify(leaf: Leaf) -> Transclusion | None:
     titles = [m.group(1) for m in _TITLE.finditer(content) if _reads_transclude(m.group(1))]
     if not titles:
         return None
+    if all(t in ("'transclude'", "(transclude)") for t in titles):
+        return None  # 0005 item 6: only the double-quoted title makes one
     if any(t != '"transclude"' for t in titles):
         raise Undecided(
             "a link title that reads as `transclude` but is written another way: "
@@ -1045,19 +1037,17 @@ def classify(leaf: Leaf) -> Transclusion | None:
         return None
     if destination is None:
         raise Undecided("a `transclude` link in a paragraph that holds other text")
-    if len(leaf.node.path) > 1:
-        raise Undecided("a transclusion paragraph inside a list item or a block quote")
     path, hash_, name = destination.partition("#")
     if not hash_:
-        raise Undecided("a transclusion destination with no `#name`")
-    if not path:
-        raise Undecided("a transclusion destination with no path")
+        return None  # 0005 item 6
     return Transclusion(leaf, path, name)
 
 
 def resolve_path(referrer: str, path: str) -> str:
     """The repository path a transclusion's path names (0003 addendum
     detail 7), or `unresolvable-path`."""
+    if not path:
+        return ""  # no file of that name, so document-missing (0005 item 6)
     segments = path.split("/")
     if path.startswith("/") or ":" in segments[0]:
         raise _Refused("unresolvable-path")
@@ -1189,7 +1179,7 @@ def _resolve_one(reader, repo: Mapping, referrer: str, one: Transclusion, pins) 
     referrer. The first step that fails decides."""
     tree, blobs = repo["tree"], repo["blobs"]
     target = resolve_path(referrer, one.path)  # 1.1
-    if not target.endswith(".md"):
+    if target and (not target.endswith(".md")):
         raise Undecided("a transclusion path that names a file that is not markdown")
     if target == referrer or _reaches(reader, tree, target, referrer, set()):
         raise Undecided("a document that transcludes itself, directly or through another")
@@ -1201,7 +1191,7 @@ def _resolve_one(reader, repo: Mapping, referrer: str, one: Transclusion, pins) 
     if _slug_only(reader, current, one.name):  # 1.5
         return {"status": f"#REF!({one.name})", "unit": None}
     if one.path not in pins:
-        raise Undecided("a transclusion with no pin")
+        raise _Refused("base-unavailable")  # 0005 item 6
     if pins[one.path] not in blobs:  # 1.6
         raise _Refused("base-unavailable")
     pinned = _read(reader, blobs[pins[one.path]])  # 1.7

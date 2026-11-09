@@ -758,11 +758,14 @@ def test_write_back_into_a_heading_and_a_code_block():
     assert got["suggestion"]["written"] == base.replace("= 4.2", "= 5.0")
 
 
-def test_write_back_into_a_table_is_undecided():
+def test_write_back_into_a_table_is_stale():
     base = "| a | b |\n| - | - |\n| 4.2 | x |\n"
     text = "a | b\n4.2 | x"
     got = suggest(base, base, text, "4.2", "5.0", kind="table")
-    assert got["status"] == "UNDECIDED"
+    assert (got["status"], got["suggestion"]) == (
+        "RESOLVED",
+        {"gate": "stale", "reason": "unmappable-offset"},
+    )
     got = suggest(base, base, text, "4.2", "5.0", kind="table", status="accepted")
     assert (got["status"], got["suggestion"]) == ("RESOLVED", {"gate": "stale", "reason": None})
 
@@ -935,12 +938,11 @@ def test_broken_pins_refuse_every_transclusion():
     [
         ('See [Scram](policy.md#scram "transclude") here.', "other text"),
         ('[Scram](<policy.md#scram> "transclude")', "angle brackets"),
-        ("[Scram](policy.md#scram 'transclude')", "quoting form"),
-        ("[Scram](policy.md#scram (transclude))", "quoting form"),
+        ("[Scram](policy.md#scram 'transclude')", None),
+        ("[Scram](policy.md#scram (transclude))", None),
         ('[Scram](policy.md#scram "&#116;ransclude")', "quoting form"),
         ('[Scram](policy.md#scram "trans\\clude")', None),
-        ('[Scram](policy.md "transclude")', "no `#name`"),
-        ('[Scram](#scram "transclude")', "no path"),
+        ('[Scram](policy.md "transclude")', None),
         ('[`Scram`](policy.md#scram "transclude")', "code span"),
         ('[Scram](policy.md#scram "Transclude")', None),
         ("[Scram](policy.md#scram)", None),
@@ -955,11 +957,11 @@ def test_shapes_section_12_leaves_open_are_undecided(paragraph, question):
         assert got[0]["status"] == "UNDECIDED" and question in got[0]["question"], got
 
 
-def test_a_transclusion_in_a_list_item_or_with_no_pin_is_undecided():
+def test_a_transclusion_counts_in_a_list_item_and_with_no_pin_is_refused():
     tree = {"policy.md": TARGET, "guide.md": referrer("- " + LINK, blob=oid(TARGET))}
-    assert "list item" in transclude(tree)[0]["question"]
+    assert transclude(tree)[0]["status"] == "RESOLVED"
     tree = {"policy.md": TARGET, "guide.md": doc(LINK)}
-    assert transclude(tree)[0]["question"] == "a transclusion with no pin"
+    assert transclude(tree)[0]["status"] == "REFUSED(base-unavailable)"
 
 
 def test_a_document_that_transcludes_itself_is_undecided():
@@ -1175,10 +1177,10 @@ def test_a_name_only_a_heading_slug_matches_is_ref_before_the_pin_is_read():
     unslugged = doc("# Other", ALPHA, SCRAM, BRAVO)
     got = transclude({"policy.md": unslugged, "guide.md": bad_pin})
     assert got[0]["status"] == "REFUSED(base-unavailable)"
-    # A marker name that is also a heading's slug binds through the marker.
+    # A marker reusing a heading's slug on another node refuses the target.
     both = "# Scram\n\n" + TARGET
     got = transclude({"policy.md": both, "guide.md": referrer(LINK, blob=oid(TARGET))}, [TARGET])
-    assert got[0]["unit"] == {"document": "policy.md", "target": {"node": [3], "type": "paragraph"}}
+    assert got[0]["status"] == "REFUSED(not-in-profile)"
 
 
 def test_the_pinned_blob_is_read_before_its_binding():

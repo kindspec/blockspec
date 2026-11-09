@@ -1,0 +1,8 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "dangling-link",
+  "controls": [
+    "refusal/dangling-link/accepts-inside-an-html-attribute"
+  ]
+}

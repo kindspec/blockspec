@@ -1,0 +1,8 @@
+{
+  "kind": "parse",
+  "accept": false,
+  "refusal": "name-shadows-slug",
+  "controls": [
+    "refusal/name-shadows-slug/accepts-a-region-begin-directly-after-its-heading"
+  ]
+}

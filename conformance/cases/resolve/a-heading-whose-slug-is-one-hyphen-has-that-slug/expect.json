@@ -1,0 +1,32 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "heading",
+      "lines": [
+        1,
+        1
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "heading",
+      "content": "!!! ???"
+    }
+  ],
+  "names": {},
+  "resolve": {
+    "-": {
+      "node": [
+        0
+      ],
+      "type": "heading"
+    },
+    "": "#REF!()"
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "html_block",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "heading",
+      "lines": [
+        2,
+        2
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        4,
+        4
+      ]
+    },
+    {
+      "type": "heading",
+      "lines": [
+        6,
+        6
+      ]
+    },
+    {
+      "type": "html_block",
+      "lines": [
+        7,
+        7
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "html_block",
+      "content": "<!-- #setup:begin -->\n"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "heading",
+      "content": "Setup"
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "paragraph",
+      "content": "One."
+    },
+    {
+      "node": [
+        3
+      ],
+      "type": "heading",
+      "content": "Setup"
+    },
+    {
+      "node": [
+        4
+      ],
+      "type": "html_block",
+      "content": "<!-- #setup:end -->\n"
+    }
+  ],
+  "names": {
+    "setup": {
+      "region": [
+        {
+          "node": [
+            1
+          ],
+          "type": "heading"
+        },
+        {
+          "node": [
+            2
+          ],
+          "type": "paragraph"
+        },
+        {
+          "node": [
+            3
+          ],
+          "type": "heading"
+        }
+      ]
+    }
+  },
+  "resolve": {
+    "setup": {
+      "region": [
+        {
+          "node": [
+            1
+          ],
+          "type": "heading"
+        },
+        {
+          "node": [
+            2
+          ],
+          "type": "paragraph"
+        },
+        {
+          "node": [
+            3
+          ],
+          "type": "heading"
+        }
+      ]
+    }
+  }
+}

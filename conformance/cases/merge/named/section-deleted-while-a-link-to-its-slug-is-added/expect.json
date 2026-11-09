@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": false,
+  "refusal": "dangling-link",
+  "controls": [
+    "merge/named/link-added-to-a-section-that-stays"
+  ]
+}

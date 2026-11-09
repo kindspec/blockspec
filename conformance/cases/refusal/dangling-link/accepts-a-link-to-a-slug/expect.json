@@ -1,0 +1,45 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "heading",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        3,
+        3
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "heading",
+      "content": "Setup"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "paragraph",
+      "content": "See [x](#setup)."
+    }
+  ],
+  "names": {},
+  "resolve": {
+    "setup": {
+      "node": [
+        0
+      ],
+      "type": "heading"
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "list",
+      "lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        4,
+        4
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0,
+        0,
+        0
+      ],
+      "type": "html_block",
+      "content": "<!-- #deep -->\n"
+    },
+    {
+      "node": [
+        0,
+        0,
+        1
+      ],
+      "type": "paragraph",
+      "content": "One."
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "paragraph",
+      "content": "See [x](#deep)."
+    }
+  ],
+  "names": {
+    "deep": {
+      "node": [
+        0,
+        0,
+        1
+      ],
+      "type": "paragraph"
+    }
+  },
+  "resolve": {
+    "deep": {
+      "node": [
+        0,
+        0,
+        1
+      ],
+      "type": "paragraph"
+    }
+  }
+}

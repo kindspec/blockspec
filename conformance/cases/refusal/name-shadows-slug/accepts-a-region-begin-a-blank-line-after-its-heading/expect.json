@@ -1,0 +1,88 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "heading",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "html_block",
+      "lines": [
+        3,
+        3
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        4,
+        4
+      ]
+    },
+    {
+      "type": "html_block",
+      "lines": [
+        5,
+        5
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "heading",
+      "content": "Goals"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "html_block",
+      "content": "<!-- #goals:begin -->\n"
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "paragraph",
+      "content": "Ship it."
+    },
+    {
+      "node": [
+        3
+      ],
+      "type": "html_block",
+      "content": "<!-- #goals:end -->\n"
+    }
+  ],
+  "names": {
+    "goals": {
+      "region": [
+        {
+          "node": [
+            2
+          ],
+          "type": "paragraph"
+        }
+      ]
+    }
+  },
+  "resolve": {
+    "goals": {
+      "region": [
+        {
+          "node": [
+            2
+          ],
+          "type": "paragraph"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,3 @@
+# `setup`
+
+See [x](#setup).

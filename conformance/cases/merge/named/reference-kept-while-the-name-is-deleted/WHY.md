@@ -17,3 +17,5 @@ SPEC.md §8.1:
 
 > **A name that matches zero
 > targets, or more than one, is `#REF!(name)`.**
+
+**Changed by 0005:** this was accepted before adjudication 0005, which refuses it as `dangling-link`.

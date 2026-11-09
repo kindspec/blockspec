@@ -144,7 +144,8 @@ draft 0 carries*): a leaf's inline content is kept as written and is not
 parsed, so emphasis, links, code spans and entity references are characters
 of the leaf's content (§6.3), not structure.
 
-**One exception**: a paragraph whose content is exactly one inline link
+**Two exceptions.** A link to a name in the same document is read for
+`dangling-link`, by CommonMark's inline rules (§9; 0005 item 10). And a paragraph whose content is exactly one inline link
 titled `transclude` is a transclusion (§11.9). 0003 Q5 amends 0001 to add
 it. The paragraph is still a leaf, and its content is still its raw text.
 
@@ -175,6 +176,14 @@ marker included, is refused, not only the two shapes 0002 §6 names. So:
 - a row that is only `|`, with or without spaces around it, ends the table.
   The line is then a non-blank line directly below it, and is refused as
   `table-not-blank-below` (same addendum).
+
+A line directly below a table's rows is another row when it holds an unescaped
+pipe, starts no other block, and is not only `|` with spaces or tabs around it (0005
+item 3). A `|` is escaped when the character directly before it is a backslash
+(0005 item 1). A delimiter line indented four or more columns is not a
+delimiter line: it continues the paragraph above (0005 item 2). The closing
+line of frontmatter is an edge, so a table directly below it has its
+container's edge above it (0005 item 4).
 
 **The table start is tried after every core block start**, as cmark-gfm
 tries its extensions. So `a | b` over `- | -` is a paragraph and a bullet
@@ -378,8 +387,9 @@ markers that name nothing).
 **A name is tried against region markers first, then heading slugs**, per D8
 §7.2's order (0001, *What draft 0 carries*). **A name that matches zero
 targets, or more than one, is `#REF!(name)`.** A marker's name never matches
-more than one target, since a duplicate is refused (§7.4), so a marker name
-resolves even where two headings share it as a slug.
+more than one target, since a duplicate is refused (§7.4). A marker that would
+take a name from a heading it does not bind is refused, apart from a region
+directly under that heading (`name-shadows-slug`, §9).
 
 What a name resolves to is the node a marker binds (§7.2) or the nodes of a
 region (§7.3). For a heading slug, whether it names the heading or its
@@ -403,9 +413,10 @@ class of github-slugger 2.0.0's `regex.js` is removed, and each space becomes
 - Lower-casing is the reader's runtime's own, so it follows that runtime's
   Unicode version: U+A7CB and U+A7DC lower-case under node 24 (Unicode 17)
   and not under Python 3.11 to 3.13.
-- **Every heading has a slug, at any depth, with one exception**: a heading
-  whose raw content holds `*`, `_`, `` ` ``, `[`, `<` or `&` has no slug. Its
-  raw content is not the text GitHub slugs, so a reference to it is
+- **Every heading has a slug, at any depth, with two exceptions**: a heading
+  whose raw content holds `*`, `_`, `` ` ``, `[`, `<` or `&` has no slug, since
+  its raw content is not the text GitHub slugs; and a heading whose slug comes
+  out empty, such as `# !!!`, has none (0005 item 8). A reference to either is
   `#REF!(name)`.
 - **No `-1` suffix** tells duplicates apart, so two headings with one slug
   leave that slug unresolved (§8.1).
@@ -460,6 +471,14 @@ An implementation MUST refuse:
     judged without the line above, when either holds a form feed or a
     vertical tab, or when they are a table candidate with no unescaped pipe
     in one of the two lines (§4.3)
+12. `dangling-link`: a paragraph, heading or table cell holding an inline link
+    whose destination is `#name`, where `name` matches §7.1's name grammar and
+    nothing in the document could be its target. 0005 item 10 lists the possible
+    targets, which are wider than §8's resolution. A record is exempt
+13. `name-shadows-slug`: a marker whose name is the slug of a heading it does
+    not bind. A one-line marker directly above that heading binds it and is
+    allowed, as is a region whose nodes include that heading or whose `:begin`
+    is the next sibling after it (§8.1; 0005 item 11)
 
 **Two orders between refusals are fixed** (0002, addendum on markers that
 name nothing, and three defaults; addendum on ambiguous tables):
@@ -848,8 +867,8 @@ so a U+0000 inside the span's raw range is replaced with the rest of it
 (steps 2 and 3), and one outside it is left as it is.
 
 1. Let `a` and `b` be the positions in the leaf's content, before NFC, such
-   that the NFC form of the content before `a` is `leaf.text` before the
-   span, and the NFC form of the content from `a` to `b` is `span`. If there
+   that the NFC form of the content before `a` is the text before the span
+   in the leaf the anchor is paired with in the current document (0005 item 9), and the NFC form of the content from `a` to `b` is `span`. If there
    are no such positions, the span does not map.
 2. Map `a` and `b` through the parse to raw positions, skipping the
    characters above. The raw text between them is the span's raw range.
@@ -864,6 +883,11 @@ Only the span's own text must match after NFC; the rest of the leaf may be
 in any normalisation form and may span several prefixed or CRLF lines.
 Where the span does not map, the suggestion is stale, with the reason
 `unmappable-offset`.
+
+An open suggestion on a table whose anchor is `RESOLVED` or `EDITED` is stale, as
+`unmappable-offset`. A `\n` in `replace`
+breaks the line where the span starts, and the result is not re-checked against
+the profile when it is written (0005 item 7).
 
 **A line break that cannot be written back** (0003, second addendum of
 2026-10-16, item 4). A `\n` in `replace` makes the suggestion stale, as
@@ -910,7 +934,13 @@ with the title `transclude`** (0003 Q5):
 
     [Scram threshold](policy.md#scram-threshold "transclude")
 
-This is the one inline shape the profile gives meaning to (§4.2). The link's
+Only the double-quoted title counts: `'transclude'` and `(transclude)` are
+plain paragraphs. A transclusion counts at any depth, inside a list item or a
+block quote too. A destination with no `#` is not a transclusion, an empty path
+is `REFUSED(document-missing)`, and a transclusion with no pin is
+`REFUSED(base-unavailable)` (0005 item 6).
+
+This, and `dangling-link`, are the inline shapes the profile gives meaning to (§4.2). The link's
 destination is `path#name`, where `path` is the target document and `name`
 is a region marker's name in it (§7). A heading slug is not a target. The
 link renders as a link in any markdown tool.
@@ -991,8 +1021,8 @@ second addendum of 2026-10-16, item 6).
    4. the current target must pass the profile, or
       `REFUSED(not-in-profile)`;
    5. a name that only a heading slug matches in the current target is
-      `#REF!(name)` (item 6). A marker name that is also some heading's
-      slug resolves to the marker (§8.1);
+      `#REF!(name)` (item 6). A marker name that is also the slug of a heading
+      it binds resolves to the marker (§8.1, §9);
    6. the pinned blob must be readable, or `REFUSED(base-unavailable)`;
    7. the pinned blob must pass the profile, or `REFUSED(not-in-profile)`;
    8. a marker must bind the name in the pinned blob, or
@@ -1197,13 +1227,10 @@ listed: 0002's *Decision* text decides it (§4.3).
 
 **Left open by 0003:**
 
-- **Transclusion details**: a destination with no path, a destination in
-  angle brackets, the title's other quoting forms (`'transclude'`,
-  `(transclude)`), a title written with backslash escapes or entity
-  references, a `transclude` link in a paragraph
-  that holds other text, a transclusion paragraph inside a list item or a
-  block quote, a transclusion with no pin, and a document that transcludes
-  itself, directly or through another.
+- **Transclusion details** that 0005 item 6 does not decide: a destination in
+  angle brackets, a title written with backslash escapes or entity
+  references, a `transclude` link in a paragraph that holds other text, and a
+  document that transcludes itself, directly or through another.
 - **What a validator reports** for a rename that leaves its notes directory
   behind, and for a record id in two notes directories, and whether either
   has an identifier.
@@ -1229,10 +1256,6 @@ listed: 0002's *Decision* text decides it (§4.3).
 - **Frontmatter that hides the pins line.** The resolver reads the pin lines
   as text. Other frontmatter content, such as a multi-line scalar, could make
   a YAML reader read a `pins:` line differently.
-- **Writing a suggestion back into a table.** A table's text holds
-  separators, escapes and padding that no single raw character gives, so
-  §11.7's mapping does not say how a span in a table, or one that crosses a
-  cell, maps to the file.
 - **Whether a renderer-style decoding of a path is wanted later.** §11.9
   reads a path as raw text, so a percent-encoded, backslash-escaped or
   entity-encoded path names the file spelled that way, or is
