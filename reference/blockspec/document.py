@@ -950,9 +950,32 @@ def _refuse_shadowed_slugs(doc: Document) -> None:
         raise Refusal("name-shadows-slug", f"the marker {slug!r} reuses a heading's slug")
 
 
-#: An inline link to a name in this document: `](#name)`, perhaps with a title.
-_SAME_FILE_LINK = re.compile(r'(?<!\\)\]\(#([^\s)]*)(?:\s+("(?:[^"\\]|\\.)*"|\S[^)]*))?\)')
+#: The end of an inline link to a name in this document, perhaps with a title.
+_SAME_FILE_LINK = re.compile(
+    r'\]\(\s*(?:#([^\s<>)]*)|<#([^>\n]*)>)(?:\s+("(?:[^"\\]|\\.)*"|\S[^)]*))?\s*\)'
+)
 _LINK_NAME = re.compile(r"[a-z0-9][a-z0-9-]*\Z")
+
+
+def _is_link_end(text: str, close: int) -> bool:
+    """Whether the `]` at `close` ends an inline link: it is not escaped, its
+    `[` is, and that `[` is not an image's."""
+
+    def escaped(at: int) -> bool:
+        return at > 0 and text[at - 1] == "\\"
+
+    if escaped(close):
+        return False
+    depth, at = 0, close - 1
+    while at >= 0:
+        if text[at] == "]" and not escaped(at):
+            depth += 1
+        elif text[at] == "[" and not escaped(at):
+            if depth == 0:
+                return not (at > 0 and text[at - 1] == "!")
+            depth -= 1
+        at -= 1
+    return False
 
 
 def _without_code_spans(text: str) -> str:
@@ -987,9 +1010,12 @@ def _refuse_dangling_links(doc: Document) -> None:
         else:
             continue
         for text in texts:
-            for match in _SAME_FILE_LINK.finditer(_without_code_spans(text)):
-                name, title = match.group(1), match.group(2)
-                if title == '"transclude"' or not _LINK_NAME.match(name):
+            read = _without_code_spans(text)
+            for match in _SAME_FILE_LINK.finditer(read):
+                name = match.group(1) if match.group(1) is not None else match.group(2)
+                if match.group(3) == '"transclude"' or not _LINK_NAME.match(name):
+                    continue
+                if not _is_link_end(read, match.start()):
                     continue
                 if isinstance(doc.resolve(name), str):
                     raise Refusal("dangling-link", f"a link to {name!r}, which names nothing")

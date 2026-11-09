@@ -17,7 +17,7 @@ delimiter line. It continues the paragraph above.
 
 **3. What a table row is.** A non-blank line directly below a table's rows is
 another row when it holds an unescaped pipe, starts no other block, and is not
-only `|` with spaces around it. A line that is a row in markdown-it's reading
+only `|` with spaces or tabs around it. A line that is a row in markdown-it's reading
 and not by this rule stays `table-not-blank-below`.
 
 **4. Frontmatter's closing line is an edge.** A table directly below it has

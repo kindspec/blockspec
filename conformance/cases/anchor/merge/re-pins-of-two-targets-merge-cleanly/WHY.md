@@ -11,3 +11,5 @@ SPEC.md §11.9:
 > Two branches that add or re-pin different targets merge cleanly when an
 > unchanged line lies between their changes, and conflict when the changes
 > touch (0003, addendum, detail 2).
+
+**Changed by 0005:** the targets' headings no longer repeat their markers' names, which `name-shadows-slug` refuses.

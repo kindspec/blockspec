@@ -178,7 +178,7 @@ marker included, is refused, not only the two shapes 0002 §6 names. So:
   `table-not-blank-below` (same addendum).
 
 A line directly below a table's rows is another row when it holds an unescaped
-pipe, starts no other block, and is not only `|` with spaces around it (0005
+pipe, starts no other block, and is not only `|` with spaces or tabs around it (0005
 item 3). A `|` is escaped when the character directly before it is a backslash
 (0005 item 1). A delimiter line indented four or more columns is not a
 delimiter line: it continues the paragraph above (0005 item 2). The closing
@@ -1022,8 +1022,8 @@ second addendum of 2026-10-16, item 6).
    4. the current target must pass the profile, or
       `REFUSED(not-in-profile)`;
    5. a name that only a heading slug matches in the current target is
-      `#REF!(name)` (item 6). A marker name that is also some heading's
-      slug resolves to the marker (§8.1);
+      `#REF!(name)` (item 6). A marker name that is also the slug of a heading
+      it binds resolves to the marker (§8.1, §9);
    6. the pinned blob must be readable, or `REFUSED(base-unavailable)`;
    7. the pinned blob must pass the profile, or `REFUSED(not-in-profile)`;
    8. a marker must bind the name in the pinned blob, or

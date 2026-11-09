@@ -26,3 +26,5 @@ SPEC.md §11.9:
 >    7. the pinned blob must pass the profile, or `REFUSED(not-in-profile)`;
 >    8. a marker must bind the name in the pinned blob, or
 >       `REFUSED(record-inconsistent)`.
+
+**Changed by 0005:** a target whose marker reuses a heading's slug on another node is `name-shadows-slug`, so the target is refused.
