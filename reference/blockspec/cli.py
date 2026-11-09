@@ -6,20 +6,22 @@ like "nothing was wrong":
 
     0   every document read
     1   at least one document refused
-    2   no verdict: a path does not exist, or there were no documents to read
+    2   no verdict: a path does not exist, there were no documents to read,
+        or a document could not be read and none was refused
 """
 
 from __future__ import annotations
 
 import argparse
+import io
 import os
 import sys
 from collections.abc import Iterable
 
 from blockspec.document import Refusal, parse
 
-#: Never documents. `*.notes` directories hold comment records (SPEC.md §11.1),
-#: which are not documents of the profile.
+#: Never documents. A `*.notes` directory is read: a record is a document
+#: (SPEC.md §11.1).
 SKIP_DIRS = {".git", ".hg", ".svn", ".venv", "node_modules", "__pycache__"}
 SUFFIX = ".md"
 EXIT_OK, EXIT_REFUSED, EXIT_NO_VERDICT = 0, 1, 2
@@ -34,21 +36,25 @@ def collect(targets: Iterable[str]) -> list[str]:
             files.append(target)
             continue
         for directory, subdirs, names in os.walk(target):
-            subdirs[:] = sorted(
-                d for d in subdirs if d not in SKIP_DIRS and not d.endswith(".notes")
-            )
+            subdirs[:] = sorted(d for d in subdirs if d not in SKIP_DIRS)
             files += [os.path.join(directory, n) for n in names if n.lower().endswith(SUFFIX)]
-    return sorted(files)
+    return sorted({os.path.normpath(f) for f in files})
+
+
+class Unreadable(Exception):
+    """The file holds no answer either way: nothing was checked."""
 
 
 def check_file(path: str) -> tuple[str | None, str] | None:
     """None when the document reads; otherwise its refusal code, which is None
     for a file no refusal code covers, and a message."""
+    if not os.path.isfile(path):
+        raise Unreadable("is not a regular file that exists")
     try:
         with open(path, "rb") as handle:
             data = handle.read()
     except OSError as exc:
-        return None, f"cannot be read: {exc.strerror or exc}"
+        raise Unreadable(f"cannot be read: {exc.strerror or exc}") from exc
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError:
@@ -57,6 +63,8 @@ def check_file(path: str) -> tuple[str | None, str] | None:
         parse(text)
     except Refusal as refusal:
         return refusal.code, refusal.message
+    except RecursionError as exc:
+        raise Unreadable("is nested too deeply to read") from exc
     return None
 
 
@@ -88,17 +96,28 @@ def check(paths: list[str], fmt: str = "plain") -> int:
     if not files:
         print(f"no documents under {' '.join(paths)}", file=sys.stderr)
         return EXIT_NO_VERDICT
-    refused = 0
+    refused = unread = 0
     for path in files:
-        problem = check_file(path)
+        try:
+            problem = check_file(path)
+        except Unreadable as exc:
+            unread += 1
+            print(f"{path}: {exc}", file=sys.stderr)
+            continue
         if problem is not None:
             refused += 1
             _report(path, problem[0], problem[1], fmt)
-    print(f"{len(files)} file(s) checked, {refused} refused")
-    return EXIT_REFUSED if refused else EXIT_OK
+    print(f"{len(files) - unread} file(s) checked, {refused} refused, {unread} unreadable")
+    if refused:
+        return EXIT_REFUSED
+    return EXIT_NO_VERDICT if unread else EXIT_OK
 
 
 def main(argv: list[str] | None = None) -> int:
+    # A file's name can hold bytes the terminal's encoding cannot print.
+    for stream in (sys.stdout, sys.stderr):
+        if isinstance(stream, io.TextIOWrapper):
+            stream.reconfigure(errors="backslashreplace")
     parser = argparse.ArgumentParser(prog="blockspec")
     commands = parser.add_subparsers(dest="command", required=True)
     run = commands.add_parser("check", help="report every document the profile refuses")

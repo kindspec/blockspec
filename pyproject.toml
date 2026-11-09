@@ -42,6 +42,7 @@ packages = ["reference/blockspec"]
 include = [
   "/reference",
   "/conformance",
+  "/.github/workflows",
   "/tests",
   "/docs",
   "/SPEC.md",

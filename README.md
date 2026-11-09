@@ -56,11 +56,12 @@ accept.
 ## Check documents
 
 ```sh
+pip install blockspec
 blockspec check docs/    # refuses a document the profile cannot read safely
 ```
 
 It exits 0 when every document reads, 1 when one is refused, and 2 when
-nothing was checked. `--format github` writes annotations. In CI:
+nothing was checked or a file could not be read. `--format github` writes annotations. In CI:
 
 ```yaml
 - uses: actions/checkout@v7
