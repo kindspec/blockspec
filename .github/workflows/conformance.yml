@@ -121,3 +121,29 @@ jobs:
       - name: the test suite
         if: ${{ !cancelled() }}
         run: just test
+
+      # The action as a consumer runs it, on the checkout. It has to pass a
+      # good document and fail a refused one, or it cannot be trusted either way.
+      - name: make the action's two fixtures
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p .action-test/good .action-test/bad
+          printf '# Title\n\nA paragraph.\n' > .action-test/good/a.md
+          printf '<div>raw</div>\n' > .action-test/bad/a.md
+      - name: the action passes a good document
+        if: ${{ !cancelled() }}
+        uses: ./
+        with:
+          paths: .action-test/good
+          install: .
+      - name: the action on a refused document
+        id: action-bad
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: ./
+        with:
+          paths: .action-test/bad
+          install: .
+      - name: the action failed on the refused document
+        if: ${{ !cancelled() }}
+        run: test "${{ steps.action-bad.outcome }}" = failure
