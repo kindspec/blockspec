@@ -4,12 +4,15 @@
 from __future__ import annotations
 
 import bisect
+import re
 import unicodedata
 
 from .blocks import CONTAINERS, LEAF_TYPES, Node, Refusal, parse_document, table_text, walk
+from .inlines import find_links
 from .slugclass import REMOVED
 
 _STARTS = [a for a, _ in REMOVED]
+NAME = re.compile(r"[a-z0-9][a-z0-9-]*")
 NO_SLUG = set("*_`[<&")
 TEXT_TYPES = ("paragraph", "heading", "code_block", "table")
 SHORT = {"paragraph": "p", "code_block": "code", "table": "table"}
@@ -24,7 +27,7 @@ def slug(raw: str) -> str | None:
     if NO_SLUG & set(raw):
         return None
     kept = "".join(c for c in raw.lower() if not is_removed(ord(c)))
-    return kept.replace(" ", "-")
+    return kept.replace(" ", "-") or None
 
 
 def ref(node: Node) -> dict:
@@ -53,7 +56,8 @@ class TextLeaf:
 
 
 class Document:
-    def __init__(self, text: str) -> None:
+    def __init__(self, text: str, check_links: bool = True) -> None:
+        """`check_links` is off only for a record (section 9, item 12)."""
         self.text = text.replace("\0", "�")
         self.root, self.frontmatter, self.spans, self.line_info = parse_document(self.text)
         self.names: dict[str, dict] = {}
@@ -67,6 +71,9 @@ class Document:
                 s = slug(n.content)
                 if s is not None:
                     self.slugs.setdefault(s, []).append(n)
+        self._check_shadows()
+        if check_links:
+            self._check_links(nodes)
 
     def _bind_names(self) -> None:
         containers = [n for n in walk(self.root) if n.type in CONTAINERS]
@@ -112,6 +119,30 @@ class Document:
                 raise Refusal("unpaired-region")
         if dangling:
             raise Refusal("dangling-marker")
+
+    def _check_shadows(self) -> None:
+        """Section 9's `name-shadows-slug`: each heading holding the slug is read."""
+        for name, bound in self.bound.items():
+            if any(not any(h is b for b in bound) for h in self.slugs.get(name, [])):
+                raise Refusal("name-shadows-slug")
+
+    def _check_links(self, nodes: list[Node]) -> None:
+        """Section 9's `dangling-link`."""
+        for n in nodes:
+            if n.type in ("paragraph", "heading"):
+                self._check_text(n.content)
+            elif n.type == "table":
+                for row in n.rows:
+                    for cell in row:
+                        self._check_text(cell)
+
+    def _check_text(self, text: str) -> None:
+        for link in find_links(text):
+            if link.title == '"transclude"' or not link.destination.startswith("#"):
+                continue
+            name = link.destination[1:]
+            if NAME.fullmatch(name) and isinstance(self.resolve(name), str):
+                raise Refusal("dangling-link")
 
     def resolve(self, name: str):
         if name in self.names:

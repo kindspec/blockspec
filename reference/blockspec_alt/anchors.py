@@ -7,16 +7,9 @@ import bisect
 import re
 import unicodedata
 
-from .blocks import (
-    Refusal,
-    _skip_ws,
-    blank,
-    frontmatter_range,
-    parse_destination,
-    split_lines,
-    walk,
-)
+from .blocks import Refusal, blank, frontmatter_range, split_lines, walk
 from .document import Document, TextLeaf, ref
+from .inlines import find_links
 
 ULID = re.compile(r"[0-7][0-9A-HJKMNP-TV-Z]{25}\Z")
 TYPES = {"p", "code", "table", "h1", "h2", "h3", "h4", "h5", "h6"}
@@ -499,105 +492,18 @@ def write_back(doc: Document, raw: str, leaf: TextLeaf, hit: int, span_len: int,
 
 # Transclusions: the one inline shape (section 11.9).
 
-_TITLE = '"transclude"'
-
-
-def _link_text_end(s: str, i: int) -> int | None:
-    """Given `s[i-1] == "["`, the index of the matching `]`, or None."""
-    depth = 1
-    while i < len(s):
-        c = s[i]
-        if c == "\\" and i + 1 < len(s):
-            i += 2
-            continue
-        if c == "`":
-            run = i
-            while run < len(s) and s[run] == "`":
-                run += 1
-            n = run - i
-            j = run
-            close = None
-            while j < len(s):
-                if s[j] == "`":
-                    k = j
-                    while k < len(s) and s[k] == "`":
-                        k += 1
-                    if k - j == n:
-                        close = k
-                        break
-                    j = k
-                else:
-                    j += 1
-            i = close if close is not None else run
-            continue
-        if c == "[":
-            depth += 1
-        elif c == "]":
-            depth -= 1
-            if depth == 0:
-                return i
-        i += 1
-    return None
-
-
-def _inline_link(s: str, i: int) -> tuple[int, str, str | None] | None:
-    """An inline link starting at `s[i] == "["`: (end, destination, raw title)."""
-    close = _link_text_end(s, i + 1)
-    if close is None or s[close + 1 : close + 2] != "(":
-        return None
-    at = _skip_ws(s, close + 2)
-    if s[at : at + 1] == ")":
-        return at + 1, "", None
-    end = parse_destination(s, at)
-    if end is None:
-        return None
-    dest = s[at:end]
-    after = _skip_ws(s, end)
-    title = None
-    if after != end and s[after : after + 1] in ('"', "'", "("):
-        q = s[after]
-        closer = ")" if q == "(" else q
-        t = after + 1
-        while t < len(s) and s[t] != closer:
-            t += 2 if s[t] == "\\" else 1
-        if t >= len(s):
-            return None
-        title = s[after : t + 1]
-        after = _skip_ws(s, t + 1)
-    if s[after : after + 1] != ")":
-        return None
-    return after + 1, dest, title
-
-
-def _holds_link(s: str, i: int, stop: int) -> bool:
-    """Whether the link text `s[i:stop]` itself holds an inline link."""
-    while i < stop:
-        c = s[i]
-        if c == "\\":
-            i += 2
-            continue
-        if c == "[" and (i == 0 or s[i - 1] != "!"):
-            found = _inline_link(s, i)
-            if found and found[0] <= stop:
-                return True
-        i += 1
-    return False
-
 
 def transclusion_link(content: str) -> tuple[str, str] | None:
     """(path, name) when the paragraph is exactly one link titled `transclude`."""
-    if not content.startswith("["):
+    links = find_links(content)
+    if len(links) != 1:
         return None
-    found = _inline_link(content, 0)
-    if found is None or found[0] != len(content) or found[2] != _TITLE:
+    link = links[0]
+    if link.start != 0 or link.end != len(content) or link.title != '"transclude"':
         return None
-    close = _link_text_end(content, 1)
-    if _holds_link(content, 1, close):
+    if "#" not in link.destination:
         return None
-    dest = found[1]
-    if "#" not in dest:
-        return None
-    path, name = dest.split("#", 1)
+    path, name = link.destination.split("#", 1)
     return path, name
 
 
@@ -745,8 +651,10 @@ class Repository:
             kind = "anchor"
         else:
             raise Inconsistent
-        if self.document(text) is None:
-            raise Inconsistent
+        try:
+            Document(text, check_links=False)
+        except Refusal:
+            raise Inconsistent from None
         return kind
 
     # Transclusions.
