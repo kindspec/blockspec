@@ -28,7 +28,8 @@ from content where it can be, and named by an author where it must be.
 ## Status
 
 Draft 0. [`SPEC.md`](SPEC.md) is the format, `conformance/cases/` encodes it,
-and `reference/blockspec/` is the only implementation so far. It is not on
+and `reference/blockspec/` is the reference. `reference/blockspec_alt/`, written
+from the spec by an author who never read it, passes the same cases. It is not on
 PyPI.
 
 The experiment behind the format found that prose does have a silent wrong

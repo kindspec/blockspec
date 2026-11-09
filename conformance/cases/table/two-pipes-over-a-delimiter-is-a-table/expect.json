@@ -1,0 +1,27 @@
+{
+  "kind": "parse",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "table",
+      "lines": [
+        1,
+        2
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "table",
+      "content": [
+        [
+          ""
+        ]
+      ]
+    }
+  ],
+  "names": {}
+}

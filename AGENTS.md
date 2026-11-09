@@ -26,7 +26,9 @@ the reader, `reference/blockspec/document.py`, was written afterwards against
 them and `docs/adjudications/`, with no case changed. For 0003 the order was
 the reverse, as above: the resolver came first, and its cases were written
 without reading it. CI checks the tree itself, and runs it against the
-reference (`just conform`). There is no second implementation.
+reference (`just conform`). `reference/blockspec_alt/` is a second implementation,
+written from `SPEC.md` by an author who never read the first, and CI runs the tree
+against it too (`just conform-alt`).
 
 The mutation gate, `just mutants`, is not in CI: it reports mutants the tree
 does not kill, which are holes for the case author to close, not bugs in the

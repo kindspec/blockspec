@@ -116,6 +116,10 @@ jobs:
         if: ${{ !cancelled() }}
         run: just conform
 
+      - name: a second implementation, from the spec alone, passes the same tree
+        if: ${{ !cancelled() }}
+        run: just conform-alt
+
       # The same run with its report read back, the reference/ import
       # boundary, the kindkit pins, and the mutation gate's own checks.
       - name: the test suite
