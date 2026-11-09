@@ -1,0 +1,92 @@
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+# Publishes to PyPI through a Trusted Publisher (OIDC), so no token is stored.
+# PyPI trusts this repository, this workflow file by name and the `pypi`
+# environment; changing any of those breaks publication instead of publishing
+# from somewhere unexpected.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  # The gate runs first and publication depends on it, so a release cannot
+  # skip the suite.
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+      - name: install just
+        run: |
+          uv tool install rust-just==1.58.0
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - run: just check
+      - run: just tree
+      - run: just conform
+      - run: just test
+
+  build:
+    needs: gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+      - run: uv build
+
+      # The tag is the version. PyPI publication cannot be undone.
+      - name: the tag must match the built version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          built=$(ls dist/*.tar.gz | sed -E 's/.*blockspec-(.*)\.tar\.gz/\1/')
+          if [ "$tag" != "$built" ]; then
+            echo "::error::tag v$tag does not match built version $built"
+            exit 1
+          fi
+
+      - name: action.yml must pin the version being released
+        run: |
+          pinned=$(grep -oE 'blockspec==[0-9]+\.[0-9]+\.[0-9]+' action.yml | head -1 | cut -d= -f3)
+          built=$(ls dist/*.tar.gz | sed -E 's/.*blockspec-(.*)\.tar\.gz/\1/')
+          if [ "$pinned" != "$built" ]; then
+            echo "::error::action.yml pins blockspec==$pinned but this release is $built"
+            exit 1
+          fi
+
+      - name: the built wheel actually works
+        run: |
+          uv run --with dist/*.whl --no-project python - <<'PY'
+          import importlib.metadata, os, subprocess, sys, tempfile
+          import blockspec
+          meta = importlib.metadata.version("blockspec")
+          assert blockspec.__version__ == meta, (blockspec.__version__, meta)
+          d = tempfile.mkdtemp()
+          with open(os.path.join(d, "bad.md"), "w") as f:
+              f.write("<div>raw</div>\n")
+          r = subprocess.run([sys.executable, "-m", "blockspec", "check", "--format", "github", d],
+                             capture_output=True, text=True)
+          assert r.returncode == 1, r
+          assert "[raw-html]" in r.stdout, r.stdout
+          print("wheel", meta, "refuses a bad document and annotates it")
+          PY
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14

@@ -53,6 +53,22 @@ print(doc.names)
 `parse` raises `Refusal`, with a `SPEC.md` §9 code, on a document it won't
 accept.
 
+## Check documents
+
+```sh
+blockspec check docs/    # refuses a document the profile cannot read safely
+```
+
+It exits 0 when every document reads, 1 when one is refused, and 2 when
+nothing was checked. `--format github` writes annotations. In CI:
+
+```yaml
+- uses: actions/checkout@v7
+- uses: kindspec/blockspec@v0.1.0
+  with:
+    paths: docs
+```
+
 ## The reference's API
 
 `reference/blockspec/` is standard library only, and run from its source

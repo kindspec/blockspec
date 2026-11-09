@@ -5,4 +5,6 @@ for the editing API."""
 from blockspec import edit
 from blockspec.document import Document, Refusal, conform, parse, resolve
 
-__all__ = ["Document", "Refusal", "conform", "edit", "parse", "resolve"]
+__version__ = "0.1.0"
+
+__all__ = ["Document", "Refusal", "__version__", "conform", "edit", "parse", "resolve"]
