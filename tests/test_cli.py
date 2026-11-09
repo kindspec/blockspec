@@ -156,3 +156,17 @@ def test_a_document_link_to_a_missing_name_is_refused(tmp_path):
     done = run(".", cwd=tmp_path)
     assert done.returncode == 1
     assert "[dangling-link]" in done.stdout
+
+
+def test_a_notes_directory_with_no_document_is_not_a_record(tmp_path):
+    (tmp_path / "release.notes").mkdir()
+    (tmp_path / "release.notes" / "r.md").write_text("See [x](#gone).\n")
+    assert run(".", cwd=tmp_path).returncode == 1
+
+
+def test_a_record_is_a_record_from_inside_its_directory(tmp_path):
+    (tmp_path / "a.md").write_text(GOOD)
+    notes = tmp_path / "a.md.notes"
+    notes.mkdir()
+    (notes / "r.md").write_text("See [x](#gone).\n")
+    assert run(".", cwd=notes).returncode == 0

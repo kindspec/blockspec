@@ -388,8 +388,8 @@ markers that name nothing).
 §7.2's order (0001, *What draft 0 carries*). **A name that matches zero
 targets, or more than one, is `#REF!(name)`.** A marker's name never matches
 more than one target, since a duplicate is refused (§7.4). A marker that would
-take a name from a heading it does not bind is refused (`name-shadows-slug`,
-§9).
+take a name from a heading it does not bind is refused, apart from a region
+directly under that heading (`name-shadows-slug`, §9).
 
 What a name resolves to is the node a marker binds (§7.2) or the nodes of a
 region (§7.3). For a heading slug, whether it names the heading or its

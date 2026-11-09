@@ -1114,8 +1114,8 @@ def _possible_targets(doc: Document) -> set[str]:
             custom = _HEADING_ID.search(node.text)
             if custom:
                 targets.add(custom.group(1))
-            bare = _HEADING_ID.sub("", node.text).rstrip()
-            for slug in _rendered_slugs(bare):
+            raws = {node.text, _HEADING_ID.sub("", node.text).rstrip()}
+            for slug in {found for raw in raws for found in _rendered_slugs(raw)}:
                 count = seen.get(slug, 0)
                 seen[slug] = count + 1
                 targets.add(slug if count == 0 else f"{slug}-{count}")

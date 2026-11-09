@@ -59,9 +59,10 @@ the header's width is dropped before this rule reads it.
 
 - a marker's name;
 - `top`, which browsers resolve to the start of the page;
-- the GitHub slug of any heading: its raw content with inline HTML tags removed
-  and each `[text](destination)` reduced to `text`, slugged as §8.2 does but also
-  with `*`, `_` and backticks removed, so a heading holding them still counts.
+- the GitHub slug of any heading: its raw content with inline HTML removed and
+  each `[text](destination)` or image reduced to its text, slugged as §8.2 does,
+  with and without `*`, `_` and backticks, and with and without a final `{#id}`,
+  so a heading holding them still counts.
   The slug of the second heading with that slug, and so on, also counts with
   `-1`, `-2` and so on after it, as GitHub numbers duplicates;
 - an `{#id}` at the end of a heading;
@@ -83,8 +84,7 @@ marker silently takes the name from the heading. A one-line marker directly
 above that heading binds it and is allowed, and so is a region whose nodes
 include that heading, or whose `:begin` is the next sibling after it. Two headings sharing the slug are both read: a marker
 binding one of them still does not bind the other. This narrows 0001's
-"markers first": that order now decides only where the marker and the heading
-are the same target.
+"markers first".
 
 ## Left open
 
