@@ -1,0 +1,55 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "paragraph",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        3,
+        3
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        5,
+        5
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "paragraph",
+      "content": "Intro."
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "paragraph",
+      "content": "Scoped text."
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "paragraph",
+      "content": "Tail."
+    }
+  ],
+  "names": {},
+  "resolve": {
+    "r": "#REF!(r)"
+  }
+}

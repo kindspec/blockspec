@@ -489,7 +489,7 @@ combines only refusals whose order is fixed here.
 CC0, so it can be copied into an implementation in any language.
 `conformance/cases/README.md` defines every field.
 
-Every case has the one kind `parse`: the implementation reads `input.md` and
+For a case of the kind `parse`, the implementation reads `input.md` and
 either refuses it, with one identifier from §9, or accepts it and reports:
 
 - **frontmatter**: its line range, or none (§5);
@@ -500,6 +500,11 @@ either refuses it, with one identifier from §9, or accepts it and reports:
   content (§6.2, §6.3);
 - **names**: every name a marker declares, and what it binds to (§7);
 - **resolve**: for the names a case lists, what each resolves to (§8).
+
+A case of the kind `merge` runs stock `git merge` over three versions of a
+document, checks what git reports and the merged bytes, and then reads the
+merged text as above. Such a case says what this format does with a real
+merge: the document it leaves, or the refusal.
 
 0002 §5 makes the tree pin the partition and the leaves, so each accepting
 case lists every block, every leaf and every name, and a missing or extra

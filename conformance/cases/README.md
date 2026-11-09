@@ -21,6 +21,14 @@ the brief, the two adjudications, the org contract, kindkit `6ebd80d`
 `conformance/cases/` with its README. Every fixture was written for this tree;
 none is taken from a corpus.
 
+The `merge` cases, and the seven under `anchor/merge` added with them, were
+written against blockspec `0f2fcec`, by an author working in an exported
+directory with no `reference/`, no `tests/`, no mutation gate and no git
+history. They had `SPEC.md`, `DESIGN-BRIEF.md`, `docs/adjudications/`, this
+tree, and the runner and tree checker with the implementation left out. `merge`
+and `merged.md` come from a real `git merge`; each reading was derived by hand
+from those texts. The reference then ran them with no case changed and passed.
+
 The cases listed at the end of this paragraph were added later, against
 blockspec `926d7a1`, after an implementation existed on an unmerged branch
 (`feat/reference-parser`, kindspec/blockspec#37). Their author did not read
@@ -866,6 +874,32 @@ the blobs and run the merges.
   anchor, including the refusal to create one when `prefix + span + suffix`
   does not occur exactly once, and a referrer's re-pin (§11.9). A case asserts
   how existing records and pins resolve, not what a tool would write.
+
+## The kind `merge`
+
+A case with `"kind": "merge"` asserts what a real merge leaves behind. The
+runner commits `base.md`, makes `ours.md` and `theirs.md` on two branches, and
+runs stock `git merge`, with no driver and no configuration from the machine.
+It checks what git reports, then hands the merged text to the implementation
+and checks the reading.
+
+| file | what it is |
+| --- | --- |
+| `base.md` | the common ancestor |
+| `ours.md` | the branch merged into |
+| `theirs.md` | the branch merged in |
+| `merged.md` | what stock git must produce, byte for byte. Exactly when the merge is clean |
+| `WHY.md` | what the case is for, and the passage it rests on |
+
+| field | what it asserts |
+| --- | --- |
+| `merge` | `clean` or `conflict`: what stock git must report |
+| the rest | as for `parse`, over the merged text |
+
+A conflicted merge leaves markers in the text, so its reading is the refusal
+`conflict-marker`. A clean merge either reads as the document the case lists
+or is refused, with the refusal's controls, which are accepting `merge` or
+`parse` cases.
 
 ## Running it
 

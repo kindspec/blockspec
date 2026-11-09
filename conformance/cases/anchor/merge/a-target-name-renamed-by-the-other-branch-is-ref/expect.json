@@ -1,0 +1,20 @@
+{
+  "kind": "anchor",
+  "merge": {
+    "policy.md": "clean"
+  },
+  "transclusions": {
+    "guide.md": [
+      {
+        "leaf": {
+          "node": [
+            1
+          ],
+          "type": "paragraph"
+        },
+        "status": "#REF!(scram-threshold)",
+        "unit": null
+      }
+    ]
+  }
+}

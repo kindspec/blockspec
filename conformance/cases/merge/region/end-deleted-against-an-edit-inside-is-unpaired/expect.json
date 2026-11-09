@@ -1,0 +1,10 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": false,
+  "refusal": "unpaired-region",
+  "controls": [
+    "merge/disjoint/edits-far-apart",
+    "refusal/unpaired-region/accepts-a-pair-at-top-level"
+  ]
+}

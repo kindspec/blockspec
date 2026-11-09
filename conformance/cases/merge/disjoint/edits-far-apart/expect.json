@@ -1,0 +1,181 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "heading",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        3,
+        3
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        5,
+        5
+      ]
+    },
+    {
+      "type": "html_block",
+      "lines": [
+        7,
+        7
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        8,
+        8
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        10,
+        10
+      ]
+    },
+    {
+      "type": "html_block",
+      "lines": [
+        11,
+        11
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        13,
+        13
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        15,
+        15
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        17,
+        17
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        19,
+        19
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "heading",
+      "content": "Guide"
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "paragraph",
+      "content": "First paragraph, revised."
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "paragraph",
+      "content": "Second paragraph of the guide."
+    },
+    {
+      "node": [
+        3
+      ],
+      "type": "html_block",
+      "content": "<!-- #core:begin -->\n"
+    },
+    {
+      "node": [
+        4
+      ],
+      "type": "paragraph",
+      "content": "Third paragraph of the guide."
+    },
+    {
+      "node": [
+        5
+      ],
+      "type": "paragraph",
+      "content": "Fourth paragraph of the guide."
+    },
+    {
+      "node": [
+        6
+      ],
+      "type": "html_block",
+      "content": "<!-- #core:end -->\n"
+    },
+    {
+      "node": [
+        7
+      ],
+      "type": "paragraph",
+      "content": "Fifth paragraph of the guide."
+    },
+    {
+      "node": [
+        8
+      ],
+      "type": "paragraph",
+      "content": "Sixth paragraph of the guide."
+    },
+    {
+      "node": [
+        9
+      ],
+      "type": "paragraph",
+      "content": "Seventh paragraph of the guide."
+    },
+    {
+      "node": [
+        10
+      ],
+      "type": "paragraph",
+      "content": "Eighth paragraph, revised."
+    }
+  ],
+  "names": {
+    "core": {
+      "region": [
+        {
+          "node": [
+            4
+          ],
+          "type": "paragraph"
+        },
+        {
+          "node": [
+            5
+          ],
+          "type": "paragraph"
+        }
+      ]
+    }
+  }
+}

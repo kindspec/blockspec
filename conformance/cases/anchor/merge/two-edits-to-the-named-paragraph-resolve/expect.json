@@ -1,0 +1,28 @@
+{
+  "kind": "anchor",
+  "merge": {
+    "policy.md": "clean"
+  },
+  "transclusions": {
+    "guide.md": [
+      {
+        "leaf": {
+          "node": [
+            1
+          ],
+          "type": "paragraph"
+        },
+        "status": "RESOLVED",
+        "unit": {
+          "document": "policy.md",
+          "target": {
+            "node": [
+              2
+            ],
+            "type": "paragraph"
+          }
+        }
+      }
+    ]
+  }
+}

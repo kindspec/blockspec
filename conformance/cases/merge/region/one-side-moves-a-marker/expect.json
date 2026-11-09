@@ -1,0 +1,87 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "paragraph",
+      "lines": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        3,
+        3
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        5,
+        5
+      ]
+    },
+    {
+      "type": "html_block",
+      "lines": [
+        7,
+        7
+      ]
+    },
+    {
+      "type": "paragraph",
+      "lines": [
+        8,
+        8
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "paragraph",
+      "content": "A."
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "paragraph",
+      "content": "M."
+    },
+    {
+      "node": [
+        2
+      ],
+      "type": "paragraph",
+      "content": "Z, edited."
+    },
+    {
+      "node": [
+        3
+      ],
+      "type": "html_block",
+      "content": "<!-- #m -->\n"
+    },
+    {
+      "node": [
+        4
+      ],
+      "type": "paragraph",
+      "content": "Y."
+    }
+  ],
+  "names": {
+    "m": {
+      "node": [
+        4
+      ],
+      "type": "paragraph"
+    }
+  }
+}

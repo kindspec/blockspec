@@ -1,0 +1,38 @@
+{
+  "kind": "merge",
+  "merge": "clean",
+  "accept": true,
+  "blocks": [
+    {
+      "type": "paragraph",
+      "lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "type": "code_block",
+      "lines": [
+        3,
+        4
+      ]
+    }
+  ],
+  "leaves": [
+    {
+      "node": [
+        0
+      ],
+      "type": "paragraph",
+      "content": "x\nText line."
+    },
+    {
+      "node": [
+        1
+      ],
+      "type": "code_block",
+      "content": ""
+    }
+  ],
+  "names": {}
+}

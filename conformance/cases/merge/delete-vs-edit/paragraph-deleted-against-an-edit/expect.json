@@ -1,0 +1,9 @@
+{
+  "kind": "merge",
+  "merge": "conflict",
+  "accept": false,
+  "refusal": "conflict-marker",
+  "controls": [
+    "merge/disjoint/edits-with-one-unchanged-line-between"
+  ]
+}
